@@ -1,0 +1,4 @@
+- GPU productivity
+- accurasy promrt understanding
+- accurasy code
+- model memory 
