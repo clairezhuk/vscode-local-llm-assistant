@@ -1,4 +1,5 @@
 *.gguf
 .vs/
-.backend/models
-.frontend/out
+backend/models
+frontend/out
+frontend/node_modules

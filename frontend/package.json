@@ -9,8 +9,31 @@
     "Machine Learning"
   ],
   "main": "./out/extension.js",
-  "activationEvents": [],
+  
+  
+"activationEvents": [
+    "*"
+  ],
   "contributes": {
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "ai-coder-sidebar",
+          "title": "AI Coder",
+          "icon": "$(sparkle)"
+        }
+      ]
+    },
+    "views": {
+      "ai-coder-sidebar": [
+        {
+          "type": "webview",
+          "id": "ai-coder.chatView",
+          "name": "Chat",
+          "icon": "$(comment-discussion)"
+        }
+      ]
+    },
     "commands": [
       {
         "command": "ai-coder.start",
