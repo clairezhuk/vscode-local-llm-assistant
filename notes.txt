@@ -2,3 +2,37 @@
 - accurasy promrt understanding
 - accurasy code
 - model memory 
+
+
+Frontend (VS Code Extension - TypeScript / Node.js):
+1. UI Components: Бічна панель (ChatView) та інлайн-підказки (GhostText).
+2. Context Gatherer: Збирає активний файл, виділений текст, структуру директорії, вміст терміналу.
+3. API Client: Відправляє зібраний контекст та запит користувача по HTTP (REST) або WebSocket (для потокової генерації тексту).
+
+Backend (Local Python Server - FastAPI):
+1. API Router: Приймає запити від VS Code.
+2. Context Manager: Обробляє історію повідомлень, фільтрує та обрізає файли проекту, щоб влізти у контекстне вікно моделі.
+3. Agentic Orchestrator (State Machine): Керує "циклом мислення". Визначає, чи потрібна текстова відповідь, генерація коду чи виклик терміналу.
+4. LLM Engine: Твій поточний llama_cpp (генерація відповідей).
+5. Tool Executor: Дозволяє бекенду виконувати команди в терміналі або редагувати файли (після підтвердження).
+
+Пам'ять:
+1. RAG (Retrieval-Augmented Generation) - файли TF-IDF або локальна векторна база
+2. AST Parsing (Abstract Syntax Tree): Використання бібліотек типу tree-sitter.
+3. Сковзне вікно (Sliding Window): Для історії чату зберігаються лише останні 3-4 повідомлення, а старіші підсумовуються (сумаризуються) окремим швидким промптом.
+
+Routing та обробка інструкцій:
+1. Intent Classification (Маршрутизатор):
+Перший (швидкий) промпт до моделі. Що хоче користувач? 1) Чат/Пояснення, 2) Написання коду, 3) Команду терміналу
+-> number
+
+2. Dispatching:
+Специфічний System Prompt 
+- Для коду: Жорсткий промпт, щоб модель повертала ТІЛЬКИ код у маркдауні.
+- Для чату: Промпт, що дозволяє вільну генерацію тексту.
+
+
+Thinking Loop / Agentic Flow:
+1. Reasoning
+2. Action
+3. Observation

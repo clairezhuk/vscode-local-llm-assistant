@@ -1,2 +1,4 @@
 *.gguf
 .vs/
+.backend/models
+.frontend/out
