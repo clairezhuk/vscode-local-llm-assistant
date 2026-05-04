@@ -10,11 +10,15 @@ class Orchestrator:
         self.executor = ToolExecutor()
 
     def classify_intent(self, query: str) -> int:
-        prompt = f"<|im_start|>system\nYou are a router. Analyze the user query.\nReturn ONLY '1' if they ask a question or want an explanation.\nReturn ONLY '2' if they ask you to write a script or function.\nReturn ONLY '3' if they ask to run a terminal command (like pip, git, npm, conda).\n<|im_end|>\n<|im_start|>user\n{query}<|im_end|>\n<|im_start|>assistant\n"
-        res = self.engine.generate(prompt, max_tokens=5).strip()
-        if "3" in res: return 3
-        if "2" in res: return 2
-        return 1
+        prompt = f"<|im_start|>system\nYou are a router. Analyze the user query.\nReturn ONLY '1' if they ask a question or want an explanation.\nReturn ONLY '2' if they ask you to write a script or function.\nReturn ONLY '3' if they ask to run a terminal command.\n<|im_end|>\n<|im_start|>user\n{query}<|im_end|>\n<|im_start|>assistant\n"
+        res = self.engine.generate(prompt, max_tokens=5)["text"].strip()
+        
+        intent = 1
+        if "3" in res: intent = 3
+        elif "2" in res: intent = 2
+        
+        print(f" [Orchestrator] Selected Intent: {intent}")
+        return intent
 
     def _extract_code_block(self, text: str) -> str:
         match = re.search(r'```(?:bash|sh|cmd|powershell|markdown|python)?\s*\n(.*?)\n```', text, re.DOTALL)
@@ -22,7 +26,7 @@ class Orchestrator:
             return match.group(1).strip()
         return text.replace("`", "").strip()
 
-    def process_chat(self, query: str, context: dict) -> str:
+    def process_chat(self, query: str, context: dict) -> dict:
         intent = self.classify_intent(query)
         code_ctx = context.get("active_file_content", "")
 
@@ -34,7 +38,10 @@ class Orchestrator:
             sys_prompt = "You are a helpful assistant. Explain clearly and provide examples if needed."
 
         prompt = self.context_manager.format_prompt(sys_prompt, query, code_ctx)
-        action = self.engine.generate(prompt, max_tokens=1024)
+        
+        gen_result = self.engine.generate(prompt, max_tokens=1024)
+        action = gen_result["text"]
+        usage = gen_result["usage"]
 
         if intent == 3:
             clean_cmd = self._extract_code_block(action)
@@ -47,8 +54,8 @@ class Orchestrator:
         self.context_manager.add_message("user", query)
         self.context_manager.add_message("assistant", action)
         
-        return action
+        return {"result": action, "usage": usage}
 
-    def process_completion(self, prompt_text: str) -> str:
+    def process_completion(self, prompt_text: str) -> dict:
         prompt = f"<|fim_prefix|>{prompt_text}<|fim_suffix|><|fim_middle|>"
-        return self.engine.generate(prompt, max_tokens=64, stop=["<|file_separator|>", "<|fim_prefix|>", "<|im_end|>", "\n\n"])
+        return self.engine.generate(prompt, max_tokens=32, stop=["<|file_separator|>", "<|fim_prefix|>", "<|im_end|>", "\n\n", "\r\n\r\n"])

@@ -8,11 +8,23 @@ export class GhostTextProvider implements vscode.InlineCompletionItemProvider {
         context: vscode.InlineCompletionContext,
         token: vscode.CancellationToken
     ): Promise<vscode.InlineCompletionItem[]> {
-        const textBeforeCursor = document.getText(new vscode.Range(new vscode.Position(0, 0), position));
         
+        // Limit context to the last 15 lines to speed up inference
+        const startLine = Math.max(0, position.line - 15);
+        const startPos = new vscode.Position(startLine, 0);
+        const textBeforeCursor = document.getText(new vscode.Range(startPos, position));
+        
+        if (textBeforeCursor.trim() === '') {
+            return [];
+        }
+
+        const startTime = Date.now();
         const completionText = await fetchCompletions(textBeforeCursor);
+        const elapsed = (Date.now() - startTime) / 1000;
         
-        if (!completionText) {
+        console.log(`[GhostText] Received in ${elapsed}s: '${completionText}'`);
+
+        if (!completionText || token.isCancellationRequested) {
             return [];
         }
 

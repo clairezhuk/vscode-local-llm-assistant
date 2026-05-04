@@ -1,3 +1,5 @@
+import time
+from datetime import datetime
 from fastapi import APIRouter
 from pydantic import BaseModel
 from src.agentic_orchestrator.orchestrator import Orchestrator
@@ -14,10 +16,24 @@ class CompletionRequest(BaseModel):
 
 @router.post("/chat")
 async def chat_endpoint(request: ChatRequest):
-    result = orchestrator.process_chat(request.query, request.context)
-    return {"result": result}
+    start_time = time.time()
+    print(f"\n[{datetime.now().strftime('%H:%M:%S')}] START /chat")
+    
+    response = orchestrator.process_chat(request.query, request.context)
+    
+    elapsed = time.time() - start_time
+    print(f"[{datetime.now().strftime('%H:%M:%S')}] END /chat | Time: {elapsed:.2f}s | Tokens: {response['usage']}")
+    
+    return {"result": response["result"]}
 
 @router.post("/completion")
 async def completion_endpoint(request: CompletionRequest):
-    result = orchestrator.process_completion(request.prompt)
-    return {"text": result}
+    start_time = time.time()
+    print(f"\n[{datetime.now().strftime('%H:%M:%S')}] START /completion")
+    
+    response = orchestrator.process_completion(request.prompt)
+    
+    elapsed = time.time() - start_time
+    print(f"[{datetime.now().strftime('%H:%M:%S')}] END /completion | Time: {elapsed:.2f}s | Tokens: {response['usage']}")
+    
+    return {"text": response["text"]}
