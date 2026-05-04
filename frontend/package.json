@@ -9,9 +9,7 @@
     "Machine Learning"
   ],
   "main": "./out/extension.js",
-  
-  
-"activationEvents": [
+  "activationEvents": [
     "*"
   ],
   "contributes": {
@@ -53,6 +51,7 @@
     "typescript": "^5.3.0"
   },
   "dependencies": {
-    "axios": "^1.6.7"
+    "axios": "^1.6.7",
+    "marked": "^18.0.3"
   }
 }

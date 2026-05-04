@@ -7,7 +7,10 @@ export class ChatViewProvider implements vscode.WebviewViewProvider {
     constructor(private readonly _extensionUri: vscode.Uri) {}
 
     public resolveWebviewView(webviewView: vscode.WebviewView) {
-        webviewView.webview.options = { enableScripts: true };
+        webviewView.webview.options = { 
+            enableScripts: true,
+            localResourceRoots: [this._extensionUri]
+        };
         webviewView.webview.html = this._getHtmlForWebview();
 
         webviewView.webview.onDidReceiveMessage(async (data) => {
@@ -22,6 +25,7 @@ export class ChatViewProvider implements vscode.WebviewViewProvider {
         return `<!DOCTYPE html>
         <html lang="en">
         <head>
+            <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
             <style>
                 body {
                     display: flex;
@@ -30,13 +34,31 @@ export class ChatViewProvider implements vscode.WebviewViewProvider {
                     margin: 0;
                     padding: 10px;
                     box-sizing: border-box;
+                    font-family: var(--vscode-font-family);
                 }
                 #chat {
                     flex-grow: 1;
                     overflow-y: auto;
                     margin-bottom: 10px;
                     word-wrap: break-word;
-                    white-space: pre-wrap;
+                }
+                pre {
+                    background-color: var(--vscode-editor-background);
+                    border: 1px solid var(--vscode-widget-border);
+                    padding: 10px;
+                    border-radius: 4px;
+                    overflow-x: auto;
+                }
+                code {
+                    font-family: var(--vscode-editor-font-family);
+                    color: var(--vscode-textPreformat-foreground);
+                }
+                .message {
+                    margin-bottom: 12px;
+                }
+                .user-message {
+                    font-weight: bold;
+                    color: var(--vscode-textLink-foreground);
                 }
                 .input-area {
                     display: flex;
@@ -86,11 +108,16 @@ export class ChatViewProvider implements vscode.WebviewViewProvider {
                 const sendBtn = document.getElementById('sendBtn');
                 const chat = document.getElementById('chat');
 
+                marked.setOptions({
+                    breaks: true, 
+                    gfm: true     
+                });
+
                 function sendMessage() {
                     const text = promptInput.value.trim();
                     if (!text) return;
                     
-                    chat.innerHTML += '<div style="margin-bottom: 8px;"><b>User:</b> ' + text + '</div>';
+                    chat.innerHTML += '<div class="message"><span class="user-message">User:</span> ' + text + '</div>';
                     vscode.postMessage({ type: 'sendPrompt', value: text });
                     
                     promptInput.value = '';
@@ -115,7 +142,8 @@ export class ChatViewProvider implements vscode.WebviewViewProvider {
                 window.addEventListener('message', event => {
                     const message = event.data;
                     if (message.type === 'addResponse') {
-                        chat.innerHTML += '<div style="margin-bottom: 12px; color: var(--vscode-textPreformat-foreground);"><b>AI:</b> ' + message.value + '</div>';
+                        const htmlContent = marked.parse(message.value);
+                        chat.innerHTML += '<div class="message"><b>AI:</b><br>' + htmlContent + '</div>';
                         chat.scrollTop = chat.scrollHeight;
                     }
                 });
