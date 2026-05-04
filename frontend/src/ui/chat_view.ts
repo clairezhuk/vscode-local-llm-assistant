@@ -36,6 +36,7 @@ export class ChatViewProvider implements vscode.WebviewViewProvider {
                     overflow-y: auto;
                     margin-bottom: 10px;
                     word-wrap: break-word;
+                    white-space: pre-wrap;
                 }
                 .input-area {
                     display: flex;

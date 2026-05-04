@@ -5,7 +5,11 @@ import { GhostTextProvider } from './ui/ghost_text';
 export function activate(context: vscode.ExtensionContext) {
     const chatProvider = new ChatViewProvider(context.extensionUri);
     context.subscriptions.push(
-        vscode.window.registerWebviewViewProvider(ChatViewProvider.viewType, chatProvider)
+        vscode.window.registerWebviewViewProvider(
+            ChatViewProvider.viewType, 
+            chatProvider,
+            { webviewOptions: { retainContextWhenHidden: true } } // Keep history
+        )
     );
 
     const ghostTextProvider = new GhostTextProvider();

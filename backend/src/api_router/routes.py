@@ -1,7 +1,9 @@
 from fastapi import APIRouter
 from pydantic import BaseModel
+from src.agentic_orchestrator.orchestrator import Orchestrator
 
 router = APIRouter()
+orchestrator = Orchestrator()
 
 class ChatRequest(BaseModel):
     query: str
@@ -12,8 +14,10 @@ class CompletionRequest(BaseModel):
 
 @router.post("/chat")
 async def chat_endpoint(request: ChatRequest):
-    return {"result": f"Test chat response for: {request.query}"}
+    result = orchestrator.process_chat(request.query, request.context)
+    return {"result": result}
 
 @router.post("/completion")
 async def completion_endpoint(request: CompletionRequest):
-    return {"text": " # test autocomplete"}
+    result = orchestrator.process_completion(request.prompt)
+    return {"text": result}
