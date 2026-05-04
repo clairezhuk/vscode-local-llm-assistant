@@ -5,12 +5,12 @@
 
 
 Frontend (VS Code Extension - TypeScript / Node.js):
-1. UI Components: Бічна панель (ChatView) та інлайн-підказки (GhostText).
++1. UI Components: Бічна панель (ChatView)-> та інлайн-підказки (GhostText)+.
 2. Context Gatherer: Збирає активний файл, виділений текст, структуру директорії, вміст терміналу.
-3. API Client: Відправляє зібраний контекст та запит користувача по HTTP (REST) або WebSocket (для потокової генерації тексту).
++3. API Client: Відправляє зібраний контекст та запит користувача по HTTP (REST) або WebSocket (для потокової генерації тексту).
 
 Backend (Local Python Server - FastAPI):
-1. API Router: Приймає запити від VS Code.
++1. API Router: Приймає запити від VS Code.
 2. Context Manager: Обробляє історію повідомлень, фільтрує та обрізає файли проекту, щоб влізти у контекстне вікно моделі.
 3. Agentic Orchestrator (State Machine): Керує "циклом мислення". Визначає, чи потрібна текстова відповідь, генерація коду чи виклик терміналу.
 4. LLM Engine: Твій поточний llama_cpp (генерація відповідей).

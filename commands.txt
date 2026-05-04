@@ -1,0 +1,5 @@
+Test run:
+1) powershell:
+cd backend 
+python main.py 
+2) new window frontend F5
