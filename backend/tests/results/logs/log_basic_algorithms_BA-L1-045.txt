@@ -1,0 +1,45 @@
+Query: Napisz funkcję `fibonacci_sum(n)`, która zwraca sumę n pierwszych liczb Fibonacciego.
+
+AI Output:
+Sure, here is a simple implementation of the `fibonacci_sum` function in Python:
+
+```python
+def fibonacci_sum(n):
+    # Initialize the first two Fibonacci numbers
+    a, b = 0, 1
+    # Initialize the sum to zero
+    sum = 0
+    # Iterate over the first n Fibonacci numbers
+    for _ in range(n):
+        # Add the current Fibonacci number to the sum
+        sum += a
+        # Update the values of a and b
+        a, b = b, a + b
+    # Return the sum of the first n Fibonacci numbers
+    return sum
+
+# Test the function
+n = 10
+print("Sum of first", n, "Fibonacci numbers is:", fibonacci_sum(n))
+
+n = 20
+print("Sum of first", n, "Fibonacci numbers is:", fibonacci_sum(n))
+```
+
+*(Command execution blocked due to invalid formatting)*
+
+*(Command execution blocked due to invalid formatting)*
+
+*(Command execution blocked due to invalid formatting)*
+
+*(Command execution blocked due to invalid formatting)*
+
+*(Command execution blocked due to invalid formatting)*
+
+*(Command execution blocked due to invalid formatting)*
+
+*(Command execution blocked due to invalid formatting)*
+
+*(Command execution blocked due to invalid formatting)*
+
+*(Command execution blocked due to invalid formatting)*

@@ -1,0 +1,37 @@
+Query: What is the name of the sorting algorithm that repeatedly steps through the list, compares adjacent elements and swaps them if they are in the wrong order?
+
+AI Output:
+The name of the sorting algorithm you are referring to is the Bubble Sort algorithm.
+
+Here's a simple explanation of how it works:
+
+1. Start with the entire list.
+2. Compare each pair of adjacent elements in the list.
+3. If the elements are in the wrong order (i.e., the first element is greater than the second element), swap them.
+4. Move to the next pair of adjacent elements and repeat the process.
+5. Continue this process until the entire list is sorted, with the largest element "bubble" to the end of the list.
+6. After one pass through the list, the largest element is in its correct position, and the process is repeated with the remaining unsorted portion of the list.
+
+Here is a simple implementation of the Bubble Sort algorithm in Python:
+
+```python
+def bubble_sort(arr):
+    n = len(arr)
+    # Traverse through all array elements
+    for i in range(n):
+        # Last i elements are already in place
+        for j in range(0, n-i-1):
+            # Traverse the array from 0 to n-i-1
+            # Swap if the element found is greater than the next element
+            if arr[j] > arr[j+1]:
+                arr[j], arr[j+1] = arr[j+1], arr[j]
+    return arr
+
+# Test the function
+arr = [64, 34, 25, 12, 22, 11, 90]
+print("Original array:", arr)
+sorted_arr = bubble_sort(arr)
+print("Sorted array:", sorted_arr)
+```
+
+In this example, the `bubble_sort` function takes a list of numbers as input and sorts them in ascending order using the Bubble Sort algorithm. The outer loop runs `n` times, where `n` is the length of the list. The inner loop runs `n-i-1` times for each iteration of the outer loop, effectively reducing the number of comparisons needed with each pass. After the inner loop completes for a given iteration of the outer loop, the largest unsorted element is bubbled to its correct position. This process repeats until the entire list is sorted.

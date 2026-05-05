@@ -1,0 +1,33 @@
+Query: Napisz funkcję `gcd_array(arr)`, która oblicza njwiększy wspólny dzielnik tablicy.
+
+AI Output:
+Sure, here is a simple implementation of the `gcd_array` function in Python:
+
+```python
+def gcd(a, b):
+    # Base case: greatest common divisor of 0 or 1 is 0
+    if b == 0:
+        return a
+    # Recursive case: gcd(a, b) = gcd(b, a % b)
+    else:
+        return gcd(b, a % b)
+
+def gcd_array(arr):
+    # Initialize the first element as the gcd of the entire array
+    result = arr[0]
+    for num in arr[1:]:
+        result = gcd(result, num)
+    return result
+
+# Test the function
+arr = [4, 6, 8]
+print("GCD of the array", arr, "is:", gcd_array(arr))
+```
+
+*(Command execution blocked due to invalid formatting)*
+
+*(Command execution blocked due to invalid formatting)*
+
+*(Command execution blocked due to invalid formatting)*
+
+*(Command execution blocked due to invalid formatting)*

@@ -1,0 +1,33 @@
+Query: Napisz funkcję `sort_tuples(arr)`, która soruje listę krotek po drugim elemencie (bubble sort).
+
+AI Output:
+Sure, here is a simple implementation of the `sort_tuples` function in Python:
+
+```python
+def sort_tuples(arr):
+    # Use bubble sort to sort the list of tuples by the second element
+    n = len(arr)
+    for i in range(n):
+        for j in range(0, n-i-1):
+            if arr[j][1] > arr[j+1][1]:
+                arr[j], arr[j+1] = arr[j+1], arr[j]
+    return arr
+
+# Test the function
+arr = [(1, 3), (2, 1), (4, 4), (5, 2)]
+print("Sorted tuples:", sort_tuples(arr))
+```
+
+*(Command execution blocked due to invalid formatting)*
+
+*(Command execution blocked due to invalid formatting)*
+
+*(Command execution blocked due to invalid formatting)*
+
+*(Command execution blocked due to invalid formatting)*
+
+*(Command execution blocked due to invalid formatting)*
+
+*(Command execution blocked due to invalid formatting)*
+
+*(Command execution blocked due to invalid formatting)*

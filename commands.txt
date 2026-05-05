@@ -3,3 +3,12 @@ Test run:
 cd backend 
 python main.py 
 2) new window frontend F5
+
+To activate .venv
+.venv\Scripts\Activate.ps1
+
+To run tests:
+1) cd backend/tests
+2) python run_benchmark.py
+python run_benchmark.py basic_algorithms
+python run_benchmark.py basic_algorithms cli_tests

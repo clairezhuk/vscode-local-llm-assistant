@@ -1,0 +1,22 @@
+Query: Write a function `factorial_recursive(n)` that calculats the factorial recursively.
+
+AI Output:
+Sure, here is a simple implementation of the `factorial_recursive` function in Python:
+
+```python
+def factorial_recursive(n):
+    # Base case: factorial of 0 or 1 is 1
+    if n == 0 or n == 1:
+        return 1
+    # Recursive case: n * factorial of (n-1)
+    else:
+        return n * factorial_recursive(n-1)
+
+# Test the function
+n = 5
+print("Factorial of", n, "is:", factorial_recursive(n))
+```
+
+*(Command execution blocked due to invalid formatting)*
+
+*(Command execution blocked due to invalid formatting)*

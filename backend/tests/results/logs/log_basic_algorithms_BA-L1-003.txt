@@ -1,0 +1,54 @@
+Query: Jak nazywa się algorytm wyszukiwania, który dzieli posortowaną tablicę na pół?
+
+AI Output:
+The algorithm that divides a sorted array into two halves is the Merge Sort algorithm.
+
+Here's a simple explanation of how it works:
+
+1. If the array has only one element, return it as it is already sorted.
+2. Divide the array in two halves.
+3. Recursively sort the two halves.
+4. Merge the sorted halves into a single sorted array.
+
+Here is a simple implementation of the Merge Sort algorithm in Python:
+
+```python
+def merge_sort(arr):
+    if len(arr) <= 1:
+        return arr
+    else:
+        # Find the middle index of the array
+        mid = len(arr) // 2
+        # Divide the array into two halves
+        left_half = merge_sort(arr[:mid])
+        right_half = merge_sort(arr[mid:])
+        # Merge the two halves
+        return merge(left_half, right_half)
+
+def merge(left, right):
+    result = []
+    i = j = 0
+    
+    # Copy elements from left and right into result until one array is exhausted
+    while i < len(left) and j < len(right):
+        if left[i] < right[j]:
+            result.append(left[i])
+            i += 1
+        else:
+            result.append(right[j])
+            j += 1
+    
+    # Append remaining elements from left and right
+    result.extend(left[i:])
+    result.extend(right[j:])
+    
+    return result
+
+# Test the function
+arr = [34, 7, 23, 32, 5, 62, 50]
+print("Original array:", arr)
+sorted_arr = merge_sort(arr)
+print("Sorted array:", sorted_arr)
+```
+
+In this example, the `merge_sort` function takes a sorted array as input and returns a new sorted array. The `merge` function is a helper function that merges two sorted arrays into a single sorted array. The `merge_sort` function recursively divides the array in two halves until it reaches the base case where the array has only one element. Then it merges the two halves back together using the `merge` function.

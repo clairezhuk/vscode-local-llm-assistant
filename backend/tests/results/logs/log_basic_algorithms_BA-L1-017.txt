@@ -1,0 +1,22 @@
+Query: Напиши функцію `bubble_sort_desc(arr)`, яка сортує масив за спаданням.
+
+AI Output:
+Sure, here is a simple implementation of the `bubble_sort_desc` function in Python:
+
+```python
+def bubble_sort_desc(arr):
+    n = len(arr)
+    for i in range(n):
+        for j in range(0, n-i-1):
+            if arr[j] < arr[j+1]:
+                arr[j], arr[j+1] = arr[j+1], arr[j]
+    return arr
+
+# Test the function
+arr = [10, 20, 30, 40, 50]
+print("Sorted in descending order:", bubble_sort_desc(arr))
+```
+
+*(Command execution blocked due to invalid formatting)*
+
+*(Command execution blocked due to invalid formatting)*

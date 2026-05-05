@@ -1,0 +1,28 @@
+Query: Як називається послідовність чисел, де кожне наступне є сумою двох попередніх?
+
+AI Output:
+The sequence of numbers where each subsequent number is the sum of the two preceding ones is the Fibonacci Sequence.
+
+Here's a simple implementation of the Fibonacci Sequence in Python:
+
+```python
+def fibonacci(n):
+    if n <= 0:
+        return "Invalid input"
+    elif n == 1:
+        return [0]
+    elif n == 2:
+        return [0, 1]
+    else:
+        fib_sequence = [0, 1]
+        for i in range(2, n):
+            fib_sequence.append(fib_sequence[i-1] + fib_sequence[i-2])
+        return fib_sequence
+
+# Test the function
+print(fibonacci(5))
+```
+
+In this example, the `fibonacci` function takes an integer `n` as input and returns the Fibonacci sequence up to the `n`th number. The Fibonacci Sequence is a sequence of numbers in which each number is the sum of the two preceding ones, usually starting with 0 and 1.
+
+*(Command execution blocked due to invalid formatting)*

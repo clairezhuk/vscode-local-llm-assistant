@@ -1,0 +1,30 @@
+Query: Napisz funkcję `next_prime(n)`, która znajduje najmnejszą liczbę pierwszą większą od n.
+
+AI Output:
+Sure, here is a simple implementation of the `next_prime` function in Python:
+
+```python
+def next_prime(n):
+    # Start from n + 1 and check for the first prime number
+    while True:
+        # Increment the number
+        n += 1
+        # Check if the number is prime
+        if all(n % i != 0 for i in range(2, int(n**0.5) + 1)):
+            # If prime, return the number
+            return n
+
+# Test the function
+n = 10
+print("Next prime number greater than", n, "is:", next_prime(n))
+```
+
+*(Command execution blocked due to invalid formatting)*
+
+*(Command execution blocked due to invalid formatting)*
+
+*(Command execution blocked due to invalid formatting)*
+
+*(Command execution blocked due to invalid formatting)*
+
+*(Command execution blocked due to invalid formatting)*

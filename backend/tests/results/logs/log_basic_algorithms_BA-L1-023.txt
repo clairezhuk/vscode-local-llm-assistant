@@ -1,0 +1,34 @@
+Query: Напиши функцію `lcm_array(arr)`, яка знаходить НСК для масиву чисел.
+
+AI Output:
+Sure, here is a simple implementation of the `lcm_array` function in Python:
+
+```python
+def gcd(a, b):
+    # Base case: greatest common divisor of 0 or 1 is 0
+    if b == 0:
+        return a
+    # Recursive case: gcd(a, b) = gcd(b, a % b)
+    else:
+        return gcd(b, a % b)
+
+def lcm(a, b):
+    # Calculate LCM using the formula: lcm(a, b) = abs(a*b) // gcd(a, b)
+    return abs(a*b) // gcd(a, b)
+
+def lcm_array(arr):
+    result = arr[0]
+    for num in arr[1:]:
+        result = lcm(result, num)
+    return result
+
+# Test the function
+arr = [4, 6, 8]
+print("LCM of the array", arr, "is:", lcm_array(arr))
+```
+
+*(Command execution blocked due to invalid formatting)*
+
+*(Command execution blocked due to invalid formatting)*
+
+*(Command execution blocked due to invalid formatting)*

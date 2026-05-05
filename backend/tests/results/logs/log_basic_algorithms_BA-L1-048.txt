@@ -1,0 +1,35 @@
+Query: Napisz funkcję `filter_strings(arr)`, która filtuje tablicę pozostawiając tylko napisy.
+
+AI Output:
+Sure, here is a simple implementation of the `filter_strings` function in Python:
+
+```python
+def filter_strings(arr):
+    # Use a list comprehension to filter the array and keep only strings
+    return [s for s in arr if isinstance(s, str)]
+
+# Test the function
+arr = [1, 2, 'hello', 3.14, 'world']
+print("Filtered array is:", filter_strings(arr))
+
+arr = ['a', 'b', 'c', 'a', 'b']
+print("Filtered array is:", filter_strings(arr))
+```
+
+*(Command execution blocked due to invalid formatting)*
+
+*(Command execution blocked due to invalid formatting)*
+
+*(Command execution blocked due to invalid formatting)*
+
+*(Command execution blocked due to invalid formatting)*
+
+*(Command execution blocked due to invalid formatting)*
+
+*(Command execution blocked due to invalid formatting)*
+
+*(Command execution blocked due to invalid formatting)*
+
+*(Command execution blocked due to invalid formatting)*
+
+*(Command execution blocked due to invalid formatting)*

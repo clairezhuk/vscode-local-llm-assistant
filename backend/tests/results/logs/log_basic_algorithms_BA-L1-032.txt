@@ -1,0 +1,37 @@
+Query: Напиши функцію `binary_search_recursive(arr, x, low, high)`, яка шукає елемнт рекурсивно.
+
+AI Output:
+Sure, here is a simple implementation of the `binary_search_recursive` function in Python:
+
+```python
+def binary_search_recursive(arr, x, low, high):
+    # Base case: if the array is empty or the element is not found
+    if high < low:
+        return -1
+    # Calculate the middle index
+    mid = (high + low) // 2
+    # If the middle element is the element we are looking for
+    if arr[mid] == x:
+        return mid
+    # If the element is greater than the middle element, search the right half
+    elif arr[mid] < x:
+        return binary_search_recursive(arr, x, mid + 1, high)
+    # If the element is less than the middle element, search the left half
+    else:
+        return binary_search_recursive(arr, x, low, mid - 1)
+
+# Test the function
+arr = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+x = 5
+print("Index of", x, "in the array:", binary_search_recursive(arr, x, 0, len(arr) - 1))
+```
+
+*(Command execution blocked due to invalid formatting)*
+
+*(Command execution blocked due to invalid formatting)*
+
+*(Command execution blocked due to invalid formatting)*
+
+*(Command execution blocked due to invalid formatting)*
+
+*(Command execution blocked due to invalid formatting)*

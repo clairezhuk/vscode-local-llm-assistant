@@ -1,0 +1,23 @@
+Query: Write a function `get_primes(n)` that returns all prime numbers up ot n.
+
+AI Output:
+Sure, here is a simple implementation of the `get_primes` function in Python:
+
+```python
+def get_primes(n):
+    primes = []
+    for num in range(2, n+1):
+        if all(num % i != 0 for i in range(2, int(num**0.5) + 1)):
+            primes.append(num)
+    return primes
+
+# Test the function
+n = 20
+print("Prime numbers up to", n, "are:", get_primes(n))
+```
+
+*(Command execution blocked due to invalid formatting)*
+
+*(Command execution blocked due to invalid formatting)*
+
+*(Command execution blocked due to invalid formatting)*

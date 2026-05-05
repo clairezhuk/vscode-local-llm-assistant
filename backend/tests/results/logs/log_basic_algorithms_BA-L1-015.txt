@@ -1,0 +1,20 @@
+Query: Write a function `find_duplicates(arr)` that returns a list of duplicate elements in an array.
+
+AI Output:
+Sure, here is a simple implementation of the `find_duplicates` function in Python:
+
+```python
+def find_duplicates(arr):
+    duplicates = []
+    for i in range(len(arr)):
+        for j in range(i + 1, len(arr)):
+            if arr[i] == arr[j]:
+                duplicates.append(arr[i])
+    return duplicates
+
+# Test the function
+arr = [1, 2, 3, 4, 1, 5, 6, 2, 7, 8, 9, 10]
+print("Duplicate elements:", find_duplicates(arr))
+```
+
+*(Command execution blocked due to invalid formatting)*

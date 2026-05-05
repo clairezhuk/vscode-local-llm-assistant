@@ -1,0 +1,15 @@
+Query: Write a function `filter_even(arr)` that returns an array of even nubers.
+
+AI Output:
+Sure, here is a simple implementation of the `filter_even` function in Python:
+
+```python
+def filter_even(arr):
+    return [num for num in arr if num % 2 == 0]
+
+# Test the function
+arr = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+print("Even numbers:", filter_even(arr))
+```
+
+*(Command execution blocked due to invalid formatting)*

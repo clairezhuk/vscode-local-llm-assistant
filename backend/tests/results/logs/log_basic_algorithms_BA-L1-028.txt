@@ -1,0 +1,29 @@
+Query: Write a function `bubble_sort_strings(arr)` that sorts an array of strings by lenght.
+
+AI Output:
+Sure, here is a simple implementation of the `bubble_sort_strings` function in Python:
+
+```python
+def bubble_sort_strings(arr):
+    # Use a bubble sort algorithm to sort the array of strings by length
+    n = len(arr)
+    for i in range(n):
+        for j in range(0, n-i-1):
+            if len(arr[j]) > len(arr[j+1]):
+                arr[j], arr[j+1] = arr[j+1], arr[j]
+    return arr
+
+# Test the function
+arr = ["apple", "banana", "cherry", "date"]
+print("Sorted array of strings by length:", bubble_sort_strings(arr))
+```
+
+*(Command execution blocked due to invalid formatting)*
+
+*(Command execution blocked due to invalid formatting)*
+
+*(Command execution blocked due to invalid formatting)*
+
+*(Command execution blocked due to invalid formatting)*
+
+*(Command execution blocked due to invalid formatting)*

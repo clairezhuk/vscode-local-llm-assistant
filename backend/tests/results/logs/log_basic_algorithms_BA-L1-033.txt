@@ -1,0 +1,32 @@
+Query: Napisz funkcję `linear_search_bool(arr, x)`, która zwraca True lub False jeśli element istnieje.
+
+AI Output:
+Sure, here is a simple implementation of the `linear_search_bool` function in Python:
+
+```python
+def linear_search_bool(arr, x):
+    # Iterate through the array
+    for num in arr:
+        # If the element is found, return True
+        if num == x:
+            return True
+    # If the element is not found, return False
+    return False
+
+# Test the function
+arr = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+x = 5
+print("Does", x, "exist in the array?", linear_search_bool(arr, x))
+```
+
+*(Command execution blocked due to invalid formatting)*
+
+*(Command execution blocked due to invalid formatting)*
+
+*(Command execution blocked due to invalid formatting)*
+
+*(Command execution blocked due to invalid formatting)*
+
+*(Command execution blocked due to invalid formatting)*
+
+*(Command execution blocked due to invalid formatting)*
