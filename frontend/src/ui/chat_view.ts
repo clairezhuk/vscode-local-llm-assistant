@@ -15,8 +15,28 @@ export class ChatViewProvider implements vscode.WebviewViewProvider {
 
         webviewView.webview.onDidReceiveMessage(async (data) => {
             if (data.type === 'sendPrompt') {
-                const response = await sendQuery(data.value, {});
+                const response = await sendQuery(data.value, data.context);
                 webviewView.webview.postMessage({ type: 'addResponse', value: response });
+            } else if (data.type === 'attachFile') {
+                const uris = await vscode.window.showOpenDialog({
+                    canSelectMany: true,
+                    openLabel: 'Attach to AI Context'
+                });
+                
+                if (uris && uris.length > 0) {
+                    for (const uri of uris) {
+                        try {
+                            const document = await vscode.workspace.openTextDocument(uri);
+                            webviewView.webview.postMessage({
+                                type: 'fileAttached',
+                                name: uri.fsPath.split(/[/\\]/).pop(),
+                                content: document.getText()
+                            });
+                        } catch (e) {
+                            console.error("Failed to read file", e);
+                        }
+                    }
+                }
             }
         });
     }
@@ -65,8 +85,12 @@ export class ChatViewProvider implements vscode.WebviewViewProvider {
                     flex-direction: column;
                     gap: 8px;
                 }
+                .input-controls {
+                    display: flex;
+                    gap: 8px;
+                }
                 textarea {
-                    width: 100%;
+                    flex-grow: 1;
                     min-height: 36px;
                     max-height: 200px;
                     box-sizing: border-box;
@@ -87,43 +111,108 @@ export class ChatViewProvider implements vscode.WebviewViewProvider {
                     background-color: var(--vscode-button-background);
                     color: var(--vscode-button-foreground);
                     border: none;
-                    padding: 8px;
+                    padding: 8px 12px;
                     cursor: pointer;
                     border-radius: 2px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
                 }
                 button:hover {
                     background-color: var(--vscode-button-hoverBackground);
+                }
+                #attachments {
+                    display: flex;
+                    flex-wrap: wrap;
+                    gap: 4px;
+                }
+                .attachment-badge {
+                    background-color: var(--vscode-badge-background);
+                    color: var(--vscode-badge-foreground);
+                    padding: 2px 6px;
+                    border-radius: 10px;
+                    font-size: 11px;
+                    display: flex;
+                    align-items: center;
+                    gap: 4px;
+                }
+                .remove-attachment {
+                    cursor: pointer;
+                    font-weight: bold;
                 }
             </style>
         </head>
         <body>
             <div id="chat"></div>
             <div class="input-area">
-                <textarea id="prompt" rows="1" placeholder="Ask AI..."></textarea>
-                <button id="sendBtn">Send</button>
+                <div id="attachments"></div>
+                <div class="input-controls">
+                    <button id="attachBtn" title="Attach File">📎</button>
+                    <textarea id="prompt" rows="1" placeholder="Ask AI..."></textarea>
+                    <button id="sendBtn">Send</button>
+                </div>
             </div>
             <script>
                 const vscode = acquireVsCodeApi();
                 const promptInput = document.getElementById('prompt');
                 const sendBtn = document.getElementById('sendBtn');
+                const attachBtn = document.getElementById('attachBtn');
                 const chat = document.getElementById('chat');
+                const attachmentsDiv = document.getElementById('attachments');
+
+                let pendingFiles = [];
 
                 marked.setOptions({
                     breaks: true, 
                     gfm: true     
                 });
 
+                function renderAttachments() {
+                    attachmentsDiv.innerHTML = '';
+                    pendingFiles.forEach((file, index) => {
+                        const badge = document.createElement('div');
+                        badge.className = 'attachment-badge';
+                        badge.innerHTML = \`\${file.name} <span class="remove-attachment" data-index="\${index}">×</span>\`;
+                        attachmentsDiv.appendChild(badge);
+                    });
+
+                    document.querySelectorAll('.remove-attachment').forEach(btn => {
+                        btn.addEventListener('click', (e) => {
+                            const index = e.target.getAttribute('data-index');
+                            pendingFiles.splice(index, 1);
+                            renderAttachments();
+                        });
+                    });
+                }
+
                 function sendMessage() {
                     const text = promptInput.value.trim();
-                    if (!text) return;
+                    if (!text && pendingFiles.length === 0) return;
                     
-                    chat.innerHTML += '<div class="message"><span class="user-message">User:</span> ' + text + '</div>';
-                    vscode.postMessage({ type: 'sendPrompt', value: text });
+                    let fileNames = pendingFiles.map(f => f.name).join(', ');
+                    let displayMsg = text;
+                    if (fileNames) {
+                        displayMsg = \`[Attached: \${fileNames}]<br>\` + text;
+                    }
+
+                    chat.innerHTML += '<div class="message"><span class="user-message">User:</span> ' + displayMsg + '</div>';
+                    
+                    vscode.postMessage({ 
+                        type: 'sendPrompt', 
+                        value: text,
+                        context: { attached_files: pendingFiles }
+                    });
                     
                     promptInput.value = '';
                     promptInput.style.height = 'auto';
+                    pendingFiles = [];
+                    renderAttachments();
                     chat.scrollTop = chat.scrollHeight;
                 }
+
+                attachBtn.addEventListener('click', () => {
+                    vscode.postMessage({ type: 'attachFile' });
+                });
 
                 promptInput.addEventListener('input', function() {
                     this.style.height = 'auto';
@@ -145,6 +234,9 @@ export class ChatViewProvider implements vscode.WebviewViewProvider {
                         const htmlContent = marked.parse(message.value);
                         chat.innerHTML += '<div class="message"><b>AI:</b><br>' + htmlContent + '</div>';
                         chat.scrollTop = chat.scrollHeight;
+                    } else if (message.type === 'fileAttached') {
+                        pendingFiles.push({ name: message.name, content: message.content });
+                        renderAttachments();
                     }
                 });
             </script>
