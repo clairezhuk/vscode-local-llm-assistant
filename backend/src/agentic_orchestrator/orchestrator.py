@@ -25,14 +25,18 @@ class Orchestrator:
         return res
 
     def classify_intent(self, query: str) -> int:
-        prompt = f"<|im_start|>system\nYou are a router. Analyze the user query.\nReturn ONLY '3' if they ask to run a CLI/terminal command (like pip, npm, git).\nReturn ONLY '2' if they ask you to write a Python/JS/C++ script or function.\nReturn ONLY '1' if they ask a general question or want an explanation.\n<|im_end|>\n<|im_start|>user\n{query}<|im_end|>\n<|im_start|>assistant\n"
+        prompt = f"<|im_start|>system\nYou are a router. Analyze the user query.\nReturn ONLY '3' if they ask to run a CLI/terminal command (pip, npm, git).\nReturn ONLY '2' if they ask to write a programming script, function, or python code.\nReturn ONLY '1' if they ask a general question or theory.\n<|im_end|>\n<|im_start|>user\n{query}<|im_end|>\n<|im_start|>assistant\n"
         res = self.engine.generate(prompt, max_tokens=5)["text"].strip()
         
         intent = 1
         if "3" in res: intent = 3
         elif "2" in res: intent = 2
-        elif "write" in query.lower() and "code" in query.lower(): intent = 2 # Додатковий евристичний запобіжник
         
+        query_lower = query.lower()
+        code_triggers = ["write a function", "napisz funkcję", "напиши функцію", "code", "script", "function"]
+        if intent != 2 and any(trigger in query_lower for trigger in code_triggers):
+            intent = 2
+            
         print(f" [Orchestrator] Selected Intent: {intent}")
         return intent
 
@@ -77,7 +81,7 @@ class Orchestrator:
         self.context_manager.add_message("user", raw_query)
         self.context_manager.add_message("assistant", action)
         
-        return {"result": action, "usage": usage}
+        return {"result": action, "usage": usage, "intent": intent}
 
     def process_completion(self, prompt_text: str) -> dict:
         prompt = f"<|fim_prefix|>{prompt_text}<|fim_suffix|><|fim_middle|>"

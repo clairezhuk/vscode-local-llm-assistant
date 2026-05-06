@@ -22,9 +22,14 @@ async def chat_endpoint(request: ChatRequest):
     response = orchestrator.process_chat(request.query, request.context)
     
     elapsed = time.time() - start_time
-    print(f"[{datetime.now().strftime('%H:%M:%S')}] END /chat | Time: {elapsed:.2f}s | Tokens: {response['usage']}")
+    usage = response.get("usage", {})
+    print(f"[{datetime.now().strftime('%H:%M:%S')}] END /chat | Time: {elapsed:.2f}s | Tokens: {usage}")
     
-    return {"result": response["result"]}
+    return {
+        "result": response.get("result", ""),
+        "usage": usage,
+        "intent": response.get("intent", 0)
+    }
 
 @router.post("/completion")
 async def completion_endpoint(request: CompletionRequest):

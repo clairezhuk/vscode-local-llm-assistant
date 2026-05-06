@@ -12,3 +12,5 @@ To run tests:
 2) python run_benchmark.py
 python run_benchmark.py basic_algorithms
 python run_benchmark.py basic_algorithms cli_tests
+python run_benchmark.py -n 3
+python run_benchmark.py basic_algorithms -n 5

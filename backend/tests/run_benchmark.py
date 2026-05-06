@@ -1,4 +1,4 @@
-import sys
+import argparse
 import json
 import requests
 import time
@@ -41,7 +41,7 @@ def run_isolated_code(ai_code: str, asserts: str) -> tuple[bool, str]:
                 cwd=tmpdir, 
                 capture_output=True, 
                 text=True, 
-                timeout=10 # Захист від нескінченних циклів
+                timeout=10
             )
             if result.returncode == 0:
                 return True, "Passed"
@@ -64,8 +64,7 @@ def run_isolated_cli(ai_cmd: str, verify_cmd: str) -> tuple[bool, str]:
         except Exception as e:
             return False, str(e)
 
-def run_benchmarks(target_suites: list = None):
-    # Фільтруємо файли, якщо передано список конкретних сюїт
+def run_benchmarks(target_suites: list = None, limit: int = None):
     if target_suites:
         test_files = [Path(SUITES_DIR) / f"{name}.json" for name in target_suites]
         test_files = [f for f in test_files if f.exists()]
@@ -78,9 +77,14 @@ def run_benchmarks(target_suites: list = None):
         suite_name = file_path.stem
         results = []
         
-        print(f"\n=== Starting Suite: {suite_name} ===")
         with open(file_path, "r", encoding="utf-8") as f:
             suite = json.load(f)
+            
+        if limit is not None and limit > 0:
+            suite = suite[:limit]
+            print(f"\n=== Starting Suite: {suite_name} (Limited to first {limit} tests) ===")
+        else:
+            print(f"\n=== Starting Suite: {suite_name} (All {len(suite)} tests) ===")
             
         for test in suite:
             print(f"Running [{test['id']}]...")
@@ -118,7 +122,6 @@ def run_benchmarks(target_suites: list = None):
                 cmd = extract_cli(ai_text)
                 exec_success, exec_msg = run_isolated_cli(cmd, metrics["execution"]["verify_cmd"])
                 
-            # Збираємо рядок результату
             result_row = {
                 "id": test['id'],
                 "type": test['type'],
@@ -151,11 +154,15 @@ def run_benchmarks(target_suites: list = None):
             print(f"Saved suite results to {csv_path}")
 
 if __name__ == "__main__":
-    # Створюємо необхідні папки
     os.makedirs(SUITES_DIR, exist_ok=True)
     os.makedirs(LOGS_DIR, exist_ok=True)
     
-    # Зчитуємо аргументи командного рядка
-    # Якщо скрипт запущено як `python run_benchmark.py name1 name2`, sys.argv[1:] міститиме ['name1', 'name2']
-    target_suites = sys.argv[1:] if len(sys.argv) > 1 else None
-    run_benchmarks(target_suites)
+    parser = argparse.ArgumentParser(description="Run AI Coder benchmarks.")
+    parser.add_argument("suites", nargs="*", help="List of suite names to run (e.g. basic_algorithms). Leave empty for all.")
+    parser.add_argument("-n", "--limit", type=int, default=None, help="Run only the first N tests from each suite.")
+    
+    args = parser.parse_args()
+    
+    target_suites = args.suites if args.suites else None
+    
+    run_benchmarks(target_suites=target_suites, limit=args.limit)
