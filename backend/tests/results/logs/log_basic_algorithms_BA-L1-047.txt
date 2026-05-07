@@ -5,5 +5,7 @@ Fail Reasons: Execution fail: AssertionError
 AI Output:
 ```python
 def find_unique(arr):
-    return list(set(arr))[0]
+    # Use a set to remove duplicates and then find the single remaining element
+    unique_element = list(set(arr))[0]
+    return unique_element
 ```

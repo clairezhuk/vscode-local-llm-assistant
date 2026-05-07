@@ -1,0 +1,23 @@
+Query: Write a function `gcd_multiple(arr)` that calculates GCD for an aray of numbers.
+
+Fail Reasons: Execution fail: UnboundLocalError: cannot access local variable 'gcd' where it is not associated with a value
+
+AI Output:
+```python
+def gcd(a, b):
+    # Base case: if b is 0, a is the GCD
+    if b == 0:
+        return a
+    # Recursive case: call gcd with b and the remainder of a divided by b
+    return gcd(b, a % b)
+
+def gcd_multiple(arr):
+    # Initialize the GCD of the first two numbers in the array
+    gcd = gcd(arr[0], arr[1])
+    # Iterate through the rest of the array
+    for num in arr[2:]:
+        # Update the GCD using the gcd function
+        gcd = gcd(gcd, num)
+    # Return the GCD of the array
+    return gcd
+```

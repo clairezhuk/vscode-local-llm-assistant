@@ -1,9 +1,0 @@
-Query: Напиши функцію `lcm_recursive(a, b)`, яка занходить НСК рекурсивним методом.
-
-Fail Reasons: Execution fail: NameError: name 'gcd_recursive' is not defined. Did you mean: 'lcm_recursive'?
-
-AI Output:
-```python
-def lcm_recursive(a, b):
-    return abs(a * b) // gcd_recursive(a, b)
-```

@@ -1,9 +1,0 @@
-Query: Write a function `lcm(a, b)` that returns the least common multiple of two numbers.
-
-Fail Reasons: Execution fail: NameError: name 'gcd' is not defined
-
-AI Output:
-```python
-def lcm(a, b):
-    return abs(a*b) // gcd(a, b)
-```

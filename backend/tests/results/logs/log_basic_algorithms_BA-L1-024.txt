@@ -1,9 +1,20 @@
 Query: Napisz funkcję `gcd_array(arr)`, która oblicza njwiększy wspólny dzielnik tablicy.
 
-Fail Reasons: Execution fail: NameError: name 'math' is not defined. Did you forget to import 'math'?
+Fail Reasons: Execution fail: RecursionError: maximum recursion depth exceeded
 
 AI Output:
 ```python
+from math import gcd
+
 def gcd_array(arr):
-    return math.gcd(*arr)
+    # Helper function to calculate GCD of two numbers
+    def gcd(x, y):
+        return x * y // gcd(x, y)
+    
+    # Calculate GCD of all numbers in the array using a loop
+    gcd_result = arr[0]
+    for num in arr[1:]:
+        gcd_result = gcd(gcd_result, num)
+    # Return the GCD of the array
+    return gcd_result
 ```
