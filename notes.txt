@@ -49,6 +49,7 @@ Thinking Loop / Agentic Flow:
 
 Наступні блоки по 20 тестів максимум 
 
-Наступний етап логіки: цикл мислення з Task Planner
-
+Наступний етап логіки: 
+1) цикл мислення з Task Planner
+2) Runtime errors
 

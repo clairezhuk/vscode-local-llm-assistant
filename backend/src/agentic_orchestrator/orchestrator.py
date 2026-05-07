@@ -61,7 +61,8 @@ class Orchestrator:
         defined_funcs = {node.name for node in ast.walk(tree) if isinstance(node, ast.FunctionDef)}
         called_funcs = {node.func.id for node in ast.walk(tree) if isinstance(node, ast.Call) and isinstance(node.func, ast.Name)}
         
-        builtins = {"print", "len", "range", "int", "str", "list", "set", "dict", "enumerate", "type", "sum", "max", "min", "open", "abs", "any", "all"}
+        # Додано hasattr, getattr, setattr, щоб AST-валідатор не сварився на них
+        builtins = {"print", "len", "range", "int", "str", "list", "set", "dict", "enumerate", "type", "sum", "max", "min", "open", "abs", "any", "all", "hasattr", "getattr", "setattr"}
         missing = called_funcs - defined_funcs - builtins
         if missing:
             return f"NameError: You called undefined functions: {', '.join(missing)}. Please define them or import them."
@@ -73,7 +74,7 @@ class Orchestrator:
                     return f"LogicError: Function '{node.name}' is missing a 'return' statement."
 
         return ""
-
+    
     def process_chat(self, raw_query: str, context: dict) -> dict:
         query = self.preprocess_query(raw_query)
         intent = self.classify_intent(query)
@@ -106,33 +107,37 @@ class Orchestrator:
         if intent == 2:
             code_only = self._extract_code_block(action)
             if not code_only or "sorry" in action.lower() or "didn't provide" in action.lower():
-                print(" [Orchestrator] Intent 2 Fallback -> Intent 1 (No code was generated).")
+                print(" [Orchestrator] Intent 2 Fallback -> Intent 1 (No valid code was generated).")
                 intent = 1
                 prompt = self.context_manager.format_prompt(sys_prompts[1], query, ctx_text)
                 gen_result = self.engine.generate(prompt, max_tokens=1024)
                 action = gen_result["text"]
                 usage["total_tokens"] += gen_result["usage"].get("total_tokens", 0)
 
+        # CLEAN SLATE CORRECTION LOOP
         if intent == 2:
             code_only = self._extract_code_block(action)
             error = self._static_code_check(code_only)
             
-            max_retries = 5
+            max_retries = 3 # Для чистого аркуша достатньо 3 спроб
             attempt = 0
             
             while error and attempt < max_retries:
                 attempt += 1
-                print(f" [Self-Correction] Attempt {attempt}/{max_retries} - Error: {error}")
-                fix_prompt = prompt + action + f"<|im_end|>\n<|im_start|>user\nYour previous code failed with this error:\n{error}\n\nPlease fix the error and provide the ENTIRE corrected code. You MUST wrap it in ```python ... ```. Do NOT write conversational text and DO NOT use obj['...'].<|im_end|>\n<|im_start|>assistant\n"
-
+                print(f" [Clean Slate Correction] Attempt {attempt}/{max_retries} - Error: {error}")
+                clean_slate_query = query + f"\n\nCRITICAL FIX REQUIRED: Write the complete code from scratch. You MUST address this error: {error}. Ensure all modules are imported, all helper functions are defined, and you explicitly return the result. Wrap code in ```python ```."
+                
+                fix_prompt = self.context_manager.format_prompt(sys_prompts[intent], clean_slate_query, ctx_text)
+                
                 fix_result = self.engine.generate(fix_prompt, max_tokens=1024)
                 action = fix_result["text"]
                 usage["total_tokens"] += fix_result["usage"].get("total_tokens", 0)
                 
                 code_only = self._extract_code_block(action)
                 error = self._static_code_check(code_only)
+                
             if error:
-                print(f" [Self-Correction] Failed to fix after {max_retries} attempts.")
+                print(f" [Clean Slate Correction] Failed to fix after {max_retries} attempts.")
                 action += f"\n\n> **⚠️ AI Warning:** I tried to fix this code, but it may still contain errors:\n> `{error}`"
         
         if intent == 3:
