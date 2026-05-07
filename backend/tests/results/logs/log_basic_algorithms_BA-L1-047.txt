@@ -1,0 +1,9 @@
+Query: Напиши функцію `find_unique(arr)`, яка знаходить єдиний унікальний елемент у масиві, де всі інші повторюються.
+
+Fail Reasons: Execution fail: AssertionError
+
+AI Output:
+```python
+def find_unique(arr):
+    return list(set(arr))[0]
+```

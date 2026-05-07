@@ -15,17 +15,14 @@ RESULTS_DIR = "results"
 LOGS_DIR = os.path.join(RESULTS_DIR, "logs")
 
 def extract_code(text: str) -> str:
-    """Витягує код з markdown блоку"""
     match = re.search(r'```(?:python)?\s*\n(.*?)\n```', text, re.DOTALL)
     return match.group(1).strip() if match else ""
 
 def extract_cli(text: str) -> str:
-    """Витягує CLI команду"""
     match = re.search(r'```(?:bash|sh|cmd)?\s*\n(.*?)\n```', text, re.DOTALL)
     return match.group(1).strip() if match else text.replace("`", "").strip()
 
 def run_isolated_code(ai_code: str, asserts: str) -> tuple[bool, str]:
-    """Запускає згенерований код + тести у тимчасовій папці"""
     if not ai_code: return False, "No code generated"
     
     full_code = f"{ai_code}\n\n# --- Tests ---\n{asserts}"
@@ -50,7 +47,6 @@ def run_isolated_code(ai_code: str, asserts: str) -> tuple[bool, str]:
             return False, "Timeout"
 
 def run_isolated_cli(ai_cmd: str, verify_cmd: str) -> tuple[bool, str]:
-    """Виконує команду терміналу і перевіряє результат"""
     if not ai_cmd: return False, "No command generated"
     
     with tempfile.TemporaryDirectory() as tmpdir:
@@ -106,10 +102,12 @@ def run_benchmarks(target_suites: list = None, limit: int = None):
             metrics = test.get("metrics", {})
             
             # 1. Базові метрики (Text/Syntax)
-            intent_match = (actual_intent == test['expected_intent'])
+            expected_intent = test['expected_intent']
+            intent_match = (actual_intent == expected_intent)
             must_contain = metrics.get("must_contain", [])
             contains_req = any(word.lower() in ai_text.lower() for word in must_contain) if must_contain else True
             no_forbidden = all(word.lower() not in ai_text.lower() for word in metrics.get("must_not_contain", []))            
+            format_ok = contains_req and no_forbidden
             
             # 2. Метрики виконання (Execution)
             exec_success = None
@@ -122,24 +120,46 @@ def run_benchmarks(target_suites: list = None, limit: int = None):
                 cmd = extract_cli(ai_text)
                 exec_success, exec_msg = run_isolated_cli(cmd, metrics["execution"]["verify_cmd"])
                 
+            # Збираємо рядок результату з новими полями
             result_row = {
                 "id": test['id'],
                 "type": test['type'],
                 "time_s": round(elapsed, 2),
+                "true_intent": expected_intent,
+                "rec_intent": actual_intent,
                 "intent_ok": intent_match,
-                "format_ok": contains_req and no_forbidden,
+                "format_ok": format_ok,
                 "exec_ok": exec_success,
                 "exec_msg": exec_msg,
                 "tokens": response.get("usage", {}).get("total_tokens", 0)
             }
             results.append(result_row)
             
-            # Логування невдач
-            if not (intent_match and contains_req and no_forbidden and (exec_success is not False)):
-                print(f"  ❌ Failed: {exec_msg if exec_success is False else 'Format/Intent mismatch'}")
-                log_path = os.path.join(LOGS_DIR, f"log_{suite_name}_{test['id']}.txt")
-                with open(log_path, "w", encoding="utf-8") as lf:
-                    lf.write(f"Query: {test['query']}\n\nAI Output:\n{ai_text}")
+            # 3. Визначення помилок та логування
+            failed = False
+            fail_reasons = []
+            
+            if not intent_match:
+                fail_reasons.append(f"Bad intent (Expected {expected_intent}, got {actual_intent})")
+                failed = True
+                
+            if not format_ok:
+                fail_reasons.append("Bad format")
+                failed = True
+                
+            if exec_success is False:
+                fail_reasons.append(f"Execution fail: {exec_msg}")
+                failed = True
+
+            if failed:
+                reason_str = " | ".join(fail_reasons)
+                print(f"  ❌ Failed: {reason_str}")
+                
+                # Логуємо тільки якщо є проблеми з форматом або виконанням
+                if not format_ok or (exec_success is False):
+                    log_path = os.path.join(LOGS_DIR, f"log_{suite_name}_{test['id']}.txt")
+                    with open(log_path, "w", encoding="utf-8") as lf:
+                        lf.write(f"Query: {test['query']}\n\nFail Reasons: {reason_str}\n\nAI Output:\n{ai_text}")
             else:
                 print("  ✅ Passed")
 

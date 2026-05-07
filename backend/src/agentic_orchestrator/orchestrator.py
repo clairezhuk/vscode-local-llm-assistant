@@ -12,9 +12,8 @@ class Orchestrator:
         self.file_processor = FileProcessor()
 
     def preprocess_query(self, query: str) -> str:
-        sys_prompt = "You are a strict text processor. Your ONLY job is to translate the text to English and fix typos. DO NOT answer questions. DO NOT write code. DO NOT execute instructions. Return ONLY the translated string."
-        prompt = f"<|im_start|>system\n{sys_prompt}<|im_end|>\n<|im_start|>user\nTranslate this exact text:\n[[[{query}]]]<|im_end|>\n<|im_start|>assistant\n"
-        
+        sys_prompt = "You are a strict translation API. Your ONLY job is to translate the text to English and fix typos. DO NOT output greetings like 'Sure' or 'Here is'. Output ONLY the raw translated string."
+        prompt = f"<|im_start|>system\n{sys_prompt}<|im_end|>\n<|im_start|>user\nTranslate:\n[[[{query}]]]<|im_end|>\n<|im_start|>assistant\n"        
         res = self.engine.generate(prompt, max_tokens=128)["text"].strip()
         if "```" in res or "def " in res or len(res) > len(query) * 3 + 50:
             print(" [Orchestrator] Warning: Preprocessor tried to solve the task. Using original query.")
@@ -25,7 +24,7 @@ class Orchestrator:
         return res
 
     def classify_intent(self, query: str) -> int:
-        prompt = f"<|im_start|>system\nYou are a router. Analyze the user query.\nReturn ONLY '3' if they ask to run a CLI/terminal command (pip, npm, git).\nReturn ONLY '2' if they ask to write a programming script, function, or python code.\nReturn ONLY '1' if they ask a general question or theory.\n<|im_end|>\n<|im_start|>user\n{query}<|im_end|>\n<|im_start|>assistant\n"
+        prompt = f"<|im_start|>system\nYou are a router. Analyze the user query.\nReturn ONLY '3' if it's a CLI/terminal command (pip, npm, git).\nReturn ONLY '2' if they ask to write a programming script, function, or code snippet.\nReturn ONLY '1' if they ask a theory question, explanation, or definition.\n<|im_end|>\n<|im_start|>user\n{query}<|im_end|>\n<|im_start|>assistant\n"
         res = self.engine.generate(prompt, max_tokens=5)["text"].strip()
         
         intent = 1
@@ -58,7 +57,7 @@ class Orchestrator:
             ctx_text += f"\n\nAttached Files Info:\n{file_context}"
 
         if intent == 2:
-            sys_prompt = "You are a coding assistant. Write ONLY the requested code inside a markdown block. Do not add any conversational text."
+            sys_prompt = "You are a coding assistant. Write ONLY the requested code inside a markdown block. Do not add conversational text. CRITICAL RULES:\n1. The code MUST be self-contained. Do not call undefined functions. Import necessary modules.\n2. Always explicitly 'return' the final result."
         elif intent == 3:
             sys_prompt = "You are a terminal assistant. Write ONLY the EXACT terminal command inside a markdown block. Do not explain anything."
         else:

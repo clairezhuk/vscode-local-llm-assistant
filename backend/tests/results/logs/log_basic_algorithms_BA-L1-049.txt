@@ -1,0 +1,10 @@
+Query: Write a function `reverse_vowels(s)` that reverses only the vowels in a string.
+
+Fail Reasons: Execution fail: AssertionError
+
+AI Output:
+```python
+def reverse_vowels(s):
+    vowels = 'aeiouAEIOU'
+    return ''.join([c if c not in vowels else s[s.index(c)::-1] for c in s])
+```
