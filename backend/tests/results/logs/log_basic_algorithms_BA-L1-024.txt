@@ -1,0 +1,9 @@
+Query: Napisz funkcję `gcd_array(arr)`, która oblicza njwiększy wspólny dzielnik tablicy.
+
+Fail Reasons: Execution fail: NameError: name 'math' is not defined. Did you forget to import 'math'?
+
+AI Output:
+```python
+def gcd_array(arr):
+    return math.gcd(*arr)
+```

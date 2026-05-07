@@ -1,0 +1,6 @@
+Query: Jak nazywa się algorytm wyszukiwania, który dzieli posortowaną tablicę na pół?
+
+Fail Reasons: Bad intent (Expected 1, got 2) | Bad format
+
+AI Output:
+Sorry, but you didn't provide the code that needs to be fixed. Please provide the code you want to fix.

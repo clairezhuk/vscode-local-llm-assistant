@@ -1,4 +1,5 @@
 import re
+import ast
 from src.engine.llm import LLMEngine
 from src.context_manager.manager import ContextManager
 from src.executor.tools import ToolExecutor
@@ -44,6 +45,28 @@ class Orchestrator:
         if match:
             return match.group(1).strip()
         return text.replace("`", "").strip()
+    
+    def _is_valid_cli(self, cmd: str) -> bool:
+        cmd = cmd.strip().lower()
+        allowed_prefixes = ("pip", "python", "git", "npm", "conda", "ls", "cd", "mkdir", "echo", "pytest")
+        return cmd.startswith(allowed_prefixes)
+    
+    def _static_code_check(self, code: str) -> str:
+        if not code: return ""
+        try:
+            tree = ast.parse(code)
+        except SyntaxError as e:
+            return f"SyntaxError: {e}"
+
+        defined_funcs = {node.name for node in ast.walk(tree) if isinstance(node, ast.FunctionDef)}
+        called_funcs = {node.func.id for node in ast.walk(tree) if isinstance(node, ast.Call) and isinstance(node.func, ast.Name)}
+        
+        builtins = {"print", "len", "range", "int", "str", "list", "set", "dict", "enumerate", "type", "sum", "max", "min", "open"}
+        missing = called_funcs - defined_funcs - builtins
+        if missing:
+            return f"NameError: You called undefined functions: {', '.join(missing)}. Please define them or import them."
+            
+        return "" 
 
     def process_chat(self, raw_query: str, context: dict) -> dict:
         query = self.preprocess_query(raw_query)
@@ -56,6 +79,13 @@ class Orchestrator:
         if file_context:
             ctx_text += f"\n\nAttached Files Info:\n{file_context}"
 
+        if intent == 3:
+            check_prompt = f"<|im_start|>system\nExtract only the terminal command from this query. If there is no command, output 'NONE'.<|im_end|>\n<|im_start|>user\n{query}<|im_end|>\n<|im_start|>assistant\n"
+            test_cmd = self.engine.generate(check_prompt, max_tokens=20)["text"].strip()
+            if not self._is_valid_cli(test_cmd):
+                print(f" [Orchestrator] Downgrading Intent 3 -> 1 (Not a valid CLI command: {test_cmd})")
+                intent = 1
+
         if intent == 2:
             sys_prompt = "You are a coding assistant. Write ONLY the requested code inside a markdown block. Do not add conversational text. CRITICAL RULES:\n1. The code MUST be self-contained. Do not call undefined functions. Import necessary modules.\n2. Always explicitly 'return' the final result."
         elif intent == 3:
@@ -63,11 +93,21 @@ class Orchestrator:
         else:
             sys_prompt = "You are a helpful assistant. Explain clearly and provide examples if needed."
 
-        prompt = self.context_manager.format_prompt(sys_prompt, query, ctx_text)
-        
+        prompt = self.context_manager.format_prompt(sys_prompt, query, ctx_text) 
         gen_result = self.engine.generate(prompt, max_tokens=1024)
         action = gen_result["text"]
         usage = gen_result["usage"]
+
+        if intent == 2:
+            code_only = self._extract_code_block(action)
+            error = self._static_code_check(code_only)
+            if error:
+                print(f" [Self-Correction] Found error: {error}. Triggering fix...")
+                fix_prompt = prompt + action + f"<|im_end|>\n<|im_start|>user\nYour code has an error:\n{error}\nPlease provide the completely fixed code in a markdown block.<|im_end|>\n<|im_start|>assistant\n"
+                
+                fix_result = self.engine.generate(fix_prompt, max_tokens=1024)
+                action = fix_result["text"]
+                usage["total_tokens"] += fix_result["usage"].get("total_tokens", 0)
 
         if intent == 3:
             clean_cmd = self._extract_code_block(action)
