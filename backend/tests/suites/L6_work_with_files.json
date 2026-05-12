@@ -1,0 +1,203 @@
+[
+  {
+    "id": "FILE-L6-001",
+    "description": "Modify nested key in JSON config.",
+    "query": "Read the file 'config.json', change the 'database.port' to 5432, and save it back to the same file with indentation.",
+    "context_files": [
+      "tests/assets/config.json"
+    ],
+    "expected_intent": 2,
+    "type": "code",
+    "metrics": {
+      "must_contain": ["json.load", "json.dump", "5432"],
+      "execution": {
+        "run_tests": [
+          "import json, os",
+          "with open('config.json', 'w') as f: json.dump({'database': {'port': 8080}}, f)",
+          "update_config('config.json') if 'update_config' in locals() else None",
+          "# Running the expected logic directly if no function name provided",
+          "with open('config.json', 'r') as f: data = json.load(f)",
+          "assert data['database']['port'] == 5432"
+        ]
+      }
+    }
+  },
+  {
+    "id": "FILE-L6-002",
+    "description": "Memory-efficient log parsing (Polish).",
+    "query": "Napisz skrypt, który odczytuje 'server.log' linia po linii, wyodrębnia wiersze zawierające '[ERROR]' i zapisuje je do 'errors.log'.",
+    "context_files": [],
+    "expected_intent": 2,
+    "type": "code",
+    "metrics": {
+      "must_contain": ["with open", "for line in", "[ERROR]"],
+      "execution": {
+        "run_tests": [
+          "with open('server.log', 'w') as f: f.write('INFO: Start\\n[ERROR]: Fail 1\\nINFO: OK\\n[ERROR]: Fail 2')",
+          "parse_logs() if 'parse_logs' in locals() else None",
+          "with open('errors.log', 'r') as f: lines = f.readlines()",
+          "assert len(lines) == 2",
+          "assert '[ERROR]: Fail 1' in lines[0]"
+        ]
+      }
+    }
+  },
+  {
+    "id": "FILE-L6-003",
+    "description": "Batch rename images with date prefix.",
+    "query": "Find all .jpg and .png files in the 'uploads' folder and rename them by adding the current date (YYYY-MM-DD) as a prefix. Use pathlib or os.",
+    "context_files": [],
+    "expected_intent": 2,
+    "type": "code",
+    "metrics": {
+      "must_contain": ["rename", "datetime", "uploads"],
+      "execution": {
+        "run_tests": [
+          "import os, datetime",
+          "os.makedirs('uploads', exist_ok=True)",
+          "open('uploads/img1.jpg', 'w').close()",
+          "date_str = datetime.datetime.now().strftime('%Y-%m-%d')",
+          "batch_rename('uploads') if 'batch_rename' in locals() else None",
+          "files = os.listdir('uploads')",
+          "assert any(f.startswith(date_str) and f.endswith('.jpg') for f in files)"
+        ]
+      }
+    }
+  },
+  {
+    "id": "FILE-L6-004",
+    "description": "Find deepest README.md in dictionary structure.",
+    "query": "Given a nested dictionary `tree` representing a file system (keys are names, values are either dicts or None), write a function `find_deepest_readme(tree)` that returns the path to the deepest README.md.",
+    "context_files": [],
+    "expected_intent": 2,
+    "type": "code",
+    "metrics": {
+      "must_contain": ["recursive", "README.md"],
+      "execution": {
+        "run_tests": [
+          "fs = {'src': {'README.md': None, 'utils': {'README.md': None}}, 'docs': None}",
+          "path = find_deepest_readme(fs)",
+          "assert path in ['src/utils/README.md', '/src/utils/README.md']"
+        ]
+      }
+    }
+  },
+  {
+    "id": "FILE-L6-005",
+    "description": "CSV aggregation (Average calculation).",
+    "query": "Read 'sales.csv' using the `csv` module and calculate the average value of the 'Amount' column. Assume headers exist.",
+    "context_files": [],
+    "expected_intent": 2,
+    "type": "code",
+    "metrics": {
+      "must_contain": ["import csv", "Amount", "float"],
+      "execution": {
+        "run_tests": [
+          "import csv",
+          "with open('sales.csv', 'w', newline='') as f:",
+          "    w = csv.writer(f); w.writerow(['Item', 'Amount']); w.writerow(['A', '100']); w.writerow(['B', '200'])",
+          "avg = calculate_avg('sales.csv') if 'calculate_avg' in locals() else None",
+          "assert avg == 150.0"
+        ]
+      }
+    }
+  },
+  {
+    "id": "FILE-L6-006",
+    "description": "Context Integration (Calling helper from utils.py).",
+    "query": "In the provided project files, find a function that formats dates in 'utils.py' and use it to process a list of raw timestamps `['2023-01-01', '2023-02-01']`.",
+    "context_files": [
+      "tests/assets/project_x/utils.py"
+    ],
+    "expected_intent": 2,
+    "type": "code",
+    "metrics": {
+      "must_contain": ["import utils", "format_date"],
+      "execution": {
+        "run_tests": [
+          "import utils",
+          "res = process_timestamps(['2023-01-01'])",
+          "assert 'formatted' in res[0].lower()"
+        ]
+      }
+    }
+  },
+  {
+    "id": "FILE-L6-007",
+    "description": "Extracting function names from Python file (Polish).",
+    "query": "Napisz funkcję `get_function_names(file_path)`, która otwiera plik .py i zwraca listę nazw wszystkich zdefiniowanych w nim funkcji przy użyciu modułu `ast`.",
+    "context_files": [],
+    "expected_intent": 2,
+    "type": "code",
+    "metrics": {
+      "must_contain": ["import ast", "ast.FunctionDef"],
+      "execution": {
+        "run_tests": [
+          "with open('test_ast.py', 'w') as f: f.write('def func1(): pass\\ndef func2(): pass')",
+          "names = get_function_names('test_ast.py')",
+          "assert 'func1' in names and 'func2' in names",
+          "assert len(names) == 2"
+        ]
+      }
+    }
+  },
+  {
+    "id": "FILE-L6-008",
+    "description": "Read file with specific encoding.",
+    "query": "Read the content of 'data.txt' which is encoded in UTF-16 and print only the first 50 characters.",
+    "context_files": [],
+    "expected_intent": 2,
+    "type": "code",
+    "metrics": {
+      "must_contain": ["encoding='utf-16'"],
+      "execution": {
+        "run_tests": [
+          "text = 'A' * 100",
+          "with open('data.txt', 'w', encoding='utf-16') as f: f.write(text)",
+          "output = read_utf16('data.txt') if 'read_utf16' in locals() else text[:50]",
+          "assert len(output) == 50"
+        ]
+      }
+    }
+  },
+  {
+    "id": "FILE-L6-009",
+    "description": "Merge multiple text files into one.",
+    "query": "Write a script that takes all .txt files in the current directory and merges their content into a single file named 'combined.log', adding a separator line between them.",
+    "context_files": [],
+    "expected_intent": 2,
+    "type": "code",
+    "metrics": {
+      "must_contain": ["glob", "combined.log"],
+      "execution": {
+        "run_tests": [
+          "open('1.txt', 'w').write('File1'); open('2.txt', 'w').write('File2')",
+          "merge_files() if 'merge_files' in locals() else None",
+          "content = open('combined.log').read()",
+          "assert 'File1' in content and 'File2' in content"
+        ]
+      }
+    }
+  },
+  {
+    "id": "FILE-L6-010",
+    "description": "YAML configuration update.",
+    "query": "Read 'settings.yaml', set 'debug' to false and 'version' to 2.0, then save it. Use the `yaml` library.",
+    "context_files": [],
+    "expected_intent": 2,
+    "type": "code",
+    "metrics": {
+      "must_contain": ["yaml.safe_load", "yaml.dump", "debug", "false"],
+      "execution": {
+        "run_tests": [
+          "import yaml",
+          "with open('settings.yaml', 'w') as f: yaml.dump({'debug': True, 'version': 1.0}, f)",
+          "update_yaml('settings.yaml') if 'update_yaml' in locals() else None",
+          "with open('settings.yaml', 'r') as f: data = yaml.safe_load(f)",
+          "assert data['debug'] is False",
+          "assert data['version'] == 2.0"
+        ]
+      }
+    }
+  }
+]

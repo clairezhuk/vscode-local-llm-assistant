@@ -1,0 +1,24 @@
+QUERY: Napisz funkcję dfs_path(graph, start, goal), która znajduje dowolną ścieżkę w grafie reprezentowanym jako słownik list sąsiedztwa. Funkcja powinna zwracać listę węzłów.
+ERROR: Passed
+
+AI RESPONSE:
+```python
+def dfs_path(graph, start, goal):
+    def dfs(graph, start, goal, visited, path):
+        if start not in visited:
+            visited.add(start)
+            path.append(start)
+            if start == goal:
+                return path
+            for neighbor in graph[start]:
+                if neighbor not in visited:
+                    result = dfs(graph, neighbor, goal, visited, path)
+                    if result:
+                        return result
+            path.pop()
+            return None
+
+    visited = set()
+    path = []
+    return dfs(graph, start, goal, visited, path)
+```

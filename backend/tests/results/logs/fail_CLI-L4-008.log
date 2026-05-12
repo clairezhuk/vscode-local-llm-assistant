@@ -1,0 +1,11 @@
+QUERY: Count the total number of lines in all .txt files in the current folder.
+ERROR: N/A
+
+AI RESPONSE:
+```sh
+find . -name "*.txt" -exec wc -l {} +
+```
+
+Explanation:
+- `find . -name "*.txt"`: This command searches for all files with the `.txt` extension in the current directory.
+- `-exec wc -l {} +`: This command applies the `wc -l` command to each file found by `find`, counting the number of lines in each file. The `+` operator is used to pass multiple filenames to `wc` at once, rather than one by one.

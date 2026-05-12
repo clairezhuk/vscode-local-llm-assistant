@@ -1,0 +1,29 @@
+QUERY: Implement `plot_two_charts(data1, data2)` that creates a figure with 1 row and 2 columns of subplots, plotting data1 on the first and data2 on the second.
+ERROR: Passed
+
+AI RESPONSE:
+```python
+import matplotlib.pyplot as plt
+
+def plot_two_charts(data1, data2):
+    """
+    Plots two data arrays on the same figure with two subplots.
+    
+    Args:
+    data1 (np.ndarray or list): A 1D numpy array or list containing data for the first plot.
+    data2 (np.ndarray or list): A 1D numpy array or list containing data for the second plot.
+    """
+    # Create a figure with 1 row and 2 columns of subplots
+    fig, axes = plt.subplots(1, 2, figsize=(10, 5))
+    
+    # Plot data1 on the first subplot
+    axes[0].plot(data1)
+    axes[0].set_title('Data 1')
+    
+    # Plot data2 on the second subplot
+    axes[1].plot(data2)
+    axes[1].set_title('Data 2')
+    
+    # Display the plot
+    plt.show()
+```

@@ -1,0 +1,17 @@
+QUERY: Wyciągnij wszystkie unikalne adresy IP z pliku access.log i posortuj je.
+ERROR: N/A
+
+AI RESPONSE:
+To extract all unique IP addresses from the `access.log` file and sort them, you can use the following command in a Unix-like shell:
+
+```sh
+grep -oP '\b(?:\d{1,3}\.){3}\d{1,3}\b' access.log | sort -u
+```
+
+Explanation:
+- `grep -oP '\b(?:\d{1,3}\.){3}\d{1,3}\b' access.log`: This command uses `grep` to search for IP addresses in the `access.log` file. The `-o` option tells `grep` to output only the matching parts, and the `-P` option tells `grep` to use Perl-compatible regular expressions.
+- `access.log`: This is the name of the file you want to search.
+- `\b(?:\d{1,3}\.){3}\d{1,3}\b`: This is a Perl-compatible regular expression that matches IP addresses. `\b` ensures that the IP address is a whole word, `(?:\d{1,3}\.){3}` matches three groups of numbers separated by dots, and `\d{1,3}` matches a group of one to three digits.
+- `sort -u`: This command sorts the unique IP addresses found by the `grep` command and removes duplicates. `sort` sorts the lines of text, and `-u` removes duplicate lines.
+
+When you run this command, it will list all unique IP addresses from the `access.log` file, sorted in ascending order.

@@ -1,260 +1,163 @@
 [
-    {
-        "id": "CLI-L5-001",
-        "description": "Terminal pip install",
-        "query": "What is the terminal command to install the `requests` library using pip?",
-        "context_files": [],
-        "expected_intent": 3,
-        "type": "cli",
-        "metrics": {
-            "must_contain": ["pip install requests", "pip3 install requests"],
-            "must_not_contain": []
-        }
-    },
-    {
-        "id": "CLI-L5-002",
-        "description": "Terminal pip freeze (mist)",
-        "query": "Command to sve current python dependencies into a file named `requirements.txt`.",
-        "context_files": [],
-        "expected_intent": 3,
-        "type": "cli",
-        "metrics": {
-            "must_contain": ["pip freeze > requirements.txt", "pip3 freeze > requirements.txt"],
-            "must_not_contain": [],
-            "execution": {
-                "verify_cmd": "python -c \"import os; assert os.path.isfile('requirements.txt')\""
-            }
-        }
-    },
-    {
-        "id": "CLI-L5-003",
-        "description": "Terminal npm install",
-        "query": "What is the terminal command to install the `express` package using npm?",
-        "context_files": [],
-        "expected_intent": 3,
-        "type": "cli",
-        "metrics": {
-            "must_contain": ["npm install express", "npm i express"],
-            "must_not_contain": []
-        }
-    },
-    {
-        "id": "CLI-L5-004",
-        "description": "Terminal conda create (mist)",
-        "query": "Crete a new conda environment named `myenv` with python 3.9.",
-        "context_files": [],
-        "expected_intent": 3,
-        "type": "cli",
-        "metrics": {
-            "must_contain": ["conda create", "myenv", "python=3.9"],
-            "must_not_contain": []
-        }
-    },
-    {
-        "id": "CLI-L5-005",
-        "description": "Terminal pip specific version PL",
-        "query": "Jak zainstalować pakiet `pandas` w wersji dokładnie 2.0.0 za pomocą pip?",
-        "context_files": [],
-        "expected_intent": 3,
-        "type": "cli",
-        "metrics": {
-            "must_contain": ["pip install pandas==2.0.0", "pip3 install pandas==2.0.0"],
-            "must_not_contain": []
-        }
-    },
-    {
-        "id": "CLI-L5-006",
-        "description": "Terminal npm init PL (mist)",
-        "query": "Jak zinicjalizować nowy projekt Node.js (stworzyć package.json) z domyslnymi ustawieniami bez pytań?",
-        "context_files": [],
-        "expected_intent": 3,
-        "type": "cli",
-        "metrics": {
-            "must_contain": ["npm init -y", "npm init --yes"],
-            "must_not_contain": [],
-            "execution": {
-                "verify_cmd": "python -c \"import os; assert os.path.isfile('package.json')\""
-            }
-        }
-    },
-    {
-        "id": "CLI-L5-007",
-        "description": "Git init",
-        "query": "Initialize a new empty Git repository in the current directory.",
-        "context_files": [],
-        "expected_intent": 3,
-        "type": "cli",
-        "metrics": {
-            "must_contain": ["git init"],
-            "must_not_contain": [],
-            "execution": {
-                "verify_cmd": "python -c \"import os; assert os.path.isdir('.git')\""
-            }
-        }
-    },
-    {
-        "id": "CLI-L5-008",
-        "description": "Git add (mist)",
-        "query": "Add all current changes to git stagng area.",
-        "context_files": [],
-        "expected_intent": 3,
-        "type": "cli",
-        "metrics": {
-            "must_contain": ["git add .", "git add -A", "git add --all"],
-            "must_not_contain": []
-        }
-    },
-    {
-        "id": "CLI-L5-009",
-        "description": "Git commit",
-        "query": "Create a new git commit with the message \"Initial commit\".",
-        "context_files": [],
-        "expected_intent": 3,
-        "type": "cli",
-        "metrics": {
-            "must_contain": ["git commit -m", "Initial commit"],
-            "must_not_contain": []
-        }
-    },
-    {
-        "id": "CLI-L5-010",
-        "description": "Git push (mist)",
-        "query": "Psh the current local git branch to the remote repository named 'origin' and branch 'main'.",
-        "context_files": [],
-        "expected_intent": 3,
-        "type": "cli",
-        "metrics": {
-            "must_contain": ["git push origin main"],
-            "must_not_contain": []
-        }
-    },
-    {
-        "id": "CLI-L5-011",
-        "description": "Git clone PL",
-        "query": "Podaj komendę do sklonowania repozytorium git z adresu URL `https://github.com/user/repo.git`.",
-        "context_files": [],
-        "expected_intent": 3,
-        "type": "cli",
-        "metrics": {
-            "must_contain": ["git clone https://github.com/user/repo.git"],
-            "must_not_contain": []
-        }
-    },
-    {
-        "id": "CLI-L5-012",
-        "description": "Terminal mkdir PL (mist)",
-        "query": "Srtwórz nowy pusty katalog o nazwie `src` za pomocą terminala.",
-        "context_files": [],
-        "expected_intent": 3,
-        "type": "cli",
-        "metrics": {
-            "must_contain": ["mkdir src"],
-            "must_not_contain": [],
-            "execution": {
-                "verify_cmd": "python -c \"import os; assert os.path.isdir('src')\""
-            }
-        }
-    },
-    {
-        "id": "CLI-L5-013",
-        "description": "Terminal mkdir nested",
-        "query": "Create a nested directory structure `app/components/ui` in one single terminal command.",
-        "context_files": [],
-        "expected_intent": 3,
-        "type": "cli",
-        "metrics": {
-            "must_contain": ["mkdir -p app/components/ui"],
-            "must_not_contain": [],
-            "execution": {
-                "verify_cmd": "python -c \"import os; assert os.path.isdir('app/components/ui')\""
-            }
-        }
-    },
-    {
-        "id": "CLI-L5-014",
-        "description": "Terminal rm force (mist)",
-        "query": "Deelte a non-empty directory named `build` forceably in bash.",
-        "context_files": [],
-        "expected_intent": 3,
-        "type": "cli",
-        "metrics": {
-            "must_contain": ["rm -rf build", "rm -r -f build"],
-            "must_not_contain": []
-        }
-    },
-    {
-        "id": "CLI-L5-015",
-        "description": "Terminal move file",
-        "query": "Move a file named `config.json` to the `settings` folder using bash.",
-        "context_files": [],
-        "expected_intent": 3,
-        "type": "cli",
-        "metrics": {
-            "must_contain": ["mv config.json settings", "mv config.json settings/"],
-            "must_not_contain": []
-        }
-    },
-    {
-        "id": "CLI-L5-016",
-        "description": "Terminal touch (mist)",
-        "query": "Create a new emplty file named `index.html` using a standard linux terminal command.",
-        "context_files": [],
-        "expected_intent": 3,
-        "type": "cli",
-        "metrics": {
-            "must_contain": ["touch index.html"],
-            "must_not_contain": [],
-            "execution": {
-                "verify_cmd": "python -c \"import os; assert os.path.isfile('index.html')\""
-            }
-        }
-    },
-    {
-        "id": "CLI-L5-017",
-        "description": "Terminal ls hidden PL",
-        "query": "Jak wylistować wszystkie pliki w katalogu, włącznie z plikami ukrytymi (hidden files), używając terminala bash?",
-        "context_files": [],
-        "expected_intent": 3,
-        "type": "cli",
-        "metrics": {
-            "must_contain": ["ls -a", "ls -la", "ls -al"],
-            "must_not_contain": []
-        }
-    },
-    {
-        "id": "CLI-L5-018",
-        "description": "Terminal uvicorn launch (mist)",
-        "query": "Strt a FastAPI application located in `main.py` (with the instance named `app`) using uvicorn with hot reloading enabled.",
-        "context_files": [],
-        "expected_intent": 3,
-        "type": "cli",
-        "metrics": {
-            "must_contain": ["uvicorn main:app", "--reload"],
-            "must_not_contain": []
-        }
-    },
-    {
-        "id": "CLI-L5-019",
-        "description": "Terminal npm run",
-        "query": "Run the development server script defined as 'dev' in package.json using npm.",
-        "context_files": [],
-        "expected_intent": 3,
-        "type": "cli",
-        "metrics": {
-            "must_contain": ["npm run dev"],
-            "must_not_contain": []
-        }
-    },
-    {
-        "id": "CLI-L5-020",
-        "description": "Terminal python run script (mist)",
-        "query": "Execute a python sript named `run_tests.py` that is located inside the `tests` directory.",
-        "context_files": [],
-        "expected_intent": 3,
-        "type": "cli",
-        "metrics": {
-            "must_contain": ["python tests/run_tests.py", "python3 tests/run_tests.py"],
-            "must_not_contain": []
-        }
+  {
+    "id": "ASYNC-L5-001",
+    "description": "Concurrent execution using asyncio.gather.",
+    "query": "Write an async function `run_tasks()` that executes three other async functions (f1, f2, f3) concurrently and returns a list of their results using asyncio.gather.",
+    "context_files": [],
+    "expected_intent": 2,
+    "type": "code",
+    "metrics": {
+      "must_contain": ["asyncio.gather", "await"],
+      "execution": {
+        "run_tests": [
+          "import asyncio",
+          "async def f1(): return 1",
+          "async def f2(): return 2",
+          "async def f3(): return 3",
+          "results = asyncio.run(run_tasks())",
+          "assert results == [1, 2, 3], f'Expected [1, 2, 3], got {results}'"
+        ]
+      }
     }
+  },
+  {
+    "id": "ASYNC-L5-002",
+    "description": "Limiting concurrency with asyncio.Semaphore (Polish).",
+    "query": "Napisz asynchroniczną funkcję `bounded_fetch(sem, task_id)`, która symuluje pobieranie danych. Użyj `async with sem:`, aby ograniczyć liczbę jednoczesnych operacji. Funkcja powinna czekać 0.1s i zwracać task_id.",
+    "context_files": [],
+    "expected_intent": 2,
+    "type": "code",
+    "metrics": {
+      "must_contain": ["async with sem", "asyncio.sleep"],
+      "execution": {
+        "run_tests": [
+          "import asyncio",
+          "async def test():",
+          "    sem = asyncio.Semaphore(2)",
+          "    res = await bounded_fetch(sem, 101)",
+          "    assert res == 101",
+          "asyncio.run(test())"
+        ]
+      }
+    }
+  },
+  {
+    "id": "PAR-L5-003",
+    "description": "Parallel processing with ProcessPoolExecutor.",
+    "query": "Use `concurrent.futures.ProcessPoolExecutor` to map a function `square(x)` to a list of integers from 1 to 1000. Return the list of results.",
+    "context_files": [],
+    "expected_intent": 2,
+    "type": "code",
+    "metrics": {
+      "must_contain": ["ProcessPoolExecutor", "submit", "map"],
+      "execution": {
+        "run_tests": [
+          "import concurrent.futures",
+          "def square(x): return x*x",
+          "results = list(executor_logic()) if 'executor_logic' in locals() else []",
+          "# Since the user writes the block, we check if they implemented the logic correctly",
+          "# We'll assume the function is named 'run_parallel_task'",
+          "results = run_parallel_task(square, range(1, 11))",
+          "assert list(results) == [1, 4, 9, 16, 25, 36, 49, 64, 81, 100]"
+        ]
+      }
+    }
+  },
+  {
+    "id": "API-L5-004",
+    "description": "POST request with Bearer token authentication.",
+    "query": "Write a function `post_data(url, data_dict, token)` using the `requests` library to send a JSON payload with a 'Bearer <token>' Authorization header.",
+    "context_files": [],
+    "expected_intent": 2,
+    "type": "code",
+    "metrics": {
+      "must_contain": ["requests.post", "headers", "json=", "Bearer"],
+      "execution": {
+        "run_tests": [
+          "import requests",
+          "from unittest.mock import Mock",
+          "requests.post = Mock()",
+          "post_data('http://api.com', {'key': 'val'}, 'secret123')",
+          "args, kwargs = requests.post.call_args",
+          "assert kwargs['headers']['Authorization'] == 'Bearer secret123'",
+          "assert kwargs['json'] == {'key': 'val'}"
+        ]
+      }
+    }
+  },
+  {
+    "id": "API-L5-005",
+    "description": "Retry logic for 503 Service Unavailable (Polish).",
+    "query": "Zaimplementuj funkcję `fetch_with_retry(url)`, która wykonuje zapytanie GET. Jeśli otrzyma status 503, powinna spróbować ponownie do 3 razy przed poddaniem się. Użyj `requests`.",
+    "context_files": [],
+    "expected_intent": 2,
+    "type": "code",
+    "metrics": {
+      "must_contain": ["status_code", "== 503", "range", "retry"],
+      "execution": {
+        "run_tests": [
+          "import requests",
+          "from unittest.mock import Mock",
+          "mock_resp = Mock()",
+          "mock_resp.status_code = 503",
+          "requests.get = Mock(return_value=mock_resp)",
+          "try: fetch_with_retry('http://test.com')",
+          "except: pass",
+          "assert requests.get.call_count >= 3, f'Expected at least 3 retries, got {requests.get.call_count}'"
+        ]
+      }
+    }
+  },
+  {
+    "id": "SEC-L5-006",
+    "description": "Fixing SQL Injection vulnerability.",
+    "query": "Refactor this vulnerable code to use parameterized queries with `sqlite3`: `cursor.execute(f\"SELECT * FROM users WHERE name='{user_input}'\")`.",
+    "context_files": [],
+    "expected_intent": 2,
+    "type": "code",
+    "metrics": {
+      "must_contain": ["?", ",", "user_input"],
+      "must_not_contain": ["f\"", "format("],
+      "execution": {
+        "run_tests": [
+          "import sqlite3",
+          "conn = sqlite3.connect(':memory:')",
+          "cursor = conn.cursor()",
+          "cursor.execute('CREATE TABLE users (name text)')",
+          "cursor.execute('INSERT INTO users VALUES (\"admin\")')",
+          "user_input = \"admin\"",
+          "# The AI code should define a safe way to call this. We test if it works.",
+          "def safe_query(cursor, user_input):",
+          "    # We expect AI to provide a line similar to this inside a function",
+          "    pass",
+          "import re",
+          "code = \"\"\"ai_code_here\"\"\"",
+          "assert '?' in ai_code or '%s' in ai_code, 'Must use parameters'"
+        ]
+      }
+    }
+  },
+  {
+    "id": "SEC-L5-007",
+    "description": "Preventing Path Traversal with abspath.",
+    "query": "Write a function `get_safe_path(base_dir, user_file)` that returns the absolute path only if `user_file` stays within `base_dir`. Prevent '../' attacks using `os.path.abspath` and `startswith`.",
+    "context_files": [],
+    "expected_intent": 2,
+    "type": "code",
+    "metrics": {
+      "must_contain": ["os.path.abspath", "startswith"],
+      "execution": {
+        "run_tests": [
+          "import os",
+          "base = os.path.abspath('/tmp/app_data')",
+          "assert get_safe_path(base, 'safe.txt').startswith(base)",
+          "try:",
+          "    res = get_safe_path(base, '../../etc/passwd')",
+          "    assert res is None or 'passwd' not in res, 'Should have blocked traversal'",
+          "except Exception:",
+          "    pass"
+        ]
+      }
+    }
+  }
 ]

@@ -1,0 +1,35 @@
+QUERY: Write a function `create_plot(x, y)` that generates a line plot. Ensure it includes a title 'Data Plot', labels for both axes, and a legend.
+ERROR: Passed
+
+AI RESPONSE:
+```python
+import matplotlib.pyplot as plt
+
+def create_plot(x, y):
+    """
+    Generate a line plot with a title 'Data Plot', labels for both axes, and a legend.
+    
+    Args:
+    x (pd.Series or pd.DataFrame): Series or DataFrame containing x-coordinates of the data points.
+    y (pd.Series or pd.DataFrame): Series or DataFrame containing y-coordinates of the data points.
+    
+    Returns:
+    matplotlib.figure.Figure: The created plot.
+    """
+    # Create a figure and axis
+    fig, ax = plt.subplots()
+    
+    # Plot the data
+    ax.plot(x, y)
+    
+    # Set plot title and labels
+    ax.set_title('Data Plot')
+    ax.set_xlabel('X-axis')
+    ax.set_ylabel('Y-axis')
+    
+    # Add a legend
+    ax.legend()
+    
+    # Return the created figure
+    return fig
+```

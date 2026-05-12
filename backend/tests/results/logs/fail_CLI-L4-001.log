@@ -1,0 +1,16 @@
+QUERY: Find all files with extension .py in the current directory and its subdirectories.
+ERROR: N/A
+
+AI RESPONSE:
+To find all files with the extension `.py` in the current directory and its subdirectories, you can use the following command in a Unix-like shell:
+
+```sh
+find . -name "*.py"
+```
+
+Explanation:
+- `find`: This is the command used to search for files and directories.
+- `.`: This specifies the current directory.
+- `-name "*.py"`: This part of the command tells `find` to look for files that have the name ending in `.py`.
+
+When you run this command, it will list all files that match the specified pattern in the current directory and its subdirectories.

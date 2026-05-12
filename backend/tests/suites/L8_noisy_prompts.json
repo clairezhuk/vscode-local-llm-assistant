@@ -1,0 +1,374 @@
+[
+  {
+    "id": "ROB-L8-001",
+    "description": "Long garbage context before a simple math task.",
+    "query": "I had a really long day. First, my coffee machine broke, then I missed the bus, and when I finally got to the office, the elevator was out of order. I've been thinking about my commute and how many steps I take. Anyway, long story short, write a function that divides two numbers and handles division by zero.",
+    "context_files": [],
+    "expected_intent": 2,
+    "type": "code",
+    "metrics": {
+      "must_contain": ["def", "zero", "return"],
+      "execution": {
+        "run_tests": [
+          "assert divide(10, 2) == 5",
+          "try:\n    divide(10, 0)\nexcept ZeroDivisionError:\n    pass"
+        ]
+      }
+    }
+  },
+  {
+    "id": "ROB-L8-002",
+    "description": "Multilingual mix (UA, PL, EN) for API fetch.",
+    "query": "Napisz mi код який буде робити fetch з API і зберігати результат у pliku json. Proszę, use the requests library.",
+    "context_files": [],
+    "expected_intent": 2,
+    "type": "code",
+    "metrics": {
+      "must_contain": ["requests", "json.dump"],
+      "execution": {
+        "run_tests": [
+          "import requests, json",
+          "assert 'requests' in globals() or 'requests' in locals()"
+        ]
+      }
+    }
+  },
+  {
+    "id": "ROB-L8-003",
+    "description": "Severe typos in terminal command (pip).",
+    "query": "істаллюй матплотліб",
+    "context_files": [],
+    "expected_intent": 3,
+    "type": "cli",
+    "metrics": {
+      "must_contain": ["pip install matplotlib"],
+      "execution": {
+        "verify_cmd": "exit 0"
+      }
+    }
+  },
+  {
+    "id": "ROB-L8-004",
+    "description": "Ambiguous server start request (Explanation/Theory).",
+    "query": "Як мені запустити сервер?",
+    "context_files": [],
+    "expected_intent": 1,
+    "type": "text",
+    "metrics": {
+      "must_contain": ["python", "server", "run"],
+      "must_not_contain": ["```python"]
+    }
+  },
+  {
+    "id": "ROB-L8-005",
+    "description": "Long story about weather followed by binary search request.",
+    "query": "It's so rainy outside in Warsaw today, it makes me want to just sit and code all day. I was reading this book about algorithms and I got stuck. Could you please write a binary search function for a sorted list?",
+    "context_files": [],
+    "expected_intent": 2,
+    "type": "code",
+    "metrics": {
+      "must_contain": ["mid", "low", "high"],
+      "execution": {
+        "run_tests": [
+          "assert binary_search([1, 2, 3], 2) == 1",
+          "assert binary_search([1, 2, 3], 5) == -1"
+        ]
+      }
+    }
+  },
+  {
+    "id": "ROB-L8-006",
+    "description": "Mix of Polish and Ukrainian in a code prompt.",
+    "query": "Zrób funkcję яка знаходить найдовше слово w liście.",
+    "context_files": [],
+    "expected_intent": 2,
+    "type": "code",
+    "metrics": {
+      "must_contain": ["max", "key=len"],
+      "execution": {
+        "run_tests": [
+          "assert find_longest(['a', 'abc', 'ab']) == 'abc'"
+        ]
+      }
+    }
+  },
+  {
+    "id": "ROB-L8-007",
+    "description": "Intent 3 stress test: Typos in npm command.",
+    "query": "nmp strat",
+    "context_files": [],
+    "expected_intent": 3,
+    "type": "cli",
+    "metrics": {
+      "must_contain": ["npm start"],
+      "execution": {
+        "verify_cmd": "exit 0"
+      }
+    }
+  },
+  {
+    "id": "ROB-L8-008",
+    "description": "Ambiguous 'Write a code in terminal' (Should be CLI).",
+    "query": "write a code in termilan to check disk space in humans format",
+    "context_files": [],
+    "expected_intent": 3,
+    "type": "cli",
+    "metrics": {
+      "must_contain": ["df -h"],
+      "execution": {
+        "verify_cmd": "exit 0"
+      }
+    }
+  },
+  {
+    "id": "ROB-L8-009",
+    "description": "Noise with personal complaints and file reading task.",
+    "query": "My cat just jumped on my keyboard and deleted half of my work. I am so stressed. I need to get back on track. Can you write a Python script to read a file and count how many lines are in it?",
+    "context_files": [],
+    "expected_intent": 2,
+    "type": "code",
+    "metrics": {
+      "must_contain": ["open", "readlines", "len"],
+      "execution": {
+        "run_tests": [
+          "with open('test.txt', 'w') as f: f.write('1\\n2\\n3')\nassert count_lines('test.txt') == 3"
+        ]
+      }
+    }
+  },
+  {
+    "id": "ROB-L8-010",
+    "description": "Code prompt with heavy slang and mix of 3 languages.",
+    "query": "Bro, write me a function, що чекає list of numbers i zwraca ich sumę. Quick!",
+    "context_files": [],
+    "expected_intent": 2,
+    "type": "code",
+    "metrics": {
+      "must_contain": ["sum"],
+      "execution": {
+        "run_tests": [
+          "assert sum_list([1, 2, 3]) == 6"
+        ]
+      }
+    }
+  },
+  {
+    "id": "ROB-L8-011",
+    "description": "Typo in folder creation command.",
+    "query": "creae foder 'my_data_results'",
+    "context_files": [],
+    "expected_intent": 3,
+    "type": "cli",
+    "metrics": {
+      "must_contain": ["mkdir", "my_data_results"],
+      "execution": {
+        "verify_cmd": "mkdir my_data_results && [ -d my_data_results ]"
+      }
+    }
+  },
+  {
+    "id": "ROB-L8-012",
+    "description": "Ambiguous 'Check my git' (Theory/Explanation).",
+    "query": "Як перевірити статус гіта?",
+    "context_files": [],
+    "expected_intent": 1,
+    "type": "text",
+    "metrics": {
+      "must_contain": ["git status"]
+    }
+  },
+  {
+    "id": "ROB-L8-013",
+    "description": "Noise with movie plot leading to a random prime check function.",
+    "query": "I was watching Matrix today and it got me thinking about numbers and simulations. It's crazy how everything is just 1s and 0s. Speaking of numbers, write a function to check if a number is prime.",
+    "context_files": [],
+    "expected_intent": 2,
+    "type": "code",
+    "metrics": {
+      "must_contain": ["prime", "range", "2"],
+      "execution": {
+        "run_tests": [
+          "assert is_prime(7) is True",
+          "assert is_prime(4) is False"
+        ]
+      }
+    }
+  },
+  {
+    "id": "ROB-L8-014",
+    "description": "Mix of English and Ukrainian for list reversal.",
+    "query": "Write a list comprehension, яка розвертає рядок text.",
+    "context_files": [],
+    "expected_intent": 2,
+    "type": "code",
+    "metrics": {
+      "must_contain": ["::-1"],
+      "execution": {
+        "run_tests": [
+          "text = 'hello'\nassert reverse_logic(text) == 'olleh'"
+        ]
+      }
+    }
+  },
+  {
+    "id": "ROB-L8-015",
+    "description": "Severe typo in Git commit command.",
+    "query": "git comit -m 'fix bugs'",
+    "context_files": [],
+    "expected_intent": 3,
+    "type": "cli",
+    "metrics": {
+      "must_contain": ["git commit", "-m"],
+      "execution": {
+        "verify_cmd": "exit 0"
+      }
+    }
+  },
+  {
+    "id": "ROB-L8-016",
+    "description": "Ambiguous 'How to kill process' (Intent 1 or 3?). Expecting 1.",
+    "query": "How can I kill a process on linux?",
+    "context_files": [],
+    "expected_intent": 1,
+    "type": "text",
+    "metrics": {
+      "must_contain": ["kill", "ps", "pid"]
+    }
+  },
+  {
+    "id": "ROB-L8-017",
+    "description": "Story about cooking leading to a dictionary sort function.",
+    "query": "I am making dinner and I need to organize my ingredients by weight. My kitchen is a mess. I have a dictionary where keys are names and values are weights. Write a function to sort it by values.",
+    "context_files": [],
+    "expected_intent": 2,
+    "type": "code",
+    "metrics": {
+      "must_contain": ["sorted", "lambda"],
+      "execution": {
+        "run_tests": [
+          "d = {'a': 10, 'b': 5}\nres = sort_dict(d)\nassert list(res.values())[0] == 5"
+        ]
+      }
+    }
+  },
+  {
+    "id": "ROB-L8-018",
+    "description": "Mix of 3 languages for a random number function.",
+    "query": "Napisz mi function що дає random number od 1 do 100. Please.",
+    "context_files": [],
+    "expected_intent": 2,
+    "type": "code",
+    "metrics": {
+      "must_contain": ["random", "randint"],
+      "execution": {
+        "run_tests": [
+          "n = get_rand()\nassert 1 <= n <= 100"
+        ]
+      }
+    }
+  },
+  {
+    "id": "ROB-L8-019",
+    "description": "Typo in conda install.",
+    "query": "conga instl pandas",
+    "context_files": [],
+    "expected_intent": 3,
+    "type": "cli",
+    "metrics": {
+      "must_contain": ["conda install pandas"],
+      "execution": {
+        "verify_cmd": "exit 0"
+      }
+    }
+  },
+  {
+    "id": "ROB-L8-020",
+    "description": "Ambiguous 'Run python script' (CLI command expected).",
+    "query": "запусти скрипт main.py",
+    "context_files": [],
+    "expected_intent": 3,
+    "type": "cli",
+    "metrics": {
+      "must_contain": ["python main.py"],
+      "execution": {
+        "verify_cmd": "exit 0"
+      }
+    }
+  },
+  {
+    "id": "ROB-L8-021",
+    "description": "Short query with heavy typos for a specific command.",
+    "query": "ls -la hiddn",
+    "context_files": [],
+    "expected_intent": 3,
+    "type": "cli",
+    "metrics": {
+      "must_contain": ["ls -la"],
+      "execution": {
+        "verify_cmd": "exit 0"
+      }
+    }
+  },
+  {
+    "id": "ROB-L8-022",
+    "description": "Ukrainian query for a regular expression task.",
+    "query": "Напиши регулярку яка шукає всі дати у форматі DD-MM-YYYY.",
+    "context_files": [],
+    "expected_intent": 2,
+    "type": "code",
+    "metrics": {
+      "must_contain": ["re", "\\d{2}-\\d{2}-\\d{4}"],
+      "execution": {
+        "run_tests": [
+          "import re\nassert re.search(r'\\d{2}-\\d{2}-\\d{4}', '12-10-2024') is not None"
+        ]
+      }
+    }
+  },
+  {
+    "id": "ROB-L8-023",
+    "description": "Noise about a slow computer and a cleanup command.",
+    "query": "My laptop is so slow today, I think I have too many temporary files. Can you show me the command to delete everything in the /tmp folder?",
+    "context_files": [],
+    "expected_intent": 3,
+    "type": "cli",
+    "metrics": {
+      "must_contain": ["rm", "/tmp"],
+      "execution": {
+        "verify_cmd": "exit 0"
+      }
+    }
+  },
+  {
+    "id": "ROB-L8-024",
+    "description": "Polish/English mix for a class definition.",
+    "query": "Stwórz class User z polami name i email w Pythonie.",
+    "context_files": [],
+    "expected_intent": 2,
+    "type": "code",
+    "metrics": {
+      "must_contain": ["class User", "__init__"],
+      "execution": {
+        "run_tests": [
+          "u = User('A', 'b@c.com')\nassert u.name == 'A'"
+        ]
+      }
+    }
+  },
+  {
+    "id": "ROB-L8-025",
+    "description": "Final stress test: Multiple intents hidden in a long story.",
+    "query": "I was thinking about the history of Linux. It's fascinating. I want to learn more. But first, can you show me how to list files and then write a python function to print 'Hello'? Actually, just give me the python function.",
+    "context_files": [],
+    "expected_intent": 2,
+    "type": "code",
+    "metrics": {
+      "must_contain": ["print", "Hello"],
+      "execution": {
+        "run_tests": [
+          "import io\nfrom contextlib import redirect_stdout\nf = io.StringIO()\nwith redirect_stdout(f): hello_func()\nassert 'Hello' in f.getvalue()"
+        ]
+      }
+    }
+  }
+]

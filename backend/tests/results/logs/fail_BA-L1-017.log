@@ -1,5 +1,5 @@
 QUERY: Napisz funkcję `znajdz_duplikaty(lista)`, która zwraca listę elementów, które powtarzają się w podanej liście.
-ERROR: Python Error: IndentationError: expected an indented block after 'try' statement on line 11
+ERROR: Passed
 
 AI RESPONSE:
 ```python

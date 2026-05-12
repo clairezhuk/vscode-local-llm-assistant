@@ -1,0 +1,11 @@
+id,type,time_s,true_intent,rec_intent,intent_ok,format_ok,exec_ok,exec_msg,tokens
+CLI-L4-001,cli,8.06,3,1,False,True,,N/A,168
+CLI-L4-002,cli,20.07,3,1,False,True,,N/A,515
+CLI-L4-003,cli,25.57,3,1,False,False,,N/A,901
+CLI-L4-004,cli,16.54,3,1,False,True,,N/A,1110
+CLI-L4-005,cli,70.48,3,2,False,False,,N/A,5226
+CLI-L4-006,cli,15.71,3,1,False,True,,N/A,972
+CLI-L4-007,cli,10.63,3,3,True,False,,N/A,729
+CLI-L4-008,cli,10.76,3,1,False,True,,N/A,690
+CLI-L4-009,cli,12.19,3,1,False,False,,N/A,664
+CLI-L4-010,cli,5.39,3,1,False,True,,N/A,519

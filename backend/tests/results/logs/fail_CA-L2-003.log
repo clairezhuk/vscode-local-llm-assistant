@@ -1,0 +1,26 @@
+QUERY: Write a function dijkstra(graph, start) that calculates the shortest distance from the start node to all other nodes in a weighted graph (dict of dicts). Return a dictionary of distances.
+ERROR: Python Error: SyntaxError: f-string: unmatched '('
+
+AI RESPONSE:
+```python
+import collections
+
+def dijkstra(graph, start):
+    distances = defaultdict(lambda: float('inf'))
+    distances[start] = 0
+
+    queue = collections.deque([start])
+
+    while queue:
+        current_node = queue.popleft()
+        for neighbor, weight in graph[current_node].items():
+            new_distance = distances[current_node] + weight
+            if new_distance < distances[neighbor]:
+                distances[neighbor] = new_distance
+                queue.append(neighbor)
+
+    return distances
+```
+
+> **⚠️ AI Warning:** I tried to fix this code, but it may still contain errors:
+> `NameError: You called undefined functions: float, defaultdict. Please define them or import them.`

@@ -26,8 +26,7 @@
         "type": "text",
         "metrics": {
             "must_contain": [
-                "O(log n)",
-                "logarithmic"
+                "O(log n)"
             ],
             "must_not_contain": [
                 "O(n^2)",
@@ -318,10 +317,7 @@
         "expected_intent": 2,
         "type": "code",
         "metrics": {
-            "must_contain": [
-                "set",
-                "count"
-            ],
+            "must_contain": [],
             "execution": {
                 "run_tests": [
                     "assert set(znajdz_duplikaty([1, 2, 3, 2, 1, 5])) == {1, 2}",

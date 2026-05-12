@@ -1,0 +1,297 @@
+[
+    {
+        "id": "CA-L2-001",
+        "description": "Depth-First Search (DFS) implementation for pathfinding.",
+        "query": "Napisz funkcję dfs_path(graph, start, goal), która znajduje dowolną ścieżkę w grafie reprezentowanym jako słownik list sąsiedztwa. Funkcja powinna zwracać listę węzłów.",
+        "context_files": [],
+        "expected_intent": 2,
+        "type": "code",
+        "metrics": {
+            "must_contain": ["stack", "visited", "pop"],
+            "execution": {
+                "run_tests": [
+                    "graph = {'A': ['B', 'C'], 'B': ['D'], 'C': ['D'], 'D': ['E'], 'E': []}",
+                    "path = dfs_path(graph, 'A', 'E')",
+                    "assert path[0] == 'A' and path[-1] == 'E', 'Path must start at A and end at E'",
+                    "for i in range(len(path)-1): assert path[i+1] in graph[path[i]], 'Invalid transition in path'"
+                ]
+            }
+        }
+    },
+    {
+        "id": "CA-L2-002",
+        "description": "Breadth-First Search (BFS) for shortest path in unweighted graph.",
+        "query": "Implement a function bfs_shortest_path(graph, start, goal) that returns the shortest path as a list of nodes using a queue.",
+        "context_files": [],
+        "expected_intent": 2,
+        "type": "code",
+        "metrics": {
+            "must_contain": ["deque", "queue", "popleft"],
+            "execution": {
+                "run_tests": [
+                    "graph = {'A': ['B', 'C'], 'B': ['A', 'D', 'E'], 'C': ['A', 'F'], 'D': ['B'], 'E': ['B', 'F'], 'F': ['C', 'E']}",
+                    "path = bfs_shortest_path(graph, 'A', 'F')",
+                    "assert path == ['A', 'C', 'F'], f'Expected [A, C, F], got {path}'",
+                    "assert bfs_shortest_path(graph, 'D', 'F') == ['D', 'B', 'E', 'F']"
+                ]
+            }
+        }
+    },
+    {
+        "id": "CA-L2-003",
+        "description": "Dijkstra's algorithm for weighted shortest path.",
+        "query": "Write a function dijkstra(graph, start) that calculates the shortest distance from the start node to all other nodes in a weighted graph (dict of dicts). Return a dictionary of distances.",
+        "context_files": [],
+        "expected_intent": 2,
+        "type": "code",
+        "metrics": {
+            "must_contain": ["heapq", "heappop", "heappush", "float('inf')"],
+            "execution": {
+                "run_tests": [
+                    "graph = {'A': {'B': 1, 'C': 4}, 'B': {'C': 2, 'D': 5}, 'C': {'D': 1}, 'D': {}}",
+                    "distances = dijkstra(graph, 'A')",
+                    "assert distances['D'] == 4, f'Shortest path to D should be 4 (A-B-C-D), got {distances.get('D')}'",
+                    "assert distances['A'] == 0",
+                    "assert distances['C'] == 3"
+                ]
+            }
+        }
+    },
+    {
+        "id": "CA-L2-004",
+        "description": "0/1 Knapsack problem using dynamic programming.",
+        "query": "Implement the knapsack(values, weights, capacity) function using dynamic programming to find the maximum value that can fit in the given capacity.",
+        "context_files": [],
+        "expected_intent": 2,
+        "type": "code",
+        "metrics": {
+            "must_contain": ["dp", "range", "max"],
+            "execution": {
+                "run_tests": [
+                    "res = knapsack([60, 100, 120], [10, 20, 30], 50)",
+                    "assert res == 220, 'Standard knapsack failed'",
+                    "assert knapsack([10, 20, 30], [1, 1, 1], 2) == 50, 'Small capacity test failed'",
+                    "assert knapsack([50], [10], 5) == 0, 'Oversized item test failed'"
+                ]
+            }
+        }
+    },
+    {
+        "id": "CA-L2-005",
+        "description": "Longest Common Subsequence (LCS) algorithm.",
+        "query": "Write a function lcs(s1, s2) that returns the length of the longest common subsequence between two strings using dynamic programming.",
+        "context_files": [],
+        "expected_intent": 2,
+        "type": "code",
+        "metrics": {
+            "must_contain": ["dp", "len", "if", "else"],
+            "execution": {
+                "run_tests": [
+                    "assert lcs('abcde', 'ace') == 3, 'LCS of abcde and ace is ace (3)'",
+                    "assert lcs('abc', 'abc') == 3",
+                    "assert lcs('abc', 'def') == 0",
+                    "assert lcs('aggtab', 'gxtxayb') == 4"
+                ]
+            }
+        }
+    },
+    {
+        "id": "CA-L2-006",
+        "description": "Complex email validation using Regex.",
+        "query": "Create a function get_valid_emails(text) that uses a regular expression to extract all valid email addresses. It must support subdomains and '+' aliases.",
+        "context_files": [],
+        "expected_intent": 2,
+        "type": "code",
+        "metrics": {
+            "must_contain": ["re.findall", "r'"],
+            "execution": {
+                "run_tests": [
+                    "text = 'Contact us at dev.team+filter@sub.domain.com or info@corp.co.uk. Not an email: @wrong.com or a@b.'",
+                    "emails = get_valid_emails(text)",
+                    "assert 'dev.team+filter@sub.domain.com' in emails",
+                    "assert 'info@corp.co.uk' in emails",
+                    "assert len(emails) == 2"
+                ]
+            }
+        }
+    },
+    {
+        "id": "CA-L2-007",
+        "description": "Log file parsing with grouping.",
+        "query": "Write a function parse_log_errors(logs) that takes a multi-line string of logs in format [YYYY-MM-DD HH:MM:SS] [LEVEL] Message and returns a list of dictionaries for each 'ERROR' level entry, containing 'date' and 'message'.",
+        "context_files": [],
+        "expected_intent": 2,
+        "type": "code",
+        "metrics": {
+            "must_contain": ["re.finditer", "ERROR"],
+            "execution": {
+                "run_tests": [
+                    "data = '[2023-10-01 10:00:00] [INFO] Start\n[2023-10-01 10:05:22] [ERROR] Database connection failed\n[2023-10-01 10:10:00] [ERROR] Timeout occurred'",
+                    "errors = parse_log_errors(data)",
+                    "assert len(errors) == 2",
+                    "assert errors[0]['date'] == '2023-10-01 10:05:22'",
+                    "assert 'Database connection' in errors[0]['message']"
+                ]
+            }
+        }
+    },
+    {
+        "id": "CA-L2-008",
+        "description": "Selection logic for Monte Carlo Tree Search (UCB1).",
+        "query": "Implement a function ucb1(node_win_rate, node_visits, total_parent_visits, exploration_weight=1.41) which calculates the UCB1 score for MCTS node selection.",
+        "context_files": [],
+        "expected_intent": 2,
+        "type": "code",
+        "metrics": {
+            "must_contain": ["math.log", "math.sqrt"],
+            "execution": {
+                "run_tests": [
+                    "import math",
+                    "score = ucb1(0.8, 10, 100)",
+                    "expected = 0.8 + 1.41 * math.sqrt(math.log(100) / 10)",
+                    "assert abs(score - expected) < 1e-5",
+                    "assert ucb1(0.5, 1, 10) > ucb1(0.5, 5, 10), 'UCB1 should favor less visited nodes'"
+                ]
+            }
+        }
+    },
+    {
+        "id": "CA-L2-009",
+        "description": "Audio signal processing pipeline simulation.",
+        "query": "Create a function process_signal(data, threshold) that simulates an audio pipeline: 1. Normalize (divide by max), 2. Apply Noise Gate (values below threshold become 0), 3. Apply Gain (multiply by 1.5). Return the new list.",
+        "context_files": [],
+        "expected_intent": 2,
+        "type": "code",
+        "metrics": {
+            "must_contain": ["max", "1.5"],
+            "execution": {
+                "run_tests": [
+                    "signal = [0.1, 0.5, 1.0, 0.2, 0.05]",
+                    "processed = process_signal(signal, 0.2)",
+                    "assert max(processed) == 1.5",
+                    "assert processed[-1] == 0, 'Noise gate failed'",
+                    "assert processed[2] == 1.5"
+                ]
+            }
+        }
+    },
+    {
+        "id": "CA-L2-010",
+        "description": "Custom K-Means clustering implementation (Assignment step).",
+        "query": "Write a function assign_clusters(points, centroids) that returns a list of cluster indices for each point. Each point is a tuple (x, y). Calculate Euclidean distance to each centroid and pick the closest.",
+        "context_files": [],
+        "expected_intent": 2,
+        "type": "code",
+        "metrics": {
+            "must_contain": ["distance", "min", "range"],
+            "execution": {
+                "run_tests": [
+                    "pts = [(1, 1), (5, 5), (1, 2)]",
+                    "cntrs = [(0, 0), (10, 10)]",
+                    "clusters = assign_clusters(pts, cntrs)",
+                    "assert clusters == [0, 1, 0]",
+                    "assert assign_clusters([(9, 8)], cntrs) == [1]"
+                ]
+            }
+        }
+    },
+    {
+        "id": "CA-L2-011",
+        "description": "3D coordinate transformation (Rotation).",
+        "query": "Napisz funkcję rotate_z(point, angle_rad), która obraca punkt 3D (x, y, z) wokół osi Z. Zastosuj macierz rotacji i zwróć nową krotkę (x, y, z).",
+        "context_files": [],
+        "expected_intent": 2,
+        "type": "code",
+        "metrics": {
+            "must_contain": ["math.cos", "math.sin"],
+            "execution": {
+                "run_tests": [
+                    "import math",
+                    "p = (1, 0, 5)",
+                    "new_p = rotate_z(p, math.pi / 2)",
+                    "assert abs(new_p[0] - 0) < 1e-7",
+                    "assert abs(new_p[1] - 1) < 1e-7",
+                    "assert new_p[2] == 5, 'Z coordinate should not change'"
+                ]
+            }
+        }
+    },
+    {
+        "id": "CA-L2-012",
+        "description": "Find Shortest Path using BFS on a grid.",
+        "query": "Implement grid_shortest_path(grid, start, end) where 0 is walkable and 1 is a wall. Start/End are (row, col) tuples. Return path length or -1. Move only Up, Down, Left, Right.",
+        "context_files": [],
+        "expected_intent": 2,
+        "type": "code",
+        "metrics": {
+            "must_contain": ["queue", "visited"],
+            "execution": {
+                "run_tests": [
+                    "grid = [[0, 0, 0], [1, 1, 0], [0, 0, 0]]",
+                    "assert grid_shortest_path(grid, (0,0), (2,0)) == 6, 'Should go around the wall'",
+                    "assert grid_shortest_path(grid, (0,0), (0,2)) == 2"
+                ]
+            }
+        }
+    },
+    {
+        "id": "CA-L2-013",
+        "description": "Parsing hierarchical log data.",
+        "query": "Implement parse_nested_logs(lines) that finds all occurrences of patterns like Module[Name]: Status[Value] and returns a dictionary mapping Name to Value.",
+        "context_files": [],
+        "expected_intent": 2,
+        "type": "code",
+        "metrics": {
+            "must_contain": ["re.findall", ":"],
+            "execution": {
+                "run_tests": [
+                    "logs = 'Module[Auth]: Status[OK]\nModule[DB]: Status[Connected]\nRaw data block...'",
+                    "res = parse_nested_logs(logs)",
+                    "assert res['Auth'] == 'OK'",
+                    "assert res['DB'] == 'Connected'",
+                    "assert len(res) == 2"
+                ]
+            }
+        }
+    },
+    {
+        "id": "CA-L2-014",
+        "description": "Signal windowing transformation (Hamming-like).",
+        "query": "Write a function apply_window(signal) that multiplies each element s[i] in a list by a weight w = 0.5 * (1 - cos(2*pi*i / (N-1))) where N is signal length. Return the new signal.",
+        "context_files": [],
+        "expected_intent": 2,
+        "type": "code",
+        "metrics": {
+            "must_contain": ["math.cos", "math.pi"],
+            "execution": {
+                "run_tests": [
+                    "import math",
+                    "s = [1.0, 1.0, 1.0]",
+                    "win = apply_window(s)",
+                    "assert win[0] == 0.0, 'Start of window should be 0'",
+                    "assert abs(win[1] - 1.0) < 1e-7, 'Middle of 3-point Hanning window should be 1.0'",
+                    "assert win[2] == 0.0"
+                ]
+            }
+        }
+    },
+    {
+        "id": "CA-L2-015",
+        "description": "Vectorized 3D Scaling transformation.",
+        "query": "Write a function scale_3d(points, factors) that takes a list of points (x, y, z) and a factor tuple (sx, sy, sz) and returns the list of scaled points.",
+        "context_files": [],
+        "expected_intent": 2,
+        "type": "code",
+        "metrics": {
+            "must_contain": ["*"],
+            "execution": {
+                "run_tests": [
+                    "pts = [(1, 1, 1), (2, 3, 4)]",
+                    "res = scale_3d(pts, (2, 0.5, 10))",
+                    "assert res[0] == (2, 0.5, 10)",
+                    "assert res[1] == (4, 1.5, 40)"
+                ]
+            }
+        }
+    }
+]

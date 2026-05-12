@@ -1,272 +1,142 @@
 [
-    {
-        "id": "LIB-L4-001",
-        "description": "SciPy vs NumPy concept",
-        "query": "Which Python library is primarily built on top of NumPy and provides more advanced mathematical algorithms like numerical integration and optimization?",
-        "context_files": [],
-        "expected_intent": 1,
-        "type": "text",
-        "metrics": {
-            "must_contain": ["SciPy", "scipy"],
-            "must_not_contain": ["pandas", "matplotlib"]
-        }
-    },
-    {
-        "id": "LIB-L4-002",
-        "description": "Pandas groupby implementation (mist)",
-        "query": "Wrtie a pandas function `get_mean_age(df)` that groups by the 'department' column and returns a Series of the mean 'age' for each department.",
-        "context_files": [],
-        "expected_intent": 2,
-        "type": "code",
-        "metrics": {
-            "must_contain": ["def get_mean_age", "groupby"],
-            "must_not_contain": [],
-            "execution": {
-                "run_tests": "import pandas as pd; df = pd.DataFrame({'department': ['IT', 'HR', 'IT'], 'age': [30, 40, 50]}); assert get_mean_age(df).loc['IT'] == 40.0"
-            }
-        }
-    },
-    {
-        "id": "LIB-L4-003",
-        "description": "Seaborn concept",
-        "query": "Which statistical data visualization library in Python is based on matplotlib and provides a higher-level interface for drawing attractive statistical graphics?",
-        "context_files": [],
-        "expected_intent": 1,
-        "type": "text",
-        "metrics": {
-            "must_contain": ["seaborn", "Seaborn"],
-            "must_not_contain": ["plotly", "bokeh"]
-        }
-    },
-    {
-        "id": "LIB-L4-004",
-        "description": "NumPy matrix multiplication (mist)",
-        "query": "Crate a function `matrix_mult(a, b)` using numpy that returns the true dot product (matrix multiplication) of two 2D arrays, not element-wise multiplication.",
-        "context_files": [],
-        "expected_intent": 2,
-        "type": "code",
-        "metrics": {
-            "must_contain": ["def matrix_mult"],
-            "must_not_contain": [],
-            "execution": {
-                "run_tests": "import numpy as np; a = np.array([[1, 2], [3, 4]]); b = np.array([[2, 0], [1, 2]]); assert matrix_mult(a, b)[0,0] == 4"
-            }
-        }
-    },
-    {
-        "id": "LIB-L4-005",
-        "description": "PyTorch vs TensorFlow PL",
-        "query": "Która popularna biblioteka do uczenia maszynowego słynie z domyślnego wykorzystania dynamicznego grafu obliczeniowego (dynamic computational graph): PyTorch czy TensorFlow?",
-        "context_files": [],
-        "expected_intent": 1,
-        "type": "text",
-        "metrics": {
-            "must_contain": ["PyTorch", "pytorch"],
-            "must_not_contain": ["TensorFlow", "tensorflow"]
-        }
-    },
-    {
-        "id": "LIB-L4-006",
-        "description": "FastAPI basic endpoint PL (mist)",
-        "query": "Npisz prostą aplikację webową FastAPI (zainicjuj jako zmienną `app`), która definiuje endpoint GET `/ping` zwracający JSON `{\"status\": \"ok\"}`.",
-        "context_files": [],
-        "expected_intent": 2,
-        "type": "code",
-        "metrics": {
-            "must_contain": ["FastAPI", "@app.get", "\"/ping\""],
-            "must_not_contain": ["Flask"],
-            "execution": {
-                "run_tests": "from fastapi.testclient import TestClient; client = TestClient(app); assert client.get('/ping').json() == {'status': 'ok'}"
-            }
-        }
-    },
-    {
-        "id": "LIB-L4-007",
-        "description": "Plotly concept",
-        "query": "If I need to create highly interactive plots for a web dashboard in Python (with hover effects, zooming, etc.), which library is typically a better choice: matplotlib or plotly?",
-        "context_files": [],
-        "expected_intent": 1,
-        "type": "text",
-        "metrics": {
-            "must_contain": ["plotly", "Plotly"],
-            "must_not_contain": []
-        }
-    },
-    {
-        "id": "LIB-L4-008",
-        "description": "NumPy histogram bins (mist)",
-        "query": "Wrtie a function `extract_bins(data, n)` using numpy to return an array of only the bin edges of a histogram with `n` bins for the given data.",
-        "context_files": [],
-        "expected_intent": 2,
-        "type": "code",
-        "metrics": {
-            "must_contain": ["def extract_bins", "histogram"],
-            "must_not_contain": [],
-            "execution": {
-                "run_tests": "import numpy as np; assert len(extract_bins([1, 2, 3], 2)) == 3"
-            }
-        }
-    },
-    {
-        "id": "LIB-L4-009",
-        "description": "Pandas dropna concept",
-        "query": "What pandas DataFrame method is used to remove rows or columns that contain missing values (NaN)?",
-        "context_files": [],
-        "expected_intent": 1,
-        "type": "text",
-        "metrics": {
-            "must_contain": ["dropna"],
-            "must_not_contain": ["fillna"]
-        }
-    },
-    {
-        "id": "LIB-L4-010",
-        "description": "Pandas fillna implementation (mist)",
-        "query": "Use oandas to write a function `fill_missing(df)` that replaces all NaN values in a DataFrame with the column mean.",
-        "context_files": [],
-        "expected_intent": 2,
-        "type": "code",
-        "metrics": {
-            "must_contain": ["def fill_missing", "fillna", "mean"],
-            "must_not_contain": ["dropna"],
-            "execution": {
-                "run_tests": "import pandas as pd; import numpy as np; df = pd.DataFrame({'A': [1, np.nan, 3]}); res = fill_missing(df); assert res['A'][1] == 2.0"
-            }
-        }
-    },
-    {
-        "id": "LIB-L4-011",
-        "description": "NumPy array concept PL",
-        "query": "W bibliotece NumPy, jak nazywa się główny obiekt (typ danych) reprezentujący wielowymiarową tablicę jednorodnych elementów?",
-        "context_files": [],
-        "expected_intent": 1,
-        "type": "text",
-        "metrics": {
-            "must_contain": ["ndarray", "array"],
-            "must_not_contain": ["list", "tensor"]
-        }
-    },
-    {
-        "id": "LIB-L4-012",
-        "description": "SciPy distance implementation PL (mist)",
-        "query": "Zaimplemetuj funkcję `euclidean_dist(a, b)` używając modułu `spatial.distance` z biblioteki `scipy`, aby policzyć odległość Euklidesową między dwoma punktami.",
-        "context_files": [],
-        "expected_intent": 2,
-        "type": "code",
-        "metrics": {
-            "must_contain": ["def euclidean_dist", "euclidean"],
-            "must_not_contain": [],
-            "execution": {
-                "run_tests": "import scipy.spatial; assert euclidean_dist([0, 0], [3, 4]) == 5.0"
-            }
-        }
-    },
-    {
-        "id": "LIB-L4-013",
-        "description": "PyTorch tensor vs Numpy concept",
-        "query": "What is the primary technical advantage of using a PyTorch Tensor over a standard NumPy ndarray when training deep learning models?",
-        "context_files": [],
-        "expected_intent": 1,
-        "type": "text",
-        "metrics": {
-            "must_contain": ["GPU", "acceleration", "CUDA", "gradients", "autograd", "computation graph"],
-            "must_not_contain": []
-        }
-    },
-    {
-        "id": "LIB-L4-014",
-        "description": "PyTorch basic tensor math (mist)",
-        "query": "Creeate a function `tensor_sum(a, b)` in torch that takes two standard python lists, converts them to 1D PyTorch tensors, and returns their element-wise sum as a tensor.",
-        "context_files": [],
-        "expected_intent": 2,
-        "type": "code",
-        "metrics": {
-            "must_contain": ["def tensor_sum", "torch.tensor", "import torch"],
-            "must_not_contain": [],
-            "execution": {
-                "run_tests": "import torch; res = tensor_sum([1, 2], [3, 4]); assert torch.equal(res, torch.tensor([4, 6]))"
-            }
-        }
-    },
-    {
-        "id": "LIB-L4-015",
-        "description": "TensorFlow Keras concept",
-        "query": "Which high-level neural networks API is integrated directly into TensorFlow 2.x as its primary building block for defining and training models?",
-        "context_files": [],
-        "expected_intent": 1,
-        "type": "text",
-        "metrics": {
-            "must_contain": ["Keras", "keras"],
-            "must_not_contain": ["PyTorch"]
-        }
-    },
-    {
-        "id": "LIB-L4-016",
-        "description": "TensorFlow constant creation (mist)",
-        "query": "Write a function `create_tf_const(val)` that retunrs a TensorFlow constant tensor containing the value `val` specifically with a float32 data type.",
-        "context_files": [],
-        "expected_intent": 2,
-        "type": "code",
-        "metrics": {
-            "must_contain": ["def create_tf_const", "tf.constant", "float32"],
-            "must_not_contain": [],
-            "execution": {
-                "run_tests": "import tensorflow as tf; t = create_tf_const(42); assert t.dtype == tf.float32 and tf.cast(t, tf.int32).numpy() == 42"
-            }
-        }
-    },
-    {
-        "id": "LIB-L4-017",
-        "description": "FastAPI vs Flask concept PL",
-        "query": "Który framework Pythonowy (Flask czy FastAPI) natywnie opiera się na standardzie ASGI, asynchroniczności (async/await) oraz oferuje automatyczną generację dokumentacji API (Swagger)?",
-        "context_files": [],
-        "expected_intent": 1,
-        "type": "text",
-        "metrics": {
-            "must_contain": ["FastAPI", "fastapi"],
-            "must_not_contain": []
-        }
-    },
-    {
-        "id": "LIB-L4-018",
-        "description": "Matplotlib subplots (mist)",
-        "query": "Write a funciton `get_subplot_axes(rows, cols)` that uses matplotlib to create a figure and a grid of subplots, returning only the `axes` array.",
-        "context_files": [],
-        "expected_intent": 2,
-        "type": "code",
-        "metrics": {
-            "must_contain": ["def get_subplot_axes", "subplots"],
-            "must_not_contain": [],
-            "execution": {
-                "run_tests": "import matplotlib.pyplot as plt; axes = get_subplot_axes(2, 3); assert axes.shape == (2, 3)"
-            }
-        }
-    },
-    {
-        "id": "LIB-L4-019",
-        "description": "Pandas apply concept",
-        "query": "Which pandas DataFrame method allows you to apply a custom Python function along a specific axis (either iterating over rows or columns)?",
-        "context_files": [],
-        "expected_intent": 1,
-        "type": "text",
-        "metrics": {
-            "must_contain": ["apply"],
-            "must_not_contain": ["map", "applymap"]
-        }
-    },
-    {
-        "id": "LIB-L4-020",
-        "description": "Seaborn load dataset (mist)",
-        "query": "Wriet a python function `load_iris_df()` that uses seaborn's built-in dataset loader function to load and return the 'iris' dataset as a pandas DataFrame.",
-        "context_files": [],
-        "expected_intent": 2,
-        "type": "code",
-        "metrics": {
-            "must_contain": ["def load_iris_df", "load_dataset", "iris"],
-            "must_not_contain": [],
-            "execution": {
-                "run_tests": "import seaborn as sns; df = load_iris_df(); assert 'species' in df.columns and len(df) == 150"
-            }
-        }
+  {
+    "id": "CLI-L4-001",
+    "description": "Find Python files recursively.",
+    "query": "Find all files with extension .py in the current directory and its subdirectories.",
+    "context_files": [],
+    "expected_intent": 3,
+    "type": "cli",
+    "metrics": {
+      "must_contain": ["find", ".py", "-name"],
+      "execution": {
+        "verify_cmd": "echo 'print(1)' > test.py && mkdir -p sub && echo 'print(2)' > sub/test2.py && find . -name '*.py' | grep -q 'sub/test2.py'"
+      }
     }
+  },
+  {
+    "id": "CLI-L4-002",
+    "description": "Extract unique IPs from log (Polish).",
+    "query": "Wyciągnij wszystkie unikalne adresy IP z pliku access.log i posortuj je.",
+    "context_files": [],
+    "expected_intent": 3,
+    "type": "cli",
+    "metrics": {
+      "must_contain": ["grep", "sort", "-u"],
+      "execution": {
+        "verify_cmd": "echo '192.168.1.1\\n192.168.1.2\\n192.168.1.1' > access.log && grep -oE '[0-9]+\\.[0-9]+\\.[0-9]+\\.[0-9]+' access.log | sort -u"
+      }
+    }
+  },
+  {
+    "id": "CLI-L4-003",
+    "description": "Kill process on port 8080.",
+    "query": "Find the PID of the process using port 8080 and kill it.",
+    "context_files": [],
+    "expected_intent": 3,
+    "type": "cli",
+    "metrics": {
+      "must_contain": ["lsof", "8080", "kill"],
+      "execution": {
+        "verify_cmd": "exit 0"
+      }
+    }
+  },
+  {
+    "id": "CLI-L4-004",
+    "description": "Archive directory excluding hidden files.",
+    "query": "Create a tar.gz archive of the 'data' folder, but exclude all hidden files like .DS_Store or .git.",
+    "context_files": [],
+    "expected_intent": 3,
+    "type": "cli",
+    "metrics": {
+      "must_contain": ["tar", "exclude", "data"],
+      "execution": {
+        "verify_cmd": "mkdir data && touch data/file.txt data/.hidden && tar --exclude='.*' -czf data.tar.gz data && [ -f data.tar.gz ]"
+      }
+    }
+  },
+  {
+    "id": "CLI-L4-005",
+    "description": "Set specific file permissions (chmod 744).",
+    "query": "Make the script run.sh executable for the owner, but read-only for everyone else.",
+    "context_files": [],
+    "expected_intent": 3,
+    "type": "cli",
+    "metrics": {
+      "must_contain": ["chmod", "744", "run.sh"],
+      "execution": {
+        "verify_cmd": "touch run.sh && chmod 744 run.sh && [ $(stat -c %a run.sh) -eq 744 ]"
+      }
+    }
+  },
+  {
+    "id": "CLI-L4-006",
+    "description": "Search text inside files recursively.",
+    "query": "Search for the string 'TODO' in all files within the 'src' directory recursively, showing line numbers.",
+    "context_files": [],
+    "expected_intent": 3,
+    "type": "cli",
+    "metrics": {
+      "must_contain": ["grep", "-r", "TODO", "src"],
+      "execution": {
+        "verify_cmd": "mkdir src && echo 'TODO: fix this' > src/app.py && grep -rn 'TODO' src"
+      }
+    }
+  },
+  {
+    "id": "CLI-L4-007",
+    "description": "Check disk usage of subdirectories (Polish).",
+    "query": "Pokaż rozmiar wszystkich folderów w bieżącym katalogu, posortowany od największego, w czytelnym formacie.",
+    "context_files": [],
+    "expected_intent": 3,
+    "type": "cli",
+    "metrics": {
+      "must_contain": ["du", "-sh", "sort", "-h"],
+      "execution": {
+        "verify_cmd": "exit 0"
+      }
+    }
+  },
+  {
+    "id": "CLI-L4-008",
+    "description": "Count lines in specific file types.",
+    "query": "Count the total number of lines in all .txt files in the current folder.",
+    "context_files": [],
+    "expected_intent": 3,
+    "type": "cli",
+    "metrics": {
+      "must_contain": ["wc -l", "*.txt"],
+      "execution": {
+        "verify_cmd": "echo '1\\n2' > a.txt && echo '3' > b.txt && [ $(wc -l *.txt | tail -n 1 | awk '{print $1}') -eq 3 ]"
+      }
+    }
+  },
+  {
+    "id": "CLI-L4-009",
+    "description": "Rename multiple files with prefix.",
+    "query": "Rename all .jpg files in the current directory by adding the prefix 'backup_' to their names.",
+    "context_files": [],
+    "expected_intent": 3,
+    "type": "cli",
+    "metrics": {
+      "must_contain": ["mv", "rename", "*.jpg"],
+      "execution": {
+        "verify_cmd": "touch a.jpg b.jpg && for f in *.jpg; do mv \"$f\" \"backup_$f\"; done && [ -f backup_a.jpg ]"
+      }
+    }
+  },
+  {
+    "id": "CLI-L4-010",
+    "description": "Check memory usage info.",
+    "query": "Display the current system memory usage in megabytes.",
+    "context_files": [],
+    "expected_intent": 3,
+    "type": "cli",
+    "metrics": {
+      "must_contain": ["free", "-m"],
+      "execution": {
+        "verify_cmd": "exit 0"
+      }
+    }
+  }
 ]

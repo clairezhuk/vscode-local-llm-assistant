@@ -43,14 +43,16 @@ def extract_cli(text: str) -> str:
     match = re.search(r'```(?:bash|sh|cmd)?\s*\n(.*?)\n```', text, re.DOTALL)
     return match.group(1).strip() if match else text.replace("`", "").strip()
 
-def run_isolated_code(ai_code: str, asserts: str) -> tuple[bool, str]:
-    if not ai_code: return False, "No code generated"
+def run_isolated_code(ai_code: str, asserts: list) -> tuple[bool, str]:
+    if not ai_code: 
+        return False, "No code block found (ensure AI outputs code in ```python blocks)"
     indented_asserts = ""
     if isinstance(asserts, list):
         for line in asserts:
-            indented_asserts += f"    {line}\n"
+            indented_asserts += f"        {line}\n"
     else:
-        indented_asserts = f"    {asserts}\n"
+        indented_asserts = f"        {asserts}\n"
+
     full_code = (
         f"{ai_code}\n\n"
         f"# --- AUTOMATED TESTS ---\n"
@@ -59,10 +61,13 @@ def run_isolated_code(ai_code: str, asserts: str) -> tuple[bool, str]:
         f"{indented_asserts}"
         f"        print('TESTS_PASSED')\n"
         f"    except AssertionError as e:\n"
-        f"        print(f'ASSERT_FAIL: {{e}}')\n"
+        f"        msg = str(e) if str(e) else 'Assertion failed'\n"
+        f"        print(f'ASSERT_FAIL: {{msg}}')\n"
         f"    except Exception as e:\n"
         f"        print(f'RUNTIME_ERROR: {{type(e).__name__}}: {{e}}')\n"
-        f"\n__run_benchmark_test()"
+        f"\n"
+        f"if __name__ == '__main__':\n"
+        f"    __run_benchmark_test()"
     )
     
     with tempfile.TemporaryDirectory() as tmpdir:
@@ -85,18 +90,17 @@ def run_isolated_code(ai_code: str, asserts: str) -> tuple[bool, str]:
             
             if "ASSERT_FAIL:" in output:
                 error_msg = re.search(r'ASSERT_FAIL: (.*)', output)
-                return False, error_msg.group(1) if error_msg else "Assertion failed"
+                return False, error_msg.group(1).strip() if error_msg else "Logic error"
                 
             if "RUNTIME_ERROR:" in output:
                 error_msg = re.search(r'RUNTIME_ERROR: (.*)', output)
-                return False, error_msg.group(1) if error_msg else "Runtime error"
+                return False, error_msg.group(1).strip() if error_msg else "Runtime error"
 
-            # Якщо є синтаксична помилка в самому ai_code
             if result.returncode != 0:
-                last_line = result.stderr.strip().split('\n')[-1]
-                return False, f"Python Error: {last_line}"
+                lines = result.stderr.strip().split('\n')
+                return False, f"Python Error: {lines[-1]}"
                 
-            return False, "Unknown execution failure"
+            return False, "Process exited without result"
             
         except subprocess.TimeoutExpired:
             return False, "Execution Timeout (Infinite loop?)"
@@ -138,7 +142,7 @@ def run_benchmarks(target_suites: list = None, limit: int = None):
                 resp = requests.post(API_URL, json={
                     "query": test['query'],
                     "context": {"attached_files": context_data}
-                }, timeout=30).json()
+                }, timeout=120).json()
                 elapsed = time.time() - start_time
             except Exception as e:
                 print(f"API Connection Error: {e}")

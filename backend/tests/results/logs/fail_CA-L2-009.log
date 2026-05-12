@@ -1,0 +1,17 @@
+QUERY: Create a function process_signal(data, threshold) that simulates an audio pipeline: 1. Normalize (divide by max), 2. Apply Noise Gate (values below threshold become 0), 3. Apply Gain (multiply by 1.5). Return the new list.
+ERROR: TypeError: unsupported operand type(s) for /: 'list' and 'float'
+
+AI RESPONSE:
+```python
+def process_signal(signal, threshold=0.15, gain=1.5):
+    # Normalize the signal by dividing by the maximum value
+    normalized_signal = signal / max(signal)
+    
+    # Apply Noise Gate by setting values below the threshold to 0
+    noise_gated_signal = [0 if x < threshold else x for x in normalized_signal]
+    
+    # Apply Gain by multiplying each value by 1.5
+    processed_signal = [x * gain for x in noise_gated_signal]
+    
+    return processed_signal
+```

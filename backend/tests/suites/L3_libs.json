@@ -1,0 +1,417 @@
+[
+  {
+    "id": "LIB-L3-001",
+    "description": "NumPy row-wise argmax.",
+    "query": "Write a function `get_row_max_indices(matrix)` that returns the indices of the maximum values in each row of a 2D NumPy array.",
+    "context_files": [],
+    "expected_intent": 2,
+    "type": "code",
+    "metrics": {
+      "must_contain": ["np.argmax", "axis=1"],
+      "execution": {
+        "run_tests": [
+          "import numpy as np",
+          "matrix = np.array([[1, 5, 2], [10, 2, 3], [7, 8, 9]])",
+          "res = get_row_max_indices(matrix)",
+          "assert np.array_equal(res, [1, 0, 2])",
+          "assert isinstance(res, np.ndarray)"
+        ]
+      }
+    }
+  },
+  {
+    "id": "LIB-L3-002",
+    "description": "NumPy boolean masking for thresholding.",
+    "query": "Implement `apply_threshold(arr, threshold)` which replaces all values in a NumPy array greater than the threshold with 0.",
+    "context_files": [],
+    "expected_intent": 2,
+    "type": "code",
+    "metrics": {
+      "must_contain": [">", "0"],
+      "execution": {
+        "run_tests": [
+          "import numpy as np",
+          "arr = np.array([10, 20, 5, 30])",
+          "res = apply_threshold(arr, 15)",
+          "assert np.array_equal(res, [10, 0, 5, 0])",
+          "assert np.all(apply_threshold(np.array([1, 2]), 0) == 0)"
+        ]
+      }
+    }
+  },
+  {
+    "id": "LIB-L3-003",
+    "description": "Vectorized cosine distance calculation.",
+    "query": "Write a function `cosine_distance(u, v)` using NumPy. Do not use loops. Formula: 1 - (u · v) / (||u|| * ||v||).",
+    "context_files": [],
+    "expected_intent": 2,
+    "type": "code",
+    "metrics": {
+      "must_contain": ["np.dot", "np.linalg.norm"],
+      "execution": {
+        "run_tests": [
+          "import numpy as np",
+          "u, v = np.array([1, 0]), np.array([0, 1])",
+          "assert abs(cosine_distance(u, v) - 1.0) < 1e-7",
+          "u2, v2 = np.array([1, 2]), np.array([1, 2])",
+          "assert abs(cosine_distance(u2, v2) - 0.0) < 1e-7"
+        ]
+      }
+    }
+  },
+  {
+    "id": "LIB-L3-004",
+    "description": "Pandas groupby and mean calculation (Polish).",
+    "query": "Napisz funkcję `get_category_prices(df)`, która grupuje DataFrame według kolumny 'Category' i oblicza średnią kolumny 'Price'.",
+    "context_files": [],
+    "expected_intent": 2,
+    "type": "code",
+    "metrics": {
+      "must_contain": ["groupby", "mean"],
+      "execution": {
+        "run_tests": [
+          "import pandas as pd",
+          "df = pd.DataFrame({'Category': ['A', 'A', 'B'], 'Price': [10, 20, 100]})",
+          "res = get_category_prices(df)",
+          "assert res.loc['A'] == 15",
+          "assert res.loc['B'] == 100"
+        ]
+      }
+    }
+  },
+  {
+    "id": "LIB-L3-005",
+    "description": "Handling missing values with median in Pandas.",
+    "query": "Create a function `fill_nan_with_median(df)` that fills all NaN values in a DataFrame using the median of their respective columns.",
+    "context_files": [],
+    "expected_intent": 2,
+    "type": "code",
+    "metrics": {
+      "must_contain": ["fillna", "median"],
+      "execution": {
+        "run_tests": [
+          "import pandas as pd",
+          "import numpy as np",
+          "df = pd.DataFrame({'val': [1, np.nan, 3, 5]})",
+          "res = fill_nan_with_median(df)",
+          "assert res['val'].iloc[1] == 3.0, f'Expected 3.0, got {res[\"val\"].iloc[1]}'",
+          "assert not res.isnull().values.any()"
+        ]
+      }
+    }
+  },
+  {
+    "id": "LIB-L3-006",
+    "description": "Pandas Left Join on multiple keys.",
+    "query": "Implement `merge_data(df1, df2)` that performs a left join on two DataFrames using both 'id' and 'year' as common keys.",
+    "context_files": [],
+    "expected_intent": 2,
+    "type": "code",
+    "metrics": {
+      "must_contain": ["merge", "how='left'", "on=["],
+      "execution": {
+        "run_tests": [
+          "import pandas as pd",
+          "d1 = pd.DataFrame({'id': [1, 2], 'year': [2020, 2021], 'v1': [10, 20]})",
+          "d2 = pd.DataFrame({'id': [1], 'year': [2020], 'v2': [99]})",
+          "res = merge_data(d1, d2)",
+          "assert len(res) == 2",
+          "assert res.iloc[0]['v2'] == 99",
+          "assert pd.isna(res.iloc[1]['v2'])"
+        ]
+      }
+    }
+  },
+  {
+    "id": "LIB-L3-007",
+    "description": "Matplotlib plot generation with metadata.",
+    "query": "Write a function `create_plot(x, y)` that generates a line plot. Ensure it includes a title 'Data Plot', labels for both axes, and a legend.",
+    "context_files": [],
+    "expected_intent": 2,
+    "type": "code",
+    "metrics": {
+      "must_contain": ["plt.plot", "plt.title", "plt.xlabel", "plt.ylabel", "plt.legend"],
+      "execution": {
+        "run_tests": [
+          "import matplotlib.pyplot as plt",
+          "import matplotlib",
+          "matplotlib.use('Agg')",
+          "create_plot([1, 2], [3, 4])",
+          "fig = plt.gcf()",
+          "assert fig.axes[0].get_title() == 'Data Plot'",
+          "assert fig.axes[0].get_xlabel() != ''",
+          "plt.close()"
+        ]
+      }
+    }
+  },
+  {
+    "id": "LIB-L3-008",
+    "description": "Scikit-Learn Pipeline implementation.",
+    "query": "Create a Scikit-Learn `make_pipeline_model()` function that returns a Pipeline containing a StandardScaler and a RandomForestClassifier.",
+    "context_files": [],
+    "expected_intent": 2,
+    "type": "code",
+    "metrics": {
+      "must_contain": ["Pipeline", "StandardScaler", "RandomForestClassifier"],
+      "execution": {
+        "run_tests": [
+          "from sklearn.pipeline import Pipeline",
+          "from sklearn.preprocessing import StandardScaler",
+          "from sklearn.ensemble import RandomForestClassifier",
+          "pipe = make_pipeline_model()",
+          "assert isinstance(pipe, Pipeline)",
+          "assert any(isinstance(step, StandardScaler) for name, step in pipe.steps)",
+          "assert any(isinstance(step, RandomForestClassifier) for name, step in pipe.steps)"
+        ]
+      }
+    }
+  },
+  {
+    "id": "LIB-L3-009",
+    "description": "Stratified train-test split (Polish).",
+    "query": "Napisz funkcję `split_data(X, y)`, która dzieli dane na zbiór treningowy i testowy (20% test) z zachowaniem proporcji klas (stratify).",
+    "context_files": [],
+    "expected_intent": 2,
+    "type": "code",
+    "metrics": {
+      "must_contain": ["train_test_split", "stratify=y", "test_size=0.2"],
+      "execution": {
+        "run_tests": [
+          "from sklearn.model_selection import train_test_split",
+          "import numpy as np",
+          "X, y = np.zeros((100, 2)), np.array([0]*50 + [1]*50)",
+          "X_train, X_test, y_train, y_test = split_data(X, y)",
+          "assert len(X_test) == 20",
+          "assert sum(y_test == 0) == sum(y_test == 1) == 10"
+        ]
+      }
+    }
+  },
+  {
+    "id": "LIB-L3-010",
+    "description": "PyTorch nn.Module architecture.",
+    "query": "Define a PyTorch class `SimpleNet` that inherits from `nn.Module`. It should have two linear layers (input size 10, hidden size 20, output size 1) with a ReLU activation between them.",
+    "context_files": [],
+    "expected_intent": 2,
+    "type": "code",
+    "metrics": {
+      "must_contain": ["nn.Module", "nn.Linear", "F.relu", "forward"],
+      "execution": {
+        "run_tests": [
+          "import torch",
+          "import torch.nn as nn",
+          "model = SimpleNet()",
+          "assert isinstance(model, nn.Module)",
+          "out = model(torch.randn(5, 10))",
+          "assert out.shape == (5, 1)"
+        ]
+      }
+    }
+  },
+  {
+    "id": "LIB-L3-011",
+    "description": "Custom PyTorch Dataset implementation.",
+    "query": "Implement a `MyDataset` class inheriting from PyTorch's `Dataset`. It must take a list of numbers in `__init__` and implement `__len__` and `__getitem__` (returning the value as a float tensor).",
+    "context_files": [],
+    "expected_intent": 2,
+    "type": "code",
+    "metrics": {
+      "must_contain": ["from torch.utils.data import Dataset", "__len__", "__getitem__"],
+      "execution": {
+        "run_tests": [
+          "import torch",
+          "ds = MyDataset([10, 20, 30])",
+          "assert len(ds) == 3",
+          "assert torch.is_tensor(ds[0])",
+          "assert ds[1].item() == 20.0"
+        ]
+      }
+    }
+  },
+  {
+    "id": "LIB-L3-012",
+    "description": "PyTorch training loop step.",
+    "query": "Write a function `train_step(model, optimizer, criterion, x, y)` that performs exactly one optimization step: zero gradients, forward pass, calculate loss, backward pass, and optimizer step.",
+    "context_files": [],
+    "expected_intent": 2,
+    "type": "code",
+    "metrics": {
+      "must_contain": ["zero_grad", "backward", "step"],
+      "execution": {
+        "run_tests": [
+          "import torch",
+          "import torch.nn as nn",
+          "m = nn.Linear(2, 1)",
+          "opt = torch.optim.SGD(m.parameters(), lr=0.01)",
+          "crit = nn.MSELoss()",
+          "x, y = torch.randn(1, 2), torch.randn(1, 1)",
+          "loss = train_step(m, opt, crit, x, y)",
+          "assert isinstance(loss.item(), float)"
+        ]
+      }
+    }
+  },
+  {
+    "id": "LIB-L3-013",
+    "description": "NumPy column-wise normalization.",
+    "query": "Write a function `normalize_columns(matrix)` that normalizes each column of a 2D NumPy array by subtracting the mean and dividing by the standard deviation of that column.",
+    "context_files": [],
+    "expected_intent": 2,
+    "type": "code",
+    "metrics": {
+      "must_contain": ["np.mean", "np.std", "axis=0"],
+      "execution": {
+        "run_tests": [
+          "import numpy as np",
+          "m = np.array([[10, 2], [20, 4], [30, 6]])",
+          "res = normalize_columns(m)",
+          "assert np.allclose(res.mean(axis=0), 0)",
+          "assert np.allclose(res.std(axis=0), 1)"
+        ]
+      }
+    }
+  },
+  {
+    "id": "LIB-L3-014",
+    "description": "Pandas Multi-condition filtering (Polish).",
+    "query": "Napisz funkcję `filter_data(df)`, która zwraca wiersze gdzie 'Age' > 25 oraz 'City' to 'Warsaw'.",
+    "context_files": [],
+    "expected_intent": 2,
+    "type": "code",
+    "metrics": {
+      "must_contain": ["&", "> 25", "'Warsaw'"],
+      "execution": {
+        "run_tests": [
+          "import pandas as pd",
+          "df = pd.DataFrame({'Age': [20, 30, 30], 'City': ['Warsaw', 'Warsaw', 'Krakow']})",
+          "res = filter_data(df)",
+          "assert len(res) == 1",
+          "assert res.iloc[0]['Age'] == 30"
+        ]
+      }
+    }
+  },
+  {
+    "id": "LIB-L3-015",
+    "description": "Matplotlib Subplots creation.",
+    "query": "Implement `plot_two_charts(data1, data2)` that creates a figure with 1 row and 2 columns of subplots, plotting data1 on the first and data2 on the second.",
+    "context_files": [],
+    "expected_intent": 2,
+    "type": "code",
+    "metrics": {
+      "must_contain": ["plt.subplots", "1, 2", "axes[0]", "axes[1]"],
+      "execution": {
+        "run_tests": [
+          "import matplotlib.pyplot as plt",
+          "import matplotlib",
+          "matplotlib.use('Agg')",
+          "plot_two_charts([1, 2], [3, 4])",
+          "assert len(plt.gcf().axes) == 2",
+          "plt.close()"
+        ]
+      }
+    }
+  },
+  {
+    "id": "LIB-L3-016",
+    "description": "Scikit-Learn Evaluation Metrics.",
+    "query": "Write `get_metrics(y_true, y_pred)` using Scikit-Learn to return a tuple containing the Mean Squared Error and the R2 Score.",
+    "context_files": [],
+    "expected_intent": 2,
+    "type": "code",
+    "metrics": {
+      "must_contain": ["mean_squared_error", "r2_score"],
+      "execution": {
+        "run_tests": [
+          "from sklearn.metrics import mean_squared_error, r2_score",
+          "y_t, y_p = [1, 2, 3], [1, 2, 2]",
+          "mse, r2 = get_metrics(y_t, y_p)",
+          "assert mse == 1/3",
+          "assert isinstance(r2, float)"
+        ]
+      }
+    }
+  },
+  {
+    "id": "LIB-L3-017",
+    "description": "PyTorch Tensor resizing.",
+    "query": "Implement `transform_tensor(t)` that takes a PyTorch tensor of shape (4, 4) and reshapes it to (2, 8) and then transposes it.",
+    "context_files": [],
+    "expected_intent": 2,
+    "type": "code",
+    "metrics": {
+      "must_contain": ["view", "reshape", "t()", "transpose"],
+      "execution": {
+        "run_tests": [
+          "import torch",
+          "t = torch.randn(4, 4)",
+          "res = transform_tensor(t)",
+          "assert res.shape == (8, 2)"
+        ]
+      }
+    }
+  },
+  {
+    "id": "LIB-L3-018",
+    "description": "NumPy Broadcasting for subtraction.",
+    "query": "Given a 2D array and a 1D array, write `subtract_row_vec(matrix, vec)` that subtracts the vector from each row of the matrix using broadcasting.",
+    "context_files": [],
+    "expected_intent": 2,
+    "type": "code",
+    "metrics": {
+      "must_contain": ["-"],
+      "execution": {
+        "run_tests": [
+          "import numpy as np",
+          "m = np.array([[10, 10], [20, 20]])",
+          "v = np.array([1, 2])",
+          "res = subtract_row_vec(m, v)",
+          "assert np.array_equal(res[0], [9, 8])",
+          "assert np.array_equal(res[1], [19, 18])"
+        ]
+      }
+    }
+  },
+  {
+    "id": "LIB-L3-019",
+    "description": "Pandas Pivot Table creation (Polish).",
+    "query": "Stwórz funkcję `pivot_sales(df)`, która tworzy pivot table z sumą 'Sales' dla 'Region' (index) i 'Year' (columns).",
+    "context_files": [],
+    "expected_intent": 2,
+    "type": "code",
+    "metrics": {
+      "must_contain": ["pivot_table", "index='Region'", "columns='Year'", "values='Sales'"],
+      "execution": {
+        "run_tests": [
+          "import pandas as pd",
+          "df = pd.DataFrame({'Region': ['E', 'E', 'W'], 'Year': [2020, 2021, 2020], 'Sales': [1, 2, 10]})",
+          "res = pivot_sales(df)",
+          "assert res.loc['E', 2020] == 1",
+          "assert res.loc['W', 2020] == 10"
+        ]
+      }
+    }
+  },
+  {
+    "id": "LIB-L3-020",
+    "description": "PyTorch Softmax application.",
+    "query": "Write a function `get_probabilities(logits)` that applies the Softmax function to a 1D PyTorch tensor of logits along the correct dimension.",
+    "context_files": [],
+    "expected_intent": 2,
+    "type": "code",
+    "metrics": {
+      "must_contain": ["softmax", "dim=0"],
+      "execution": {
+        "run_tests": [
+          "import torch",
+          "import torch.nn.functional as F",
+          "logits = torch.tensor([1.0, 1.0])",
+          "probs = get_probabilities(logits)",
+          "assert torch.allclose(probs, torch.tensor([0.5, 0.5]))",
+          "assert abs(probs.sum() - 1.0) < 1e-6"
+        ]
+      }
+    }
+  }
+]
