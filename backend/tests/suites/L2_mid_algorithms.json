@@ -1,0 +1,269 @@
+[
+    {
+        "id": "CA-L2-001",
+        "description": "DFS concept",
+        "query": "What graph traversal algorithm explores as far as possible along each branch before backtracking?",
+        "context_files": [],
+        "expected_intent": 1,
+        "type": "text",
+        "metrics": {
+            "must_contain": ["DFS", "Depth-first", "depth-first", "Depth First"],
+            "must_not_contain": ["BFS"]
+        }
+    },
+    {
+        "id": "CA-L2-002",
+        "description": "DFS implementation (mist)",
+        "query": "Wrtie a python function `dfs(graph, start)` to return a list of visited nodes.",
+        "context_files": [],
+        "expected_intent": 2,
+        "type": "code",
+        "metrics": {
+            "must_contain": ["def dfs"],
+            "must_not_contain": [],
+            "execution": {
+                "run_tests": "assert set(dfs({'A': ['B'], 'B': ['A']}, 'A')) == {'A', 'B'}"
+            }
+        }
+    },
+    {
+        "id": "CA-L2-003",
+        "description": "BFS concept",
+        "query": "Which algorithm is commonly used to find the shortest path in an unweighted graph?",
+        "context_files": [],
+        "expected_intent": 1,
+        "type": "text",
+        "metrics": {
+            "must_contain": ["BFS", "Breadth", "breadth"],
+            "must_not_contain": ["Dijkstra"]
+        }
+    },
+    {
+        "id": "CA-L2-004",
+        "description": "BFS implementation (mist)",
+        "query": "Implment `bfs(graph, start)` function in python returning visited nodes.",
+        "context_files": [],
+        "expected_intent": 2,
+        "type": "code",
+        "metrics": {
+            "must_contain": ["def bfs"],
+            "must_not_contain": [],
+            "execution": {
+                "run_tests": "assert bfs({'A': ['B', 'C'], 'B': [], 'C': []}, 'A')[0] == 'A'"
+            }
+        }
+    },
+    {
+        "id": "CA-L2-005",
+        "description": "Dijkstra concept PL",
+        "query": "Jak nazywa się algorytm znajdujący najkrótszą ścieżkę w grafie z wagami nieujemnymi?",
+        "context_files": [],
+        "expected_intent": 1,
+        "type": "text",
+        "metrics": {
+            "must_contain": ["Dijkstr"],
+            "must_not_contain": []
+        }
+    },
+    {
+        "id": "CA-L2-006",
+        "description": "Dijkstra implementation PL (mist)",
+        "query": "Napidz funkcję `dijkstra(graph, start)`, która zwraca najkrótsze dystanse do wszystkich węzłów.",
+        "context_files": [],
+        "expected_intent": 2,
+        "type": "code",
+        "metrics": {
+            "must_contain": ["def dijkstra"],
+            "must_not_contain": [],
+            "execution": {
+                "run_tests": "assert dijkstra({'A': {'B': 1}, 'B': {}}, 'A')['B'] == 1"
+            }
+        }
+    },
+    {
+        "id": "CA-L2-007",
+        "description": "Knapsack concept",
+        "query": "What dynamic programming problem involves maximizing the total value of items placed in a container with a strict weight limit?",
+        "context_files": [],
+        "expected_intent": 1,
+        "type": "text",
+        "metrics": {
+            "must_contain": ["Knapsack", "knapsack", "backpack"],
+            "must_not_contain": []
+        }
+    },
+    {
+        "id": "CA-L2-008",
+        "description": "Knapsack implementation (mist)",
+        "query": "Write the `knapsack(weights, values, capacity)` funciton in python.",
+        "context_files": [],
+        "expected_intent": 2,
+        "type": "code",
+        "metrics": {
+            "must_contain": ["def knapsack"],
+            "must_not_contain": [],
+            "execution": {
+                "run_tests": "assert knapsack([1, 2, 3], [10, 15, 40], 6) == 65"
+            }
+        }
+    },
+    {
+        "id": "CA-L2-009",
+        "description": "LCS concept",
+        "query": "What does LCS stand for in the context of dynamic programming?",
+        "context_files": [],
+        "expected_intent": 1,
+        "type": "text",
+        "metrics": {
+            "must_contain": ["Longest Common Subsequence", "longest common subsequence"],
+            "must_not_contain": ["Substring"]
+        }
+    },
+    {
+        "id": "CA-L2-010",
+        "description": "LCS implementation (mist)",
+        "query": "Ceeate a function `lcs(a, b)` that returns the length of the longest common subsequence.",
+        "context_files": [],
+        "expected_intent": 2,
+        "type": "code",
+        "metrics": {
+            "must_contain": ["def lcs"],
+            "must_not_contain": [],
+            "execution": {
+                "run_tests": "assert lcs('stone', 'longest') == 3"
+            }
+        }
+    },
+    {
+        "id": "CA-L2-011",
+        "description": "Regex concept PL",
+        "query": "Jakiego narzędzia w programowaniu używamy powszechnie do dopasowywania wzorców w tekstach, np. do walidacji adresów email?",
+        "context_files": [],
+        "expected_intent": 1,
+        "type": "text",
+        "metrics": {
+            "must_contain": ["wyrażenia regularne", "regex", "regexp"],
+            "must_not_contain": []
+        }
+    },
+    {
+        "id": "CA-L2-012",
+        "description": "Regex email implementation PL (mist)",
+        "query": "Napisz funkjce `is_valid_email(email)` uzywajac regex w pythonie.",
+        "context_files": [],
+        "expected_intent": 2,
+        "type": "code",
+        "metrics": {
+            "must_contain": ["def is_valid_email", "import re"],
+            "must_not_contain": [],
+            "execution": {
+                "run_tests": "assert is_valid_email('test@example.com') == True and is_valid_email('invalid-email') == False"
+            }
+        }
+    },
+    {
+        "id": "CA-L2-013",
+        "description": "Regex Python module",
+        "query": "Which standard Python module is imported to work with regular expressions?",
+        "context_files": [],
+        "expected_intent": 1,
+        "type": "text",
+        "metrics": {
+            "must_contain": ["re"],
+            "must_not_contain": ["regex"]
+        }
+    },
+    {
+        "id": "CA-L2-014",
+        "description": "Regex log parsing (mist)",
+        "query": "Wrtie a function `extract_ip(line)` using regex to extract an IPv4 address from a log string.",
+        "context_files": [],
+        "expected_intent": 2,
+        "type": "code",
+        "metrics": {
+            "must_contain": ["def extract_ip", "re."],
+            "must_not_contain": [],
+            "execution": {
+                "run_tests": "assert extract_ip('Connection from 192.168.1.1 accepted') == '192.168.1.1'"
+            }
+        }
+    },
+    {
+        "id": "CA-L2-015",
+        "description": "Terminal grep",
+        "query": "Provide the terminal command to search for the exact word 'error' in a file named 'app.log'.",
+        "context_files": [],
+        "expected_intent": 3,
+        "type": "cli",
+        "metrics": {
+            "must_contain": ["grep", "error", "app.log"],
+            "must_not_contain": []
+        }
+    },
+    {
+        "id": "CA-L2-016",
+        "description": "Terminal pip install (mist)",
+        "query": "How to insatll the `numpy` package via pip in the terminal?",
+        "context_files": [],
+        "expected_intent": 3,
+        "type": "cli",
+        "metrics": {
+            "must_contain": ["pip", "install", "numpy"],
+            "must_not_contain": [],
+            "execution": {
+                "verify_cmd": "python -m pip show numpy"
+            }
+        }
+    },
+    {
+        "id": "CA-L2-017",
+        "description": "DP optimization concept",
+        "query": "What is the key technique used in dynamic programming to store results of expensive function calls and reuse them?",
+        "context_files": [],
+        "expected_intent": 1,
+        "type": "text",
+        "metrics": {
+            "must_contain": ["memoization", "tabulation", "caching"],
+            "must_not_contain": []
+        }
+    },
+    {
+        "id": "CA-L2-018",
+        "description": "DFS vs BFS concept PL (mist)",
+        "query": "Czt algorytm BFS używa do swojego działania struktury danych stosu czy kolejki?",
+        "context_files": [],
+        "expected_intent": 1,
+        "type": "text",
+        "metrics": {
+            "must_contain": ["kolejk", "queue"],
+            "must_not_contain": ["stos"]
+        }
+    },
+    {
+        "id": "CA-L2-019",
+        "description": "Dijkstra optimization",
+        "query": "What data structure is typically used to optimize finding the next node with the smallest distance in Dijkstra's algorithm?",
+        "context_files": [],
+        "expected_intent": 1,
+        "type": "text",
+        "metrics": {
+            "must_contain": ["priority queue", "min-heap", "heap", "min heap"],
+            "must_not_contain": []
+        }
+    },
+    {
+        "id": "CA-L2-020",
+        "description": "Terminal venv creation (mist)",
+        "query": "Creeta a Python virtual environment named `venv` using the terminal.",
+        "context_files": [],
+        "expected_intent": 3,
+        "type": "cli",
+        "metrics": {
+            "must_contain": ["venv"],
+            "must_not_contain": [],
+            "execution": {
+                "verify_cmd": "python -c \"import os; assert os.path.isdir('venv')\""
+            }
+        }
+    }
+]

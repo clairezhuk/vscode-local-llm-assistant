@@ -1,0 +1,21 @@
+id,type,time_s,true_intent,rec_intent,intent_ok,format_ok,exec_ok,exec_msg,tokens
+CA-L2-001,text,23.05,1,1,True,True,,N/A,421
+CA-L2-002,code,68.0,2,2,True,True,True,Passed,3180
+CA-L2-003,text,25.98,1,1,True,True,,N/A,1111
+CA-L2-004,code,80.37,2,2,True,True,False,TypeError: 'Graph' object is not subscriptable,6012
+CA-L2-005,text,32.63,1,1,True,True,,N/A,1560
+CA-L2-006,code,70.72,2,2,True,True,False,NameError: name 'defaultdict' is not defined,6583
+CA-L2-007,text,54.77,1,1,True,True,,N/A,2108
+CA-L2-008,code,30.18,2,2,True,True,True,Passed,2033
+CA-L2-009,text,9.72,1,1,True,True,,N/A,1604
+CA-L2-010,code,22.98,2,2,True,True,True,Passed,1441
+CA-L2-011,text,7.91,1,1,True,True,,N/A,776
+CA-L2-012,code,13.91,2,2,True,True,True,Passed,745
+CA-L2-013,text,4.54,1,1,True,True,,N/A,686
+CA-L2-014,code,15.03,2,2,True,True,True,Passed,640
+CA-L2-015,cli,9.85,3,1,False,True,,N/A,644
+CA-L2-016,cli,9.52,3,1,False,True,True,Passed,552
+CA-L2-017,text,25.93,1,2,False,False,,N/A,1574
+CA-L2-018,text,24.02,1,1,True,True,,N/A,976
+CA-L2-019,text,37.05,1,1,True,True,,N/A,1393
+CA-L2-020,cli,16.96,3,1,False,True,False,Command 'python -m venv venv' timed out after 10 seconds,1443

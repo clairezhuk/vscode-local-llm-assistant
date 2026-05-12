@@ -101,7 +101,7 @@ def run_benchmarks(target_suites: list = None, limit: int = None):
             elapsed = time.time() - start_time
             metrics = test.get("metrics", {})
             
-            # 1. Базові метрики (Text/Syntax)
+            # 1. Text/Syntax
             expected_intent = test['expected_intent']
             intent_match = (actual_intent == expected_intent)
             must_contain = metrics.get("must_contain", [])
@@ -109,7 +109,7 @@ def run_benchmarks(target_suites: list = None, limit: int = None):
             no_forbidden = all(word.lower() not in ai_text.lower() for word in metrics.get("must_not_contain", []))            
             format_ok = contains_req and no_forbidden
             
-            # 2. Метрики виконання (Execution)
+            # 2. Execution
             exec_success = None
             exec_msg = "N/A"
             
@@ -120,7 +120,6 @@ def run_benchmarks(target_suites: list = None, limit: int = None):
                 cmd = extract_cli(ai_text)
                 exec_success, exec_msg = run_isolated_cli(cmd, metrics["execution"]["verify_cmd"])
                 
-            # Збираємо рядок результату з новими полями
             result_row = {
                 "id": test['id'],
                 "type": test['type'],
@@ -135,7 +134,7 @@ def run_benchmarks(target_suites: list = None, limit: int = None):
             }
             results.append(result_row)
             
-            # 3. Визначення помилок та логування
+            # 3. Mistakes and logs
             failed = False
             fail_reasons = []
             
@@ -155,7 +154,7 @@ def run_benchmarks(target_suites: list = None, limit: int = None):
                 reason_str = " | ".join(fail_reasons)
                 print(f"  ❌ Failed: {reason_str}")
                 
-                # Логуємо тільки якщо є проблеми з форматом або виконанням
+                # Log only format of execution errors
                 if not format_ok or (exec_success is False):
                     log_path = os.path.join(LOGS_DIR, f"log_{suite_name}_{test['id']}.txt")
                     with open(log_path, "w", encoding="utf-8") as lf:
@@ -163,7 +162,7 @@ def run_benchmarks(target_suites: list = None, limit: int = None):
             else:
                 print("  ✅ Passed")
 
-        # Запис у CSV після завершення сюїти
+        # CSV
         if results:
             keys = results[0].keys()
             csv_path = os.path.join(RESULTS_DIR, f"{suite_name}.csv")

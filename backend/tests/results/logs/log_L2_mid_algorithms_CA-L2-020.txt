@@ -1,0 +1,19 @@
+Query: Creeta a Python virtual environment named `venv` using the terminal.
+
+Fail Reasons: Bad intent (Expected 3, got 1) | Execution fail: Command 'python -m venv venv' timed out after 10 seconds
+
+AI Output:
+To create a Python virtual environment named `venv`, you can use the following command in your terminal or command prompt:
+
+```bash
+python -m venv venv
+```
+
+This command creates a new directory named `venv` in the same directory as the current one. The `venv` directory is a special directory that contains all the necessary files and configurations to run Python applications in a isolated environment. You can activate this environment using the following command (on Windows) or the `source` command (on Unix or MacOS):
+
+```bash
+venv\Scripts\activate  # Windows
+source venv/bin/activate    # Unix or MacOS
+```
+
+Once the virtual environment is activated, you can install packages using `pip` as usual, without needing to install them in the global Python environment.

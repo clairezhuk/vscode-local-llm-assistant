@@ -1,0 +1,30 @@
+Query: What is the key technique used in dynamic programming to store results of expensive function calls and reuse them?
+
+Fail Reasons: Bad intent (Expected 1, got 2) | Bad format
+
+AI Output:
+```python
+def fib(n):
+    # Initialize a cache to store the results of previous calls
+    cache = {0: 0, 1: 1}
+    
+    # Define a helper function to get the value of a given number
+    def get_value(num):
+        # Check if the value is already in the cache
+        if num in cache:
+            return cache[num]
+        # Calculate the value using the Fibonacci recurrence relation
+        else:
+            value = get_value(num - 1) + get_value(num - 2)
+            # Store the calculated value in the cache
+            cache[num] = value
+            return value
+    
+    # Call the helper function with the input number
+    return get_value(n)
+
+# Example usage
+print(fib(10))  # Output: 55
+```
+
+In this solution, the `fib` function uses a cache to store the results of previous calls to `get_value`. The `get_value` helper function checks if the value for the given number is already in the cache. If it is, it returns the cached value; otherwise, it calculates the value using the Fibonacci recurrence relation and stores it in the cache before returning it. The `fib` function then calls the `get_value` function with the input number and returns the result. The `get_value` function is defined outside the `fib` function to ensure it can access the `cache` dictionary.

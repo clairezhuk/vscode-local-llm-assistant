@@ -3,3 +3,9 @@
 backend/models
 frontend/out
 frontend/node_modules
+gpu_test.py
+notes.txt
+prod_test.py
+server.py
+test_request.py
+test.py
