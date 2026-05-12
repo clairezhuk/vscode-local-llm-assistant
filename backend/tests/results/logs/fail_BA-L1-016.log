@@ -1,0 +1,15 @@
+QUERY: Create a function `is_palindrome(s)` that returns True if the string is a palindrome.
+ERROR: Python Error: IndentationError: expected an indented block after 'try' statement on line 11
+
+AI RESPONSE:
+```python
+def is_palindrome(s):
+    return s == s[::-1]
+
+# Example usage
+test_string = "radar"
+result = is_palindrome(test_string)
+print("Is the string", test_string, "a palindrome?", result)
+```
+
+When you run this code, the `is_palindrome` function will return `True` if the input string "radar" is a palindrome, which is the case. Otherwise, it will return `False`. A palindrome is a string that reads the same backward as forward.

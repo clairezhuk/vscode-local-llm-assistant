@@ -1,0 +1,18 @@
+QUERY: Write a function `gcd(a, b)` to find the greatest common divisor of two integers.
+ERROR: Python Error: IndentationError: expected an indented block after 'try' statement on line 14
+
+AI RESPONSE:
+```python
+def gcd(a, b):
+    while b:
+        a, b = b, a % b
+    return a
+
+# Example usage
+a = 48
+b = 18
+result = gcd(a, b)
+print("The greatest common divisor of", a, "and", b, "is", result)
+```
+
+When you run this code, the `gcd` function will return the greatest common divisor of the numbers 48 and 18, which is 6. The Euclidean algorithm is used to find the greatest common divisor (gcd) of two numbers. The algorithm is based on the principle that the greatest common divisor of two numbers also divides their difference.

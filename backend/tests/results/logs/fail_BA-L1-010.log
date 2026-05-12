@@ -1,0 +1,23 @@
+QUERY: Napisz funkcję `fibonacci(n)`, która zwraca n-tą liczbę ciągu Fibonacciego (gdzie fib(0)=0, fib(1)=1).
+ERROR: Python Error: IndentationError: expected an indented block after 'try' statement on line 19
+
+AI RESPONSE:
+```python
+def fibonacci(n):
+    if n == 0:
+        return 0
+    elif n == 1:
+        return 1
+    else:
+        a, b = 0, 1
+        for _ in range(2, n + 1):
+            a, b = b, a + b
+        return b
+
+# Example usage
+n = 5
+result = fibonacci(n)
+print("The", n, "th number in the Fibonacci sequence is", result)
+```
+
+When you run this code, the `fibonacci` function will return the 5th number in the Fibonacci sequence, which is 5. The Fibonacci sequence is a series of numbers where each number is the sum of the two preceding ones, usually starting with 0 and 1.

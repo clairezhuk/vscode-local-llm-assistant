@@ -1,0 +1,31 @@
+QUERY: Implement an optimized `binary_search(arr, target)` function. Assume the input list is sorted.
+ERROR: Python Error: IndentationError: expected an indented block after 'try' statement on line 27
+
+AI RESPONSE:
+```python
+def binary_search(arr, target):
+    low = 0
+    high = len(arr) - 1
+
+    while low <= high:
+        mid = (low + high) // 2
+        if arr[mid] == target:
+            return mid
+        elif arr[mid] < target:
+            low = mid + 1
+        else:
+            high = mid - 1
+
+    return -1
+
+# Example usage
+arr = [1, 2, 3, 4, 5]
+target = 3
+result = binary_search(arr, target)
+if result != -1:
+    print("Element is present at index", result)
+else:
+    print("Element is not present in the array")
+```
+
+When you run this code, the `binary_search` function will search for the target element in the sorted list [1, 2, 3, 4, 5] and print the index of the target element if it is found. If the target element is not found, the function will print a message indicating that the element is not present in the array.

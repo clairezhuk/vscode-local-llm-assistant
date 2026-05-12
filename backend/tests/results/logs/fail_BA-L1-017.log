@@ -1,0 +1,15 @@
+QUERY: Napisz funkcję `znajdz_duplikaty(lista)`, która zwraca listę elementów, które powtarzają się w podanej liście.
+ERROR: Python Error: IndentationError: expected an indented block after 'try' statement on line 11
+
+AI RESPONSE:
+```python
+def znajdz_duplikaty(lista):
+    return [element for element in lista if lista.count(element) > 1]
+
+# Example usage
+lista = [1, 2, 3, 4, 5, 5, 6, 7, 8, 8, 9]
+result = znajdz_duplikaty(lista)
+print("Elements that occur more than once in the list are:", result)
+```
+
+When you run this code, the `znajdz_duplikaty` function will return a list of elements that occur more than once in the `lista`, which is `[5, 8]` in this case. The `count` method is used to count the occurrences of each element in the list, and the list comprehension is used to filter out those with a count greater than 1.

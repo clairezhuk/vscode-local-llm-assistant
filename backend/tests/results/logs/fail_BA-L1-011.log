@@ -1,0 +1,25 @@
+QUERY: Create a function `is_prime(n)` that returns True if the number is prime, and False otherwise.
+ERROR: Python Error: IndentationError: expected an indented block after 'try' statement on line 21
+
+AI RESPONSE:
+```python
+import math
+
+def is_prime(n):
+    if n <= 1:
+        return False
+    for i in range(2, int(math.sqrt(n)) + 1):
+        if n % i == 0:
+            return False
+    return True
+
+# Example usage
+n = 13
+result = is_prime(n)
+if result:
+    print("The number", n, "is prime")
+else:
+    print("The number", n, "is not prime")
+```
+
+When you run this code, the `is_prime` function will return True if the number 13 is prime, which is True. The function checks if a number is divisible by any number from 2 up to the square root of the number. If it is divisible by any of these numbers, the number is not prime. Otherwise, the number is prime.

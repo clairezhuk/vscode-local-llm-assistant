@@ -1,63 +1,73 @@
-Ось структуроване резюме твого проєкту. Це чудова шпаргалка для розуміння поточної архітектури та планування наступних кроків.
+### Project Essence
 
-### 🎯 Суть проєкту
-Локальний AI-асистент програміста (аналог GitHub Copilot) у вигляді розширення для VS Code. 
-* **Ресурси:** Оптимізовано під слабке залізо (2GB VRAM, 8GB RAM). Використовує квантовані моделі (наприклад, Qwen 2.5 Coder 1.5B) через `llama.cpp`.
-* **Ключові фічі:** Чат із підтримкою Markdown, розуміння контексту з прикріплених файлів, автодоповнення коду (Ghost text) та здатність виконувати безпечні команди в інтегрованому терміналі.
+A local AI programming assistant (similar to GitHub Copilot) built as a VS Code extension.
 
----
-
-### 📂 Файлова структура та відповідальність класів
-
-**Фронтенд (VS Code Extension - TypeScript):**
-* `chat_view.ts` (`ChatViewProvider`): Відповідає за інтерфейс чату (Webview). Рендерить Markdown через `marked.js`, обробляє введення тексту та прикріплення файлів.
-* `ghost_text.ts` (`GhostTextProvider`): Реалізує автодоповнення. Передає на бекенд лише останні 15 рядків перед курсором (Sliding Window), щоб не перевантажувати контекст і забезпечити швидку відповідь.
-* `client.ts`: API-клієнт для зв'язку з локальним бекендом.
-
-**Бекенд (FastAPI - Python):**
-* `llm.py` (`LLMEngine`): Обгортка навколо `llama_cpp`. Відповідає за безпосередню генерацію тексту та підрахунок токенів.
-* `orchestrator.py` (`Orchestrator`): "Мозок" системи. Керує циклом мислення: переклад, маршрутизація, генерація, перевірка (Self-Correction) та виклик інструментів.
-* `file_processor.py` (`FileProcessor`): Оптимізує контекст. Замість читання всього файлу, робить AST-парсинг для Python (витягує сигнатури), Regex-пошук для JS/C++ або коротку сумаризацію для тексту/JSON.
-* `manager.py` (`ContextManager`): Зберігає історію чату та форматує системні промпти.
-* `tools.py` (`ToolExecutor`): Виконує консольні команди.
-* `routes.py`: FastAPI ендпоінти (`/chat` та `/completion`).
+* **Resources:** Optimized for entry-level hardware (**2GB VRAM, 8GB RAM**). It utilizes quantized models (e.g., **Qwen 2.5 Coder 1.5B**) via `llama.cpp`.
+* **Key Features:** Markdown-supported chat, context awareness via attached files, code autocompletion (**Ghost text**), and the ability to execute safe commands in the integrated terminal.
 
 ---
 
-### ⚙️ Поточний стан: Логіка обробки промптів (Agentic Flow)
+### Class Responsibilities
 
-Наразі реалізовано багатокроковий конвеєр:
+**Frontend (VS Code Extension - TypeScript):**
 
-1.  **Препроцесинг (Транслятор):** Легкий запит до LLM, який виправляє одруківки та перекладає промпт англійською, жорстко забороняючи генерувати відповіді.
-2.  **Маршрутизація (Intent Classifier):** Визначає тип задачі:
-    * `1`: Теорія/Питання (віддає звичайний текст).
-    * `2`: Написання коду (вимагає ізольованого Markdown-блоку та обов'язкового `return`).
-    * `3`: Термінал (вимагає чистої команди). + *Запобіжник: перевіряє, чи починається команда з безпечного префікса (pip, npm, git тощо).*
-3.  **Генерація та Рецензування (Self-Correction):** * Для Intent 2: Після генерації код проходить `_static_code_check` (через модуль `ast`). 
-    * Перевіряється відсутність `SyntaxError`, наявність викликаних, але не визначених/імпортованих функцій (`NameError`), та наявність `return`.
-    * Якщо є помилка, бекенд автоматично запускає цикл виправлення (до 5 спроб), надсилаючи помилку назад моделі.
-4.  **Виконання (Для Intent 3):** Команда виконується в системі, і результат повертається у чат.
+* `chat_view.ts` (`ChatViewProvider`): Manages the chat interface (Webview). Renders Markdown using `marked.js`, handles text input, and processes file attachments.
+* `ghost_text.ts` (`GhostTextProvider`): Implements autocompletion. It sends only the last 15 lines before the cursor to the backend (**Sliding Window**) to prevent context overflow and ensure low-latency responses.
+* `client.ts`: API client for communication with the local backend.
 
----
+**Backend (FastAPI - Python):**
 
-### 🧪 Система тестування (Benchmarks)
-
-Автоматизована пісочниця для перевірки стабільності архітектури.
-
-* **Структура (`tests/suites/*.json`):** Тести поділені на тематичні блоки (базові алгоритми, CLI, складні задачі). Кожен тест містить: `id`, `query`, `expected_intent`, `must_contain` / `must_not_contain` (ключові слова), та `execution` (assert-перевірки або bash-скрипти для верифікації).
-* **Раннер (`tests/run_benchmark.py`):** * Створює ізольовані тимчасові папки (`tempfile`) для кожного тесту.
-    * Зшиває згенерований LLM код із `assert`-перевірками та запускає його.
-    * Оцінює метрики: `intent_ok` (чи вгадав маршрутизатор), `format_ok` (перевірка ключових слів) та `exec_ok` (чи пройшов код компіляцію і тести логіки).
-    * Формує CSV-звіт і логує помилки (Bad intent, Bad format, Execution fail) у папку `results/logs/`.
-    * Підтримує запуск конкретних сюїт і лімітування кількості тестів (`-n`).
+* `llm.py` (`LLMEngine`): A wrapper around `llama_cpp`. Responsible for raw text generation and token counting.
+* `orchestrator.py` (`Orchestrator`): The "brain" of the system. Manages the reasoning cycle: translation, routing, generation, verification (**Self-Correction**), and tool calling.
+* `file_processor.py` (`FileProcessor`): Context optimizer. Instead of reading entire files, it performs **AST parsing** for Python (extracting signatures), Regex-based searching for JS/C++, or brief summarization for text/JSON.
+* `manager.py` (`ContextManager`): Stores chat history and formats system prompts.
+* `tools.py` (`ToolExecutor`): Executes console commands.
+* `routes.py`: FastAPI endpoints (`/chat` and `/completion`).
 
 ---
 
-### 🚀 Що далі покращувати (Roadmap)
+### Current State
 
-Аналіз логів тестування показав, що 1.5B модель чудово знає синтаксис, але має "короткий горизонт логіки" (помиляється в задачах >2 кроків) та обмежений контекст. Наступні кроки:
+A multi-step pipeline is currently implemented:
 
-1.  **Task Planner (Планувальник підзадач):** Для складних задач (Intent 2) додати проміжний крок. Спочатку модель генерує JSON-план кроків, а потім пише код для кожного кроку окремо. Це вирішить проблему алгоритмічної "каші" (як у тестах `find_unique` чи `reverse_vowels`).
-2.  **Runtime Self-Correction (Динамічне налагодження):** Зараз цикл виправлення ловить лише синтаксис та відсутні імпорти. Треба навчити бекенд запускати згенерований код (в ізольованому середовищі) з тестовими даними користувача, щоб ловити `AssertionError` та `TypeError` *до* виводу результату в чат.
-3.  **Пошук за RAG / TF-IDF:** Для великих проєктів AST-парсингу буде недостатньо. Потрібно розбити файли на чанки і реалізувати легкий локальний пошуковик, який підтягуватиме у промпт лише 2-3 релевантні функції замість усього дерева.
-4.  **Покращення UI для контексту:** Додати можливість юзеру бачити, *які саме* шматки файлу були відправлені моделі, щоб краще розуміти, чому вона прийняла те чи інше рішення.
+1. **Preprocessing (Translator):** A lightweight LLM request that fixes typos and translates the prompt into English, strictly forbidding the generation of final answers at this stage.
+2. **Routing (Intent Classifier):** Determines the task type:
+* `1`: Theory/Question (returns plain text).
+* `2`: Code Generation (requires an isolated Markdown block and a mandatory `return`).
+* `3`: Terminal (requires a clean command). + **Safety Guard:** Verifies if the command starts with a safe prefix (pip, npm, git, etc.).
+
+
+3. **Generation & Review (Self-Correction):**
+* For **Intent 2**: After generation, the code undergoes a `_static_code_check` (via the `ast` module).
+* It checks for `SyntaxError`, `NameError` (functions called but not defined/imported), and the presence of a `return` statement.
+* If an error is found, the backend automatically triggers a correction cycle (up to 3 attempts), attempting to regenerate from scratch while adding the error details to the prompt to avoid repetition.
+
+
+4. **Execution (For Intent 3):** The command is executed within the system, and the output is returned to the chat.
+
+---
+
+### Testing System (Benchmarks)
+
+An automated sandbox designed to verify architectural stability.
+
+* **Structure (`tests/suites/*.json`):** Tests are divided into thematic blocks (Basic Algorithms, CLI, Complex Tasks). Each test includes: `id`, `query`, `expected_intent`, `must_contain` / `must_not_contain` (keywords), and `execution` (assert-checks or bash scripts for verification).
+* **Runner (`tests/run_benchmark.py`):**
+* Creates isolated temporary folders (`tempfile`) for every test.
+* Stitches the LLM-generated code with `assert` checks and executes it.
+* Evaluates metrics: `intent_ok` (router accuracy), `format_ok` (keyword verification), and `exec_ok` (successful compilation and logic tests).
+* Generates a CSV report and logs errors (**Bad intent, Bad format, Execution fail**) in the `results/logs/` directory.
+* Supports running specific suites and limiting the number of tests via `-n`.
+
+
+
+---
+
+### Roadmap (Next Steps)
+
+Benchmark log analysis shows that the 1.5B model has excellent syntax knowledge but a "short logic horizon" (struggles with tasks >2 steps) and limited context. Next steps:
+
+1. **Task Planner:** For complex tasks (Intent 2), add an intermediate step. The model will first generate a JSON-based step-by-step plan, then write code for each step individually. This will resolve "algorithmic noise" seen in tests like `find_unique` or `reverse_vowels`.
+2. **Runtime Self-Correction:** Currently, the correction cycle only catches syntax and missing imports. The backend should be trained to run the generated code (in an isolated environment) to catch all types of `RuntimeError` *before* outputting the result to the chat.
+3. **RAG / TF-IDF Search:** For large projects, AST parsing will not be enough. Files should be split into chunks with a lightweight local search engine implemented to pull only 2-3 relevant functions into the prompt instead of the entire tree.
+4. **UI Context Improvements:** Allow users to see exactly which code snippets were sent to the model to better understand its decision-making process.

@@ -1,736 +1,494 @@
 [
     {
         "id": "BA-L1-001",
-        "description": "Sort algorithm Q",
-        "query": "What is the name of the sorting algorithm that repeatedly steps through the list, compares adjacent elements and swaps them if they are in the wrong order?",
+        "description": "Explanation of Bubble Sort algorithm theory.",
+        "query": "Explain how the Bubble Sort algorithm works in simple terms.",
         "context_files": [],
         "expected_intent": 1,
         "type": "text",
         "metrics": {
-            "must_contain": ["bubble"],
-            "must_not_contain": []
+            "must_contain": [
+                "adjacent",
+                "swap"
+            ],
+            "must_not_contain": [
+                "pivot",
+                "divide and conquer"
+            ]
         }
     },
     {
         "id": "BA-L1-002",
-        "description": "Binary search Q (mist)",
-        "query": "Яким алгоримом найшвидше знайти число у відсортованому масиві?",
+        "description": "Theoretical complexity of Binary Search.",
+        "query": "What is the time complexity of Binary Search in the worst-case scenario and why?",
         "context_files": [],
         "expected_intent": 1,
         "type": "text",
         "metrics": {
-            "must_contain": ["бінарн", "binary"],
-            "must_not_contain": []
+            "must_contain": [
+                "O(log n)",
+                "logarithmic"
+            ],
+            "must_not_contain": [
+                "O(n^2)",
+                "linear"
+            ]
         }
     },
     {
         "id": "BA-L1-003",
-        "description": "Binary search Q PL",
-        "query": "Jak nazywa się algorytm wyszukiwania, który dzieli posortowaną tablicę na pół?",
+        "description": "Definition of a Factorial in mathematics.",
+        "query": "Can you define what a factorial of a non-negative integer is and provide the formula?",
         "context_files": [],
         "expected_intent": 1,
         "type": "text",
         "metrics": {
-            "must_contain": ["binarn", "binary"],
+            "must_contain": [
+                "product",
+                "n!"
+            ],
             "must_not_contain": []
         }
     },
     {
         "id": "BA-L1-004",
-        "description": "Linear search Q (mist)",
-        "query": "Which search algorithm has O(n) time comlexity?",
+        "description": "Concept of Linear Search in Polish language.",
+        "query": "Czym jest wyszukiwanie liniowe i kiedy najlepiej go używać?",
         "context_files": [],
         "expected_intent": 1,
         "type": "text",
         "metrics": {
-            "must_contain": ["linear", "лінійн"],
+            "must_contain": [
+                "sequentially",
+                "Linear search"
+            ],
             "must_not_contain": []
         }
     },
     {
         "id": "BA-L1-005",
-        "description": "Fibonacci Q",
-        "query": "Як називається послідовність чисел, де кожне наступне є сумою двох попередніх?",
+        "description": "Explanation of Euclidean distance formula.",
+        "query": "What is the Euclidean distance and how is it calculated between two points in a 2D plane?",
         "context_files": [],
         "expected_intent": 1,
         "type": "text",
         "metrics": {
-            "must_contain": ["фібоначчі", "fibonacci"],
+            "must_contain": [
+                "sqrt((x2 - x1)^2 + (y2 - y1)^2)",
+                "coordinates"
+            ],
             "must_not_contain": []
         }
     },
     {
         "id": "BA-L1-006",
-        "description": "Bubble sort PL (mist)",
-        "query": "Napisz funkcję `bubble_sort`, która srotuje tablicę.",
+        "description": "Implementation of Bubble Sort algorithm.",
+        "query": "Write a function `bubble_sort(arr)` that sorts a list of numbers in ascending order.",
         "context_files": [],
         "expected_intent": 2,
         "type": "code",
         "metrics": {
-            "must_contain": ["def bubble_sort"],
-            "must_not_contain": [],
+            "must_contain": [
+                "for",
+                "if",
+                "range"
+            ],
             "execution": {
-                "run_tests": "assert bubble_sort([3, 1, 2]) == [1, 2, 3]"
+                "run_tests": [
+                    "assert bubble_sort([64, 34, 25, 12, 22, 11, 90]) == [11, 12, 22, 25, 34, 64, 90]",
+                    "assert bubble_sort([5, 1, 4, 2, 8]) == [1, 2, 4, 5, 8]",
+                    "assert bubble_sort([]) == []",
+                    "assert bubble_sort([1]) == [1]"
+                ]
             }
         }
     },
     {
         "id": "BA-L1-007",
-        "description": "Binary search EN",
-        "query": "Write a function `binary_search(arr, target)` that returns the index of the target in a sorted array, or -1 if not found.",
+        "description": "Linear search implementation in Polish.",
+        "query": "Napisz funkcję `linear_search(arr, x)`, która zwraca indeks elementu `x` w liście `arr` lub -1, jeśli go nie ma.",
         "context_files": [],
         "expected_intent": 2,
         "type": "code",
         "metrics": {
-            "must_contain": ["def binary_search"],
-            "must_not_contain": [],
+            "must_contain": [
+                "for",
+                "return"
+            ],
             "execution": {
-                "run_tests": "assert binary_search([10, 20, 30, 40], 30) == 2\nassert binary_search([1, 2], 5) == -1"
+                "run_tests": [
+                    "assert linear_search([10, 20, 30, 40], 30) == 2",
+                    "assert linear_search([1, 2, 3], 5) == -1",
+                    "assert linear_search([], 10) == -1"
+                ]
             }
         }
     },
     {
         "id": "BA-L1-008",
-        "description": "Linear search EN (mist)",
-        "query": "Write a function `linear_search(arr, x)` that retuns the index of x in the array.",
+        "description": "Efficient Binary Search implementation.",
+        "query": "Implement an optimized `binary_search(arr, target)` function. Assume the input list is sorted.",
         "context_files": [],
         "expected_intent": 2,
         "type": "code",
         "metrics": {
-            "must_contain": ["def linear_search"],
-            "must_not_contain": [],
+            "must_contain": [
+                "mid",
+                "low",
+                "high"
+            ],
             "execution": {
-                "run_tests": "assert linear_search([10, 20, 30], 20) == 1"
+                "run_tests": [
+                    "assert binary_search([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], 7) == 6",
+                    "assert binary_search([10, 20, 30], 20) == 1",
+                    "assert binary_search([10, 20, 30], 40) == -1"
+                ]
             }
         }
     },
     {
         "id": "BA-L1-009",
-        "description": "Factorial EN",
-        "query": "Write a function `factorial(n)` that returns the factorial of a number.",
+        "description": "Recursive or iterative Factorial calculation.",
+        "query": "Write a function `factorial(n)` that returns the factorial of a given number n.",
         "context_files": [],
         "expected_intent": 2,
         "type": "code",
         "metrics": {
-            "must_contain": ["def factorial"],
-            "must_not_contain": [],
+            "must_contain": [
+                "if n == 0"
+            ],
             "execution": {
-                "run_tests": "assert factorial(5) == 120"
+                "run_tests": [
+                    "assert factorial(5) == 120",
+                    "assert factorial(0) == 1",
+                    "assert factorial(1) == 1",
+                    "assert factorial(10) == 3628800"
+                ]
             }
         }
     },
     {
         "id": "BA-L1-010",
-        "description": "Fibonacci EN (mist)",
-        "query": "Write a function `fibonacci(n)` that returns a n-th Fibonacci number.",
+        "description": "Fibonacci sequence number in Polish.",
+        "query": "Napisz funkcję `fibonacci(n)`, która zwraca n-tą liczbę ciągu Fibonacciego (gdzie fib(0)=0, fib(1)=1).",
         "context_files": [],
         "expected_intent": 2,
         "type": "code",
         "metrics": {
-            "must_contain": ["def fibonacci"],
-            "must_not_contain": [],
+            "must_contain": [
+                "return"
+            ],
             "execution": {
-                "run_tests": "assert fibonacci(6) == 8"
+                "run_tests": [
+                    "assert fibonacci(0) == 0",
+                    "assert fibonacci(1) == 1",
+                    "assert fibonacci(7) == 13",
+                    "assert fibonacci(10) == 55"
+                ]
             }
         }
     },
     {
         "id": "BA-L1-011",
-        "description": "Prime UK",
-        "query": "Напиши функцію `is_prime(n)`, яка перевіряє, чи є число простим (повертає True або False).",
+        "description": "Check if a number is prime.",
+        "query": "Create a function `is_prime(n)` that returns True if the number is prime, and False otherwise.",
         "context_files": [],
         "expected_intent": 2,
         "type": "code",
         "metrics": {
-            "must_contain": ["def is_prime"],
-            "must_not_contain": [],
+            "must_contain": [
+                "range",
+                "%"
+            ],
             "execution": {
-                "run_tests": "assert is_prime(11) == True\nassert is_prime(4) == False"
+                "run_tests": [
+                    "assert is_prime(2) == True",
+                    "assert is_prime(11) == True",
+                    "assert is_prime(1) == False",
+                    "assert is_prime(4) == False",
+                    "assert is_prime(97) == True"
+                ]
             }
         }
     },
     {
         "id": "BA-L1-012",
-        "description": "GCD PL (mist)",
-        "query": "Napisz funkje `gcd(a, b)`, która znajduje największy wspólny dzielnik.",
+        "description": "Greatest Common Divisor (GCD) using Euclidean algorithm.",
+        "query": "Write a function `gcd(a, b)` to find the greatest common divisor of two integers.",
         "context_files": [],
         "expected_intent": 2,
         "type": "code",
         "metrics": {
-            "must_contain": ["def gcd"],
-            "must_not_contain": [],
+            "must_contain": [
+                "while"
+            ],
             "execution": {
-                "run_tests": "assert gcd(12, 8) == 4"
+                "run_tests": [
+                    "assert gcd(48, 18) == 6",
+                    "assert gcd(101, 10) == 1",
+                    "assert gcd(56, 42) == 14",
+                    "assert gcd(0, 5) == 5"
+                ]
             }
         }
     },
     {
         "id": "BA-L1-013",
-        "description": "LCM EN",
-        "query": "Write a function `lcm(a, b)` that returns the least common multiple of two numbers.",
+        "description": "Least Common Multiple (LCM) calculation.",
+        "query": "Implement `lcm(a, b)` which calculates the least common multiple of two integers.",
         "context_files": [],
         "expected_intent": 2,
         "type": "code",
         "metrics": {
-            "must_contain": ["def lcm"],
-            "must_not_contain": [],
+            "must_contain": [
+                "gcd"
+            ],
             "execution": {
-                "run_tests": "assert lcm(4, 6) == 12"
+                "run_tests": [
+                    "assert lcm(12, 18) == 36",
+                    "assert lcm(5, 7) == 35",
+                    "assert lcm(0, 10) == 0"
+                ]
             }
         }
     },
     {
         "id": "BA-L1-014",
-        "description": "Reverse string EN (mist)",
-        "query": "Write a function `reverse_string(s)` that revers the string.",
+        "description": "Area of a rectangle in Polish.",
+        "query": "Napisz funkcję `pole_prostokata(a, b)`, która oblicza pole prostokąta o bokach a i b.",
         "context_files": [],
         "expected_intent": 2,
         "type": "code",
         "metrics": {
-            "must_contain": ["def reverse_string"],
-            "must_not_contain": [],
+            "must_contain": [
+                "*"
+            ],
             "execution": {
-                "run_tests": "assert reverse_string('abc') == 'cba'"
+                "run_tests": [
+                    "assert pole_prostokata(5, 4) == 20",
+                    "assert pole_prostokata(10.5, 2) == 21.0",
+                    "assert pole_prostokata(0, 100) == 0"
+                ]
             }
         }
     },
     {
         "id": "BA-L1-015",
-        "description": "Find duplicates EN",
-        "query": "Write a function `find_duplicates(arr)` that returns a list of duplicate elements in an array.",
+        "description": "Basic string reversal.",
+        "query": "Write a function `reverse_string(s)` that reverses the input string.",
         "context_files": [],
         "expected_intent": 2,
         "type": "code",
         "metrics": {
-            "must_contain": ["def find_duplicates"],
-            "must_not_contain": [],
+            "must_contain": [],
             "execution": {
-                "run_tests": "assert set(find_duplicates([1, 2, 2, 3])) == {2}"
+                "run_tests": [
+                    "assert reverse_string('hello') == 'olleh'",
+                    "assert reverse_string('Python') == 'nohtyP'",
+                    "assert reverse_string('') == ''"
+                ]
             }
         }
     },
     {
         "id": "BA-L1-016",
-        "description": "Filter even EN (mist)",
-        "query": "Write a function `filter_even(arr)` that returns an array of even nubers.",
+        "description": "Palindrome check for strings.",
+        "query": "Create a function `is_palindrome(s)` that returns True if the string is a palindrome.",
         "context_files": [],
         "expected_intent": 2,
         "type": "code",
         "metrics": {
-            "must_contain": ["def filter_even"],
-            "must_not_contain": [],
+            "must_contain": [
+                "=="
+            ],
             "execution": {
-                "run_tests": "assert filter_even([1, 2, 3, 4]) == [2, 4]"
+                "run_tests": [
+                    "assert is_palindrome('radar') == True",
+                    "assert is_palindrome('hello') == False",
+                    "assert is_palindrome('A man a plan a canal Panama'.replace(' ', '').lower()) == True"
+                ]
             }
         }
     },
     {
         "id": "BA-L1-017",
-        "description": "Bubble sort desc UK",
-        "query": "Напиши функцію `bubble_sort_desc(arr)`, яка сортує масив за спаданням.",
+        "description": "Find duplicates in a list in Polish.",
+        "query": "Napisz funkcję `znajdz_duplikaty(lista)`, która zwraca listę elementów, które powtarzają się w podanej liście.",
         "context_files": [],
         "expected_intent": 2,
         "type": "code",
         "metrics": {
-            "must_contain": ["def bubble_sort_desc"],
-            "must_not_contain": [],
+            "must_contain": [
+                "set",
+                "count"
+            ],
             "execution": {
-                "run_tests": "assert bubble_sort_desc([1, 3, 2]) == [3, 2, 1]"
+                "run_tests": [
+                    "assert set(znajdz_duplikaty([1, 2, 3, 2, 1, 5])) == {1, 2}",
+                    "assert znajdz_duplikaty([1, 2, 3]) == []",
+                    "assert set(znajdz_duplikaty(['a', 'b', 'a'])) == {'a'}"
+                ]
             }
         }
     },
     {
         "id": "BA-L1-018",
-        "description": "Binary search bool PL (mist)",
-        "query": "Napisz fukncję `binary_search_bool(arr, target)`, która zwraca True jeśli element istnieje.",
+        "description": "Filter list based on even condition.",
+        "query": "Write a function `filter_even(numbers)` that returns only the even numbers from a list.",
         "context_files": [],
         "expected_intent": 2,
         "type": "code",
         "metrics": {
-            "must_contain": ["def binary_search_bool"],
-            "must_not_contain": [],
+            "must_contain": [
+                "% 2 == 0"
+            ],
             "execution": {
-                "run_tests": "assert binary_search_bool([1, 2, 3], 2) == True"
+                "run_tests": [
+                    "assert filter_even([1, 2, 3, 4, 5, 6]) == [2, 4, 6]",
+                    "assert filter_even([1, 3, 5]) == []",
+                    "assert filter_even([0, -2, -3]) == [0, -2]"
+                ]
             }
         }
     },
     {
         "id": "BA-L1-019",
-        "description": "Linear search all EN",
-        "query": "Write a function `linear_search_all(arr, target)` that returns a list of all indices matching the target.",
+        "description": "Counting vowels in a string.",
+        "query": "Implement a function `count_vowels(s)` that counts the number of vowels (a, e, i, o, u) in a string.",
         "context_files": [],
         "expected_intent": 2,
         "type": "code",
         "metrics": {
-            "must_contain": ["def linear_search_all"],
-            "must_not_contain": [],
+            "must_contain": [
+                "aeiou"
+            ],
             "execution": {
-                "run_tests": "assert linear_search_all([1, 2, 1], 1) == [0, 2]"
+                "run_tests": [
+                    "assert count_vowels('alphabet') == 3",
+                    "assert count_vowels('XYZ') == 0",
+                    "assert count_vowels('Education') == 5"
+                ]
             }
         }
     },
     {
         "id": "BA-L1-020",
-        "description": "Factorial rec EN (mist)",
-        "query": "Write a function `factorial_recursive(n)` that calculats the factorial recursively.",
+        "description": "Matrix transpose operation.",
+        "query": "Write a function `transpose(matrix)` that takes a 2D list and returns its transpose.",
         "context_files": [],
         "expected_intent": 2,
         "type": "code",
         "metrics": {
-            "must_contain": ["def factorial_recursive"],
-            "must_not_contain": [],
+            "must_contain": [
+                "range",
+                "len"
+            ],
             "execution": {
-                "run_tests": "assert factorial_recursive(4) == 24"
+                "run_tests": [
+                    "assert transpose([[1, 2], [3, 4]]) == [[1, 3], [2, 4]]",
+                    "assert transpose([[1, 2, 3], [4, 5, 6]]) == [[1, 4], [2, 5], [3, 6]]"
+                ]
             }
         }
     },
     {
         "id": "BA-L1-021",
-        "description": "Fibonacci array EN",
-        "query": "Write a function `fibonacci_array(n)` that returns an array of the first n Fibonacci numbers.",
+        "description": "Calculate Euclidean distance between two points.",
+        "query": "Write a function `distance(p1, p2)` where p1 and p2 are tuples (x, y).",
         "context_files": [],
         "expected_intent": 2,
         "type": "code",
         "metrics": {
-            "must_contain": ["def fibonacci_array"],
-            "must_not_contain": [],
+            "must_contain": [
+                "** 0.5"
+            ],
             "execution": {
-                "run_tests": "assert len(fibonacci_array(5)) == 5"
+                "run_tests": [
+                    "assert distance((0, 0), (3, 4)) == 5.0",
+                    "assert distance((1, 1), (1, 1)) == 0.0",
+                    "assert round(distance((1, 2), (4, 6)), 2) == 5.0"
+                ]
             }
         }
     },
     {
         "id": "BA-L1-022",
-        "description": "Primes array EN (mist)",
-        "query": "Write a function `get_primes(n)` that returns all prime numbers up ot n.",
+        "description": "Regex to find numbers in text.",
+        "query": "Napisz funkcję `find_numbers(text)`, która używa wyrażeń regularnych, aby znaleźć wszystkie liczby w tekście.",
         "context_files": [],
         "expected_intent": 2,
         "type": "code",
         "metrics": {
-            "must_contain": ["def get_primes"],
-            "must_not_contain": [],
+            "must_contain": [
+                "re",
+                "\\d+"
+            ],
             "execution": {
-                "run_tests": "assert get_primes(10) == [2, 3, 5, 7]"
+                "run_tests": [
+                    "assert find_numbers('Mam 2 koty i 3 psy') == ['2', '3']",
+                    "assert find_numbers('Brak liczb tutaj') == []",
+                    "assert find_numbers('Rok 2024') == ['2024']"
+                ]
             }
         }
     },
     {
         "id": "BA-L1-023",
-        "description": "LCM array UK",
-        "query": "Напиши функцію `lcm_array(arr)`, яка знаходить НСК для масиву чисел.",
+        "description": "Find maximum element in a list.",
+        "query": "Write a function `find_max(arr)` that returns the largest element in a list without using the built-in max() function.",
         "context_files": [],
         "expected_intent": 2,
         "type": "code",
         "metrics": {
-            "must_contain": ["def lcm_array"],
-            "must_not_contain": [],
+            "must_contain": [
+                "for"
+            ],
             "execution": {
-                "run_tests": "assert lcm_array([2, 3, 4]) == 12"
+                "run_tests": [
+                    "assert find_max([1, 5, 3, 9, 2]) == 9",
+                    "assert find_max([-10, -5, -20]) == -5",
+                    "assert find_max([100]) == 100"
+                ]
             }
         }
     },
     {
         "id": "BA-L1-024",
-        "description": "GCD array PL (mist)",
-        "query": "Napisz funkcję `gcd_array(arr)`, która oblicza njwiększy wspólny dzielnik tablicy.",
+        "description": "Sum of all elements in a list.",
+        "query": "Implement a function `sum_list(arr)` that returns the sum of all numerical elements in a list.",
         "context_files": [],
         "expected_intent": 2,
         "type": "code",
         "metrics": {
-            "must_contain": ["def gcd_array"],
-            "must_not_contain": [],
+            "must_contain": [
+                "for"
+            ],
             "execution": {
-                "run_tests": "assert gcd_array([12, 24, 8]) == 4"
+                "run_tests": [
+                    "assert sum_list([1, 2, 3, 4]) == 10",
+                    "assert sum_list([-1, 1]) == 0",
+                    "assert sum_list([]) == 0"
+                ]
             }
         }
     },
     {
         "id": "BA-L1-025",
-        "description": "Reverse words EN",
-        "query": "Write a function `reverse_words(s)` that reverses the order of words in a given string.",
+        "description": "Check if string consists of unique characters.",
+        "query": "Create a function `all_unique(s)` that returns True if all characters in the string are unique.",
         "context_files": [],
         "expected_intent": 2,
         "type": "code",
         "metrics": {
-            "must_contain": ["def reverse_words"],
-            "must_not_contain": [],
+            "must_contain": [
+                "set"
+            ],
             "execution": {
-                "run_tests": "assert reverse_words('hello world') == 'world hello'"
-            }
-        }
-    },
-    {
-        "id": "BA-L1-026",
-        "description": "Remove duplicates EN (mist)",
-        "query": "Write a function `remove_duplicates(arr)` that removes duplicats from an array.",
-        "context_files": [],
-        "expected_intent": 2,
-        "type": "code",
-        "metrics": {
-            "must_contain": ["def remove_duplicates"],
-            "must_not_contain": [],
-            "execution": {
-                "run_tests": "assert remove_duplicates([1, 2, 2, 3]) == [1, 2, 3]"
-            }
-        }
-    },
-    {
-        "id": "BA-L1-027",
-        "description": "Filter positive EN",
-        "query": "Write a function `filter_positive(arr)` that returns only the positive numbers from an array.",
-        "context_files": [],
-        "expected_intent": 2,
-        "type": "code",
-        "metrics": {
-            "must_contain": ["def filter_positive"],
-            "must_not_contain": [],
-            "execution": {
-                "run_tests": "assert filter_positive([-2, 5, 0]) == [5]"
-            }
-        }
-    },
-    {
-        "id": "BA-L1-028",
-        "description": "Bubble sort str EN (mist)",
-        "query": "Write a function `bubble_sort_strings(arr)` that sorts an array of strings by lenght.",
-        "context_files": [],
-        "expected_intent": 2,
-        "type": "code",
-        "metrics": {
-            "must_contain": ["def bubble_sort_strings"],
-            "must_not_contain": [],
-            "execution": {
-                "run_tests": "assert bubble_sort_strings(['a', 'ccc', 'bb']) == ['a', 'bb', 'ccc']"
-            }
-        }
-    },
-    {
-        "id": "BA-L1-029",
-        "description": "Palindrome UK",
-        "query": "Напиши функцію `is_palindrome(s)`, яка перевіряє чи є рядок паліндромом.",
-        "context_files": [],
-        "expected_intent": 2,
-        "type": "code",
-        "metrics": {
-            "must_contain": ["def is_palindrome"],
-            "must_not_contain": [],
-            "execution": {
-                "run_tests": "assert is_palindrome('aba') == True\nassert is_palindrome('abc') == False"
-            }
-        }
-    },
-    {
-        "id": "BA-L1-030",
-        "description": "Count duplicates PL (mist)",
-        "query": "Napisz funkcję `count_duplicates(arr)`, która zwrca słownik z liczbą wystąpień każdego elementu.",
-        "context_files": [],
-        "expected_intent": 2,
-        "type": "code",
-        "metrics": {
-            "must_contain": ["def count_duplicates"],
-            "must_not_contain": [],
-            "execution": {
-                "run_tests": "assert count_duplicates(['a', 'a', 'b'])['a'] == 2"
-            }
-        }
-    },
-    {
-        "id": "BA-L1-031",
-        "description": "Filter greater EN",
-        "query": "Write a function `filter_greater_than(arr, val)` that returns numbers greater than a specific value.",
-        "context_files": [],
-        "expected_intent": 2,
-        "type": "code",
-        "metrics": {
-            "must_contain": ["def filter_greater_than"],
-            "must_not_contain": [],
-            "execution": {
-                "run_tests": "assert filter_greater_than([1, 5, 10], 4) == [5, 10]"
-            }
-        }
-    },
-    {
-        "id": "BA-L1-032",
-        "description": "Binary search rec UK (mist)",
-        "query": "Напиши функцію `binary_search_recursive(arr, x, low, high)`, яка шукає елемнт рекурсивно.",
-        "context_files": [],
-        "expected_intent": 2,
-        "type": "code",
-        "metrics": {
-            "must_contain": ["def binary_search_recursive"],
-            "must_not_contain": [],
-            "execution": {
-                "run_tests": "assert binary_search_recursive([1, 2, 3], 3, 0, 2) == 2"
-            }
-        }
-    },
-    {
-        "id": "BA-L1-033",
-        "description": "Linear search bool PL",
-        "query": "Napisz funkcję `linear_search_bool(arr, x)`, która zwraca True lub False jeśli element istnieje.",
-        "context_files": [],
-        "expected_intent": 2,
-        "type": "code",
-        "metrics": {
-            "must_contain": ["def linear_search_bool"],
-            "must_not_contain": [],
-            "execution": {
-                "run_tests": "assert linear_search_bool([1, 2], 3) == False"
-            }
-        }
-    },
-    {
-        "id": "BA-L1-034",
-        "description": "Factorial iter EN (mist)",
-        "query": "Write a function `factorial_iterative(n)` that calculates factorial using a lopp.",
-        "context_files": [],
-        "expected_intent": 2,
-        "type": "code",
-        "metrics": {
-            "must_contain": ["def factorial_iterative"],
-            "must_not_contain": [],
-            "execution": {
-                "run_tests": "assert factorial_iterative(3) == 6"
-            }
-        }
-    },
-    {
-        "id": "BA-L1-035",
-        "description": "Fibonacci rec UK",
-        "query": "Напиши функцію `fibonacci_recursive(n)`, яка обчислює n-не число Фібоначчі рекурсивно.",
-        "context_files": [],
-        "expected_intent": 2,
-        "type": "code",
-        "metrics": {
-            "must_contain": ["def fibonacci_recursive"],
-            "must_not_contain": [],
-            "execution": {
-                "run_tests": "assert fibonacci_recursive(6) == 8"
-            }
-        }
-    },
-    {
-        "id": "BA-L1-036",
-        "description": "Next prime PL (mist)",
-        "query": "Napisz funkcję `next_prime(n)`, która znajduje najmnejszą liczbę pierwszą większą od n.",
-        "context_files": [],
-        "expected_intent": 2,
-        "type": "code",
-        "metrics": {
-            "must_contain": ["def next_prime"],
-            "must_not_contain": [],
-            "execution": {
-                "run_tests": "assert next_prime(7) == 11"
-            }
-        }
-    },
-    {
-        "id": "BA-L1-037",
-        "description": "GCD rec EN",
-        "query": "Write a function `gcd_recursive(a, b)` that calculates the greatest common divisor recursively.",
-        "context_files": [],
-        "expected_intent": 2,
-        "type": "code",
-        "metrics": {
-            "must_contain": ["def gcd_recursive"],
-            "must_not_contain": [],
-            "execution": {
-                "run_tests": "assert gcd_recursive(15, 5) == 5"
-            }
-        }
-    },
-    {
-        "id": "BA-L1-038",
-        "description": "LCM rec UK (mist)",
-        "query": "Напиши функцію `lcm_recursive(a, b)`, яка занходить НСК рекурсивним методом.",
-        "context_files": [],
-        "expected_intent": 2,
-        "type": "code",
-        "metrics": {
-            "must_contain": ["def lcm_recursive"],
-            "must_not_contain": [],
-            "execution": {
-                "run_tests": "assert lcm_recursive(4, 5) == 20"
-            }
-        }
-    },
-    {
-        "id": "BA-L1-039",
-        "description": "Reverse array PL",
-        "query": "Napisz funkcję `reverse_array(arr)`, która odwraca tablicę w miejscu bez użycia wbudowanych metod.",
-        "context_files": [],
-        "expected_intent": 2,
-        "type": "code",
-        "metrics": {
-            "must_contain": ["def reverse_array"],
-            "must_not_contain": [],
-            "execution": {
-                "run_tests": "a = [1, 2]; reverse_array(a); assert a == [2, 1]"
-            }
-        }
-    },
-    {
-        "id": "BA-L1-040",
-        "description": "Has duplicates EN (mist)",
-        "query": "Write a function `has_duplicates(arr)` that returns True if the array has any dupliactes.",
-        "context_files": [],
-        "expected_intent": 2,
-        "type": "code",
-        "metrics": {
-            "must_contain": ["def has_duplicates"],
-            "must_not_contain": [],
-            "execution": {
-                "run_tests": "assert has_duplicates([1, 2, 1]) == True"
-            }
-        }
-    },
-    {
-        "id": "BA-L1-041",
-        "description": "Filter odd UK",
-        "query": "Напиши функцію `filter_odd(arr)`, яка повертає масив непарних чисел.",
-        "context_files": [],
-        "expected_intent": 2,
-        "type": "code",
-        "metrics": {
-            "must_contain": ["def filter_odd"],
-            "must_not_contain": [],
-            "execution": {
-                "run_tests": "assert filter_odd([1, 2, 3]) == [1, 3]"
-            }
-        }
-    },
-    {
-        "id": "BA-L1-042",
-        "description": "Sort tuples PL (mist)",
-        "query": "Napisz funkcję `sort_tuples(arr)`, która soruje listę krotek po drugim elemencie (bubble sort).",
-        "context_files": [],
-        "expected_intent": 2,
-        "type": "code",
-        "metrics": {
-            "must_contain": ["def sort_tuples"],
-            "must_not_contain": [],
-            "execution": {
-                "run_tests": "assert sort_tuples([(1, 3), (2, 1)]) == [(2, 1), (1, 3)]"
-            }
-        }
-    },
-    {
-        "id": "BA-L1-043",
-        "description": "Search matrix EN",
-        "query": "Write a function `search_matrix(matrix, target)` that returns True if the target is in the 2D array using linear search.",
-        "context_files": [],
-        "expected_intent": 2,
-        "type": "code",
-        "metrics": {
-            "must_contain": ["def search_matrix"],
-            "must_not_contain": [],
-            "execution": {
-                "run_tests": "assert search_matrix([[1, 2], [3, 4]], 3) == True"
-            }
-        }
-    },
-    {
-        "id": "BA-L1-044",
-        "description": "Sum primes UK (mist)",
-        "query": "Напиши функцію `sum_primes(n)`, яка повертає суму всії простих чисел до n.",
-        "context_files": [],
-        "expected_intent": 2,
-        "type": "code",
-        "metrics": {
-            "must_contain": ["def sum_primes"],
-            "must_not_contain": [],
-            "execution": {
-                "run_tests": "assert sum_primes(10) == 17"
-            }
-        }
-    },
-    {
-        "id": "BA-L1-045",
-        "description": "Fibonacci sum PL",
-        "query": "Napisz funkcję `fibonacci_sum(n)`, która zwraca sumę n pierwszych liczb Fibonacciego.",
-        "context_files": [],
-        "expected_intent": 2,
-        "type": "code",
-        "metrics": {
-            "must_contain": ["def fibonacci_sum"],
-            "must_not_contain": [],
-            "execution": {
-                "run_tests": "assert type(fibonacci_sum(4)) == int"
-            }
-        }
-    },
-    {
-        "id": "BA-L1-046",
-        "description": "GCD multiple EN (mist)",
-        "query": "Write a function `gcd_multiple(arr)` that calculates GCD for an aray of numbers.",
-        "context_files": [],
-        "expected_intent": 2,
-        "type": "code",
-        "metrics": {
-            "must_contain": ["def gcd_multiple"],
-            "must_not_contain": [],
-            "execution": {
-                "run_tests": "assert gcd_multiple([10, 20, 30]) == 10"
-            }
-        }
-    },
-    {
-        "id": "BA-L1-047",
-        "description": "Unique element UK",
-        "query": "Напиши функцію `find_unique(arr)`, яка знаходить єдиний унікальний елемент у масиві, де всі інші повторюються.",
-        "context_files": [],
-        "expected_intent": 2,
-        "type": "code",
-        "metrics": {
-            "must_contain": ["def find_unique"],
-            "must_not_contain": [],
-            "execution": {
-                "run_tests": "assert find_unique([1, 1, 2, 3, 3]) == 2"
-            }
-        }
-    },
-    {
-        "id": "BA-L1-048",
-        "description": "Filter strings PL (mist)",
-        "query": "Napisz funkcję `filter_strings(arr)`, która filtuje tablicę pozostawiając tylko napisy.",
-        "context_files": [],
-        "expected_intent": 2,
-        "type": "code",
-        "metrics": {
-            "must_contain": ["def filter_strings"],
-            "must_not_contain": [],
-            "execution": {
-                "run_tests": "assert filter_strings([1, 'a', True, 'b']) == ['a', 'b']"
-            }
-        }
-    },
-    {
-        "id": "BA-L1-049",
-        "description": "Reverse vowels EN",
-        "query": "Write a function `reverse_vowels(s)` that reverses only the vowels in a string.",
-        "context_files": [],
-        "expected_intent": 2,
-        "type": "code",
-        "metrics": {
-            "must_contain": ["def reverse_vowels"],
-            "must_not_contain": [],
-            "execution": {
-                "run_tests": "assert reverse_vowels('hello') == 'holle'"
-            }
-        }
-    },
-    {
-        "id": "BA-L1-050",
-        "description": "Bubble sort opt UK (mist)",
-        "query": "Напиши функцію `bubble_sort_optimized(arr)`, яка зупиняєтся, якщо масив вже відсортовано.",
-        "context_files": [],
-        "expected_intent": 2,
-        "type": "code",
-        "metrics": {
-            "must_contain": ["def bubble_sort_optimized"],
-            "must_not_contain": [],
-            "execution": {
-                "run_tests": "assert bubble_sort_optimized([2, 1, 3]) == [1, 2, 3]"
+                "run_tests": [
+                    "assert all_unique('abcdef') == True",
+                    "assert all_unique('aba') == False",
+                    "assert all_unique('') == True"
+                ]
             }
         }
     }

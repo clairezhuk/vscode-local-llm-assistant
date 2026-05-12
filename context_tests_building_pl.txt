@@ -1,0 +1,114 @@
+### Blok 1: Podstawowe algorytmy i struktury danych (zadania jednoetapowe)
+
+* **Algorytmy:** Bubble sort, linear search, binary search.
+* **Matematyka:** Silnia, liczby Fibonacciego, sprawdzanie liczby pierwszej (prime number), znajdowanie NWD/NWW (GCD/LCM), podstawowe obliczenia powierzchni.
+* **Manipulacje danymi:** Odwracanie ciągu znaków (string reverse), sprawdzanie palindromu, wyszukiwanie duplikatów, filtrowanie tablicy według warunku, liczenie samogłosek.
+* **Podstawowe operacje na macierzach** (transponowanie), obliczanie odległości euklidesowej między dwoma punktami, proste wyrażenia regularne (np. znajdowanie wszystkich liczb w tekście).
+
+### Blok 2: Złożone algorytmy i zadania techniczno-matematyczne (zadania wymagające planowania i podziału na podzadania)
+
+* **Grafy i drzewa:** Przeszukiwanie w głąb/wszerz (DFS/BFS), algorytm Dijkstry.
+* **Programowanie dynamiczne:** Problem plecakowy (Knapsack), znajdowanie najdłuższego wspólnego podciągu.
+* **Parsowanie i walidacja:** Pisanie złożonych wyrażeń regularnych z grupowaniem (prawidłowe adresy e-mail, parsowanie plików logów z wyodrębnianiem dat i błędów).
+* **Implementacja algorytmów podejmowania decyzji** (np. podstawowy Monte Carlo Tree Search).
+* **Tworzenie potoku (pipeline) przetwarzania audio/sygnałów** (ładowanie, transformacja, zapisywanie).
+* **Pisanie własnej logiki klasteryzacji** bez użycia sklearn, wielowymiarowe transformacje przestrzenne (rotacje współrzędnych 3D).
+
+### Blok 3: Specyfika bibliotek numpy, matplotlib, pandas, sklearn, pytorch
+
+**NumPy:**
+
+* Znalezienie indeksów wartości maksymalnych w każdym wierszu macierzy 2D (`np.argmax`).
+* Zamiana wszystkich wartości w tablicy większych od określonego progu na 0 (Boolean masking).
+* Obliczenie podobieństwa cosinusowego między dwoma wektorami bez użycia pętli.
+
+**Pandas:**
+
+* Wykonanie `groupby` według kolumny "Category" i obliczenie średniej wartości kolumny "Price" (`df.groupby().mean()`).
+* Uzupełnienie brakujących wartości (NaN) w dataframe medianą odpowiedniej kolumny (`fillna(df.median())`).
+* Połączenie (`merge`) dwóch dataframe'ów według dwóch wspólnych kluczy (Left Join).
+
+**Matplotlib:**
+
+* Stworzenie funkcji generującej wykres i sprawdzenie obecności wywołań `plt.plot`, `plt.title`, `plt.xlabel`, `plt.legend`.
+
+**Scikit-Learn:**
+
+* Napisanie `Pipeline`, który obejmuje `StandardScaler` i `RandomForestClassifier`.
+* Podział danych na zbiór treningowy i testowy z zachowaniem proporcji klas (`train_test_split(stratify=y)`).
+
+**PyTorch:**
+
+* Stworzenie własnej klasy `nn.Module` z dwiema warstwami liniowymi i funkcją aktywacji ReLU między nimi.
+* Napisanie własnego `Dataset` (muszą być zaimplementowane metody `__len__` i `__getitem__`).
+* Napisanie jednego kroku cyklu treningowego (`forward pass`, `loss.backward()`, `optimizer.step()`, `optimizer.zero_grad()`).
+
+### Blok 4: Komendy terminala
+
+* **Wyszukiwanie i filtrowanie:** Znalezienie wszystkich plików z rozszerzeniem `.py` w bieżącym katalogu i jego podkatalogach (`find . -name "*.py"`).
+* **Praca z tekstem:** Wyodrębnienie wszystkich unikalnych adresów IP z pliku `access.log` i ich posortowanie (`grep -oE ... | sort -u`).
+* **Zarządzanie procesami:** Znalezienie PID procesu korzystającego z portu 8080 i zakończenie go (`lsof -t -i:8080 | xargs kill -9`).
+* **Manipulacje archiwami:** Stworzenie archiwum `tar.gz` folderu `data`, z wyłączeniem wszystkich ukrytych plików (np. `.DS_Store` lub `.git`).
+* **Uprawnienia:** Nadanie skryptowi `run.sh` uprawnień do wykonywania dla właściciela, ale tylko do odczytu dla innych (`chmod 744 run.sh`).
+
+### Blok 5: Asynchroniczność i równoległość, interakcja sieciowa / API, Security
+
+**Asynchroniczność (asyncio):**
+
+* Napisanie funkcji uruchamiającej trzy inne funkcje asynchroniczne jednocześnie i zwracającej listę ich wyników (`asyncio.gather`).
+* Implementacja ograniczenia równoległych żądań (np. nie więcej niż 5 jednocześnie) za pomocą `asyncio.Semaphore`.
+
+**Równoległość (multiprocessing):**
+
+* Użycie `ProcessPoolExecutor` do zastosowania złożonej funkcji matematycznej na liście 10 000 elementów.
+
+**Interakcja sieciowa (API):**
+
+* Napisanie żądania POST (przez `requests` lub `httpx`) z przekazaniem JSON payload i Bearer tokenem w nagłówkach.
+* Napisanie skryptu z automatycznym ponawianiem (`retry`) żądania w przypadku otrzymania statusu `503 Service Unavailable`.
+
+**Security:**
+
+* **SQL Injection:** Przepisanie podatnego kodu z f-stringami (`f"SELECT * FROM users WHERE name='{user_input}'"`) na bezpieczne zapytania parametryzowane.
+* **Path Traversal:** Napisanie funkcji bezpiecznego odczytu pliku, która blokuje próby dostępu przez `../` (użycie `os.path.abspath` i sprawdzenie prefiksu).
+
+### Blok 6: Praca z plikami i specyfika struktury projektu
+
+* **JSON/YAML:** Odczyt pliku konfiguracyjnego, zmiana wartości pod zagnieżdżonym kluczem `config['database']['port']` i ponowny zapis.
+* **Parsowanie logów:** Napisanie skryptu odczytującego plik tekstowy linia po linii (aby nie przepełnić pamięci), znajdującego linie z tagiem `[ERROR]` i zapisującego je do nowego pliku.
+* **Operacje wsadowe na plikach:** Odczyt struktury folderów, znalezienie wszystkich obrazów (`.png`, `.jpg`) i zmiana ich nazw poprzez dodanie bieżącej daty jako prefiksu (sprawdzenie `os.listdir`, `os.rename` lub modułu `pathlib`).
+* **Kontekst projektu:** Dany jest słownik imitujący strukturę plików. Napisanie funkcji, która znajdzie ścieżkę do najgłębiej osadzonego pliku `README.md`.
+
+### Blok 7: Refaktoryzacja, Debugowanie i Uzupełnianie
+
+**Refaktoryzacja (optymalizacja czytelności):**
+
+* Przekształcenie łańcucha 10 warunków `if/elif/else` na użycie mapowania słownikowego (Dictionary mapping).
+* Wydzielenie powtarzającego się kodu z dwóch różnych funkcji do wspólnej klasy lub dekoratora.
+
+**Debugowanie (znajdź i popraw):**
+
+* Dana jest funkcja wyszukiwania binarnego wchodząca w nieskończoną pętlę (przez błąd `left = mid` zamiast `left = mid + 1`). AI powinno zwrócić poprawioną linię.
+* Poprawa błędu mutacji domyślnego argumentu w Pythonie (`def add_item(item, lst=[]):`).
+
+**Uzupełnianie (Fill-in-the-Middle):**
+
+* Dany jest początek i koniec funkcji. Należy napisać "środek" — blok `try/except` przechwytujący `KeyError` i zwracający wartość domyślną.
+* Uzupełnienie brakującego list comprehension w złożonej transformacji danych (np. wyciągnięcie `id` wszystkich aktywnych użytkowników z listy słowników).
+
+### Blok 8: Długie prompty, "szum" i lingwistyczny stress-test (Robustness)
+
+* **Zbędny kontekst (Garbage context):** Prompt zaczyna się od długiej historii o tym, jak użytkownik pił rano kawę, a na końcu: "...krótko mówiąc, napisz funkcję dzielącą dwie liczby".
+* **Mieszanka wielojęzyczna:** "Napisz mi код який буде робити fetch з API і зберігати у pliku json" (mieszanka ukraińskiego, polskiego i angielskiego w jednym zdaniu).
+* **Literówki w terminach:** "істаллюй матплотліб" (istalluj matplotlib), "nmp strat", "creae foder".
+* **Niejednoznaczność intencji:** Zapytanie typu "Jak mam uruchomić serwer?" (powinno zostać sklasyfikowane jako wyjaśnienie lub komenda konsolowa, ale nie jako pisanie kodu od zera).
+
+---
+
+### Bloki do weryfikacji kontekstowej (LLM-as-a-Judge / Ręcznie):
+
+* **Projektowanie architektury:** Ocena stworzonej struktury klas, podziału odpowiedzialności, wyboru wzorców projektowych.
+* **Jakość i styl (Clean Code):** Nazewnictwo zmiennych, przestrzeganie standardów (PEP8), modułowość kodu.
+* **Obsługa niepewności:** Jak model zachowuje się przy niepełnym prompcie (czy przyjmuje logiczne założenia, czy generuje niedziałający kod).
+* **Wyjaśnienia i dokumentacja:** Sprawdzenie umiejętności poprawnego i zwięzłego wyjaśnienia logiki działania złożonego systemu lub błędu.
+* **Poprawność wizualna:** Zadania generujące wyjście wizualne (renderowanie interfejsów, sceny AR/3D za pomocą Pygame/OpenGL), gdzie kod działa bez błędów, ale wynik wizualny jest nieprawidłowy.

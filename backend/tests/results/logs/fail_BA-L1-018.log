@@ -1,0 +1,15 @@
+QUERY: Write a function `filter_even(numbers)` that returns only the even numbers from a list.
+ERROR: Python Error: IndentationError: expected an indented block after 'try' statement on line 11
+
+AI RESPONSE:
+```python
+def filter_even(numbers):
+    return [number for number in numbers if number % 2 == 0]
+
+# Example usage
+numbers_list = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+even_numbers = filter_even(numbers_list)
+print("Even numbers from the list are:", even_numbers)
+```
+
+When you run this code, the `filter_even` function will return a list of only the even numbers from the `numbers_list`, which is `[2, 4, 6, 8]` in this case. The list comprehension is used to filter out the even numbers using the modulo operator `%`.

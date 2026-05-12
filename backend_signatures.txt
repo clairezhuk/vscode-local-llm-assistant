@@ -1,0 +1,43 @@
+File: backend/main.py
+
+File: backend/src/agentic_orchestrator/orchestrator.py
+class Orchestrator:
+  def __init__(...):
+  def preprocess_query(...):
+  def classify_intent(...):
+  def _extract_code_block(...):
+  def _is_valid_cli(...):
+  def _static_code_check(...):
+  def process_chat(...):
+  def process_completion(...):
+
+File: backend/src/api_router/routes.py
+class ChatRequest:
+class CompletionRequest:
+
+File: backend/src/context_manager/file_processor.py
+class FileProcessor:
+  def __init__(...):
+  def process_files(...):
+  def _parse_py(...):
+  def _parse_json(...):
+  def _regex_code_parse(...):
+  def _summarize_text(...):
+
+File: backend/src/context_manager/manager.py
+class ContextManager:
+  def __init__(...):
+  def add_message(...):
+  def format_prompt(...):
+
+File: backend/src/engine/llm.py
+class LLMEngine:
+  def __init__(...):
+  def generate(...):
+
+File: backend/src/executor/tools.py
+class ToolExecutor:
+  def execute_command(...):
+
+Error processing backend/tests/run_benchmark.py: argument of type 'Call' is not iterable
+

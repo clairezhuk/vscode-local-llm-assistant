@@ -1,0 +1,16 @@
+QUERY: Write a function `distance(p1, p2)` where p1 and p2 are tuples (x, y).
+ERROR: Python Error: IndentationError: expected an indented block after 'try' statement on line 12
+
+AI RESPONSE:
+```python
+def distance(p1, p2):
+    return ((p2[0] - p1[0]) ** 2 + (p2[1] - p1[1]) ** 2) ** 0.5
+
+# Example usage
+point1 = (1, 2)
+point2 = (4, 6)
+distance_result = distance(point1, point2)
+print("Distance between points is:", distance_result)
+```
+
+When you run this code, the `distance` function will calculate the Euclidean distance between the two points `p1` and `p2`, which is `5.0` in this case. The distance is calculated using the formula for the distance between two points in a 2D plane: sqrt((x2 - x1)^2 + (y2 - y1)^2).
