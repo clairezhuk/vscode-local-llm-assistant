@@ -13,3 +13,6 @@ To run tests:
 python run_benchmark.py L1_basic_algorithms
 python run_benchmark.py -n 3
 python run_benchmark.py L1_basic_algorithms -n 5
+
+Project structure:
+git ls-tree -r --name-only HEAD

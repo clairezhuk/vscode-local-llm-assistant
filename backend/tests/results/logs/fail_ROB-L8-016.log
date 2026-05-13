@@ -1,0 +1,17 @@
+QUERY: How can I kill a process on linux?
+ERROR: N/A
+
+AI RESPONSE:
+To kill a process on Linux, you can use the `kill` command followed by the process ID (PID). Here's how you can do it:
+
+```bash
+kill <PID>
+```
+
+For example, if you want to kill a process with the PID 1234, you would use:
+
+```bash
+kill 1234
+```
+
+This command will send a signal to the process, and if the process is not responding, it may be terminated. Always be careful with the `kill` command as it can abruptly terminate processes, so make sure you have the correct process ID before executing the command.

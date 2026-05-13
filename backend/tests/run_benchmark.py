@@ -43,9 +43,10 @@ def extract_cli(text: str) -> str:
     match = re.search(r'```(?:bash|sh|cmd)?\s*\n(.*?)\n```', text, re.DOTALL)
     return match.group(1).strip() if match else text.replace("`", "").strip()
 
-def run_isolated_code(ai_code: str, asserts: list) -> tuple[bool, str]:
+def run_isolated_code(ai_code: str, asserts: list, context_data: list = None) -> tuple[bool, str]:
     if not ai_code: 
-        return False, "No code block found (ensure AI outputs code in ```python blocks)"
+        return False, "No code block found"
+    
     indented_asserts = ""
     if isinstance(asserts, list):
         for line in asserts:
@@ -65,12 +66,18 @@ def run_isolated_code(ai_code: str, asserts: list) -> tuple[bool, str]:
         f"        print(f'ASSERT_FAIL: {{msg}}')\n"
         f"    except Exception as e:\n"
         f"        print(f'RUNTIME_ERROR: {{type(e).__name__}}: {{e}}')\n"
-        f"\n"
-        f"if __name__ == '__main__':\n"
+        f"\nif __name__ == '__main__':\n"
         f"    __run_benchmark_test()"
     )
     
     with tempfile.TemporaryDirectory() as tmpdir:
+        if context_data:
+            for file_info in context_data:
+                file_path = os.path.join(tmpdir, file_info['name'])
+                os.makedirs(os.path.dirname(file_path), exist_ok=True)
+                with open(file_path, "w", encoding="utf-8") as f:
+                    f.write(file_info['content'])
+
         script_path = os.path.join(tmpdir, "test_executor.py")
         with open(script_path, "w", encoding="utf-8") as f:
             f.write(full_code)
@@ -79,9 +86,7 @@ def run_isolated_code(ai_code: str, asserts: list) -> tuple[bool, str]:
             result = subprocess.run(
                 ["python", script_path], 
                 cwd=tmpdir, 
-                capture_output=True, 
-                text=True, 
-                timeout=12
+                capture_output=True, text=True, timeout=12
             )
             output = result.stdout + result.stderr
             
@@ -164,7 +169,7 @@ def run_benchmarks(target_suites: list = None, limit: int = None):
             exec_ok, exec_msg = (None, "N/A")
             if test['type'] == "code" and "execution" in metrics:
                 code = extract_code(ai_text)
-                exec_ok, exec_msg = run_isolated_code(code, metrics["execution"].get("run_tests", []))
+                exec_ok, exec_msg = run_isolated_code(code, metrics["execution"].get("run_tests", []), context_data)
             
             result_row = {
                 "id": test['id'],

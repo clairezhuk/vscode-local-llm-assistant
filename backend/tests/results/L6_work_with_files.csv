@@ -1,0 +1,11 @@
+id,type,time_s,true_intent,rec_intent,intent_ok,format_ok,exec_ok,exec_msg,tokens
+FILE-L6-001,code,12.12,2,1,False,False,False,No code block found,293
+FILE-L6-002,code,11.65,2,2,True,True,False,Python Error: FileNotFoundError: [Errno 2] No such file or directory: 'server.log',497
+FILE-L6-003,code,22.55,2,1,False,True,False,Python Error: FileNotFoundError: [WinError 3] The system cannot find the path specified: 'uploads',858
+FILE-L6-004,code,26.43,2,2,True,True,False,Assertion failed,1258
+FILE-L6-005,code,22.43,2,1,False,True,False,Python Error: FileNotFoundError: [Errno 2] No such file or directory: 'sales.csv',1287
+FILE-L6-006,code,21.75,2,2,True,False,False,NameError: name 'process_timestamps' is not defined,1411
+FILE-L6-007,code,70.63,2,2,True,True,True,Passed,5390
+FILE-L6-008,code,10.65,2,2,True,True,False,Python Error: FileNotFoundError: [Errno 2] No such file or directory: 'data.txt',1117
+FILE-L6-009,code,25.09,2,2,True,False,False,Assertion failed,1153
+FILE-L6-010,code,23.17,2,1,False,False,False,Python Error: SyntaxError: unterminated string literal (detected at line 1),1143

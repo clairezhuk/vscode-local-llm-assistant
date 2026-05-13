@@ -1,0 +1,10 @@
+QUERY: I had a really long day. First, my coffee machine broke, then I missed the bus, and when I finally got to the office, the elevator was out of order. I've been thinking about my commute and how many steps I take. Anyway, long story short, write a function that divides two numbers and handles division by zero.
+ERROR: Python Error: IndentationError: expected an indented block after 'try' statement on line 10
+
+AI RESPONSE:
+```python
+def divide_numbers(num1, num2):
+    # --- WRITE MIDDLE HERE ---
+    # --- END MIDDLE ---
+    return num1 / num2
+```

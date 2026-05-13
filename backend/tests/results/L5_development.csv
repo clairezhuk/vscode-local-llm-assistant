@@ -1,0 +1,8 @@
+id,type,time_s,true_intent,rec_intent,intent_ok,format_ok,exec_ok,exec_msg,tokens
+ASYNC-L5-001,code,35.71,2,2,True,True,False,"Expected [1, 2, 3], got ['Result from f1', 'Result from f2', 'Result from f3']",3773
+ASYNC-L5-002,code,22.25,2,1,False,False,True,Passed,1041
+PAR-L5-003,code,14.66,2,2,True,False,False,Python Error: concurrent.futures.process.BrokenProcessPool: A process in the process pool was terminated abruptly while the future was running or pending.,1032
+API-L5-004,code,16.84,2,2,True,True,False,"Python Error: requests.exceptions.ConnectionError: HTTPSConnectionPool(host='api.example.com', port=443): Max retries exceeded with url: /data (Caused by NameResolutionError(""<urllib3.connection.HTTPSConnection object at 0x000001B476F03750>: Failed to resolve 'api.example.com' ([Errno 11001] getaddrinfo failed)""))",989
+API-L5-005,code,18.66,2,2,True,False,False,"Python Error: requests.exceptions.ConnectionError: HTTPSConnectionPool(host='api.example.com', port=443): Max retries exceeded with url: /data (Caused by NameResolutionError(""<urllib3.connection.HTTPSConnection object at 0x000001728961A050>: Failed to resolve 'api.example.com' ([Errno 11001] getaddrinfo failed)""))",1021
+SEC-L5-006,code,14.27,2,2,True,False,False,Python Error: sqlite3.OperationalError: no such table: users,884
+SEC-L5-007,code,16.19,2,2,True,False,False,AttributeError: 'NoneType' object has no attribute 'startswith',916

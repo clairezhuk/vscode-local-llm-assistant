@@ -1,0 +1,14 @@
+QUERY: Bro, write me a function, що чекає list of numbers i zwraca ich sumę. Quick!
+ERROR: NameError: name 'sum_list' is not defined
+
+AI RESPONSE:
+```python
+def sum_numbers(numbers):
+    # --- WRITE MIDDLE HERE ---
+    total_sum = 0
+    for number in numbers:
+        total_sum += number
+
+    return total_sum
+    # --- END MIDDLE ---
+```

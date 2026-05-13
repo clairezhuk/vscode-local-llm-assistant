@@ -1,0 +1,26 @@
+id,type,time_s,true_intent,rec_intent,intent_ok,format_ok,exec_ok,exec_msg,tokens
+ROB-L8-001,code,7.41,2,2,True,False,False,Python Error: IndentationError: expected an indented block after 'try' statement on line 10,616
+ROB-L8-002,code,15.32,2,2,True,True,False,"Python Error: requests.exceptions.ConnectionError: HTTPSConnectionPool(host='api.example.com', port=443): Max retries exceeded with url: /data (Caused by NameResolutionError(""<urllib3.connection.HTTPSConnection object at 0x000001B22239EC90>: Failed to resolve 'api.example.com' ([Errno 11001] getaddrinfo failed)""))",1394
+ROB-L8-003,cli,8.57,3,1,False,True,,N/A,648
+ROB-L8-004,text,13.76,1,1,True,True,,N/A,631
+ROB-L8-005,code,15.53,2,2,True,False,True,Passed,765
+ROB-L8-006,code,9.26,2,2,True,False,False,NameError: name 'find_longest' is not defined,709
+ROB-L8-007,cli,30.84,3,1,False,False,,N/A,1010
+ROB-L8-008,cli,4.64,3,2,False,True,,N/A,853
+ROB-L8-009,code,9.77,2,2,True,False,False,Python Error: SyntaxError: expected 'except' or 'finally' block,750
+ROB-L8-010,code,7.03,2,2,True,True,False,NameError: name 'sum_list' is not defined,705
+ROB-L8-011,cli,3.05,3,1,False,True,,N/A,276
+ROB-L8-012,text,6.06,1,2,False,False,,N/A,354
+ROB-L8-013,code,8.93,2,2,True,True,True,Passed,368
+ROB-L8-014,code,3.74,2,1,False,False,False,Python Error: SyntaxError: expected 'except' or 'finally' block,295
+ROB-L8-015,cli,3.52,3,3,True,True,,N/A,304
+ROB-L8-016,text,10.28,1,1,True,False,,N/A,403
+ROB-L8-017,code,37.9,2,2,True,True,False,Python Error: SyntaxError: expected 'except' or 'finally' block,2136
+ROB-L8-018,code,5.5,2,2,True,True,False,Python Error: SyntaxError: expected 'except' or 'finally' block,490
+ROB-L8-019,cli,11.01,3,2,False,False,,N/A,1058
+ROB-L8-020,cli,3.57,3,2,False,False,,N/A,428
+ROB-L8-021,cli,2.75,3,3,True,True,,N/A,260
+ROB-L8-022,code,4.78,2,1,False,True,False,No code block found,286
+ROB-L8-023,cli,6.22,3,1,False,True,,N/A,259
+ROB-L8-024,code,16.19,2,1,False,True,False,Python Error: SyntaxError: expected 'except' or 'finally' block,471
+ROB-L8-025,code,17.62,2,2,True,True,False,Python Error: SyntaxError: expected 'except' or 'finally' block,1240

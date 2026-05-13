@@ -1,0 +1,27 @@
+QUERY: Given a nested dictionary `tree` representing a file system (keys are names, values are either dicts or None), write a function `find_deepest_readme(tree)` that returns the path to the deepest README.md.
+ERROR: Assertion failed
+
+AI RESPONSE:
+```python
+def find_deepest_readme(tree):
+    # Recursive function to find the deepest README.md
+    def _find_deepest(node):
+        # If the current node has a 'readme' key, return its path
+        if 'readme' in node:
+            return [node['readme']]
+        # If the current node has children, search through them
+        for child in node.values():
+            if child is not None:
+                # Recursively find the deepest README.md in the child node
+                result = _find_deepest(child)
+                # If a result is found, prepend the current node's name to the result
+                if result:
+                    return [node['name']] + result
+        # If no README.md is found in any child node, return None
+        return None
+    
+    # Start the search from the root of the tree
+    return _find_deepest(tree)
+```
+
+This function uses a recursive helper function `_find_deepest` to traverse the tree and find the deepest README.md. The function starts from the root of the tree and checks if the current node has a 'readme' key. If it does, the path to the README.md is returned. If the current node does not have a 'readme' key, the function recursively checks the children of the current node. If a README.md is found in any child node, it is prepended to the path from the parent node. If no README.md is found in any child node, the function returns `None`.

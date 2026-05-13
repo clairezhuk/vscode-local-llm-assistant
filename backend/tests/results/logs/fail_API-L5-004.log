@@ -1,0 +1,24 @@
+QUERY: Write a function `post_data(url, data_dict, token)` using the `requests` library to send a JSON payload with a 'Bearer <token>' Authorization header.
+ERROR: Python Error: requests.exceptions.ConnectionError: HTTPSConnectionPool(host='api.example.com', port=443): Max retries exceeded with url: /data (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x000001B476F03750>: Failed to resolve 'api.example.com' ([Errno 11001] getaddrinfo failed)"))
+
+AI RESPONSE:
+```python
+import requests
+
+def post_data(url, data_dict, token):
+    headers = {
+        'Authorization': f'Bearer {token}',
+        'Content-Type': 'application/json'
+    }
+    response = requests.post(url, json=data_dict, headers=headers)
+    return response.json()
+
+# Example usage
+url = 'https://api.example.com/data'
+data_dict = {'key': 'value'}
+token = 'your_token_here'
+response = post_data(url, data_dict, token)
+print(response)
+```
+
+> **⚠️ AI Warning:** This code assumes that the `requests` library is installed and that the token is valid. If the token is invalid, the request will fail.

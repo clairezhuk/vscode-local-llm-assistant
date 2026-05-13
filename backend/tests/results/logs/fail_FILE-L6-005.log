@@ -1,0 +1,34 @@
+QUERY: Read 'sales.csv' using the `csv` module and calculate the average value of the 'Amount' column. Assume headers exist.
+ERROR: Python Error: FileNotFoundError: [Errno 2] No such file or directory: 'sales.csv'
+
+AI RESPONSE:
+```python
+import csv
+
+# Open the sales.csv file
+with open('sales.csv', 'r', encoding='utf-8') as csv_file:
+    # Create a CSV reader object
+    csv_reader = csv.reader(csv_file)
+    # Skip the header row
+    next(csv_reader)
+    
+    # Initialize variables to store the total amount and the count of rows
+    total_amount = 0
+    count = 0
+    
+    # Iterate through each row in the CSV file
+    for row in csv_reader:
+        # Convert the amount to a float
+        amount = float(row[1])
+        # Add the amount to the total amount and increment the count
+        total_amount += amount
+        count += 1
+    
+    # Calculate the average amount
+    average_amount = total_amount / count
+    
+    # Print the average amount
+    print(f'The average amount is: {average_amount}')
+```
+
+This script reads the 'sales.csv' file using the `csv` module, skips the header row, iterates through each row, converts the 'Amount' column to a float, adds the amount to a running total, and increments the count of rows. After processing all rows, it calculates the average amount by dividing the total amount by the count of rows and prints the result.

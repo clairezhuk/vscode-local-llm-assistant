@@ -1,0 +1,20 @@
+QUERY: conga instl pandas
+ERROR: N/A
+
+AI RESPONSE:
+```python
+import pandas as pd
+
+def create_dataframe():
+    data = {
+        'Name': ['Alice', 'Bob', 'Charlie', 'David', 'Eve'],
+        'Age': [25, 30, 35, 40, 45],
+        'City': ['New York', 'Los Angeles', 'Chicago', 'Houston', 'Phoenix']
+    }
+    df = pd.DataFrame(data)
+    return df
+
+# Example usage:
+df = create_dataframe()
+print(df)
+```

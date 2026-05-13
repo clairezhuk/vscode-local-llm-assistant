@@ -1,0 +1,18 @@
+QUERY: Given a list of records like `{'meta': {'source': 'API', 'data': {'val': 10}}}`, complete the middle of the function to return a list of all 'val' numbers where source is 'API'.
+
+def extract_api_values(records):
+    res = []
+    # START FIM
+    # END FIM
+    return res
+ERROR: Passed
+
+AI RESPONSE:
+```python
+def extract_api_values(records):
+    res = []
+    for record in records:
+        if record['meta']['source'] == 'API':
+            res.append(record['meta']['data']['val'])
+    return res
+```

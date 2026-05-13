@@ -1,0 +1,30 @@
+QUERY: Write an async function `run_tasks()` that executes three other async functions (f1, f2, f3) concurrently and returns a list of their results using asyncio.gather.
+ERROR: Expected [1, 2, 3], got ['Result from f1', 'Result from f2', 'Result from f3']
+
+AI RESPONSE:
+```python
+import asyncio
+
+async def f1():
+    await asyncio.sleep(1)
+    return "Result from f1"
+
+async def f2():
+    await asyncio.sleep(2)
+    return "Result from f2"
+
+async def f3():
+    await asyncio.sleep(3)
+    return "Result from f3"
+
+async def run_tasks():
+    tasks = [f1(), f2(), f3()]
+    return await asyncio.gather(*tasks)
+
+# Example usage
+result = run_tasks()
+print(result)  # Output will be a list containing the results from f1, f2, and f3 in the order they were completed
+```
+
+> **⚠️ AI Warning:** I tried to fix this code, but it may still contain errors:
+> `NameError: You called undefined functions: f2, run_tasks, f1, f3. Please define them or import them.`

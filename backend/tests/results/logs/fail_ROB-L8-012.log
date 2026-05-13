@@ -1,0 +1,11 @@
+QUERY: Як перевірити статус гіта?
+ERROR: N/A
+
+AI RESPONSE:
+To check the status of a guitar, you can use the `guitars` command in the terminal. Here's how:
+
+```bash
+guitars
+```
+
+This command will display information about the guitar you have, such as its model, serial number, and any issues it might be experiencing.

@@ -1,0 +1,26 @@
+QUERY: Write a function `get_safe_path(base_dir, user_file)` that returns the absolute path only if `user_file` stays within `base_dir`. Prevent '../' attacks using `os.path.abspath` and `startswith`.
+ERROR: AttributeError: 'NoneType' object has no attribute 'startswith'
+
+AI RESPONSE:
+```python
+import os
+
+def get_safe_path(base_dir, user_file):
+    base_dir = os.path.abspath(base_dir)
+    user_file = os.path.abspath(user_file)
+    if os.path.commonpath([base_dir, user_file]) == base_dir:
+        return user_file
+    else:
+        return None
+
+# Example usage
+base_dir = '/home/user'
+user_file = '/home/user/documents/file.txt'
+safe_path = get_safe_path(base_dir, user_file)
+if safe_path:
+    print(safe_path)
+else:
+    print("Invalid path")
+```
+
+> **⚠️ AI Warning:** This code assumes that the `os` module is installed and that the base directory and user file are valid. If the directory or file is not valid, the function will fail.

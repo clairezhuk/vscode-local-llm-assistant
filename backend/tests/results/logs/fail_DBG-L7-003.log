@@ -1,0 +1,29 @@
+QUERY: The following binary search implementation goes into an infinite loop for certain inputs. Find the bug and fix it: 
+
+def binary_search(arr, x):
+    l, r = 0, len(arr) - 1
+    while l <= r:
+        mid = (l + r) // 2
+        if arr[mid] == x: return mid
+        elif arr[mid] < x: l = mid # Potential bug here
+        else: r = mid - 1
+    return -1
+ERROR: Passed
+
+AI RESPONSE:
+The bug in the binary search implementation is in the line `l = mid`. This will cause an infinite loop if `arr[mid]` is equal to `x`, because `l` will always be greater than or equal to `mid`, and `mid` will always be less than or equal to `r`, meaning the loop will never terminate.
+
+To fix this, we should remove the line `l = mid`. The corrected binary search implementation should look like this:
+
+```python
+def binary_search(arr, x):
+    l, r = 0, len(arr) - 1
+    while l <= r:
+        mid = (l + r) // 2
+        if arr[mid] == x: return mid
+        elif arr[mid] < x: l = mid + 1 # Corrected line
+        else: r = mid - 1
+    return -1
+```
+
+This corrected version will correctly handle the cases where `arr[mid]` is equal to `x`.

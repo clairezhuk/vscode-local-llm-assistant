@@ -1,0 +1,10 @@
+QUERY: запусти скрипт main.py
+ERROR: N/A
+
+AI RESPONSE:
+```python
+import main
+
+if __name__ == "__main__":
+    main.run()
+```

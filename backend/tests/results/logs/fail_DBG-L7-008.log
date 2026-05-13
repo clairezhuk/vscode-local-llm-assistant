@@ -1,0 +1,12 @@
+QUERY: In the provided file 'file_manager.py', the function `move_to_backup` is failing because it joins paths incorrectly. Fix the logic using `os.path.join` to make it cross-platform compatible.
+ERROR: Assertion failed
+
+AI RESPONSE:
+```python
+import os
+
+def move_to_backup(source, destination):
+    # --- WRITE MIDDLE HERE ---
+    # --- END MIDDLE ---
+    return os.path.join(source, destination)
+```

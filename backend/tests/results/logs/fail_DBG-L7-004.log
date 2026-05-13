@@ -1,0 +1,21 @@
+QUERY: Znajdź i napraw błąd w poniższym kodzie, który powoduje, że lista `items` zachowuje stan między wywołaniami funkcji: 
+
+def add_user_to_list(user, user_list=[]):
+    user_list.append(user)
+    return user_list
+ERROR: Passed
+
+AI RESPONSE:
+The bug in the provided code is in the line `user_list=[]`. When a function is called without an argument, Python will use the default argument value, which in this case is an empty list. This means that the `user_list` is always the same list across all calls to the function, even though `user` is different in each call. 
+
+To fix this, we should remove the default argument value for `user_list`. The corrected version of the function should look like this:
+
+```python
+def add_user_to_list(user, user_list=None):
+    if user_list is None:
+        user_list = []
+    user_list.append(user)
+    return user_list
+```
+
+This version ensures that a new list is created if `user_list` is `None`, and that the same list is returned if `user_list` is not `None`. This will correctly handle the cases where `user` is different in each call to the function.

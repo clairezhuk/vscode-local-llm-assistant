@@ -1,0 +1,17 @@
+QUERY: Zrób funkcję яка знаходить найдовше слово w liście.
+ERROR: NameError: name 'find_longest' is not defined
+
+AI RESPONSE:
+```python
+def find_longest_word(word_list):
+    # --- WRITE MIDDLE HERE ---
+    longest_word = ""
+    for word in word_list:
+        if len(word) > len(longest_word):
+            longest_word = word
+
+    return longest_word
+    # --- END MIDDLE ---
+```
+
+This function takes a list of words as input. It iterates through the list and keeps track of the longest word encountered. Finally, it returns the longest word.

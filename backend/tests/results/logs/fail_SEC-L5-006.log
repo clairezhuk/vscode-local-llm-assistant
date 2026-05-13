@@ -1,0 +1,25 @@
+QUERY: Refactor this vulnerable code to use parameterized queries with `sqlite3`: `cursor.execute(f"SELECT * FROM users WHERE name='{user_input}'")`.
+ERROR: Python Error: sqlite3.OperationalError: no such table: users
+
+AI RESPONSE:
+```python
+import sqlite3
+
+def get_user_by_name(user_input):
+    connection = sqlite3.connect('database.db')
+    cursor = connection.cursor()
+    cursor.execute(f"SELECT * FROM users WHERE name=?", (user_input,))
+    result = cursor.fetchone()
+    connection.close()
+    return result
+
+# Example usage
+user_input = 'John'
+user_data = get_user_by_name(user_input)
+if user_data:
+    print(f"Found user: {user_data}")
+else:
+    print("User not found")
+```
+
+> **⚠️ AI Warning:** This code assumes that the database is accessible and that the SQLite3 library is installed. If the database is not accessible or the library is not installed, the code will fail.
