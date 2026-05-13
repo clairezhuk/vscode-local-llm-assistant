@@ -1,0 +1,22 @@
+QUERY: Napisz funkcję `filter_data(df)`, która zwraca wiersze gdzie 'Age' > 25 oraz 'City' to 'Warsaw'.
+ERROR: Python Error: ModuleNotFoundError: No module named 'pandas'
+
+AI RESPONSE:
+```python
+import pandas as pd
+
+def filter_data(df):
+    """
+    Filters the rows in a DataFrame where 'Age' is greater than 25 and 'City' is 'Warsaw'.
+
+    Parameters:
+        df (pd.DataFrame): The DataFrame to be filtered.
+
+    Returns:
+        pd.DataFrame: The filtered DataFrame.
+    """
+    filtered_df = df[(df['Age'] > 25) & (df['City'] == 'Warsaw')]
+    return filtered_df
+```
+
+In this corrected version, the `filter_data` function takes a DataFrame as input and filters the rows where the 'Age' column is greater than 25 and the 'City' column is 'Warsaw'. It uses boolean indexing to select the rows that meet the conditions and returns the filtered DataFrame.

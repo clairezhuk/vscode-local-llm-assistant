@@ -1,6 +1,6 @@
 [
   {
-    "id": "CLI-L4-001",
+    "id": "L4-CLI-001",
     "description": "Find Python files recursively.",
     "query": "Find all files with extension .py in the current directory and its subdirectories.",
     "context_files": [],
@@ -14,7 +14,7 @@
     }
   },
   {
-    "id": "CLI-L4-002",
+    "id": "L4-CLI-002",
     "description": "Extract unique IPs from log (Polish).",
     "query": "Wyciągnij wszystkie unikalne adresy IP z pliku access.log i posortuj je.",
     "context_files": [],
@@ -28,7 +28,7 @@
     }
   },
   {
-    "id": "CLI-L4-003",
+    "id": "L4-CLI-003",
     "description": "Kill process on port 8080.",
     "query": "Find the PID of the process using port 8080 and kill it.",
     "context_files": [],
@@ -42,7 +42,7 @@
     }
   },
   {
-    "id": "CLI-L4-004",
+    "id": "L4-CLI-004",
     "description": "Archive directory excluding hidden files.",
     "query": "Create a tar.gz archive of the 'data' folder, but exclude all hidden files like .DS_Store or .git.",
     "context_files": [],
@@ -56,7 +56,7 @@
     }
   },
   {
-    "id": "CLI-L4-005",
+    "id": "L4-CLI-005",
     "description": "Set specific file permissions (chmod 744).",
     "query": "Make the script run.sh executable for the owner, but read-only for everyone else.",
     "context_files": [],
@@ -70,7 +70,7 @@
     }
   },
   {
-    "id": "CLI-L4-006",
+    "id": "L4-CLI-006",
     "description": "Search text inside files recursively.",
     "query": "Search for the string 'TODO' in all files within the 'src' directory recursively, showing line numbers.",
     "context_files": [],
@@ -84,7 +84,7 @@
     }
   },
   {
-    "id": "CLI-L4-007",
+    "id": "L4-CLI-007",
     "description": "Check disk usage of subdirectories (Polish).",
     "query": "Pokaż rozmiar wszystkich folderów w bieżącym katalogu, posortowany od największego, w czytelnym formacie.",
     "context_files": [],
@@ -98,7 +98,7 @@
     }
   },
   {
-    "id": "CLI-L4-008",
+    "id": "L4-CLI-008",
     "description": "Count lines in specific file types.",
     "query": "Count the total number of lines in all .txt files in the current folder.",
     "context_files": [],
@@ -112,7 +112,7 @@
     }
   },
   {
-    "id": "CLI-L4-009",
+    "id": "L4-CLI-009",
     "description": "Rename multiple files with prefix.",
     "query": "Rename all .jpg files in the current directory by adding the prefix 'backup_' to their names.",
     "context_files": [],
@@ -126,7 +126,7 @@
     }
   },
   {
-    "id": "CLI-L4-010",
+    "id": "L4-CLI-010",
     "description": "Check memory usage info.",
     "query": "Display the current system memory usage in megabytes.",
     "context_files": [],

@@ -1,0 +1,19 @@
+QUERY: Napisz mi function що дає random number od 1 do 100. Please.
+ERROR: Python Error: SyntaxError: expected 'except' or 'finally' block
+
+AI RESPONSE:
+```python
+import random
+
+def generate_random_number():
+    return random.randint(1, 100)
+
+# Example usage
+random_number = generate_random_number()
+print(random_number)
+```
+
+**Output:**
+```
+45
+```

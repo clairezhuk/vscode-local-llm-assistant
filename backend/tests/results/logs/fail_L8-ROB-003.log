@@ -1,0 +1,15 @@
+QUERY: істаллюй матплотліб
+ERROR: N/A
+
+AI RESPONSE:
+You can install matplotlib using pip, which is the package installer for Python. Here's how you can do it:
+
+```bash
+pip install matplotlib
+```
+
+After installation, you can use matplotlib in your Python scripts by importing it as follows:
+
+```python
+import matplotlib.pyplot as plt
+```

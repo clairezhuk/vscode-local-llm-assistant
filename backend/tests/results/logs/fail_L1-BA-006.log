@@ -1,0 +1,21 @@
+QUERY: Write a function `bubble_sort(arr)` that sorts a list of numbers in ascending order.
+ERROR: Assertion failed
+
+AI RESPONSE:
+```python
+def bubble_sort(arr):
+    n = len(arr)
+    
+    # Traverse through all array elements
+    for i in range(n):
+        
+        # Last i elements are already in place
+        for j in range(0, n - i - 1):
+            
+            # Traverse the array from 0 to n-i-1
+            # Swap if the element found is greater than the next element
+            if arr[j] > arr[j + 1]:
+                arr[j], arr[j + 1] = arr[j + 1], arr[j]
+```
+
+This function sorts the list of numbers in ascending order using the bubble sort algorithm. The outer loop runs from the beginning of the list to the end, and the inner loop runs from the start of the list up to the end minus the current position of the outer loop. This ensures that each element is compared with the next one in each iteration of the outer loop, and if they are out of order, they are swapped. This process is repeated until the list is sorted.

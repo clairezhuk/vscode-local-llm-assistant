@@ -1,16 +1,16 @@
 id,type,time_s,true_intent,rec_intent,intent_ok,format_ok,exec_ok,exec_msg,tokens
-CA-L2-001,code,10.97,2,2,True,False,True,Passed,542
-CA-L2-002,code,51.14,2,2,True,True,True,Passed,2824
-CA-L2-003,code,52.07,2,2,True,False,False,Python Error: SyntaxError: f-string: unmatched '(',3543
-CA-L2-004,code,17.56,2,2,True,True,False,Standard knapsack failed,971
-CA-L2-005,code,19.42,2,2,True,True,True,Passed,1018
-CA-L2-006,code,11.27,2,2,True,True,True,Passed,828
-CA-L2-007,code,14.68,2,2,True,True,False,Python Error: SyntaxError: unterminated string literal (detected at line 10),813
-CA-L2-008,code,31.18,2,2,True,False,False,Assertion failed,3141
-CA-L2-009,code,13.41,2,2,True,True,False,TypeError: unsupported operand type(s) for /: 'list' and 'float',662
-CA-L2-010,code,11.54,2,2,True,False,False,Assertion failed,665
-CA-L2-011,code,27.63,2,2,True,True,True,Passed,1474
-CA-L2-012,code,25.85,2,1,False,True,True,Passed,973
-CA-L2-013,code,13.12,2,1,False,True,False,Python Error: SyntaxError: unterminated string literal (detected at line 19),925
-CA-L2-014,code,36.87,2,2,True,True,True,Passed,4112
-CA-L2-015,code,10.02,2,2,True,True,True,Passed,845
+L2-CA-001,code,15.91,2,1,False,True,False,TypeError: unsupported operand type(s) for -: 'list' and 'set',620
+L2-CA-002,code,23.5,2,1,False,True,False,TypeError: unsupported operand type(s) for -: 'list' and 'set',733
+L2-CA-003,code,70.37,2,2,True,False,False,Python Error: SyntaxError: f-string: unmatched '(',3692
+L2-CA-004,code,24.04,2,2,True,True,False,Standard knapsack failed,845
+L2-CA-005,code,16.19,2,1,False,True,True,Passed,773
+L2-CA-006,code,16.59,2,2,True,True,True,Passed,673
+L2-CA-007,code,18.62,2,1,False,False,False,Python Error: SyntaxError: unterminated string literal (detected at line 12),645
+L2-CA-008,code,26.36,2,2,True,True,False,Assertion failed,1394
+L2-CA-009,code,16.6,2,2,True,True,True,Passed,587
+L2-CA-010,code,13.56,2,1,False,False,False,Assertion failed,620
+L2-CA-011,code,21.63,2,2,True,True,True,Passed,721
+L2-CA-012,code,44.58,2,2,True,True,True,Passed,1776
+L2-CA-013,code,20.63,2,2,True,False,False,Python Error: SyntaxError: unterminated string literal (detected at line 14),835
+L2-CA-014,code,16.96,2,2,True,True,True,Passed,784
+L2-CA-015,code,9.69,2,1,False,True,True,Passed,612

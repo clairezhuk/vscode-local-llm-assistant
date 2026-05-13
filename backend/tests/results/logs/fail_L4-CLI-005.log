@@ -1,0 +1,20 @@
+QUERY: Make the script run.sh executable for the owner, but read-only for everyone else.
+ERROR: N/A
+
+AI RESPONSE:
+```python
+import os
+
+# Path to the script
+script_path = "/path/to/your/script.sh"
+
+# Make the script executable for the owner
+os.chmod(script_path, 0o755)
+
+# Make the script readable for everyone else
+os.chmod(script_path, 0o644)
+
+print(f"Permissions updated for {script_path}.")
+```
+
+This corrected version ensures that the script is executable for the owner and readable for everyone else. It uses the `os.chmod` function to change the file permissions. The `0o755` permission allows the owner to read, write, and execute the script, while the `0o644` permission allows other users to read and execute the script.

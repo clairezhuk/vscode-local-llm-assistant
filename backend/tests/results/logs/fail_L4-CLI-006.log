@@ -1,0 +1,41 @@
+QUERY: Search for the string 'TODO' in all files within the 'src' directory recursively, showing line numbers.
+ERROR: N/A
+
+AI RESPONSE:
+```python
+import os
+import re
+
+def find_todo_in_files(directory):
+    """
+    Searches for the string 'TODO' in all files within the specified directory recursively.
+
+    Parameters:
+        directory (str): The path to the directory to search in.
+
+    Returns:
+        list: A list of tuples containing the file path and the line number where 'TODO' was found.
+    """
+    todo_lines = []
+    for root, dirs, files in os.walk(directory):
+        for file in files:
+            if file.endswith(".py"):
+                file_path = os.path.join(root, file)
+                with open(file_path, 'r', encoding='utf-8') as f:
+                    for line_number, line in enumerate(f, start=1):
+                        if re.search(r'TODO', line):
+                            todo_lines.append((file_path, line_number))
+    return todo_lines
+
+# Example usage
+directory = "/path/to/your/src"
+result = find_todo_in_files(directory)
+if result:
+    print("TODO found in files:")
+    for file_path, line_number in result:
+        print(f"File: {file_path}, Line {line_number}")
+else:
+    print("No TODO found in files.")
+```
+
+This corrected version ensures that the script searches for the string 'TODO' in all Python files within the specified directory recursively. It uses the `os.walk` function to traverse the directory tree, the `open` function to read the file, and the `re.search` function to find 'TODO' in the lines. The function returns a list of tuples containing the file path and the line number where 'TODO' was found.

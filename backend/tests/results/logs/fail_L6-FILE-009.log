@@ -1,0 +1,36 @@
+QUERY: Write a script that takes all .txt files in the current directory and merges their content into a single file named 'combined.log', adding a separator line between them.
+ERROR: Assertion failed
+
+AI RESPONSE:
+```python
+import os
+
+def read_file_content(file_path):
+    """
+    Reads the content of a file and returns it as a string.
+    """
+    with open(file_path, 'r', encoding='utf-8') as file:
+        return file.read()
+
+def merge_text_files(file_paths):
+    """
+    Merges the content of multiple text files into a single file, adding a separator line between them.
+    """
+    output_content = ""
+    for file_path in file_paths:
+        content = read_file_content(file_path)
+        output_content += content + "\n\n"
+    with open('combined.log', 'w', encoding='utf-8') as file:
+        file.write(output_content)
+
+# Get all text files in the current directory
+file_paths = [file for file in os.listdir('.') if file.endswith('.txt')]
+
+# Merge the content into 'combined.log'
+merge_text_files(file_paths)
+```
+
+This corrected version imports the `os` module to list files, defines functions to read the content of a file and merge the content into a single file, and wraps the code in a markdown block.
+
+> **⚠️ AI Warning:** I tried to fix this code, but it may still contain errors:
+> `LogicError: Function 'merge_text_files' is missing a 'return' statement.`

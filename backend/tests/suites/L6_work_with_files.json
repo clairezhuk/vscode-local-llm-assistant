@@ -1,6 +1,6 @@
 [
   {
-    "id": "FILE-L6-001",
+    "id": "L6-FILE-001",
     "description": "Modify nested key in JSON config.",
     "query": "Read the file 'config.json', change the 'database.port' to 5432, and save it back to the same file with indentation.",
     "context_files": [
@@ -23,7 +23,7 @@
     }
   },
   {
-    "id": "FILE-L6-002",
+    "id": "L6-FILE-002",
     "description": "Memory-efficient log parsing (Polish).",
     "query": "Napisz skrypt, który odczytuje 'server.log' linia po linii, wyodrębnia wiersze zawierające '[ERROR]' i zapisuje je do 'errors.log'.",
     "context_files": [],
@@ -43,7 +43,7 @@
     }
   },
   {
-    "id": "FILE-L6-003",
+    "id": "L6-FILE-003",
     "description": "Batch rename images with date prefix.",
     "query": "Find all .jpg and .png files in the 'uploads' folder and rename them by adding the current date (YYYY-MM-DD) as a prefix. Use pathlib or os.",
     "context_files": [],
@@ -65,7 +65,7 @@
     }
   },
   {
-    "id": "FILE-L6-004",
+    "id": "L6-FILE-004",
     "description": "Find deepest README.md in dictionary structure.",
     "query": "Given a nested dictionary `tree` representing a file system (keys are names, values are either dicts or None), write a function `find_deepest_readme(tree)` that returns the path to the deepest README.md.",
     "context_files": [],
@@ -83,7 +83,7 @@
     }
   },
   {
-    "id": "FILE-L6-005",
+    "id": "L6-FILE-005",
     "description": "CSV aggregation (Average calculation).",
     "query": "Read 'sales.csv' using the `csv` module and calculate the average value of the 'Amount' column. Assume headers exist.",
     "context_files": [],
@@ -103,7 +103,7 @@
     }
   },
   {
-    "id": "FILE-L6-006",
+    "id": "L6-FILE-006",
     "description": "Context Integration (Calling helper from utils.py).",
     "query": "In the provided project files, find a function that formats dates in 'utils.py' and use it to process a list of raw timestamps `['2023-01-01', '2023-02-01']`.",
     "context_files": [
@@ -123,7 +123,7 @@
     }
   },
   {
-    "id": "FILE-L6-007",
+    "id": "L6-FILE-007",
     "description": "Extracting function names from Python file (Polish).",
     "query": "Napisz funkcję `get_function_names(file_path)`, która otwiera plik .py i zwraca listę nazw wszystkich zdefiniowanych w nim funkcji przy użyciu modułu `ast`.",
     "context_files": [],
@@ -142,7 +142,7 @@
     }
   },
   {
-    "id": "FILE-L6-008",
+    "id": "L6-FILE-008",
     "description": "Read file with specific encoding.",
     "query": "Read the content of 'data.txt' which is encoded in UTF-16 and print only the first 50 characters.",
     "context_files": [],
@@ -161,7 +161,7 @@
     }
   },
   {
-    "id": "FILE-L6-009",
+    "id": "L6-FILE-009",
     "description": "Merge multiple text files into one.",
     "query": "Write a script that takes all .txt files in the current directory and merges their content into a single file named 'combined.log', adding a separator line between them.",
     "context_files": [],
@@ -180,7 +180,7 @@
     }
   },
   {
-    "id": "FILE-L6-010",
+    "id": "L6-FILE-010",
     "description": "YAML configuration update.",
     "query": "Read 'settings.yaml', set 'debug' to false and 'version' to 2.0, then save it. Use the `yaml` library.",
     "context_files": [],

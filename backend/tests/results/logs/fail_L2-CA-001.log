@@ -1,0 +1,23 @@
+QUERY: Napisz funkcję dfs_path(graph, start, goal), która znajduje dowolną ścieżkę w grafie reprezentowanym jako słownik list sąsiedztwa. Funkcja powinna zwracać listę węzłów.
+ERROR: TypeError: unsupported operand type(s) for -: 'list' and 'set'
+
+AI RESPONSE:
+```python
+def dfs_path(graph, start, goal):
+    visited = set()
+    stack = [start]
+
+    while stack:
+        current_node = stack.pop()
+
+        if current_node == goal:
+            return [current_node]
+
+        if current_node not in visited:
+            visited.add(current_node)
+            stack.extend(graph[current_node] - visited)
+
+    return []
+```
+
+This function uses a stack to perform a depth-first search (DFS) traversal of the graph starting from the `start` node. It keeps track of visited nodes using a set `visited` and ensures that each node is only added to the stack once. The DFS traversal continues until the `goal` node is found or the stack is empty. If the `goal` node is found, the function returns a list containing the path. If no path is found, an empty list is returned.

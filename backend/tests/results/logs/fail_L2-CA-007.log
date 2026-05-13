@@ -1,0 +1,13 @@
+QUERY: Write a function parse_log_errors(logs) that takes a multi-line string of logs in format [YYYY-MM-DD HH:MM:SS] [LEVEL] Message and returns a list of dictionaries for each 'ERROR' level entry, containing 'date' and 'message'.
+ERROR: Python Error: SyntaxError: unterminated string literal (detected at line 12)
+
+AI RESPONSE:
+```python
+import re
+
+def parse_log_errors(logs):
+    pattern = r'\[(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2})\] \[ERROR\] (.+)'
+    matches = re.findall(pattern, logs)
+    logs_dict = [{'date': date, 'message': msg} for date, msg in matches]
+    return logs_dict
+```

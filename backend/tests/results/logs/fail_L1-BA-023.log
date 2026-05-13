@@ -1,0 +1,14 @@
+QUERY: Write a function `find_max(arr)` that returns the largest element in a list without using the built-in max() function.
+ERROR: Passed
+
+AI RESPONSE:
+```python
+def find_max(arr):
+    max_value = arr[0]
+    for num in arr[1:]:
+        if num > max_value:
+            max_value = num
+    return max_value
+```
+
+This function iterates through the list `arr` starting from the first element. It compares each element with the current maximum value `max_value`. If a larger element is found, `max_value` is updated. Finally, the function returns the largest element found.

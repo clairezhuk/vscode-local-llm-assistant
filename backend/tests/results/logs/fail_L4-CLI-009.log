@@ -1,0 +1,38 @@
+QUERY: Rename all .jpg files in the current directory by adding the prefix 'backup_' to their names.
+ERROR: N/A
+
+AI RESPONSE:
+```python
+import os
+
+def rename_jpg_files(directory):
+    """
+    Renames all .jpg files in the specified directory by adding the prefix 'backup_' to their names.
+
+    Parameters:
+        directory (str): The path to the directory to search in.
+
+    Returns:
+        int: The number of files renamed.
+    """
+    renamed_count = 0
+    for root, dirs, files in os.walk(directory):
+        for file in files:
+            if file.endswith(".jpg"):
+                original_path = os.path.join(root, file)
+                new_path = os.path.join(root, f"backup_{file}")
+                try:
+                    os.rename(original_path, new_path)
+                    renamed_count += 1
+                except Exception as e:
+                    print(f"Failed to rename {original_path}: {e}")
+    return renamed_count
+
+# Example usage
+directory = "."
+result = rename_jpg_files(directory)
+if result:
+    print(f"Number of .jpg files renamed: {result}")
+else:
+    print("No .jpg files found.")
+```

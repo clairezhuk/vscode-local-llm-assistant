@@ -1,0 +1,35 @@
+QUERY: Write a function `post_data(url, data_dict, token)` using the `requests` library to send a JSON payload with a 'Bearer <token>' Authorization header.
+ERROR: Passed
+
+AI RESPONSE:
+```python
+import requests
+
+def post_data(url, data_dict, token):
+    """
+    Sends a JSON payload with a 'Bearer <token>' Authorization header to the specified URL.
+
+    Parameters:
+        url (str): The URL to which the data will be sent.
+        data_dict (dict): The data to be sent as JSON.
+        token (str): The token to be used in the Authorization header.
+
+    Returns:
+        requests.Response: The response from the server.
+    """
+    headers = {
+        'Authorization': f'Bearer {token}',
+        'Content-Type': 'application/json'
+    }
+    response = requests.post(url, headers=headers, json=data_dict)
+    return response
+
+# Example usage
+url = "https://example.com/api/data"
+data = {"key1": "value1", "key2": "value2"}
+token = "your_access_token"
+response = post_data(url, data, token)
+print(response.text)
+```
+
+This corrected version uses the `requests` library to send a JSON payload with a 'Bearer <token>' Authorization header to the specified URL. It waits for the response from the server and returns it.

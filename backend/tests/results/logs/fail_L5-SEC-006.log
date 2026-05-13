@@ -1,0 +1,40 @@
+QUERY: Refactor this vulnerable code to use parameterized queries with `sqlite3`: `cursor.execute(f"SELECT * FROM users WHERE name='{user_input}'")`.
+ERROR: NameError: name 'ai_code' is not defined
+
+AI RESPONSE:
+```python
+import sqlite3
+
+def fetch_user_by_name(user_input):
+    """
+    Fetches user details from the database using parameterized queries.
+
+    Parameters:
+        user_input (str): The name of the user.
+
+    Returns:
+        sqlite3.Row: A row containing the user details if found, None otherwise.
+    """
+    conn = sqlite3.connect('example.db')
+    cursor = conn.cursor()
+    query = "SELECT * FROM users WHERE name=?"
+    try:
+        cursor.execute(query, (user_input,))
+        return cursor.fetchone()
+    except sqlite3.Error as e:
+        print(f"An error occurred: {e}")
+        return None
+    finally:
+        cursor.close()
+        conn.close()
+
+# Example usage
+user_name = "JohnDoe"
+user = fetch_user_by_name(user_name)
+if user:
+    print(user)
+else:
+    print("User not found.")
+```
+
+This corrected version uses the `sqlite3` module to safely execute parameterized queries. It uses placeholders (question marks) for user input and passes the input as a tuple to the `execute` method. This prevents SQL injection attacks. It also ensures that the database connection is properly closed and the cursor is properly closed before the function exits.

@@ -1,0 +1,10 @@
+QUERY: Write a function `distance(p1, p2)` where p1 and p2 are tuples (x, y).
+ERROR: Passed
+
+AI RESPONSE:
+```python
+def distance(p1, p2):
+    return ((p1[0] - p2[0])**2 + (p1[1] - p2[1])**2)**0.5
+```
+
+This function calculates the Euclidean distance between two points in a 2-dimensional space. The distance is computed as the square root of the sum of the squares of the differences in their x and y coordinates.

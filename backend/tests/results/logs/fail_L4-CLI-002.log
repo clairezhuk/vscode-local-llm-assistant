@@ -1,0 +1,34 @@
+QUERY: Wyciągnij wszystkie unikalne adresy IP z pliku access.log i posortuj je.
+ERROR: N/A
+
+AI RESPONSE:
+```python
+import re
+
+def extract_unique_ips(access_log):
+    """
+    Extracts all unique IP addresses from the access.log file and sorts them.
+
+    Parameters:
+        access_log (str): The path to the access.log file.
+
+    Returns:
+        list: A sorted list of unique IP addresses from the access.log file.
+    """
+    # Regular expression pattern to match IP addresses
+    ip_pattern = r'\b(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(\d{1,2})\.(\d{1,2})\.(\d{1,2})\b'
+    
+    # Read the access.log file
+    with open(access_log, 'r') as file:
+        lines = file.readlines()
+    
+    # Extract all IP addresses from the lines and remove duplicates
+    unique_ips = list(set(re.findall(ip_pattern, ''.join(lines))))
+    
+    # Sort the list of unique IP addresses
+    unique_ips.sort()
+    
+    return unique_ips
+```
+
+In this corrected version, the function `extract_unique_ips` reads the access log file line by line and extracts all IP addresses using a regular expression pattern. It then removes duplicates by converting the list of IP addresses to a set and back to a list. Finally, it sorts the list of IP addresses and returns it.

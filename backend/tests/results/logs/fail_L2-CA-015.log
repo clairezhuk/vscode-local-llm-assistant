@@ -1,0 +1,8 @@
+QUERY: Write a function scale_3d(points, factors) that takes a list of points (x, y, z) and a factor tuple (sx, sy, sz) and returns the list of scaled points.
+ERROR: Passed
+
+AI RESPONSE:
+```python
+def scale_3d(points, factors):
+    return [(p[0] * factors[0], p[1] * factors[1], p[2] * factors[2]) for p in points]
+```

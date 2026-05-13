@@ -1,0 +1,25 @@
+QUERY: Given a 2D array and a 1D array, write `subtract_row_vec(matrix, vec)` that subtracts the vector from each row of the matrix using broadcasting.
+ERROR: Assertion failed
+
+AI RESPONSE:
+```python
+import numpy as np
+
+def subtract_row_vec(matrix, vec):
+    """
+    Subtracts the given vector from each row of the matrix using broadcasting.
+
+    Parameters:
+        matrix (np.ndarray): The 2D input matrix.
+        vec (np.ndarray): The 1D input vector.
+
+    Returns:
+        np.ndarray: The resulting matrix after subtraction.
+    """
+    # Subtract the vector from each row of the matrix using broadcasting
+    result_matrix = matrix - vec[:, np.newaxis]
+    
+    return result_matrix
+```
+
+In this corrected version, the `subtract_row_vec` function takes a 2D NumPy array `matrix` and a 1D NumPy array `vec` as input. It subtracts the vector from each row of the matrix using broadcasting. The broadcasting rule here is that the 1D vector is expanded to a 2D array with the same number of rows as the matrix. This results in a new matrix where each row of the original matrix is subtracted by the corresponding element of the vector. The resulting matrix is then returned.

@@ -1,26 +1,26 @@
 id,type,time_s,true_intent,rec_intent,intent_ok,format_ok,exec_ok,exec_msg,tokens
-ROB-L8-001,code,7.41,2,2,True,False,False,Python Error: IndentationError: expected an indented block after 'try' statement on line 10,616
-ROB-L8-002,code,15.32,2,2,True,True,False,"Python Error: requests.exceptions.ConnectionError: HTTPSConnectionPool(host='api.example.com', port=443): Max retries exceeded with url: /data (Caused by NameResolutionError(""<urllib3.connection.HTTPSConnection object at 0x000001B22239EC90>: Failed to resolve 'api.example.com' ([Errno 11001] getaddrinfo failed)""))",1394
-ROB-L8-003,cli,8.57,3,1,False,True,,N/A,648
-ROB-L8-004,text,13.76,1,1,True,True,,N/A,631
-ROB-L8-005,code,15.53,2,2,True,False,True,Passed,765
-ROB-L8-006,code,9.26,2,2,True,False,False,NameError: name 'find_longest' is not defined,709
-ROB-L8-007,cli,30.84,3,1,False,False,,N/A,1010
-ROB-L8-008,cli,4.64,3,2,False,True,,N/A,853
-ROB-L8-009,code,9.77,2,2,True,False,False,Python Error: SyntaxError: expected 'except' or 'finally' block,750
-ROB-L8-010,code,7.03,2,2,True,True,False,NameError: name 'sum_list' is not defined,705
-ROB-L8-011,cli,3.05,3,1,False,True,,N/A,276
-ROB-L8-012,text,6.06,1,2,False,False,,N/A,354
-ROB-L8-013,code,8.93,2,2,True,True,True,Passed,368
-ROB-L8-014,code,3.74,2,1,False,False,False,Python Error: SyntaxError: expected 'except' or 'finally' block,295
-ROB-L8-015,cli,3.52,3,3,True,True,,N/A,304
-ROB-L8-016,text,10.28,1,1,True,False,,N/A,403
-ROB-L8-017,code,37.9,2,2,True,True,False,Python Error: SyntaxError: expected 'except' or 'finally' block,2136
-ROB-L8-018,code,5.5,2,2,True,True,False,Python Error: SyntaxError: expected 'except' or 'finally' block,490
-ROB-L8-019,cli,11.01,3,2,False,False,,N/A,1058
-ROB-L8-020,cli,3.57,3,2,False,False,,N/A,428
-ROB-L8-021,cli,2.75,3,3,True,True,,N/A,260
-ROB-L8-022,code,4.78,2,1,False,True,False,No code block found,286
-ROB-L8-023,cli,6.22,3,1,False,True,,N/A,259
-ROB-L8-024,code,16.19,2,1,False,True,False,Python Error: SyntaxError: expected 'except' or 'finally' block,471
-ROB-L8-025,code,17.62,2,2,True,True,False,Python Error: SyntaxError: expected 'except' or 'finally' block,1240
+L8-ROB-001,code,13.58,2,2,True,True,False,Python Error: IndentationError: expected an indented block after 'try' statement on line 11,537
+L8-ROB-002,code,13.21,2,1,False,True,True,Passed,600
+L8-ROB-003,cli,8.12,3,1,False,True,,N/A,546
+L8-ROB-004,text,27.82,1,1,True,True,,N/A,771
+L8-ROB-005,code,20.04,2,2,True,True,True,Passed,825
+L8-ROB-006,code,17.95,2,2,True,False,False,NameError: name 'find_longest' is not defined,734
+L8-ROB-007,cli,5.16,3,3,True,False,,N/A,667
+L8-ROB-008,cli,19.06,3,1,False,True,,N/A,553
+L8-ROB-009,code,16.93,2,2,True,True,False,Python Error: SyntaxError: expected 'except' or 'finally' block,549
+L8-ROB-010,code,11.68,2,2,True,True,True,Passed,536
+L8-ROB-011,cli,4.55,3,1,False,True,,N/A,513
+L8-ROB-012,text,12.93,1,2,False,False,,N/A,372
+L8-ROB-013,code,10.77,2,1,False,True,True,Passed,371
+L8-ROB-014,code,4.9,2,1,False,False,False,Python Error: SyntaxError: expected 'except' or 'finally' block,340
+L8-ROB-015,cli,4.38,3,3,True,True,,N/A,357
+L8-ROB-016,text,25.32,1,1,True,True,,N/A,641
+L8-ROB-017,code,21.87,2,1,False,True,False,Python Error: SyntaxError: expected 'except' or 'finally' block,796
+L8-ROB-018,code,14.11,2,2,True,True,False,Python Error: SyntaxError: expected 'except' or 'finally' block,841
+L8-ROB-019,cli,11.88,3,1,False,False,,N/A,874
+L8-ROB-020,cli,39.9,3,2,False,False,,N/A,2247
+L8-ROB-021,cli,4.12,3,3,True,True,,N/A,483
+L8-ROB-022,code,9.47,2,1,False,True,False,No code block found,547
+L8-ROB-023,cli,16.83,3,1,False,True,,N/A,664
+L8-ROB-024,code,39.38,2,2,True,True,False,Python Error: SyntaxError: expected 'except' or 'finally' block,2564
+L8-ROB-025,code,28.97,2,2,True,True,False,Python Error: SyntaxError: expected 'except' or 'finally' block,2299

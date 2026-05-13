@@ -1,6 +1,6 @@
 [
   {
-    "id": "REF-L7-001",
+    "id": "L7-REF-001",
     "description": "Refactor if/elif chain into dictionary mapping.",
     "query": "Refactor the following function to use a dictionary mapping instead of multiple if/elif statements for better readability: \n\ndef get_status_msg(code):\n    if code == 'ST_01': return 'Active'\n    elif code == 'ST_02': return 'Pending'\n    elif code == 'ST_03': return 'Suspended'\n    elif code == 'ST_04': return 'Deleted'\n    elif code == 'ST_05': return 'Archived'\n    return 'Unknown'",
     "context_files": [],
@@ -18,7 +18,7 @@
     }
   },
   {
-    "id": "REF-L7-002",
+    "id": "L7-REF-002",
     "description": "Deduplicate code using a class decorator (Polish).",
     "query": "W pliku 'api_handlers.py' znajdują się dwie funkcje, które ręcznie logują czas wykonania. Zrefaktoryzuj ten kod, tworząc dekorator `@log_time`, aby usunąć powtarzający się kod z obu funkcji.",
     "context_files": [
@@ -39,7 +39,7 @@
     }
   },
   {
-    "id": "DBG-L7-003",
+    "id": "L7-DBG-003",
     "description": "Fix infinite loop in binary search.",
     "query": "The following binary search implementation goes into an infinite loop for certain inputs. Find the bug and fix it: \n\ndef binary_search(arr, x):\n    l, r = 0, len(arr) - 1\n    while l <= r:\n        mid = (l + r) // 2\n        if arr[mid] == x: return mid\n        elif arr[mid] < x: l = mid # Potential bug here\n        else: r = mid - 1\n    return -1",
     "context_files": [],
@@ -57,7 +57,7 @@
     }
   },
   {
-    "id": "DBG-L7-004",
+    "id": "L7-DBG-004",
     "description": "Fix mutable default argument bug (Polish).",
     "query": "Znajdź i napraw błąd w poniższym kodzie, który powoduje, że lista `items` zachowuje stan między wywołaniami funkcji: \n\ndef add_user_to_list(user, user_list=[]):\n    user_list.append(user)\n    return user_list",
     "context_files": [],
@@ -76,7 +76,7 @@
     }
   },
   {
-    "id": "FIM-L7-005",
+    "id": "L7-FIM-005",
     "description": "Complete function middle with try/except for KeyError.",
     "query": "Complete the missing middle part of this function. It should try to fetch 'value' from a dictionary, but if it fails (KeyError), it should return the 'default' value provided.\n\ndef safe_get(data_dict, default):\n    # --- WRITE MIDDLE HERE ---\n    # --- END MIDDLE ---",
     "context_files": [],
@@ -94,7 +94,7 @@
     }
   },
   {
-    "id": "FIM-L7-006",
+    "id": "L7-FIM-006",
     "description": "List comprehension to extract active user IDs.",
     "query": "Write a single-line list comprehension that extracts the 'id' field from a list of user dictionaries, but ONLY for users where 'is_active' is True.\n\ndef get_active_ids(users):\n    return # --- COMPLETE HERE ---",
     "context_files": [],
@@ -112,7 +112,7 @@
     }
   },
   {
-    "id": "REF-L7-007",
+    "id": "L7-REF-007",
     "description": "Consolidate duplicated logic into a helper method.",
     "query": "Refactor these two functions into a class where the common validation logic (checking if age is between 0 and 120) is moved to a private method `_validate_age`.\n\ndef set_driver_age(age):\n    if 0 <= age <= 120:\n        print('Valid')\n    else:\n        raise ValueError('Invalid age')\n\ndef set_voter_age(age):\n    if 0 <= age <= 120:\n        print('Valid')\n    else:\n        raise ValueError('Invalid age')",
     "context_files": [],
@@ -133,7 +133,7 @@
     }
   },
   {
-    "id": "DBG-L7-008",
+    "id": "L7-DBG-008",
     "description": "Fix incorrect path handling in a script.",
     "query": "In the provided file 'file_manager.py', the function `move_to_backup` is failing because it joins paths incorrectly. Fix the logic using `os.path.join` to make it cross-platform compatible.",
     "context_files": [
@@ -153,7 +153,7 @@
     }
   },
   {
-    "id": "FIM-L7-009",
+    "id": "L7-FIM-009",
     "description": "Fill middle with complex data extraction.",
     "query": "Given a list of records like `{'meta': {'source': 'API', 'data': {'val': 10}}}`, complete the middle of the function to return a list of all 'val' numbers where source is 'API'.\n\ndef extract_api_values(records):\n    res = []\n    # START FIM\n    # END FIM\n    return res",
     "context_files": [],
@@ -170,7 +170,7 @@
     }
   },
   {
-    "id": "REF-L7-010",
+    "id": "L7-REF-010",
     "description": "Convert complex if chain to a dict (Polish).",
     "query": "Przekształć poniższą funkcję `calculate_tax` tak, aby zamiast długiej listy `if/elif` używała słownika mapującego kraje na stawki podatkowe.\n\ndef calculate_tax(country, amount):\n    if country == 'USA': return amount * 0.1\n    elif country == 'UK': return amount * 0.2\n    elif country == 'PL': return amount * 0.23\n    return 0",
     "context_files": [],

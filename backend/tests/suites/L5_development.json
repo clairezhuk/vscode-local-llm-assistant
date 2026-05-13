@@ -1,6 +1,6 @@
 [
   {
-    "id": "ASYNC-L5-001",
+    "id": "L5-ASYNC-001",
     "description": "Concurrent execution using asyncio.gather.",
     "query": "Write an async function `run_tasks()` that executes three other async functions (f1, f2, f3) concurrently and returns a list of their results using asyncio.gather.",
     "context_files": [],
@@ -21,7 +21,7 @@
     }
   },
   {
-    "id": "ASYNC-L5-002",
+    "id": "L5-ASYNC-002",
     "description": "Limiting concurrency with asyncio.Semaphore (Polish).",
     "query": "Napisz asynchroniczną funkcję `bounded_fetch(sem, task_id)`, która symuluje pobieranie danych. Użyj `async with sem:`, aby ograniczyć liczbę jednoczesnych operacji. Funkcja powinna czekać 0.1s i zwracać task_id.",
     "context_files": [],
@@ -42,7 +42,7 @@
     }
   },
   {
-    "id": "PAR-L5-003",
+    "id": "L5-PAR-003",
     "description": "Parallel processing with ProcessPoolExecutor.",
     "query": "Use `concurrent.futures.ProcessPoolExecutor` to map a function `square(x)` to a list of integers from 1 to 1000. Return the list of results.",
     "context_files": [],
@@ -64,7 +64,7 @@
     }
   },
   {
-    "id": "API-L5-004",
+    "id": "L5-API-004",
     "description": "POST request with Bearer token authentication.",
     "query": "Write a function `post_data(url, data_dict, token)` using the `requests` library to send a JSON payload with a 'Bearer <token>' Authorization header.",
     "context_files": [],
@@ -86,7 +86,7 @@
     }
   },
   {
-    "id": "API-L5-005",
+    "id": "L5-API-005",
     "description": "Retry logic for 503 Service Unavailable (Polish).",
     "query": "Zaimplementuj funkcję `fetch_with_retry(url)`, która wykonuje zapytanie GET. Jeśli otrzyma status 503, powinna spróbować ponownie do 3 razy przed poddaniem się. Użyj `requests`.",
     "context_files": [],
@@ -109,7 +109,7 @@
     }
   },
   {
-    "id": "SEC-L5-006",
+    "id": "L5-SEC-006",
     "description": "Fixing SQL Injection vulnerability.",
     "query": "Refactor this vulnerable code to use parameterized queries with `sqlite3`: `cursor.execute(f\"SELECT * FROM users WHERE name='{user_input}'\")`.",
     "context_files": [],
@@ -138,7 +138,7 @@
     }
   },
   {
-    "id": "SEC-L5-007",
+    "id": "L5-SEC-007",
     "description": "Preventing Path Traversal with abspath.",
     "query": "Write a function `get_safe_path(base_dir, user_file)` that returns the absolute path only if `user_file` stays within `base_dir`. Prevent '../' attacks using `os.path.abspath` and `startswith`.",
     "context_files": [],

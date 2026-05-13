@@ -1,6 +1,6 @@
 [
     {
-        "id": "CA-L2-001",
+        "id": "L2-CA-001",
         "description": "Depth-First Search (DFS) implementation for pathfinding.",
         "query": "Napisz funkcję dfs_path(graph, start, goal), która znajduje dowolną ścieżkę w grafie reprezentowanym jako słownik list sąsiedztwa. Funkcja powinna zwracać listę węzłów.",
         "context_files": [],
@@ -19,7 +19,7 @@
         }
     },
     {
-        "id": "CA-L2-002",
+        "id": "L2-CA-002",
         "description": "Breadth-First Search (BFS) for shortest path in unweighted graph.",
         "query": "Implement a function bfs_shortest_path(graph, start, goal) that returns the shortest path as a list of nodes using a queue.",
         "context_files": [],
@@ -38,7 +38,7 @@
         }
     },
     {
-        "id": "CA-L2-003",
+        "id": "L2-CA-003",
         "description": "Dijkstra's algorithm for weighted shortest path.",
         "query": "Write a function dijkstra(graph, start) that calculates the shortest distance from the start node to all other nodes in a weighted graph (dict of dicts). Return a dictionary of distances.",
         "context_files": [],
@@ -58,7 +58,7 @@
         }
     },
     {
-        "id": "CA-L2-004",
+        "id": "L2-CA-004",
         "description": "0/1 Knapsack problem using dynamic programming.",
         "query": "Implement the knapsack(values, weights, capacity) function using dynamic programming to find the maximum value that can fit in the given capacity.",
         "context_files": [],
@@ -77,7 +77,7 @@
         }
     },
     {
-        "id": "CA-L2-005",
+        "id": "L2-CA-005",
         "description": "Longest Common Subsequence (LCS) algorithm.",
         "query": "Write a function lcs(s1, s2) that returns the length of the longest common subsequence between two strings using dynamic programming.",
         "context_files": [],
@@ -96,7 +96,7 @@
         }
     },
     {
-        "id": "CA-L2-006",
+        "id": "L2-CA-006",
         "description": "Complex email validation using Regex.",
         "query": "Create a function get_valid_emails(text) that uses a regular expression to extract all valid email addresses. It must support subdomains and '+' aliases.",
         "context_files": [],
@@ -116,7 +116,7 @@
         }
     },
     {
-        "id": "CA-L2-007",
+        "id": "L2-CA-007",
         "description": "Log file parsing with grouping.",
         "query": "Write a function parse_log_errors(logs) that takes a multi-line string of logs in format [YYYY-MM-DD HH:MM:SS] [LEVEL] Message and returns a list of dictionaries for each 'ERROR' level entry, containing 'date' and 'message'.",
         "context_files": [],
@@ -136,7 +136,7 @@
         }
     },
     {
-        "id": "CA-L2-008",
+        "id": "L2-CA-008",
         "description": "Selection logic for Monte Carlo Tree Search (UCB1).",
         "query": "Implement a function ucb1(node_win_rate, node_visits, total_parent_visits, exploration_weight=1.41) which calculates the UCB1 score for MCTS node selection.",
         "context_files": [],
@@ -156,7 +156,7 @@
         }
     },
     {
-        "id": "CA-L2-009",
+        "id": "L2-CA-009",
         "description": "Audio signal processing pipeline simulation.",
         "query": "Create a function process_signal(data, threshold) that simulates an audio pipeline: 1. Normalize (divide by max), 2. Apply Noise Gate (values below threshold become 0), 3. Apply Gain (multiply by 1.5). Return the new list.",
         "context_files": [],
@@ -176,7 +176,7 @@
         }
     },
     {
-        "id": "CA-L2-010",
+        "id": "L2-CA-010",
         "description": "Custom K-Means clustering implementation (Assignment step).",
         "query": "Write a function assign_clusters(points, centroids) that returns a list of cluster indices for each point. Each point is a tuple (x, y). Calculate Euclidean distance to each centroid and pick the closest.",
         "context_files": [],
@@ -196,7 +196,7 @@
         }
     },
     {
-        "id": "CA-L2-011",
+        "id": "L2-CA-011",
         "description": "3D coordinate transformation (Rotation).",
         "query": "Napisz funkcję rotate_z(point, angle_rad), która obraca punkt 3D (x, y, z) wokół osi Z. Zastosuj macierz rotacji i zwróć nową krotkę (x, y, z).",
         "context_files": [],
@@ -217,7 +217,7 @@
         }
     },
     {
-        "id": "CA-L2-012",
+        "id": "L2-CA-012",
         "description": "Find Shortest Path using BFS on a grid.",
         "query": "Implement grid_shortest_path(grid, start, end) where 0 is walkable and 1 is a wall. Start/End are (row, col) tuples. Return path length or -1. Move only Up, Down, Left, Right.",
         "context_files": [],
@@ -235,7 +235,7 @@
         }
     },
     {
-        "id": "CA-L2-013",
+        "id": "L2-CA-013",
         "description": "Parsing hierarchical log data.",
         "query": "Implement parse_nested_logs(lines) that finds all occurrences of patterns like Module[Name]: Status[Value] and returns a dictionary mapping Name to Value.",
         "context_files": [],
@@ -255,7 +255,7 @@
         }
     },
     {
-        "id": "CA-L2-014",
+        "id": "L2-CA-014",
         "description": "Signal windowing transformation (Hamming-like).",
         "query": "Write a function apply_window(signal) that multiplies each element s[i] in a list by a weight w = 0.5 * (1 - cos(2*pi*i / (N-1))) where N is signal length. Return the new signal.",
         "context_files": [],
@@ -276,7 +276,7 @@
         }
     },
     {
-        "id": "CA-L2-015",
+        "id": "L2-CA-015",
         "description": "Vectorized 3D Scaling transformation.",
         "query": "Write a function scale_3d(points, factors) that takes a list of points (x, y, z) and a factor tuple (sx, sy, sz) and returns the list of scaled points.",
         "context_files": [],

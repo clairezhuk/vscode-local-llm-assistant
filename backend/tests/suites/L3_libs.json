@@ -1,6 +1,6 @@
 [
   {
-    "id": "LIB-L3-001",
+    "id": "L3-LIB-001",
     "description": "NumPy row-wise argmax.",
     "query": "Write a function `get_row_max_indices(matrix)` that returns the indices of the maximum values in each row of a 2D NumPy array.",
     "context_files": [],
@@ -20,7 +20,7 @@
     }
   },
   {
-    "id": "LIB-L3-002",
+    "id": "L3-LIB-002",
     "description": "NumPy boolean masking for thresholding.",
     "query": "Implement `apply_threshold(arr, threshold)` which replaces all values in a NumPy array greater than the threshold with 0.",
     "context_files": [],
@@ -40,7 +40,7 @@
     }
   },
   {
-    "id": "LIB-L3-003",
+    "id": "L3-LIB-003",
     "description": "Vectorized cosine distance calculation.",
     "query": "Write a function `cosine_distance(u, v)` using NumPy. Do not use loops. Formula: 1 - (u · v) / (||u|| * ||v||).",
     "context_files": [],
@@ -60,7 +60,7 @@
     }
   },
   {
-    "id": "LIB-L3-004",
+    "id": "L3-LIB-004",
     "description": "Pandas groupby and mean calculation (Polish).",
     "query": "Napisz funkcję `get_category_prices(df)`, która grupuje DataFrame według kolumny 'Category' i oblicza średnią kolumny 'Price'.",
     "context_files": [],
@@ -80,7 +80,7 @@
     }
   },
   {
-    "id": "LIB-L3-005",
+    "id": "L3-LIB-005",
     "description": "Handling missing values with median in Pandas.",
     "query": "Create a function `fill_nan_with_median(df)` that fills all NaN values in a DataFrame using the median of their respective columns.",
     "context_files": [],
@@ -101,7 +101,7 @@
     }
   },
   {
-    "id": "LIB-L3-006",
+    "id": "L3-LIB-006",
     "description": "Pandas Left Join on multiple keys.",
     "query": "Implement `merge_data(df1, df2)` that performs a left join on two DataFrames using both 'id' and 'year' as common keys.",
     "context_files": [],
@@ -123,7 +123,7 @@
     }
   },
   {
-    "id": "LIB-L3-007",
+    "id": "L3-LIB-007",
     "description": "Matplotlib plot generation with metadata.",
     "query": "Write a function `create_plot(x, y)` that generates a line plot. Ensure it includes a title 'Data Plot', labels for both axes, and a legend.",
     "context_files": [],
@@ -146,7 +146,7 @@
     }
   },
   {
-    "id": "LIB-L3-008",
+    "id": "L3-LIB-008",
     "description": "Scikit-Learn Pipeline implementation.",
     "query": "Create a Scikit-Learn `make_pipeline_model()` function that returns a Pipeline containing a StandardScaler and a RandomForestClassifier.",
     "context_files": [],
@@ -168,7 +168,7 @@
     }
   },
   {
-    "id": "LIB-L3-009",
+    "id": "L3-LIB-009",
     "description": "Stratified train-test split (Polish).",
     "query": "Napisz funkcję `split_data(X, y)`, która dzieli dane na zbiór treningowy i testowy (20% test) z zachowaniem proporcji klas (stratify).",
     "context_files": [],
@@ -189,7 +189,7 @@
     }
   },
   {
-    "id": "LIB-L3-010",
+    "id": "L3-LIB-010",
     "description": "PyTorch nn.Module architecture.",
     "query": "Define a PyTorch class `SimpleNet` that inherits from `nn.Module`. It should have two linear layers (input size 10, hidden size 20, output size 1) with a ReLU activation between them.",
     "context_files": [],
@@ -210,7 +210,7 @@
     }
   },
   {
-    "id": "LIB-L3-011",
+    "id": "L3-LIB-011",
     "description": "Custom PyTorch Dataset implementation.",
     "query": "Implement a `MyDataset` class inheriting from PyTorch's `Dataset`. It must take a list of numbers in `__init__` and implement `__len__` and `__getitem__` (returning the value as a float tensor).",
     "context_files": [],
@@ -230,7 +230,7 @@
     }
   },
   {
-    "id": "LIB-L3-012",
+    "id": "L3-LIB-012",
     "description": "PyTorch training loop step.",
     "query": "Write a function `train_step(model, optimizer, criterion, x, y)` that performs exactly one optimization step: zero gradients, forward pass, calculate loss, backward pass, and optimizer step.",
     "context_files": [],
@@ -253,7 +253,7 @@
     }
   },
   {
-    "id": "LIB-L3-013",
+    "id": "L3-LIB-013",
     "description": "NumPy column-wise normalization.",
     "query": "Write a function `normalize_columns(matrix)` that normalizes each column of a 2D NumPy array by subtracting the mean and dividing by the standard deviation of that column.",
     "context_files": [],
@@ -273,7 +273,7 @@
     }
   },
   {
-    "id": "LIB-L3-014",
+    "id": "L3-LIB-014",
     "description": "Pandas Multi-condition filtering (Polish).",
     "query": "Napisz funkcję `filter_data(df)`, która zwraca wiersze gdzie 'Age' > 25 oraz 'City' to 'Warsaw'.",
     "context_files": [],
@@ -293,7 +293,7 @@
     }
   },
   {
-    "id": "LIB-L3-015",
+    "id": "L3-LIB-015",
     "description": "Matplotlib Subplots creation.",
     "query": "Implement `plot_two_charts(data1, data2)` that creates a figure with 1 row and 2 columns of subplots, plotting data1 on the first and data2 on the second.",
     "context_files": [],
@@ -314,7 +314,7 @@
     }
   },
   {
-    "id": "LIB-L3-016",
+    "id": "L3-LIB-016",
     "description": "Scikit-Learn Evaluation Metrics.",
     "query": "Write `get_metrics(y_true, y_pred)` using Scikit-Learn to return a tuple containing the Mean Squared Error and the R2 Score.",
     "context_files": [],
@@ -334,7 +334,7 @@
     }
   },
   {
-    "id": "LIB-L3-017",
+    "id": "L3-LIB-017",
     "description": "PyTorch Tensor resizing.",
     "query": "Implement `transform_tensor(t)` that takes a PyTorch tensor of shape (4, 4) and reshapes it to (2, 8) and then transposes it.",
     "context_files": [],
@@ -353,7 +353,7 @@
     }
   },
   {
-    "id": "LIB-L3-018",
+    "id": "L3-LIB-018",
     "description": "NumPy Broadcasting for subtraction.",
     "query": "Given a 2D array and a 1D array, write `subtract_row_vec(matrix, vec)` that subtracts the vector from each row of the matrix using broadcasting.",
     "context_files": [],
@@ -374,7 +374,7 @@
     }
   },
   {
-    "id": "LIB-L3-019",
+    "id": "L3-LIB-019",
     "description": "Pandas Pivot Table creation (Polish).",
     "query": "Stwórz funkcję `pivot_sales(df)`, która tworzy pivot table z sumą 'Sales' dla 'Region' (index) i 'Year' (columns).",
     "context_files": [],
@@ -394,7 +394,7 @@
     }
   },
   {
-    "id": "LIB-L3-020",
+    "id": "L3-LIB-020",
     "description": "PyTorch Softmax application.",
     "query": "Write a function `get_probabilities(logits)` that applies the Softmax function to a 1D PyTorch tensor of logits along the correct dimension.",
     "context_files": [],

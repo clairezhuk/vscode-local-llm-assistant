@@ -1,0 +1,34 @@
+QUERY: Napisz asynchroniczną funkcję `bounded_fetch(sem, task_id)`, która symuluje pobieranie danych. Użyj `async with sem:`, aby ograniczyć liczbę jednoczesnych operacji. Funkcja powinna czekać 0.1s i zwracać task_id.
+ERROR: Passed
+
+AI RESPONSE:
+```python
+import asyncio
+
+async def bounded_fetch(sem, task_id):
+    """
+    Simulates fetching data and returns the task ID after 0.1 seconds.
+
+    Parameters:
+        sem (asyncio.Semaphore): A semaphore to limit the number of concurrent operations.
+        task_id (int): The ID of the task being fetched.
+
+    Returns:
+        int: The task ID.
+    """
+    async with sem:
+        await asyncio.sleep(0.1)
+        return task_id
+
+# Example usage
+async def run_with_semaphore():
+    sem = asyncio.Semaphore(2)  # Limit to two concurrent operations
+    task_ids = [await bounded_fetch(sem, i) for i in range(5)]
+    return task_ids
+
+# Example usage
+import asyncio
+asyncio.run(run_with_semaphore())
+```
+
+This corrected version ensures that the `bounded_fetch` function executes the task using the provided semaphore, limiting the number of concurrent operations to two. It waits for 0.1 seconds and returns the task ID.

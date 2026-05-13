@@ -1,0 +1,20 @@
+QUERY: Write a function assign_clusters(points, centroids) that returns a list of cluster indices for each point. Each point is a tuple (x, y). Calculate Euclidean distance to each centroid and pick the closest.
+ERROR: Assertion failed
+
+AI RESPONSE:
+```python
+import math
+
+def assign_clusters(points, centroids):
+    cluster_indices = []
+    for point in points:
+        min_distance = float('inf')
+        closest_centroid = None
+        for centroid in centroids:
+            distance = math.sqrt((point[0] - centroid[0]) ** 2 + (point[1] - centroid[1]) ** 2)
+            if distance < min_distance:
+                min_distance = distance
+                closest_centroid = centroid
+        cluster_indices.append(closest_centroid)
+    return cluster_indices
+```

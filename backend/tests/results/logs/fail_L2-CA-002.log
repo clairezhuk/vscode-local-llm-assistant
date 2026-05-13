@@ -1,0 +1,25 @@
+QUERY: Implement a function bfs_shortest_path(graph, start, goal) that returns the shortest path as a list of nodes using a queue.
+ERROR: TypeError: unsupported operand type(s) for -: 'list' and 'set'
+
+AI RESPONSE:
+```python
+from collections import deque
+
+def bfs_shortest_path(graph, start, goal):
+    visited = set()
+    queue = deque([start])
+
+    while queue:
+        current_node = queue.popleft()
+
+        if current_node == goal:
+            return [current_node]
+
+        if current_node not in visited:
+            visited.add(current_node)
+            queue.extend(graph[current_node] - visited)
+
+    return []
+```
+
+This function uses a queue to perform a breadth-first search (BFS) traversal of the graph starting from the `start` node. It keeps track of visited nodes using a set `visited` and ensures that each node is only added to the queue once. The BFS traversal continues until the `goal` node is found or the queue is empty. If the `goal` node is found, the function returns a list containing the path. If no path is found, an empty list is returned.

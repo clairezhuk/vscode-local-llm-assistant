@@ -1,0 +1,7 @@
+QUERY: creae foder 'my_data_results'
+ERROR: N/A
+
+AI RESPONSE:
+```bash
+mkdir my_data_results
+```

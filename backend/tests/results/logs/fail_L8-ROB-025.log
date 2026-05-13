@@ -1,0 +1,19 @@
+QUERY: I was thinking about the history of Linux. It's fascinating. I want to learn more. But first, can you show me how to list files and then write a python function to print 'Hello'? Actually, just give me the python function.
+ERROR: Python Error: SyntaxError: expected 'except' or 'finally' block
+
+AI RESPONSE:
+```python
+def print_hello():
+    return 'Hello'
+```
+
+**Explanation:**
+- The `print_hello` function is defined to return the string 'Hello'.
+- The `return` statement is used to return the value of the function, which is the string 'Hello'.
+
+Make sure to wrap the entire code in a markdown block as follows:
+
+```python
+def print_hello():
+    return 'Hello'
+```

@@ -1,6 +1,6 @@
 [
   {
-    "id": "ROB-L8-001",
+    "id": "L8-ROB-001",
     "description": "Long garbage context before a simple math task.",
     "query": "I had a really long day. First, my coffee machine broke, then I missed the bus, and when I finally got to the office, the elevator was out of order. I've been thinking about my commute and how many steps I take. Anyway, long story short, write a function that divides two numbers and handles division by zero.",
     "context_files": [],
@@ -17,7 +17,7 @@
     }
   },
   {
-    "id": "ROB-L8-002",
+    "id": "L8-ROB-002",
     "description": "Multilingual mix (UA, PL, EN) for API fetch.",
     "query": "Napisz mi код який буде робити fetch з API і зберігати результат у pliku json. Proszę, use the requests library.",
     "context_files": [],
@@ -34,7 +34,7 @@
     }
   },
   {
-    "id": "ROB-L8-003",
+    "id": "L8-ROB-003",
     "description": "Severe typos in terminal command (pip).",
     "query": "істаллюй матплотліб",
     "context_files": [],
@@ -48,7 +48,7 @@
     }
   },
   {
-    "id": "ROB-L8-004",
+    "id": "L8-ROB-004",
     "description": "Ambiguous server start request (Explanation/Theory).",
     "query": "Як мені запустити сервер?",
     "context_files": [],
@@ -60,7 +60,7 @@
     }
   },
   {
-    "id": "ROB-L8-005",
+    "id": "L8-ROB-005",
     "description": "Long story about weather followed by binary search request.",
     "query": "It's so rainy outside in Warsaw today, it makes me want to just sit and code all day. I was reading this book about algorithms and I got stuck. Could you please write a binary search function for a sorted list?",
     "context_files": [],
@@ -77,7 +77,7 @@
     }
   },
   {
-    "id": "ROB-L8-006",
+    "id": "L8-ROB-006",
     "description": "Mix of Polish and Ukrainian in a code prompt.",
     "query": "Zrób funkcję яка знаходить найдовше слово w liście.",
     "context_files": [],
@@ -93,7 +93,7 @@
     }
   },
   {
-    "id": "ROB-L8-007",
+    "id": "L8-ROB-007",
     "description": "Intent 3 stress test: Typos in npm command.",
     "query": "nmp strat",
     "context_files": [],
@@ -107,7 +107,7 @@
     }
   },
   {
-    "id": "ROB-L8-008",
+    "id": "L8-ROB-008",
     "description": "Ambiguous 'Write a code in terminal' (Should be CLI).",
     "query": "write a code in termilan to check disk space in humans format",
     "context_files": [],
@@ -121,7 +121,7 @@
     }
   },
   {
-    "id": "ROB-L8-009",
+    "id": "L8-ROB-009",
     "description": "Noise with personal complaints and file reading task.",
     "query": "My cat just jumped on my keyboard and deleted half of my work. I am so stressed. I need to get back on track. Can you write a Python script to read a file and count how many lines are in it?",
     "context_files": [],
@@ -137,7 +137,7 @@
     }
   },
   {
-    "id": "ROB-L8-010",
+    "id": "L8-ROB-010",
     "description": "Code prompt with heavy slang and mix of 3 languages.",
     "query": "Bro, write me a function, що чекає list of numbers i zwraca ich sumę. Quick!",
     "context_files": [],
@@ -153,7 +153,7 @@
     }
   },
   {
-    "id": "ROB-L8-011",
+    "id": "L8-ROB-011",
     "description": "Typo in folder creation command.",
     "query": "creae foder 'my_data_results'",
     "context_files": [],
@@ -167,7 +167,7 @@
     }
   },
   {
-    "id": "ROB-L8-012",
+    "id": "L8-ROB-012",
     "description": "Ambiguous 'Check my git' (Theory/Explanation).",
     "query": "Як перевірити статус гіта?",
     "context_files": [],
@@ -178,7 +178,7 @@
     }
   },
   {
-    "id": "ROB-L8-013",
+    "id": "L8-ROB-013",
     "description": "Noise with movie plot leading to a random prime check function.",
     "query": "I was watching Matrix today and it got me thinking about numbers and simulations. It's crazy how everything is just 1s and 0s. Speaking of numbers, write a function to check if a number is prime.",
     "context_files": [],
@@ -195,7 +195,7 @@
     }
   },
   {
-    "id": "ROB-L8-014",
+    "id": "L8-ROB-014",
     "description": "Mix of English and Ukrainian for list reversal.",
     "query": "Write a list comprehension, яка розвертає рядок text.",
     "context_files": [],
@@ -211,7 +211,7 @@
     }
   },
   {
-    "id": "ROB-L8-015",
+    "id": "L8-ROB-015",
     "description": "Severe typo in Git commit command.",
     "query": "git comit -m 'fix bugs'",
     "context_files": [],
@@ -225,7 +225,7 @@
     }
   },
   {
-    "id": "ROB-L8-016",
+    "id": "L8-ROB-016",
     "description": "Ambiguous 'How to kill process' (Intent 1 or 3?). Expecting 1.",
     "query": "How can I kill a process on linux?",
     "context_files": [],
@@ -236,7 +236,7 @@
     }
   },
   {
-    "id": "ROB-L8-017",
+    "id": "L8-ROB-017",
     "description": "Story about cooking leading to a dictionary sort function.",
     "query": "I am making dinner and I need to organize my ingredients by weight. My kitchen is a mess. I have a dictionary where keys are names and values are weights. Write a function to sort it by values.",
     "context_files": [],
@@ -252,7 +252,7 @@
     }
   },
   {
-    "id": "ROB-L8-018",
+    "id": "L8-ROB-018",
     "description": "Mix of 3 languages for a random number function.",
     "query": "Napisz mi function що дає random number od 1 do 100. Please.",
     "context_files": [],
@@ -268,7 +268,7 @@
     }
   },
   {
-    "id": "ROB-L8-019",
+    "id": "L8-ROB-019",
     "description": "Typo in conda install.",
     "query": "conga instl pandas",
     "context_files": [],
@@ -282,7 +282,7 @@
     }
   },
   {
-    "id": "ROB-L8-020",
+    "id": "L8-ROB-020",
     "description": "Ambiguous 'Run python script' (CLI command expected).",
     "query": "запусти скрипт main.py",
     "context_files": [],
@@ -296,7 +296,7 @@
     }
   },
   {
-    "id": "ROB-L8-021",
+    "id": "L8-ROB-021",
     "description": "Short query with heavy typos for a specific command.",
     "query": "ls -la hiddn",
     "context_files": [],
@@ -310,7 +310,7 @@
     }
   },
   {
-    "id": "ROB-L8-022",
+    "id": "L8-ROB-022",
     "description": "Ukrainian query for a regular expression task.",
     "query": "Напиши регулярку яка шукає всі дати у форматі DD-MM-YYYY.",
     "context_files": [],
@@ -326,7 +326,7 @@
     }
   },
   {
-    "id": "ROB-L8-023",
+    "id": "L8-ROB-023",
     "description": "Noise about a slow computer and a cleanup command.",
     "query": "My laptop is so slow today, I think I have too many temporary files. Can you show me the command to delete everything in the /tmp folder?",
     "context_files": [],
@@ -340,7 +340,7 @@
     }
   },
   {
-    "id": "ROB-L8-024",
+    "id": "L8-ROB-024",
     "description": "Polish/English mix for a class definition.",
     "query": "Stwórz class User z polami name i email w Pythonie.",
     "context_files": [],
@@ -356,7 +356,7 @@
     }
   },
   {
-    "id": "ROB-L8-025",
+    "id": "L8-ROB-025",
     "description": "Final stress test: Multiple intents hidden in a long story.",
     "query": "I was thinking about the history of Linux. It's fascinating. I want to learn more. But first, can you show me how to list files and then write a python function to print 'Hello'? Actually, just give me the python function.",
     "context_files": [],

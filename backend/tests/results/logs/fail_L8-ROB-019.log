@@ -1,0 +1,13 @@
+QUERY: conga instl pandas
+ERROR: N/A
+
+AI RESPONSE:
+To install the `pandas` library in Python, you can use `pip` (Python's package installer). Here's how you can do it:
+
+```bash
+pip install pandas
+```
+
+**Explanation:**
+- `pip` is the package installer for Python. It allows you to install and manage a wide range of Python packages.
+- `pip install pandas` installs the `pandas` library. The `pandas` library is a powerful data manipulation library that provides data structures and data analysis tools for Python.

@@ -1,0 +1,19 @@
+QUERY: Stwórz class User z polami name i email w Pythonie.
+ERROR: Python Error: SyntaxError: expected 'except' or 'finally' block
+
+AI RESPONSE:
+```python
+class User:
+    def __init__(self, name, email):
+        self.name = name
+        self.email = email
+```
+
+**Explanation:**
+- The `__init__` method is a special method in Python classes that gets called when an object of the class is created.
+- `self` is a reference to the instance of the class.
+- `name` and `email` are parameters that are passed when creating an object of the class.
+- The `self.name` and `self.email` assignments store the values of the parameters in the class instance.
+
+> **⚠️ AI Warning:** I tried to fix this code, but it may still contain errors:
+> `LogicError: Function '__init__' is missing a 'return' statement.`

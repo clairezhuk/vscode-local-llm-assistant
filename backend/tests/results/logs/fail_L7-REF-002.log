@@ -1,0 +1,41 @@
+QUERY: W pliku 'api_handlers.py' znajdują się dwie funkcje, które ręcznie logują czas wykonania. Zrefaktoryzuj ten kod, tworząc dekorator `@log_time`, aby usunąć powtarzający się kod z obu funkcji.
+ERROR: NameError: name 'process_request' is not defined
+
+AI RESPONSE:
+```python
+from functools import wraps
+import time
+
+def log_time(func):
+    """
+    Decorator to log the execution time of a function.
+    """
+    @wraps(func)  # Preserve the original function's metadata
+    def wrapper(*args, **kwargs):
+        start_time = time.time()  # Record start time
+        result = func(*args, **kwargs)  # Call the function
+        end_time = time.time()  # Record end time
+        execution_time = end_time - start_time  # Calculate execution time
+        
+        # Log the execution time
+        print(f"Execution time for {func.__name__}: {execution_time} seconds")
+        
+        return result  # Return the result of the function
+    return wrapper
+
+# Example usage of the decorator
+@log_time
+def example_function():
+    time.sleep(1)  # Simulate some work
+
+@log_time
+def another_example_function():
+    time.sleep(2)  # Simulate some more work
+
+# Call the functions to demonstrate the decorator
+example_function()
+another_example_function()
+```
+
+> **⚠️ AI Warning:** I tried to fix this code, but it may still contain errors:
+> `NameError: You called undefined functions: func, wraps. Please define them or import them.`

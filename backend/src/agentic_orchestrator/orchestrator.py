@@ -4,6 +4,7 @@ from src.engine.llm import LLMEngine
 from src.context_manager.manager import ContextManager
 from src.executor.tools import ToolExecutor
 from src.context_manager.file_processor import FileProcessor
+from src.agentic_orchestrator.planner import TaskPlanner
 
 class Orchestrator:
     def __init__(self):
@@ -11,6 +12,7 @@ class Orchestrator:
         self.context_manager = ContextManager()
         self.executor = ToolExecutor()
         self.file_processor = FileProcessor()
+        self.planner = TaskPlanner(self.engine)
 
     def preprocess_query(self, query: str) -> str:
         sys_prompt = "You are a strict translation API. Your ONLY job is to translate the text to English and fix typos. DO NOT output greetings like 'Sure' or 'Here is'. Output ONLY the raw translated string."
@@ -25,17 +27,33 @@ class Orchestrator:
         return res
 
     def classify_intent(self, query: str) -> int:
-        prompt = f"<|im_start|>system\nYou are a router. Analyze the user query.\nReturn ONLY '3' if it's a CLI/terminal command (pip, npm, git).\nReturn ONLY '2' if they ask to write a programming script, function, or code snippet.\nReturn ONLY '1' if they ask a theory question, explanation, or definition.\n<|im_end|>\n<|im_start|>user\n{query}<|im_end|>\n<|im_start|>assistant\n"
-        res = self.engine.generate(prompt, max_tokens=5)["text"].strip()
+        prompt = (
+            "<|im_start|>system\n"
+            "Classify the user's request based on their GOAL. Return ONLY the number:\n"
+            "1 (LEARN/EXPLAIN): The goal is to understand a concept, get an explanation, or ask 'how-to' without immediate action.\n"
+            "2 (BUILD/CODE): The goal is to get a logic implementation, a function, a script, or an algorithm (Python, JS, etc.).\n"
+            "3 (COMMAND/EXECUTE): The goal is to perform a system action, manage files, or install packages using a terminal command (pip, git, npm, ls).\n"
+            "Decision Rules:\n"
+            "- If they ask 'Why', 'What is', or 'How does X work' -> 1\n"
+            "- If they ask to 'Create', 'Implement', or 'Write code' -> 2\n"
+            "- If they ask to 'Install', 'Run', 'List', or 'Check' system state -> 3\n"
+            "<|im_end|>\n"
+            f"<|im_start|>user\n{query}<|im_end|>\n"
+            "<|im_start|>assistant\n"
+        )       
+        res = self.engine.generate(prompt, max_tokens=2)["text"].strip()
         
-        intent = 1
-        if "3" in res: intent = 3
-        elif "2" in res: intent = 2
-        
-        query_lower = query.lower()
-        code_triggers = ["write a function", "napisz funkcję", "напиши функцію", "code", "script", "function"]
-        if intent != 2 and any(trigger in query_lower for trigger in code_triggers):
-            intent = 2
+        match = re.search(r'[123]', res)
+        intent = int(match.group(0)) if match else 1
+        query_clean = query.lower().strip()
+
+        cli_starts = ("pip ", "npm ", "git ", "python ", "pytest ", "mkdir ", "ls", "cd ", "rm ")
+        if any(query_clean.startswith(prefix) for prefix in cli_starts):
+            intent = 3
+
+        theory_markers = ("what is", "how to work", "explain", "why", "tell me about")
+        if any(m in query_clean for m in theory_markers):
+            intent = 1
             
         print(f" [Orchestrator] Selected Intent: {intent}")
         return intent
@@ -61,7 +79,6 @@ class Orchestrator:
         defined_funcs = {node.name for node in ast.walk(tree) if isinstance(node, ast.FunctionDef)}
         called_funcs = {node.func.id for node in ast.walk(tree) if isinstance(node, ast.Call) and isinstance(node.func, ast.Name)}
         
-        # Додано hasattr, getattr, setattr, щоб AST-валідатор не сварився на них
         builtins = {"print", "len", "range", "int", "str", "list", "set", "dict", "enumerate", "type", "sum", "max", "min", "open", "abs", "any", "all", "hasattr", "getattr", "setattr"}
         missing = called_funcs - defined_funcs - builtins
         if missing:
@@ -93,10 +110,17 @@ class Orchestrator:
                 print(f" [Orchestrator] Downgrading Intent 3 -> 1 (Not a valid CLI command: {test_cmd})")
                 intent = 1
 
+        plan_text = ""
+        if intent == 2:
+            print(" [Orchestrator] Generating plan...")
+            plan = self.planner.generate_plan(query, ctx_text)
+            plan_text = self.planner.format_plan_for_llm(plan)
+            print(f" [Orchestrator] Plan created: {plan}")
+
         sys_prompts = {
             1: "You are a helpful assistant. Explain clearly. Do not run commands.",
-            2: "You are a coding assistant. Write ONLY the requested code inside a markdown block. CRITICAL RULES:\n1. The code MUST be self-contained.\n2. Always explicitly 'return' the final result.",
-            3: "You are a terminal assistant. Write ONLY the EXACT terminal command inside a markdown block."
+            2: "You are a coding assistant. FOLLOW THIS PLAN:\n{plan_text}\n\nWrite ONLY the code inside a markdown block. All code must be self-contained and use 'return'.",
+            3: "You are a terminal assistant. Write ONLY the EXACT terminal command inside a markdown block. No explanations."
         }
 
         prompt = self.context_manager.format_prompt(sys_prompts[intent], query, ctx_text)
@@ -119,7 +143,7 @@ class Orchestrator:
             code_only = self._extract_code_block(action)
             error = self._static_code_check(code_only)
             
-            max_retries = 3 # Для чистого аркуша достатньо 3 спроб
+            max_retries = 3 
             attempt = 0
             
             while error and attempt < max_retries:

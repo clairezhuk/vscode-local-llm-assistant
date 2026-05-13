@@ -1,0 +1,39 @@
+QUERY: Find all .jpg and .png files in the 'uploads' folder and rename them by adding the current date (YYYY-MM-DD) as a prefix. Use pathlib or os.
+ERROR: Assertion failed
+
+AI RESPONSE:
+```python
+from pathlib import Path
+import os
+
+def rename_images(folder_path):
+    """
+    Renames all .jpg and .png files in the 'uploads' folder by adding the current date as a prefix.
+
+    Parameters:
+        folder_path (str): The path to the uploads folder.
+    """
+    folder = Path(folder_path)
+    
+    # Check if the folder exists
+    if not folder.exists():
+        return "Folder not found."
+    
+    # Get the current date
+    current_date = os.path.join(folder.name, f"{folder.name}_{os.date('%Y-%m-%d')}")
+    
+    # Rename all .jpg and .png files
+    for file in folder.glob('*.jpg') + folder.glob('*.png'):
+        old_name = file.name
+        new_name = f"{current_date}/{old_name}"
+        file.rename(new_name)
+    
+    return f"All .jpg and .png files renamed to {current_date}."
+
+# Example usage
+uploads_folder_path = 'uploads'
+result = rename_images(uploads_folder_path)
+print(result)
+```
+
+This corrected version uses the `Path` class from the `pathlib` module to handle file paths and directory operations. It checks if the folder exists, retrieves the current date, and renames all .jpg and .png files in the 'uploads' folder by adding the current date as a prefix. It returns a message indicating that the files were renamed.

@@ -1,0 +1,15 @@
+QUERY: Create a function `all_unique(s)` that returns True if all characters in the string are unique.
+ERROR: Passed
+
+AI RESPONSE:
+```python
+def all_unique(s):
+    seen_chars = set()
+    for char in s:
+        if char in seen_chars:
+            return False
+        seen_chars.add(char)
+    return True
+```
+
+This function uses a set `seen_chars` to keep track of characters that have been encountered. It iterates through each character in the string `s`. If a character is already in the set, it means that the character is not unique, and the function returns `False`. If the loop completes without finding any duplicates, the function returns `True`.

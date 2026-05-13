@@ -1,0 +1,39 @@
+QUERY: Read 'sales.csv' using the `csv` module and calculate the average value of the 'Amount' column. Assume headers exist.
+ERROR: Assertion failed
+
+AI RESPONSE:
+```python
+import csv
+
+def calculate_average_amount(file_path):
+    """
+    Reads 'sales.csv' and calculates the average value of the 'Amount' column.
+
+    Parameters:
+        file_path (str): The path to the sales.csv file.
+    Returns:
+        float: The average value of the 'Amount' column.
+    """
+    try:
+        with open(file_path, newline='', mode='r') as file:
+            reader = csv.DictReader(file)
+            total_amount = 0
+            count = 0
+            
+            for row in reader:
+                total_amount += float(row['Amount'])
+                count += 1
+            
+            average_amount = total_amount / count if count > 0 else 0
+            
+        return average_amount
+    except FileNotFoundError:
+        return "Sales CSV file not found."
+
+# Example usage
+sales_file_path = 'sales.csv'
+result = calculate_average_amount(sales_file_path)
+print(result)
+```
+
+This corrected version reads the 'sales.csv' file using the `csv` module, calculates the average value of the 'Amount' column, and returns the average. It handles the case where the file is not found by returning an appropriate message.

@@ -1,0 +1,24 @@
+QUERY: Stwórz funkcję `pivot_sales(df)`, która tworzy pivot table z sumą 'Sales' dla 'Region' (index) i 'Year' (columns).
+ERROR: Python Error: ModuleNotFoundError: No module named 'pandas'
+
+AI RESPONSE:
+```python
+import pandas as pd
+
+def pivot_sales(df):
+    """
+    Creates a pivot table with the sum of 'Sales' for 'Region' (index) and 'Year' (columns).
+
+    Parameters:
+        df (pd.DataFrame): The input DataFrame containing the 'Sales', 'Region', and 'Year' columns.
+
+    Returns:
+        pd.DataFrame: The pivot table with the sum of 'Sales' for 'Region' and 'Year'.
+    """
+    # Create a pivot table with 'Sales' summed by 'Region' and 'Year'
+    pivot_table = df.pivot(index='Region', columns='Year', values='Sales', aggfunc=np.sum)
+    
+    return pivot_table
+```
+
+In this corrected version, the `pivot_sales` function takes a pandas DataFrame `df` as input. It uses the `pivot` method to create a pivot table where the 'Sales' column is summed for each combination of 'Region' and 'Year'. The resulting pivot table is returned.

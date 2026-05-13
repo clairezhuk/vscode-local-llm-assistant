@@ -1,0 +1,36 @@
+QUERY: Write an async function `run_tasks()` that executes three other async functions (f1, f2, f3) concurrently and returns a list of their results using asyncio.gather.
+ERROR: Expected [1, 2, 3], got ['Task 1 completed', 'Task 2 completed', 'Task 3 completed']
+
+AI RESPONSE:
+```python
+import asyncio
+
+async def f1():
+    await asyncio.sleep(1)
+    return "Task 1 completed"
+
+async def f2():
+    await asyncio.sleep(2)
+    return "Task 2 completed"
+
+async def f3():
+    await asyncio.sleep(3)
+    return "Task 3 completed"
+
+async def run_tasks():
+    """
+    Executes three async functions concurrently and returns a list of their results using asyncio.gather.
+
+    Returns:
+        list: A list of results from the executed tasks.
+    """
+    tasks = [f1(), f2(), f3()]
+    results = await asyncio.gather(*tasks)
+    return results
+
+# Example usage
+import asyncio
+asyncio.run(run_tasks())
+```
+
+This corrected version ensures that the `run_tasks` function executes the `f1`, `f2`, and `f3` functions concurrently using `asyncio.gather`. It waits for all tasks to complete and returns a list of their results.
