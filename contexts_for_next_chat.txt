@@ -1,74 +1,84 @@
-### Project Essence
+Project Essence
 
-A local AI programming assistant (similar to GitHub Copilot) built as a VS Code extension.
+A local AI programming assistant (similar to GitHub Copilot) built as a VS Code
+extension.
 
-* **Resources:** Optimized for entry-level hardware (**2GB VRAM, 8GB RAM**). It utilizes quantized models (e.g., **Qwen 2.5 Coder 1.5B**) via `llama.cpp`.
-* **Key Features:** Markdown-supported chat, context awareness via attached files, code autocompletion (**Ghost text**), and the ability to execute safe commands in the integrated terminal.
+  - Resources: Optimized for entry-level hardware (2GB VRAM, 8GB RAM). It
+    utilizes quantized models (e.g., Qwen 2.5 Coder 1.5B) via llama.cpp.
+  - Key Features: Streaming markdown-supported chat, Fast/Thinking modes,
+    context awareness via attached files & workspace detection, code
+    autocompletion (Ghost text), and Human-in-the-loop terminal execution.
 
----
+Class Responsibilities
 
-### Class Responsibilities
+Frontend (VS Code Extension - TypeScript):
 
-**Frontend (VS Code Extension - TypeScript):**
+  - chat_view.ts (ChatViewProvider): Manages the chat Webview. Handles streaming
+    data consumption via fetch API, processes JSON-chunked responses, manages
+    AbortController for stopping generation, and renders interactive UI for
+    command confirmation (Accept/Reject).
+  - ghost_text.ts (GhostTextProvider): Implements inline autocompletion using
+    a 15-line sliding window to maintain low latency and context relevance.
+  - client.ts: Handles standard Axios requests for command confirmation and
+    completions.
 
-* `chat_view.ts` (`ChatViewProvider`): Manages the chat interface (Webview). Renders Markdown using `marked.js`, handles text input, and processes file attachments.
-* `ghost_text.ts` (`GhostTextProvider`): Implements autocompletion. It sends only the last 15 lines before the cursor to the backend (**Sliding Window**) to prevent context overflow and ensure low-latency responses.
-* `client.ts`: API client for communication with the local backend.
+Backend (FastAPI - Python):
 
-**Backend (FastAPI - Python):**
+  - llm.py (LLMEngine): A wrapper around llama_cpp supporting both atomic
+    generation and generator-based streaming (stream=True).
+  - orchestrator.py (Orchestrator): The core logic controller. Manages the
+    Streaming Generator lifecycle, handles Fast vs Thinking reasoning paths,
+    maintains a state for pending commands, and implements code self-correction.
+  - planner.py (TaskPlanner): Deconstructs coding tasks into logical JSON-based
+    steps for the "Thinking" mode.
+  - file_processor.py (FileProcessor): Optimizes context by extracting code
+    signatures (AST) or summaries.
+  - tools.py (ToolExecutor): Executes terminal commands with workspace awareness
+    (cwd support).
 
-* `llm.py` (`LLMEngine`): A wrapper around `llama_cpp`. Responsible for raw text generation and token counting.
-* `orchestrator.py` (`Orchestrator`): The "brain" of the system. Manages the reasoning cycle: translation, routing, generation, verification (**Self-Correction**), and tool calling.
-* `file_processor.py` (`FileProcessor`): Context optimizer. Instead of reading entire files, it performs **AST parsing** for Python (extracting signatures), Regex-based searching for JS/C++, or brief summarization for text/JSON.
-* `manager.py` (`ContextManager`): Stores chat history and formats system prompts.
-* `tools.py` (`ToolExecutor`): Executes console commands.
-* `routes.py`: FastAPI endpoints (`/chat` and `/completion`).
-* planner.py: Planning complex tasks logic
+Current State
 
----
+A real-time streaming pipeline is implemented:
 
-### Current State
+1.  Manual Control (UI-driven): Unlike earlier versions, the user now manually
+    selects the Intent (Learn/Code/Terminal) and Mode (Fast/Thinking), ensuring
+    deterministic behavior.
+2.  Fast Mode: A direct pipeline: Preprocessing -> Context Injection ->
+    Streaming Generation. Optimized for simple questions and quick snippets.
+3.  Thinking Mode (Agentic Workflow):
+      - Planning: Uses planner.py to show the user a roadmap of the task.
+      - Execution: For Intent 2 (Code), the backend performs a Self-Correction
+        cycle (up to 3 attempts). It validates the generated code via ast.parse
+        for syntax errors and missing imports. If a failure occurs, it clears
+        the UI block and regenerates the code with error feedback.
+4.  Human-in-the-loop Execution (Intent 3): Terminal commands are not executed
+    automatically. The orchestrator proposes a command, and the Webview renders
+    Accept/Reject buttons. Execution only occurs upon user confirmation within
+    the project's root directory.
+5.  Workspace Awareness: The extension automatically detects the user's active
+    workspace path and passes it to the backend to ensure commands (like mkdir
+    or npm install) affect the correct files.
 
-A multi-step pipeline is currently implemented:
-
-1. **Preprocessing (Translator):** A lightweight LLM request that fixes typos and translates the prompt into English, strictly forbidding the generation of final answers at this stage.
-2. **Routing (Intent Classifier):** Determines the task type:
-* `1`: Theory/Question (returns plain text).
-* `2`: Code Generation (requires an isolated Markdown block and a mandatory `return`).
-* `3`: Terminal (requires a clean command). + **Safety Guard:** Verifies if the command starts with a safe prefix (pip, npm, git, etc.).
-
-
-3. **Generation & Review (Self-Correction):**
-* For **Intent 2**: After generation, the code undergoes a `_static_code_check` (via the `ast` module).
-* It checks for `SyntaxError`, `NameError` (functions called but not defined/imported), and the presence of a `return` statement.
-* If an error is found, the backend automatically triggers a correction cycle (up to 3 attempts), attempting to regenerate from scratch while adding the error details to the prompt to avoid repetition.
-
-
-4. **Execution (For Intent 3):** The command is executed within the system, and the output is returned to the chat.
-
----
-
-### Testing System (Benchmarks)
+Testing System (Benchmarks)
 
 An automated sandbox designed to verify architectural stability.
 
-* **Structure (`tests/suites/*.json`):** Tests are divided into thematic blocks (Basic Algorithms, CLI, Complex Tasks). Each test includes: `id`, `query`, `expected_intent`, `must_contain` / `must_not_contain` (keywords), and `execution` (assert-checks or bash scripts for verification).
-* **Runner (`tests/run_benchmark.py`):**
-* Creates isolated temporary folders (`tempfile`) for every test.
-* Stitches the LLM-generated code with `assert` checks and executes it.
-* Evaluates metrics: `intent_ok` (router accuracy), `format_ok` (keyword verification), and `exec_ok` (successful compilation and logic tests).
-* Generates a CSV report and logs errors (**Bad intent, Bad format, Execution fail**) in the `results/logs/` directory.
-* Supports running specific suites and limiting the number of tests via `-n`.
+  - Structure: JSON-based suites for Algorithms, CLI, and Complex Logic.
+  - Runner: Executes LLM-generated code in temporary isolated folders, verifying
+    logic via assert statements and CLI output.
+  - Metrics: Tracks Intent accuracy (now used for manual verification),
+    Formatting (Markdown), and Execution success.
 
+Roadmap (Next Steps)
 
-
----
-
-### Roadmap (Next Steps)
-
-Benchmark log analysis shows that the 1.5B model has excellent syntax knowledge but a "short logic horizon" (struggles with tasks >2 steps) and limited context. Next steps:
-
-1. **Task Planner:** For complex tasks (Intent 2), add an intermediate step. The model will first generate a JSON-based step-by-step plan, then write code for each step individually. This will resolve "algorithmic noise" seen in tests like `find_unique` or `reverse_vowels`.
-2. **Runtime Self-Correction:** Currently, the correction cycle only catches syntax and missing imports. The backend should be trained to run the generated code (in an isolated environment) to catch all types of `RuntimeError` *before* outputting the result to the chat.
-3. **RAG / TF-IDF Search:** For large projects, AST parsing will not be enough. Files should be split into chunks with a lightweight local search engine implemented to pull only 2-3 relevant functions into the prompt instead of the entire tree.
-4. **UI Context Improvements:** Allow users to see exactly which code snippets were sent to the model to better understand its decision-making process.
+1.  RAG / TF-IDF Search: Implement a lightweight local vector or keyword search
+    to pull relevant code snippets from large projects into the prompt,
+    bypassing the context window limits of 1.5B models.
+2.  Isolated Sandbox Execution: Move from static ast checks to actual runtime
+    execution in a restricted environment (e.g., using a separate process or
+    container) to catch logical RuntimeError issues.
+3.  Advanced Self-Correction: Expand the correction loop to "Thinking" mode's
+    individual steps, allowing the model to "test" its own plan as it
+    progresses.
+4.  UI Traceability: Add a "Thought Trace" toggle to show users the hidden
+    system prompts and raw LLM reasoning that led to a specific output.
