@@ -38,10 +38,8 @@ class Orchestrator:
     def execute_confirmed(self):
         if not self.pending_command:
             return "No command to execute."
-        res = self.executor.execute_command(
-            self.pending_command, 
-            cwd=self.workspace_path
-        )
+        cmd_data = self.pending_command
+        res = self.executor.execute_command(cmd_data["cmd"], cwd=cmd_data["cwd"])
         self.pending_command = None
         return res
     
@@ -76,7 +74,7 @@ class Orchestrator:
         intent = context.get("intent", 1) 
         mode = context.get("mode", "fast") # "fast" or "thinking"
         attached_files = context.get("attached_files", [])
-        self.workspace_path = context.get("workspace_path")
+        workspace_path = context.get("workspace_path")
 
         yield json.dumps({"type": "status", "content": "Preprocessing query..."}) + "\n"
         query = self.preprocess_query(raw_query)
@@ -138,7 +136,7 @@ class Orchestrator:
 
         if intent == 3:
             cmd = self._extract_code(full_response)
-            self.pending_command = cmd
+            self.pending_command = {"cmd": cmd, "cwd": workspace_path}
             yield json.dumps({"type": "command_proposal", "command": cmd}) + "\n"
 
         yield json.dumps({"type": "end"}) + "\n"
