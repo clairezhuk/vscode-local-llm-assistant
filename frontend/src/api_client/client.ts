@@ -21,3 +21,12 @@ export async function fetchCompletions(prompt: string): Promise<string> {
         return "";
     }
 }
+
+export async function confirmCommand(action: 'accept' | 'reject'): Promise<string> {
+    try {
+        const response = await axios.post(`${BASE_URL}/command-confirm`, { action });
+        return response.data.result;
+    } catch (error) {
+        return "Error executing command.";
+    }
+}

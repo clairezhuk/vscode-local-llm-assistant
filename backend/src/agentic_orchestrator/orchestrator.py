@@ -1,5 +1,7 @@
 import re
 import ast
+import json
+import asyncio
 from src.engine.llm import LLMEngine
 from src.context_manager.manager import ContextManager
 from src.executor.tools import ToolExecutor
@@ -13,6 +15,7 @@ class Orchestrator:
         self.executor = ToolExecutor()
         self.file_processor = FileProcessor()
         self.planner = TaskPlanner(self.engine)
+        self.pending_command = None
 
     def preprocess_query(self, query: str) -> str:
         sys_prompt = "You are a strict translation API. Your ONLY job is to translate the text to English and fix typos. DO NOT output greetings like 'Sure' or 'Here is'. Output ONLY the raw translated string."
@@ -26,48 +29,21 @@ class Orchestrator:
         print(f" [Orchestrator] Translated/Fixed: '{query}' -> '{res}'")
         return res
 
-    def classify_intent(self, query: str) -> int:
-        prompt = (
-            "<|im_start|>system\n"
-            "Classify the user's request based on their GOAL. Return ONLY the number:\n"
-            "1 (LEARN/EXPLAIN): The goal is to understand a concept, get an explanation, or ask 'how-to' without immediate action.\n"
-            "2 (BUILD/CODE): The goal is to get a logic implementation, a function, a script, or an algorithm (Python, JS, etc.).\n"
-            "3 (COMMAND/EXECUTE): The goal is to perform a system action, manage files, or install packages using a terminal command (pip, git, npm, ls).\n"
-            "Decision Rules:\n"
-            "- If they ask 'Why', 'What is', or 'How does X work' -> 1\n"
-            "- If they ask to 'Create', 'Implement', or 'Write code' -> 2\n"
-            "- If they ask to 'Install', 'Run', 'List', or 'Check' system state -> 3\n"
-            "<|im_end|>\n"
-            f"<|im_start|>user\n{query}<|im_end|>\n"
-            "<|im_start|>assistant\n"
-        )       
-        res = self.engine.generate(prompt, max_tokens=2)["text"].strip()
-        
-        match = re.search(r'[123]', res)
-        intent = int(match.group(0)) if match else 1
-        query_clean = query.lower().strip()
+    def _extract_code(self, text):
+        match = re.search(r'```(?:\w+)?\n(.*?)\n```', text, re.DOTALL)
+        print(f"Extracted command: {match.group(1).strip()}")
+        return match.group(1).strip() if match else text
 
-        cli_starts = ("pip ", "npm ", "git ", "python ", "pytest ", "mkdir ", "ls", "cd ", "rm ")
-        if any(query_clean.startswith(prefix) for prefix in cli_starts):
-            intent = 3
-
-        theory_markers = ("what is", "how to work", "explain", "why", "tell me about")
-        if any(m in query_clean for m in theory_markers):
-            intent = 1
-            
-        print(f" [Orchestrator] Selected Intent: {intent}")
-        return intent
-
-    def _extract_code_block(self, text: str) -> str:
-        match = re.search(r'```(?:bash|sh|cmd|powershell|markdown|python)?\s*\n(.*?)\n```', text, re.DOTALL)
-        if match:
-            return match.group(1).strip()
-        return text.replace("`", "").strip()
+    def execute_confirmed(self):
+        if not self.pending_command:
+            return "No command to execute."
+        res = self.executor.execute_command(self.pending_command)
+        self.pending_command = None
+        return res
     
-    def _is_valid_cli(self, cmd: str) -> bool:
-        cmd = cmd.strip().lower()
-        allowed_prefixes = ("pip", "python", "git", "npm", "conda", "ls", "cd", "mkdir", "echo", "pytest")
-        return cmd.startswith(allowed_prefixes)
+    def reject_command(self):
+        self.pending_command = None
+        return "Command rejected by user."
     
     def _static_code_check(self, code: str) -> str:
         if not code: return "No code block found."
@@ -92,30 +68,29 @@ class Orchestrator:
 
         return ""
     
-    def process_chat(self, raw_query: str, context: dict) -> dict:
-        query = self.preprocess_query(raw_query)
-        intent = self.classify_intent(query)
-        
-        files = context.get("attached_files", [])
-        file_context = self.file_processor.process_files(files, self.engine) if files else ""
-        
-        ctx_text = context.get("active_file_content", "")
-        if file_context:
-            ctx_text += f"\n\nAttached Files Info:\n{file_context}"
+    async def process_chat(self, raw_query: str, context: dict):
+        intent = context.get("intent", 1) 
+        mode = context.get("mode", "fast") # "fast" or "thinking"
+        attached_files = context.get("attached_files", [])
 
-        if intent == 3:
-            check_prompt = f"<|im_start|>system\nExtract only the terminal command from this query. If there is no command, output 'NONE'.<|im_end|>\n<|im_start|>user\n{query}<|im_end|>\n<|im_start|>assistant\n"
-            test_cmd = self.engine.generate(check_prompt, max_tokens=20)["text"].strip()
-            if not self._is_valid_cli(test_cmd):
-                print(f" [Orchestrator] Downgrading Intent 3 -> 1 (Not a valid CLI command: {test_cmd})")
-                intent = 1
+        yield json.dumps({"type": "status", "content": "Preprocessing query..."}) + "\n"
+        query = self.preprocess_query(raw_query)
+        
+        file_ctx = self.file_processor.process_files(attached_files, self.engine) if attached_files else ""
+        ctx_text = context.get("active_file_content", "") + f"\n{file_ctx}"
 
         plan_text = ""
-        if intent == 2:
-            print(" [Orchestrator] Generating plan...")
+
+        if mode == "thinking":
+            yield json.dumps({"type": "status", "content": "Creating execution plan..."}) + "\n"
             plan = self.planner.generate_plan(query, ctx_text)
             plan_text = self.planner.format_plan_for_llm(plan)
-            print(f" [Orchestrator] Plan created: {plan}")
+            yield json.dumps({"type": "plan", "content": plan}) + "\n"
+
+            if intent == 2:
+                for i, step in enumerate(plan):
+                    yield json.dumps({"type": "status", "content": f"Executing: {step}..."}) + "\n"
+                    await asyncio.sleep(0.1) # Емуляція роздумів
 
         sys_prompts = {
             1: "You are a helpful assistant. Explain clearly. Do not run commands.",
@@ -124,58 +99,41 @@ class Orchestrator:
         }
 
         prompt = self.context_manager.format_prompt(sys_prompts[intent], query, ctx_text)
-        gen_result = self.engine.generate(prompt, max_tokens=1024)
-        action = gen_result["text"]
-        usage = gen_result["usage"]
 
-        if intent == 2:
-            code_only = self._extract_code_block(action)
-            if not code_only or "sorry" in action.lower() or "didn't provide" in action.lower():
-                print(" [Orchestrator] Intent 2 Fallback -> Intent 1 (No valid code was generated).")
-                intent = 1
-                prompt = self.context_manager.format_prompt(sys_prompts[1], query, ctx_text)
-                gen_result = self.engine.generate(prompt, max_tokens=1024)
-                action = gen_result["text"]
-                usage["total_tokens"] += gen_result["usage"].get("total_tokens", 0)
-
-        # CLEAN SLATE CORRECTION LOOP
-        if intent == 2:
-            code_only = self._extract_code_block(action)
-            error = self._static_code_check(code_only)
-            
-            max_retries = 3 
-            attempt = 0
-            
-            while error and attempt < max_retries:
-                attempt += 1
-                print(f" [Clean Slate Correction] Attempt {attempt}/{max_retries} - Error: {error}")
-                clean_slate_query = query + f"\n\nCRITICAL FIX REQUIRED: Write the complete code from scratch. You MUST address this error: {error}. Ensure all modules are imported, all helper functions are defined, and you explicitly return the result. Wrap code in ```python ```."
-                
-                fix_prompt = self.context_manager.format_prompt(sys_prompts[intent], clean_slate_query, ctx_text)
-                
-                fix_result = self.engine.generate(fix_prompt, max_tokens=1024)
-                action = fix_result["text"]
-                usage["total_tokens"] += fix_result["usage"].get("total_tokens", 0)
-                
-                code_only = self._extract_code_block(action)
-                error = self._static_code_check(code_only)
-                
-            if error:
-                print(f" [Clean Slate Correction] Failed to fix after {max_retries} attempts.")
-                action += f"\n\n> **⚠️ AI Warning:** I tried to fix this code, but it may still contain errors:\n> `{error}`"
+        full_response = ""
+        yield json.dumps({"type": "start_content"}) + "\n"
         
+        for token in self.engine.generate_stream(prompt):
+            full_response += token
+            yield json.dumps({"type": "chunk", "content": token}) + "\n"
+
+        if intent == 2 and mode == "thinking":
+            code = self._extract_code(full_response)
+            error = self._static_code_check(code)
+            attempts = 0
+            
+            while error and attempts < 3:
+                attempts += 1
+                yield json.dumps({"type": "status", "content": f"Error found: {error}. Retrying ({attempts}/3)..."}) + "\n"
+                
+                fix_query = f"Fix this error: {error}\nOriginal: {query}"
+                prompt = self.context_manager.format_prompt(sys_prompts[2], fix_query, ctx_text)
+                
+                full_response = ""
+                yield json.dumps({"type": "start_content", "clear": True}) + "\n"
+                for token in self.engine.generate_stream(prompt):
+                    full_response += token
+                    yield json.dumps({"type": "chunk", "content": token}) + "\n"
+                
+                code = self._extract_code(full_response)
+                error = self._static_code_check(code)
+
+            if error:
+                yield json.dumps({"type": "chunk", "content": "\n\n> ⚠️ **AI Warning:** I tried to fix this code, but it may still contain errors."})
+
         if intent == 3:
-            clean_cmd = self._extract_code_block(action)
-            if self._is_valid_cli(clean_cmd):
-                obs = self.executor.execute_command(clean_cmd)
-                action += f"\n\n**Terminal Execution:** `{clean_cmd}`\n**Result:**\n```\n{obs}\n```"
-            else:
-                 action += f"\n\n*(Command execution blocked: '{clean_cmd}' is not a recognized safe command)*"
+            cmd = self._extract_code(full_response)
+            self.pending_command = cmd
+            yield json.dumps({"type": "command_proposal", "command": cmd}) + "\n"
 
-        self.context_manager.add_message("user", raw_query)
-        self.context_manager.add_message("assistant", action)       
-        return {"result": action, "usage": usage, "intent": intent}
-
-    def process_completion(self, prompt_text: str) -> dict:
-        prompt = f"<|fim_prefix|>{prompt_text}<|fim_suffix|><|fim_middle|>"
-        return self.engine.generate(prompt, max_tokens=32, stop=["<|file_separator|>", "<|fim_prefix|>", "<|im_end|>", "\n\n", "\r\n\r\n"])
+        yield json.dumps({"type": "end"}) + "\n"

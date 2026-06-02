@@ -23,6 +23,7 @@ A local AI programming assistant (similar to GitHub Copilot) built as a VS Code 
 * `manager.py` (`ContextManager`): Stores chat history and formats system prompts.
 * `tools.py` (`ToolExecutor`): Executes console commands.
 * `routes.py`: FastAPI endpoints (`/chat` and `/completion`).
+* planner.py: Planning complex tasks logic
 
 ---
 

@@ -13,3 +13,15 @@ class LLMEngine:
             "text": response["choices"][0]["text"].strip(),
             "usage": response.get("usage", {})
         }
+    
+    def generate_stream(self, prompt: str, max_tokens: int = 1024, stop: list = None):
+        stream = self.llm(
+            prompt, 
+            max_tokens=max_tokens, 
+            stop=stop or ["<|im_end|>"], 
+            stream=True
+        )
+        for chunk in stream:
+            token = chunk["choices"][0]["text"]
+            if token:
+                yield token
