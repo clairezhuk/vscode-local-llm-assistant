@@ -16,6 +16,7 @@ class Orchestrator:
         self.file_processor = FileProcessor()
         self.planner = TaskPlanner(self.engine)
         self.pending_command = None
+        self.workspace_path = None
 
     def preprocess_query(self, query: str) -> str:
         sys_prompt = "You are a strict translation API. Your ONLY job is to translate the text to English and fix typos. DO NOT output greetings like 'Sure' or 'Here is'. Output ONLY the raw translated string."
@@ -37,7 +38,10 @@ class Orchestrator:
     def execute_confirmed(self):
         if not self.pending_command:
             return "No command to execute."
-        res = self.executor.execute_command(self.pending_command)
+        res = self.executor.execute_command(
+            self.pending_command, 
+            cwd=self.workspace_path
+        )
         self.pending_command = None
         return res
     
@@ -72,6 +76,7 @@ class Orchestrator:
         intent = context.get("intent", 1) 
         mode = context.get("mode", "fast") # "fast" or "thinking"
         attached_files = context.get("attached_files", [])
+        self.workspace_path = context.get("workspace_path")
 
         yield json.dumps({"type": "status", "content": "Preprocessing query..."}) + "\n"
         query = self.preprocess_query(raw_query)
@@ -137,3 +142,12 @@ class Orchestrator:
             yield json.dumps({"type": "command_proposal", "command": cmd}) + "\n"
 
         yield json.dumps({"type": "end"}) + "\n"
+
+    def process_completion(self, prompt_text: str) -> dict:
+        prompt = f"<|fim_prefix|>{prompt_text}<|fim_suffix|><|fim_middle|>"
+        result = self.engine.generate(
+            prompt, 
+            max_tokens=32, 
+            stop=["<|file_separator|>", "<|fim_prefix|>", "<|im_end|>", "\n\n", "\r\n\r\n"]
+        )
+        return result

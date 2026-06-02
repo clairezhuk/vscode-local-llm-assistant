@@ -12,243 +12,167 @@ export class ChatViewProvider implements vscode.WebviewViewProvider {
             localResourceRoots: [this._extensionUri]
         };
 
-        webviewView.webview.html = this._getHtmlForWebview(webviewView.webview);
+        const workspacePath = vscode.workspace.workspaceFolders?.[0].uri.fsPath.replace(/\\/g, '\\\\') || "";
+
+        webviewView.webview.html = this._getHtmlForWebview(webviewView.webview, workspacePath);
 
         webviewView.webview.onDidReceiveMessage(async (data) => {
-            switch (data.type) {
-                case 'attachFile':
-                    const uris = await vscode.window.showOpenDialog({
-                        canSelectMany: true,
-                        openLabel: 'Attach to AI Context'
-                    });
-                    if (uris) {
-                        for (const uri of uris) {
-                            const document = await vscode.workspace.openTextDocument(uri);
-                            webviewView.webview.postMessage({
-                                type: 'fileAttached',
-                                name: uri.fsPath.split(/[/\\]/).pop(),
-                                content: document.getText()
-                            });
-                        }
+            if (data.type === 'executeCommand') {
+                const result = await confirmCommand('accept');
+                webviewView.webview.postMessage({ type: 'commandResult', value: result });
+            } else if (data.type === 'rejectCommand') {
+                await confirmCommand('reject');
+            } else if (data.type === 'attachFile') {
+                const uris = await vscode.window.showOpenDialog({ canSelectMany: true });
+                if (uris) {
+                    for (const uri of uris) {
+                        const doc = await vscode.workspace.openTextDocument(uri);
+                        webviewView.webview.postMessage({
+                            type: 'fileAttached',
+                            name: uri.fsPath.split(/[/\\]/).pop(),
+                            content: doc.getText()
+                        });
                     }
-                    break;
-                case 'executeCommand':
-                    const result = await confirmCommand('accept');
-                    webviewView.webview.postMessage({ type: 'commandResult', value: result });
-                    break;
-                case 'rejectCommand':
-                    await confirmCommand('reject');
-                    break;
+                }
             }
         });
     }
 
-    private _getHtmlForWebview(webview: vscode.Webview) {
+    private _getHtmlForWebview(webview: vscode.Webview, workspacePath: string) {
         return `<!DOCTYPE html>
         <html lang="en">
         <head>
             <meta charset="UTF-8">
+            <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline' ${webview.cspSource}; script-src 'unsafe-inline' https://cdn.jsdelivr.net; connect-src http://localhost:8000;">
             <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-            <style>${this._getStyles()}</style>
+            <style>
+                body { display: flex; flex-direction: column; height: 100vh; margin: 0; padding: 10px; box-sizing: border-box; font-family: var(--vscode-font-family); color: var(--vscode-foreground); }
+                #chat { flex-grow: 1; overflow-y: auto; margin-bottom: 10px; }
+                .message { margin-bottom: 15px; border-bottom: 1px solid var(--vscode-widget-border); padding-bottom: 10px; }
+                .status-bar { font-size: 0.8em; color: var(--vscode-descriptionForeground); margin-bottom: 5px; }
+                .input-area { display: flex; flex-direction: column; gap: 8px; }
+                .controls { display: flex; gap: 4px; }
+                textarea { width: 100%; min-height: 40px; background: var(--vscode-input-background); color: var(--vscode-input-foreground); border: 1px solid var(--vscode-input-border); }
+                button { background: var(--vscode-button-background); color: var(--vscode-button-foreground); border: none; padding: 4px 8px; cursor: pointer; }
+                .command-box { border: 1px solid var(--vscode-button-background); padding: 8px; margin-top: 5px; }
+            </style>
         </head>
         <body>
-            ${this._getHtmlStructure()}
-            <script>${this._getScript()}</script>
-        </body>
-        </html>`;
-    }
-
-    private _getStyles() {
-        return `
-            body { display: flex; flex-direction: column; height: 100vh; margin: 0; padding: 10px; box-sizing: border-box; font-family: var(--vscode-font-family); color: var(--vscode-foreground); }
-            #chat { flex-grow: 1; overflow-y: auto; margin-bottom: 10px; }
-            .message { margin-bottom: 15px; border-bottom: 1px solid var(--vscode-widget-border); padding-bottom: 10px; }
-            .user-msg { color: var(--vscode-textLink-foreground); font-weight: bold; margin-bottom: 5px; }
-            .ai-msg { background: var(--vscode-editor-background); padding: 5px; border-radius: 4px; }
-            
-            .status-bar { font-size: 0.85em; color: var(--vscode-descriptionForeground); margin-bottom: 10px; min-height: 20px; }
-            .plan-container { background: var(--vscode-welcomePage-tileBackground); padding: 8px; border-radius: 4px; margin: 5px 0; font-size: 0.9em; }
-            
-            .input-area { display: flex; flex-direction: column; gap: 8px; background: var(--vscode-sideBar-background); }
-            .controls-row { display: flex; gap: 4px; align-items: center; flex-wrap: wrap; }
-            
-            textarea { width: 100%; min-height: 40px; max-height: 200px; resize: none; background: var(--vscode-input-background); color: var(--vscode-input-foreground); border: 1px solid var(--vscode-input-border); padding: 8px; box-sizing: border-box; }
-            
-            button { cursor: pointer; border: none; padding: 6px 12px; background: var(--vscode-button-background); color: var(--vscode-button-foreground); border-radius: 2px; }
-            button:hover { background: var(--vscode-button-hoverBackground); }
-            #stopBtn { background: var(--vscode-errorForeground); display: none; }
-            
-            select { background: var(--vscode-dropdown-background); color: var(--vscode-dropdown-foreground); border: 1px solid var(--vscode-dropdown-border); padding: 4px; }
-            
-            .command-box { border: 1px solid var(--vscode-button-background); padding: 10px; margin: 10px 0; border-radius: 4px; }
-            .badge { background: var(--vscode-badge-background); color: var(--vscode-badge-foreground); padding: 2px 6px; border-radius: 10px; font-size: 0.8em; margin-right: 4px; }
-            pre { background: #1e1e1e; padding: 10px; overflow-x: auto; border-radius: 4px; }
-            code { font-family: var(--vscode-editor-font-family); }
-        `;
-    }
-
-    private _getHtmlStructure() {
-        return `
             <div id="chat"></div>
             <div id="status" class="status-bar"></div>
-            <div id="attachments" style="margin-bottom: 8px;"></div>
-            
             <div class="input-area">
-                <div class="controls-row">
-                    <select id="intent">
-                        <option value="1">Learn</option>
-                        <option value="2">Code</option>
-                        <option value="3">Terminal</option>
-                    </select>
-                    <select id="mode">
-                        <option value="fast">Fast</option>
-                        <option value="thinking">Thinking</option>
-                    </select>
-                    <button id="attachBtn" title="Attach Files">📎</button>
+                <div class="controls">
+                    <select id="intent"><option value="1">Learn</option><option value="2">Code</option><option value="3">Terminal</option></select>
+                    <select id="mode"><option value="fast">Fast</option><option value="thinking">Thinking</option></select>
+                    <button id="attachBtn">📎</button>
                 </div>
-                <textarea id="prompt" placeholder="Ask AI... (Shift+Enter for new line)"></textarea>
-                <div class="controls-row">
-                    <button id="sendBtn" style="flex-grow: 1;">Send</button>
-                    <button id="stopBtn">Stop</button>
-                </div>
+                <textarea id="prompt" placeholder="Ask AI..."></textarea>
+                <button id="sendBtn">Send</button>
+                <button id="stopBtn" style="display:none; background:var(--vscode-errorForeground);">Stop</button>
             </div>
-        `;
-    }
+            <script>
+                const vscode = acquireVsCodeApi();
+                let pendingFiles = [];
+                let currentAbortController = null;
+                let streamBuffer = ""; // ДЛЯ ЗАХИСТУ ВІД РОЗРИВУ JSON
 
-    private _getScript() {
-        return `
-            const vscode = acquireVsCodeApi();
-            const chat = document.getElementById('chat');
-            const status = document.getElementById('status');
-            const promptInput = document.getElementById('prompt');
-            const sendBtn = document.getElementById('sendBtn');
-            const stopBtn = document.getElementById('stopBtn');
-            const attachBtn = document.getElementById('attachBtn');
-            const attachmentsDiv = document.getElementById('attachments');
+                async function handleSend() {
+                    const prompt = document.getElementById('prompt').value;
+                    const intent = document.getElementById('intent').value;
+                    const mode = document.getElementById('mode').value;
+                    
+                    document.getElementById('sendBtn').style.display = 'none';
+                    document.getElementById('stopBtn').style.display = 'block';
+                    
+                    const chat = document.getElementById('chat');
+                    chat.innerHTML += \`<div><b>You:</b> \${prompt}</div>\`;
+                    
+                    let aiDiv = document.createElement('div');
+                    aiDiv.innerHTML = '<b>AI:</b> <span class="content"></span>';
+                    chat.appendChild(aiDiv);
+                    const contentTarget = aiDiv.querySelector('.content');
 
-            let pendingFiles = [];
-            let currentAbortController = null;
+                    currentAbortController = new AbortController();
+                    streamBuffer = ""; 
 
-            // Налаштування marked
-            marked.setOptions({ gfm: true, breaks: true });
+                    try {
+                        const response = await fetch('http://localhost:8000/chat', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ 
+                                query: prompt, 
+                                context: { 
+                                    intent: parseInt(intent), 
+                                    mode, 
+                                    attached_files: pendingFiles,
+                                    workspace_path: "${workspacePath}" // ПРАВИЛЬНА ПЕРЕДАЧА ШЛЯХУ
+                                } 
+                            }),
+                            signal: currentAbortController.signal
+                        });
 
-            function renderAttachments() {
-                attachmentsDiv.innerHTML = pendingFiles.map((f, i) => 
-                    \`<span class="badge">\${f.name} <span onclick="removeFile(\${i})" style="cursor:pointer">×</span></span>\`
-                ).join('');
-            }
+                        const reader = response.body.getReader();
+                        const decoder = new TextDecoder();
+                        let fullAiText = "";
 
-            window.removeFile = (i) => { pendingFiles.splice(i, 1); renderAttachments(); };
+                        while (true) {
+                            const { value, done } = await reader.read();
+                            if (done) break;
 
-            async function handleSend() {
-                const query = promptInput.value.trim();
-                if (!query && pendingFiles.length === 0) return;
+                            streamBuffer += decoder.decode(value, { stream: true });
+                            let lines = streamBuffer.split('\\n');
+                            streamBuffer = lines.pop(); // Залишаємо незавершений рядок у буфері
 
-                const intent = document.getElementById('intent').value;
-                const mode = document.getElementById('mode').value;
-
-                // UI update
-                chat.innerHTML += \`<div class="message"><div class="user-msg">You:</div>\${query}</div>\`;
-                promptInput.value = '';
-                sendBtn.style.display = 'none';
-                stopBtn.style.display = 'block';
-                
-                currentAbortController = new AbortController();
-                let aiMessageDiv = document.createElement('div');
-                aiMessageDiv.className = 'message';
-                aiMessageDiv.innerHTML = '<div class="user-msg">AI:</div><div class="ai-content"></div>';
-                chat.appendChild(aiMessageDiv);
-                const contentTarget = aiMessageDiv.querySelector('.ai-content');
-
-                try {
-                    const response = await fetch('http://localhost:8000/chat', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ 
-                            query, 
-                            context: { intent: parseInt(intent), mode, attached_files: pendingFiles } 
-                        }),
-                        signal: currentAbortController.signal
-                    });
-
-                    const reader = response.body.getReader();
-                    const decoder = new TextDecoder();
-                    let fullText = "";
-
-                    while (true) {
-                        const { value, done } = await reader.read();
-                        if (done) break;
-
-                        const chunk = decoder.decode(value);
-                        const lines = chunk.split('\\n');
-
-                        for (const line of lines) {
-                            if (!line.trim()) continue;
-                            try {
-                                const data = JSON.parse(line);
-                                if (data.type === 'status') {
-                                    status.innerText = data.content;
-                                } else if (data.type === 'plan') {
-                                    contentTarget.innerHTML += \`<div class="plan-container"><b>Plan:</b><br>\${data.content.join('<br>')}</div>\`;
-                                } else if (data.type === 'start_content') {
-                                    if (data.clear) { fullText = ""; contentTarget.innerHTML = ""; }
-                                } else if (data.type === 'chunk') {
-                                    fullText += data.content;
-                                    contentTarget.innerHTML = marked.parse(fullText);
-                                } else if (data.type === 'command_proposal') {
-                                    renderCommandBox(data.command, aiMessageDiv);
-                                }
-                            } catch (e) { console.error("JSON parse error", e, line); }
+                            for (const line of lines) {
+                                if (!line.trim()) continue;
+                                try {
+                                    const data = JSON.parse(line);
+                                    if (data.type === 'chunk') {
+                                        fullAiText += data.content;
+                                        contentTarget.innerHTML = marked.parse(fullAiText);
+                                    } else if (data.type === 'status') {
+                                        document.getElementById('status').innerText = data.content;
+                                    } else if (data.type === 'command_proposal') {
+                                        renderCommand(data.command, aiDiv);
+                                    }
+                                } catch (e) { console.error("JSON Error", e); }
+                            }
+                            chat.scrollTop = chat.scrollHeight;
                         }
-                        chat.scrollTop = chat.scrollHeight;
+                    } catch (err) {
+                        document.getElementById('status').innerText = "Error: " + err.message;
+                    } finally {
+                        document.getElementById('sendBtn').style.display = 'block';
+                        document.getElementById('stopBtn').style.display = 'none';
                     }
-                } catch (err) {
-                    if (err.name === 'AbortError') status.innerText = "Generation stopped.";
-                    else status.innerText = "Connection error.";
-                } finally {
-                    sendBtn.style.display = 'block';
-                    stopBtn.style.display = 'none';
-                    status.innerText = "";
-                    pendingFiles = [];
-                    renderAttachments();
                 }
-            }
 
-            function renderCommandBox(cmd, container) {
-                const box = document.createElement('div');
-                box.className = 'command-box';
-                box.innerHTML = \`
-                    <div>Execute: <code>\${cmd}</code>?</div>
-                    <div style="display:flex; gap:8px; margin-top:8px;">
-                        <button onclick="confirmCmd(true, this)">Accept</button>
-                        <button style="background:var(--vscode-button-secondaryBackground)" onclick="confirmCmd(false, this)">Reject</button>
-                    </div>\`;
-                container.appendChild(box);
-            }
-
-            window.confirmCmd = (accept, btn) => {
-                if (accept) vscode.postMessage({ type: 'executeCommand' });
-                else vscode.postMessage({ type: 'rejectCommand' });
-                btn.parentElement.parentElement.innerHTML = accept ? "✅ Command executed" : "❌ Command rejected";
-            };
-
-            sendBtn.onclick = handleSend;
-            stopBtn.onclick = () => currentAbortController?.abort();
-            attachBtn.onclick = () => vscode.postMessage({ type: 'attachFile' });
-            
-            promptInput.onkeydown = (e) => {
-                if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); handleSend(); }
-            };
-
-            window.addEventListener('message', event => {
-                if (event.data.type === 'fileAttached') {
-                    pendingFiles.push({ name: event.data.name, content: event.data.content });
-                    renderAttachments();
-                } else if (event.data.type === 'commandResult') {
-                    chat.innerHTML += \`<div class="message"><pre>\${event.data.value}</pre></div>\`;
-                    chat.scrollTop = chat.scrollHeight;
+                function renderCommand(cmd, container) {
+                    const box = document.createElement('div');
+                    box.className = 'command-box';
+                    box.innerHTML = \`<div>Run: <code>\${cmd}</code>?</div>
+                        <button onclick="confirm(true, this)">Accept</button>
+                        <button onclick="confirm(false, this)">Reject</button>\`;
+                    container.appendChild(box);
                 }
-            });
-        `;
+
+                window.confirm = (acc, btn) => {
+                    vscode.postMessage({ type: acc ? 'executeCommand' : 'rejectCommand' });
+                    btn.parentElement.innerHTML = acc ? "✅ Executed" : "❌ Rejected";
+                };
+
+                document.getElementById('sendBtn').onclick = handleSend;
+                document.getElementById('stopBtn').onclick = () => currentAbortController.abort();
+                document.getElementById('attachBtn').onclick = () => vscode.postMessage({ type: 'attachFile' });
+                
+                window.addEventListener('message', e => {
+                    if (e.data.type === 'fileAttached') pendingFiles.push(e.data);
+                    if (e.data.type === 'commandResult') {
+                        chat.innerHTML += \`<pre>\${e.data.value}</pre>\`;
+                    }
+                });
+            </script>
+        </body>
+        </html>`;
     }
 }
