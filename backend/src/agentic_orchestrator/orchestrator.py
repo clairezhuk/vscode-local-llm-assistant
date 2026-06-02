@@ -7,6 +7,7 @@ from src.context_manager.manager import ContextManager
 from src.executor.tools import ToolExecutor
 from src.context_manager.file_processor import FileProcessor
 from src.agentic_orchestrator.planner import TaskPlanner
+import asyncio
 
 class Orchestrator:
     def __init__(self, max_retries: int = 3):
@@ -18,6 +19,7 @@ class Orchestrator:
         self.pending_command = None
         self.workspace_path = None
         self.max_retries = max_retries
+        self.lock = asyncio.Lock()
 
     def preprocess_query(self, query: str) -> str:
         sys_prompt = "You are a strict translation API. Your ONLY job is to translate the text to English and fix typos. DO NOT output greetings like 'Sure' or 'Here is'. Output ONLY the raw translated string."
@@ -32,9 +34,11 @@ class Orchestrator:
         return res
 
     def _extract_code(self, text):
-        match = re.search(r'```(?:\w+)?\n(.*?)\n```', text, re.DOTALL)
-        if match: return match.group(1).strip()
-        return text.replace('`', '').strip()
+        text = text.split('```')[1] if '```' in text else text
+        for lang in ['python', 'bash', 'sh', 'javascript', 'typescript']:
+            if text.lower().startswith(lang):
+                text = text[len(lang):].strip()
+        return text.strip().replace('`', '')
 
     def execute_confirmed(self):
         if not self.pending_command:
@@ -71,9 +75,10 @@ class Orchestrator:
 
         return ""
     
-    async def _ask_llm(self, system_prompt: str, user_prompt: str):
-        full_prompt = f"<|im_start|>system\n{system_prompt}<|im_end|>\n<|im_start|>user\n{user_prompt}<|im_end|>\n<|im_start|>assistant\n"
-        res = await asyncio.to_thread(self.engine.generate, full_prompt)
+    async def _ask_llm(self, system_prompt: str, user_prompt: str, max_tokens: int = 512):
+        full_prompt = f"<|im_start|>system\n{system_prompt}. BE BRIEF. DO NOT REPEAT INSTRUCTIONS.<|im_end|>\n<|im_start|>user\n{user_prompt}<|im_end|>\n<|im_start|>assistant\n"
+        async with self.lock:
+            res = await asyncio.to_thread(self.engine.generate, full_prompt, max_tokens=max_tokens)
         return res["text"].strip()
     
     async def process_chat(self, raw_query: str, context: dict):
@@ -92,70 +97,6 @@ class Orchestrator:
             async for chunk in self._run_thinking_mode(raw_query, full_ctx, intent, workspace_path):
                 yield chunk
 
-        # yield json.dumps({"type": "status", "content": "Preprocessing query..."}) + "\n"
-        # query = self.preprocess_query(raw_query)
-        
-        
-        # ctx_text = context.get("active_file_content", "") + f"\n{file_ctx}"
-
-        # plan_text = ""
-
-        # if mode == "thinking":
-        #     yield json.dumps({"type": "status", "content": "Creating execution plan..."}) + "\n"
-        #     plan = self.planner.generate_plan(query, ctx_text)
-        #     plan_text = self.planner.format_plan_for_llm(plan)
-        #     yield json.dumps({"type": "plan", "content": plan}) + "\n"
-
-        #     if intent == 2:
-        #         for i, step in enumerate(plan):
-        #             yield json.dumps({"type": "status", "content": f"Executing: {step}..."}) + "\n"
-        #             await asyncio.sleep(0.1) # Емуляція роздумів
-
-        # sys_prompts = {
-        #     1: "You are a helpful assistant. Explain clearly. Do not run commands.",
-        #     2: "You are a coding assistant. FOLLOW THIS PLAN:\n{plan_text}\n\nWrite ONLY the code inside a markdown block. All code must be self-contained and use 'return'.",
-        #     3: "You are a terminal assistant. Write ONLY the EXACT terminal command inside a markdown block. No explanations."
-        # }
-
-        # prompt = self.context_manager.format_prompt(sys_prompts[intent], query, ctx_text)
-
-        # full_response = ""
-        # yield json.dumps({"type": "start_content"}) + "\n"
-        
-        # for token in self.engine.generate_stream(prompt):
-        #     full_response += token
-        #     yield json.dumps({"type": "chunk", "content": token}) + "\n"
-
-        # if intent == 2 and mode == "thinking":
-        #     code = self._extract_code(full_response)
-        #     error = self._static_code_check(code)
-        #     attempts = 0
-            
-        #     while error and attempts < 3:
-        #         attempts += 1
-        #         yield json.dumps({"type": "status", "content": f"Error found: {error}. Retrying ({attempts}/3)..."}) + "\n"
-                
-        #         fix_query = f"Fix this error: {error}\nOriginal: {query}"
-        #         prompt = self.context_manager.format_prompt(sys_prompts[2], fix_query, ctx_text)
-                
-        #         full_response = ""
-        #         yield json.dumps({"type": "start_content", "clear": True}) + "\n"
-        #         for token in self.engine.generate_stream(prompt):
-        #             full_response += token
-        #             yield json.dumps({"type": "chunk", "content": token}) + "\n"
-                
-        #         code = self._extract_code(full_response)
-        #         error = self._static_code_check(code)
-
-        #     if error:
-        #         yield json.dumps({"type": "chunk", "content": "\n\n> ⚠️ **AI Warning:** I tried to fix this code, but it may still contain errors."})
-
-        # if intent == 3:
-        #     cmd = self._extract_code(full_response)
-        #     self.pending_command = {"cmd": cmd, "cwd": workspace_path}
-        #     yield json.dumps({"type": "command_proposal", "command": cmd}) + "\n"
-
-        # yield json.dumps({"type": "end"}) + "\n"
 
     async def _run_fast_mode(self, query: str, context: str, intent: int):
         yield json.dumps({"type": "status", "content": "Fast processing..."}) + "\n"
@@ -167,19 +108,27 @@ class Orchestrator:
         prompt = self.context_manager.format_prompt(sys_prompts[intent], query, context)
         
         yield json.dumps({"type": "start_content"}) + "\n"
+        full_text = ""
         for token in self.engine.generate_stream(prompt):
+            full_text += token
             yield json.dumps({"type": "chunk", "content": token}) + "\n"
+        if intent == 3:
+            cmd = self._extract_code(full_text)
+            self.pending_command = {"cmd": cmd, "cwd": getattr(self, 'workspace_path', None)}
+            yield json.dumps({"type": "command_proposal", "command": cmd}) + "\n"
 
     async def _run_thinking_mode(self, query: str, context: str, intent: int, workspace: str):
         attempts = 0
         critique = ""
         success = False
         final_result = ""
+        self.workspace_path = workspace
 
         # --- STEP 1: GOAL AND REQUAREMENTS ---
-        yield json.dumps({"type": "status", "content": "Defining goal and constraints..."}) + "\n"
-        goal_prompt = f"Analyze the user request: '{query}'. What is the core goal and what are the technical constraints/requirements? Output briefly."
-        goal_info = await self._ask_llm("You are a technical analyst.", goal_prompt)
+        yield json.dumps({"type": "status", "content": "Analyzing goal..."}) + "\n"
+        goal_info = await self._ask_llm("Analyze user request core goal", query, max_tokens=100)
+        goal_info = goal_info.split('\n')[0]
+
         yield json.dumps({"type": "status", "content": f"Goal identified: {goal_info[:50]}..."}) + "\n"
 
         while attempts < self.max_retries and not success:
@@ -188,17 +137,18 @@ class Orchestrator:
 
             if intent == 1: # LEARN/EXPLAIN
                 # 1. Plan
-                plan = self.planner.generate_plan(f"Goal: {goal_info}. Query: {query}", context)
+                plan = self.planner.generate_plan(f"Goal: {goal_info}", context)
                 yield json.dumps({"type": "plan", "content": plan}) + "\n"
-                # 2. Execution
-                final_result = ""
+                # 2. Creating
                 yield json.dumps({"type": "start_content", "clear": True}) + "\n"
-                exec_prompt = f"Follow this plan: {plan}. Goal: {goal_info}. {critique}"
-                for token in self.engine.generate_stream(exec_prompt):
-                    final_result += token
+                exec_prompt = f"Goal: {goal_info}. {critique}\nProvide a comprehensive answer based on the plan. Do not repeat the plan itself."
+                prompt = self.context_manager.format_prompt("Technical Expert", exec_prompt, context)
+                full_ans = ""
+                for token in self.engine.generate_stream(prompt):
+                    full_ans += token
                     yield json.dumps({"type": "chunk", "content": token}) + "\n"
                 # 3. Verification
-                verify = await self._ask_llm("Reviewer", f"Goal: {goal_info}. Result: {final_result}. Does it satisfy the goal? Answer YES or NO + reason.")
+                verify = await self._ask_llm("Does this answer the goal? YES/NO + reason", f"Goal: {goal_info}\nAnswer: {full_ans[:200]}", max_tokens=50)
                 if "YES" in verify.upper(): success = True
                 else: critique = f"Previous attempt failed verification: {verify}"
 
@@ -220,32 +170,28 @@ class Orchestrator:
 
             elif intent == 2: # CODE GENERATION
                 # 1. Plan
-                plan = self.planner.generate_plan(f"Goal: {goal_info}. Constraints: {context}", context)
+                plan = self.planner.generate_plan(f"Goal: {goal_info}", context)
                 yield json.dumps({"type": "plan", "content": plan}) + "\n"
                 # 2. Steps
                 fragments = []
                 for step in plan:
-                    yield json.dumps({"type": "status", "content": f"Coding: {step}"}) + "\n"
-                    frag = await self._ask_llm("Coder", f"Goal: {goal_info}. Step: {step}. Context: {context}. {critique} Write only code.")
-                    fragments.append(self._extract_code(frag))
+                    yield json.dumps({"type": "status", "content": f"Working on: {step}"}) + "\n"
+                    f_prompt = f"Goal: {goal_info}. Task: {step}. Write ONLY the code fragment."
+                    res = await self._ask_llm("Senior Developer", f_prompt, max_tokens=400)
+                    fragments.append(self._extract_code(res))
                 # 3. Assembly
-                yield json.dumps({"type": "status", "content": "Assembling fragments..."}) + "\n"
-                assembly_prompt = f"Assemble these code parts into one clean file. Goal: {goal_info}. Parts: {fragments}. Avoid duplicate imports and functions."
-                final_result = await self._ask_llm("Architect", assembly_prompt)
-                final_result = self._extract_code(final_result)
+                yield json.dumps({"type": "status", "content": "Assembling code..."}) + "\n"
+                assembly_prompt = f"Assemble these parts into a single valid Python file. Parts: {fragments}. Fix duplicates."
+                final_code = await self._ask_llm("Architect", assembly_prompt, max_tokens=1024)
+                final_code = self._extract_code(final_code)
                 
                 yield json.dumps({"type": "start_content", "clear": True}) + "\n"
-                yield json.dumps({"type": "chunk", "content": f"```python\n{final_result}\n```"}) + "\n"
+                yield json.dumps({"type": "chunk", "content": f"```python\n{final_code}\n```"}) + "\n"
                 
                 # 4. Verification (Goal + Static check)
-                err = self._static_code_check(final_result)
-                if err:
-                    critique = f"Code has syntax errors: {err}"
-                    continue
-                
-                verify = await self._ask_llm("Reviewer", f"Goal: {goal_info}. Code: {final_result}. Does it satisfy constraints? Answer YES or NO + reason.")
-                if "YES" in verify.upper(): success = True
-                else: critique = f"Logic check failed: {verify}"
+                err = self._static_code_check(final_code)
+                if not err: success = True
+                else: critique = f"Fix syntax: {err}"
 
         if not success:
             yield json.dumps({"type": "chunk", "content": "\n\n> ⚠️ **AI Warning:** Failed to fully verify this result after multiple cycles. Please check carefully."}) + "\n"
@@ -253,11 +199,12 @@ class Orchestrator:
         yield json.dumps({"type": "end"}) + "\n"
 
 
-    def process_completion(self, prompt_text: str) -> dict:
+    async def process_completion(self, prompt_text: str) -> dict:
         prompt = f"<|fim_prefix|>{prompt_text}<|fim_suffix|><|fim_middle|>"
-        result = self.engine.generate(
-            prompt, 
-            max_tokens=32, 
-            stop=["<|file_separator|>", "<|fim_prefix|>", "<|im_end|>", "\n\n", "\r\n\r\n"]
-        )
+        async with self.lock:
+            result = self.engine.generate(
+                prompt, 
+                max_tokens=32, 
+                stop=["<|file_separator|>", "<|fim_prefix|>", "<|im_end|>", "\n\n", "\r\n\r\n"]
+            )
         return result

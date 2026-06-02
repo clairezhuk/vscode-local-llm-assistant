@@ -38,7 +38,7 @@ async def completion_endpoint(request: CompletionRequest):
     start_time = time.time()
     print(f"\n[{datetime.now().strftime('%H:%M:%S')}] START /completion")
     
-    response = orchestrator.process_completion(request.prompt)
+    response = await orchestrator.process_completion(request.prompt)
     
     elapsed = time.time() - start_time
     print(f"[{datetime.now().strftime('%H:%M:%S')}] END /completion | Time: {elapsed:.2f}s | Tokens: {response['usage']}")

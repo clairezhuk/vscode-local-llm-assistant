@@ -5,7 +5,7 @@ MODEL_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../mode
 
 class LLMEngine:
     def __init__(self):
-        self.llm = Llama(model_path=MODEL_PATH, n_ctx=4096, n_gpu_layers=-1, verbose=False)
+        self.llm = Llama(model_path=MODEL_PATH, n_ctx=4096, n_gpu_layers=-1, n_batch=128, verbose=False)
 
     def generate(self, prompt: str, max_tokens: int = 1024, stop: list = None) -> dict:
         response = self.llm(prompt, max_tokens=max_tokens, stop=stop or ["<|im_end|>"])
