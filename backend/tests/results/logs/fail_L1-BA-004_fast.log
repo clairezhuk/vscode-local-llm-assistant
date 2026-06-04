@@ -1,27 +1,11 @@
-QUERY: Czym jest wyszukiwanie liniowe i kiedy najlepiej go używać?
 ERROR: N/A
+RESPONSE:
+Wyszukiwanie liniowe to metoda wyszukiwania tekstu w plikach. Jest używane w wielu kontekstach, w tym:
 
-AI RESPONSE:
-Wyszukiwanie liniowe - to technika, w której szukamy informacji na podstawie danych zapisanych w formie linii tekstu. Ten typ wyszukiwania często jest używany w aplikacjach, które wymaga poszukiwania tekstu w dowolnym miejscu w tekście, np. w przeglądarce internetowej, w przeglądarce notatek lub w szukaniu w bazie danych.
+1. Szukanie pożądanej liczby linii w pliku.
+2. Szukanie pożądanej części tekstu w pliku.
+3. Szukanie pożądanych danych w danych wejściowych.
+4. Szukanie pożądanych danych w danych wyjściowych.
+5. Szukanie pożądanych danych w danych wejściowych.
 
-Najlepiej używać wyszukiwania liniowe:
-
-1. Jak tekst jest zapisany: Jeśli tekst jest zapisany w formie linii tekstu, to jest lepiej używać wyszukiwania liniowego, niż wyszukiwania porzecznych tekstu. Wszystkie linie tekstu zawierają informację o tym, co szukamy, co sprawdza się, co nie sprawdza się.
-
-2. Jak tekst jest przetwarzany: Jeśli tekst jest przetwarzany w formie linii tekstu, to jest lepiej używać wyszukiwania liniowego, niż wyszukiwania porzecznych tekstu. Wszystkie linie tekstu zawierają informację o tym, co szukamy, co sprawdza się, co nie sprawdza się.
-
-3. Jak tekst jest przetwarzany: Jeśli tekst jest przetwarzany w formie linii tekstu, to jest lepiej używać wyszukiwania liniowego, niż wyszukiwania porzecznych tekstu. Wszystkie linie tekstu zawierają informację o tym, co szukamy, co sprawdza się, co nie sprawdza się.
-
-4. Jak tekst jest przetwarzany: Jeśli tekst jest przetwarzany w formie linii tekstu, to jest lepiej używać wyszukiwania liniowego, niż wyszukiwania porzecznych tekstu. Wszystkie linie tekstu zawierają informację o tym, co szukamy, co sprawdza się, co nie sprawdza się.
-
-5. Jak tekst jest przetwarzany: Jeśli tekst jest przetwarzany w formie linii tekstu, to jest lepiej używać wyszukiwania liniowego, niż wyszukiwania porzecznych tekstu. Wszystkie linie tekstu zawierają informację o tym, co szukamy, co sprawdza się, co nie sprawdza się.
-
-6. Jak tekst jest przetwarzany: Jeśli tekst jest przetwarzany w formie linii tekstu, to jest lepiej używać wyszukiwania liniowego, niż wyszukiwania porzecznych tekstu. Wszystkie linie tekstu zawierają informację o tym, co szukamy, co sprawdza się, co nie sprawdza się.
-
-7. Jak tekst jest przetwarzany: Jeśli tekst jest przetwarzany w formie linii tekstu, to jest lepiej używać wyszukiwania liniowego, niż wyszukiwania porzecznych tekstu. Wszystkie linie tekstu zawierają informację o tym, co szukamy, co sprawdza się, co nie sprawdza się.
-
-8. Jak tekst jest przetwarzany: Jeśli tekst jest przetwarzany w formie linii tekstu, to jest lepiej używać wyszukiwania liniowego, niż wyszukiwania porzecznych tekstu. Wszystkie linie tekstu zawierają informację o tym, co szukamy, co sprawdza się, co nie sprawdza się.
-
-9. Jak tekst jest przetwarzany: Jeśli tekst jest przetwarzany w formie linii tekstu, to jest lepiej używać wyszukiwania liniowego, niż wyszukiwania porzecznych tekstu. Wszystkie linie tekstu zawierają informację o tym, co szukamy, co sprawdza się, co nie sprawdza się.
-
-10. Jak tekst jest przetwarzany: Jeśli tekst jest przetwarzany w formie linii tekstu, to jest lepiej używać wyszukiwania liniowego, niż wyszukiwania porzecznych tekstu. Wszystkie linie tekstu zawierają informację o tym, co szukamy, co sprawdza się, co nie sprawdza się.
+Wyszukiwanie liniowe jest najlepiej używane, gdy jest potrzebne do znajdowania konkretnych lini w pliku. W przeciwnym przypadku może być lepsze używanie wyszukiwania wierszy, które są wierszami wierszami w pliku.

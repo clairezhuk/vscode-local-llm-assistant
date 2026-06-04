@@ -1,9 +1,0 @@
-QUERY: Implement a function ucb1(node_win_rate, node_visits, total_parent_visits, exploration_weight=1.41) which calculates the UCB1 score for MCTS node selection.
-ERROR: Assertion failed
-
-AI RESPONSE:
-```python
-def ucb1(node_win_rate, node_visits, total_parent_visits, exploration_weight=1.41):
-    # Calculate the UCB1 score using the provided formula
-    return node_win_rate / node_visits + exploration_weight * (1 - node_visits / total_parent_visits)
-```

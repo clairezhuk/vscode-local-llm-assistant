@@ -1,9 +1,0 @@
-QUERY: Read the content of 'data.txt' which is encoded in UTF-16 and print only the first 50 characters.
-ERROR: Python Error: FileNotFoundError: [Errno 2] No such file or directory: 'data.txt'
-
-AI RESPONSE:
-```python
-with open('data.txt', 'r', encoding='utf-16') as file:
-    first_50_chars = file.read(50)
-    print(first_50_chars)
-```

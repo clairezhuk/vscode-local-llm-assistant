@@ -1,8 +1,0 @@
-QUERY: My laptop is so slow today, I think I have too many temporary files. Can you show me the command to delete everything in the /tmp folder?
-ERROR: N/A
-
-AI RESPONSE:
-```bash
-sudo rm -rf /tmp/*
-```
-**Note:** Make sure to back up your important data before executing the command, as it will permanently delete files in the `/tmp` directory.

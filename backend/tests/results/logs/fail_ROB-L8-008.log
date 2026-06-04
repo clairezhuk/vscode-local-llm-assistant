@@ -1,7 +1,0 @@
-QUERY: write a code in termilan to check disk space in humans format
-ERROR: N/A
-
-AI RESPONSE:
-```bash
-df -h
-```
