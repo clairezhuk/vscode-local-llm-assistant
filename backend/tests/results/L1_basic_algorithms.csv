@@ -1,26 +1,6 @@
-id,type,time_s,true_intent,rec_intent,intent_ok,format_ok,exec_ok,exec_msg,tokens
-L1-BA-001,text,28.04,1,1,True,True,,N/A,1399
-L1-BA-002,text,22.09,1,1,True,True,,N/A,1622
-L1-BA-003,text,22.26,1,1,True,True,,N/A,1256
-L1-BA-004,text,24.68,1,1,True,False,,N/A,1383
-L1-BA-005,text,33.31,1,1,True,False,,N/A,1397
-L1-BA-006,code,20.12,2,1,False,True,False,Assertion failed,1361
-L1-BA-007,code,15.44,2,1,False,True,True,Passed,1230
-L1-BA-008,code,26.35,2,2,True,True,True,Passed,1164
-L1-BA-009,code,12.78,2,2,True,True,True,Passed,813
-L1-BA-010,code,17.81,2,2,True,True,True,Passed,723
-L1-BA-011,code,16.78,2,2,True,True,True,Passed,702
-L1-BA-012,code,15.54,2,2,True,True,True,Passed,586
-L1-BA-013,code,28.51,2,2,True,True,True,Passed,1316
-L1-BA-014,code,7.2,2,1,False,True,True,Passed,551
-L1-BA-015,code,16.15,2,2,True,True,True,Passed,528
-L1-BA-016,code,9.67,2,2,True,True,True,Passed,440
-L1-BA-017,code,13.6,2,2,True,True,True,Passed,350
-L1-BA-018,code,11.16,2,2,True,True,True,Passed,351
-L1-BA-019,code,9.65,2,2,True,True,True,Passed,363
-L1-BA-020,code,9.29,2,1,False,False,True,Passed,405
-L1-BA-021,code,17.02,2,2,True,False,True,Passed,445
-L1-BA-022,code,8.24,2,1,False,True,True,Passed,445
-L1-BA-023,code,10.27,2,1,False,True,True,Passed,486
-L1-BA-024,code,12.25,2,2,True,True,True,Passed,504
-L1-BA-025,code,11.22,2,1,False,True,True,Passed,506
+id,processing_type,time_s,intent,format_ok,exec_ok,exec_msg,tokens
+L1-BA-001,thinking,115.91,1,True,,N/A,0
+L1-BA-002,thinking,178.9,2,True,False,Python Error: SyntaxError: invalid syntax,0
+L1-BA-003,thinking,23.57,2,True,True,Passed,0
+L1-BA-004,thinking,16.7,1,False,,N/A,0
+L1-BA-005,thinking,179.63,2,True,False,Python Error: SyntaxError: invalid syntax,0

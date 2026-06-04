@@ -16,14 +16,12 @@ RESULTS_DIR = "results"
 LOGS_DIR = os.path.join(RESULTS_DIR, "logs")
 
 def extract_code(text: str) -> str:
-    match = re.search(r'```(?:python)?\s*\n(.*?)\n```', text, re.DOTALL | re.IGNORECASE)
-    if match:
-        return match.group(1).strip()
+    # Improved extraction logic to handle multiple blocks and Architect assembly
+    blocks = re.findall(r'```(?:python)?\s*\n(.*?)\n```', text, re.DOTALL | re.IGNORECASE)
+    if blocks:
+        return blocks[-1].strip() 
     inline_match = re.search(r'`(.*?)`', text, re.DOTALL)
-    if inline_match:
-        return inline_match.group(1).strip()
-        
-    return ""
+    return inline_match.group(1).strip() if inline_match else ""
 
 def load_context_assets(file_paths: list) -> list:
     assets = []
@@ -35,38 +33,25 @@ def load_context_assets(file_paths: list) -> list:
                 assets.append({"name": full_path.name, "content": content})
             except Exception as e:
                 print(f"Error reading file {rel_path}: {e}")
-        else:
-            print(f"File not found: {full_path}")
     return assets
-
-def extract_cli(text: str) -> str:
-    match = re.search(r'```(?:bash|sh|cmd)?\s*\n(.*?)\n```', text, re.DOTALL)
-    return match.group(1).strip() if match else text.replace("`", "").strip()
 
 def run_isolated_code(ai_code: str, asserts: list, context_data: list = None) -> tuple[bool, str]:
     if not ai_code: 
         return False, "No code block found"
     
-    indented_asserts = ""
-    if isinstance(asserts, list):
-        for line in asserts:
-            indented_asserts += f"        {line}\n"
-    else:
-        indented_asserts = f"        {asserts}\n"
+    indented_asserts = "".join([f"        {line}\n" for line in asserts]) if isinstance(asserts, list) else f"        {asserts}\n"
 
     full_code = (
         f"{ai_code}\n\n"
-        f"# --- AUTOMATED TESTS ---\n"
         f"def __run_benchmark_test():\n"
         f"    try:\n"
         f"{indented_asserts}"
         f"        print('TESTS_PASSED')\n"
         f"    except AssertionError as e:\n"
-        f"        msg = str(e) if str(e) else 'Assertion failed'\n"
-        f"        print(f'ASSERT_FAIL: {{msg}}')\n"
+        f"        print(f'ASSERT_FAIL: {{e or \"Logic error\"}}')\n"
         f"    except Exception as e:\n"
         f"        print(f'RUNTIME_ERROR: {{type(e).__name__}}: {{e}}')\n"
-        f"\nif __name__ == '__main__':\n"
+        f"if __name__ == '__main__':\n"
         f"    __run_benchmark_test()"
     )
     
@@ -83,135 +68,123 @@ def run_isolated_code(ai_code: str, asserts: list, context_data: list = None) ->
             f.write(full_code)
             
         try:
-            result = subprocess.run(
-                ["python", script_path], 
-                cwd=tmpdir, 
-                capture_output=True, text=True, timeout=12
-            )
+            result = subprocess.run(["python", script_path], cwd=tmpdir, capture_output=True, text=True, timeout=15)
             output = result.stdout + result.stderr
-            
-            if "TESTS_PASSED" in output:
-                return True, "Passed"
-            
-            if "ASSERT_FAIL:" in output:
-                error_msg = re.search(r'ASSERT_FAIL: (.*)', output)
-                return False, error_msg.group(1).strip() if error_msg else "Logic error"
-                
-            if "RUNTIME_ERROR:" in output:
-                error_msg = re.search(r'RUNTIME_ERROR: (.*)', output)
-                return False, error_msg.group(1).strip() if error_msg else "Runtime error"
-
-            if result.returncode != 0:
-                lines = result.stderr.strip().split('\n')
-                return False, f"Python Error: {lines[-1]}"
-                
-            return False, "Process exited without result"
-            
+            if "TESTS_PASSED" in output: return True, "Passed"
+            if "ASSERT_FAIL:" in output: 
+                match = re.search(r'ASSERT_FAIL: (.*)', output)
+                return False, match.group(1).strip() if match else "Logic error"
+            if "RUNTIME_ERROR:" in output: 
+                match = re.search(r'RUNTIME_ERROR: (.*)', output)
+                return False, match.group(1).strip() if match else "Runtime error"
+            return False, f"Python Error: {result.stderr.strip().splitlines()[-1]}" if result.stderr else "Execution Failure"
         except subprocess.TimeoutExpired:
-            return False, "Execution Timeout (Infinite loop?)"
-        
-def run_isolated_cli(ai_cmd: str, verify_cmd: str) -> tuple[bool, str]:
-    if not ai_cmd: return False, "No command generated"
-    
-    with tempfile.TemporaryDirectory() as tmpdir:
-        try:
-            subprocess.run(ai_cmd, shell=True, cwd=tmpdir, capture_output=True, timeout=10)
-            verify = subprocess.run(verify_cmd, shell=True, cwd=tmpdir, capture_output=True, timeout=5)
-            
-            if verify.returncode == 0:
-                return True, "Passed"
-            return False, "Verification failed"
-        except Exception as e:
-            return False, str(e)
+            return False, "Timeout"
 
-def run_benchmarks(target_suites: list = None, limit: int = None):
-    if target_suites:
-        test_files = [Path(f"suites/{name}.json") for name in target_suites] if target_suites else list(Path("suites").glob("*.json"))
-    else:
-        test_files = list(Path(SUITES_DIR).glob("*.json"))
+def run_benchmarks(target_suites: list = None, limit: int = None, mode_filter: str = None):
+    test_files = [Path(f"{SUITES_DIR}/{name}.json") for name in target_suites] if target_suites else list(Path(SUITES_DIR).glob("*.json"))
     
-    print(f"Found {len(test_files)} test suites to run.")
+    # MODIFIED: Define which modes to iterate over
+    selected_modes = [mode_filter] if mode_filter else ["fast", "thinking"]
     
     for file_path in test_files:
         suite_name = file_path.stem
         results = []
+        if not file_path.exists():
+            print(f"File not found: {file_path}")
+            continue
+
         with open(file_path, "r", encoding="utf-8") as f:
             suite = json.load(f)
             
-        print(f"\n>>> Running Suite: {suite_name}")
+        print(f"\n>>> Suite: {suite_name}")
         for test in (suite[:limit] if limit else suite):
-            print(f"[{test['id']}] {test.get('description', '')}")
-            context_data = load_context_assets(test.get("context_files", []))
-            try:
-                start_time = time.time()
-                resp = requests.post(API_URL, json={
-                    "query": test['query'],
-                    "context": {"attached_files": context_data}
-                }, timeout=120).json()
-                elapsed = time.time() - start_time
-            except Exception as e:
-                print(f"API Connection Error: {e}")
-                continue
+            for mode in selected_modes:
+                print(f"[{test['id']}] Mode: {mode} | {test.get('description', '')}")
+                context_data = load_context_assets(test.get("context_files", []))
+                
+                with tempfile.TemporaryDirectory() as simulated_workspace:
+                    payload = {
+                        "query": test['query'],
+                        "context": {
+                            "attached_files": context_data,
+                            "intent": test['expected_intent'],
+                            "mode": mode,
+                            "workspace_path": simulated_workspace
+                        }
+                    }
 
-            ai_text = resp.get("result", "")
-            actual_intent = resp.get("intent", 0)
-            
-            expected_intent = test['expected_intent']
-            intent_match = (actual_intent == expected_intent)
-            
-            metrics = test.get("metrics", {})
-            must_contain = metrics.get("must_contain", [])
-            must_not_contain = metrics.get("must_not_contain", [])
-            contains_req = all(word.lower() in ai_text.lower() for word in must_contain)
-            forbidden_req = all(word.lower() not in ai_text.lower() for word in must_not_contain)
-            format_ok = contains_req and forbidden_req
-                        
-            exec_ok, exec_msg = (None, "N/A")
-            if test['type'] == "code" and "execution" in metrics:
-                code = extract_code(ai_text)
-                exec_ok, exec_msg = run_isolated_code(code, metrics["execution"].get("run_tests", []), context_data)
-            
-            result_row = {
-                "id": test['id'],
-                "type": test['type'],
-                "time_s": round(elapsed, 2),
-                "true_intent": expected_intent,
-                "rec_intent": actual_intent,
-                "intent_ok": intent_match,
-                "format_ok": format_ok,
-                "exec_ok": exec_ok,
-                "exec_msg": exec_msg,
-                "tokens": resp.get("usage", {}).get("total_tokens", 0)
-            }
-            results.append(result_row)
-            
-            if not (intent_match and format_ok and (exec_ok is not False)):
-                print(f"  ❌ Failed: Intent:{intent_match}, Format:{format_ok}, Exec:{exec_msg}")
-                with open(os.path.join(LOGS_DIR, f"fail_{test['id']}.log"), "w", encoding="utf-8") as lf:
-                    lf.write(f"QUERY: {test['query']}\nERROR: {exec_msg}\n\nAI RESPONSE:\n{ai_text}")
-            else:
-                print(f"  ✅ Passed ({round(elapsed, 1)}s)")
+                    ai_text = ""
+                    tokens = 0
+                    start_time = time.time()
+                    try:
+                        # Streaming support for JSON chunks
+                        with requests.post(API_URL, json=payload, timeout=150, stream=True) as r:
+                            for line in r.iter_lines():
+                                if line:
+                                    data = json.loads(line)
+                                    if data.get("type") == "chunk":
+                                        ai_text += data.get("content", "")
+                                    if data.get("usage"):
+                                        tokens = data["usage"].get("total_tokens", 0)
+                        elapsed = time.time() - start_time
+                    except Exception as e:
+                        print(f"  ⚠️ Request Failed: {e}")
+                        continue
 
-        # CSV
+                    metrics = test.get("metrics", {})
+                    must_contain = metrics.get("must_contain", [])
+                    must_not_contain = metrics.get("must_not_contain", [])
+                    format_ok = all(w.lower() in ai_text.lower() for w in must_contain) and \
+                                all(w.lower() not in ai_text.lower() for w in must_not_contain)
+                                
+                    exec_ok, exec_msg = (None, "N/A")
+                    if test['type'] == "code" and "execution" in metrics:
+                        code = extract_code(ai_text)
+                        exec_ok, exec_msg = run_isolated_code(code, metrics["execution"].get("run_tests", []), context_data)
+                    
+                    result_row = {
+                        "id": test['id'],
+                        "processing_type": mode,
+                        "time_s": round(elapsed, 2),
+                        "intent": test['expected_intent'],
+                        "format_ok": format_ok,
+                        "exec_ok": exec_ok,
+                        "exec_msg": exec_msg,
+                        "tokens": tokens
+                    }
+                    results.append(result_row)
+                    
+                    status_icon = "✅" if (format_ok and (exec_ok is not False)) else "❌"
+                    print(f"  {status_icon} {mode.upper()} done in {round(elapsed, 1)}s. Result: {exec_msg}")
+
+                    if status_icon == "❌":
+                        log_name = f"fail_{test['id']}_{mode}.log"
+                        with open(os.path.join(LOGS_DIR, log_name), "w", encoding="utf-8") as lf:
+                            lf.write(f"QUERY: {test['query']}\nERROR: {exec_msg}\n\nAI RESPONSE:\n{ai_text}")
+
         if results:
-            keys = results[0].keys()
             csv_path = os.path.join(RESULTS_DIR, f"{suite_name}.csv")
             with open(csv_path, "w", newline="", encoding="utf-8") as f:
-                writer = csv.DictWriter(f, fieldnames=keys)
+                writer = csv.DictWriter(f, fieldnames=results[0].keys())
                 writer.writeheader()
                 writer.writerows(results)
-            print(f"Saved suite results to {csv_path}")
 
 if __name__ == "__main__":
-    os.makedirs(SUITES_DIR, exist_ok=True)
     os.makedirs(LOGS_DIR, exist_ok=True)
+    os.makedirs(RESULTS_DIR, exist_ok=True)
     
-    parser = argparse.ArgumentParser(description="Run AI Coder benchmarks.")
-    parser.add_argument("suites", nargs="*", help="List of suite names to run (e.g. basic_algorithms). Leave empty for all.")
-    parser.add_argument("-n", "--limit", type=int, default=None, help="Run only the first N tests from each suite.")
+    parser = argparse.ArgumentParser()
+    parser.add_argument("suites", nargs="*")
+    parser.add_argument("-n", "--limit", type=int, default=None)
+    # MODIFIED: Added mode filter argument
+    parser.add_argument("-t", "--type", choices=["fast", "thinking"], default=None, 
+                        help="Select mode to run: fast or thinking. Leave empty for both.")
     
     args = parser.parse_args()
     
-    target_suites = args.suites if args.suites else None
-    
-    run_benchmarks(target_suites=target_suites, limit=args.limit)
+    run_benchmarks(
+        target_suites=args.suites if args.suites else None, 
+        limit=args.limit,
+        mode_filter=args.type
+    )

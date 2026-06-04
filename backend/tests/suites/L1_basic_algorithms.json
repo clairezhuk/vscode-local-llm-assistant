@@ -17,70 +17,8 @@
             ]
         }
     },
-    {
+     {
         "id": "L1-BA-002",
-        "description": "Theoretical complexity of Binary Search.",
-        "query": "What is the time complexity of Binary Search in the worst-case scenario and why?",
-        "context_files": [],
-        "expected_intent": 1,
-        "type": "text",
-        "metrics": {
-            "must_contain": [
-                "O(log n)"
-            ],
-            "must_not_contain": [
-                "O(n^2)",
-                "linear"
-            ]
-        }
-    },
-    {
-        "id": "L1-BA-003",
-        "description": "Definition of a Factorial in mathematics.",
-        "query": "Can you define what a factorial of a non-negative integer is and provide the formula?",
-        "context_files": [],
-        "expected_intent": 1,
-        "type": "text",
-        "metrics": {
-            "must_contain": [
-                "product",
-                "n!"
-            ],
-            "must_not_contain": []
-        }
-    },
-    {
-        "id": "L1-BA-004",
-        "description": "Concept of Linear Search in Polish language.",
-        "query": "Czym jest wyszukiwanie liniowe i kiedy najlepiej go używać?",
-        "context_files": [],
-        "expected_intent": 1,
-        "type": "text",
-        "metrics": {
-            "must_contain": [
-                "sequentially",
-                "Linear search"
-            ],
-            "must_not_contain": []
-        }
-    },
-    {
-        "id": "L1-BA-005",
-        "description": "Explanation of Euclidean distance formula.",
-        "query": "What is the Euclidean distance and how is it calculated between two points in a 2D plane?",
-        "context_files": [],
-        "expected_intent": 1,
-        "type": "text",
-        "metrics": {
-            "must_contain": [
-                "sqrt((x2 - x1)^2 + (y2 - y1)^2)",
-                "coordinates"
-            ],
-            "must_not_contain": []
-        }
-    },
-    {
-        "id": "L1-BA-006",
         "description": "Implementation of Bubble Sort algorithm.",
         "query": "Write a function `bubble_sort(arr)` that sorts a list of numbers in ascending order.",
         "context_files": [],
@@ -103,7 +41,7 @@
         }
     },
     {
-        "id": "L1-BA-007",
+        "id": "L1-BA-003",
         "description": "Linear search implementation in Polish.",
         "query": "Napisz funkcję `linear_search(arr, x)`, która zwraca indeks elementu `x` w liście `arr` lub -1, jeśli go nie ma.",
         "context_files": [],
@@ -124,7 +62,91 @@
         }
     },
     {
+        "id": "L1-BA-004",
+        "description": "Concept of Linear Search in Polish language.",
+        "query": "Czym jest wyszukiwanie liniowe i kiedy najlepiej go używać?",
+        "context_files": [],
+        "expected_intent": 1,
+        "type": "text",
+        "metrics": {
+            "must_contain": [
+                "sequentially",
+                "Linear search"
+            ],
+            "must_not_contain": []
+        }
+    },
+    {
+        "id": "L1-BA-005",
+        "description": "Least Common Multiple (LCM) calculation.",
+        "query": "Implement `lcm(a, b)` which calculates the least common multiple of two integers.",
+        "context_files": [],
+        "expected_intent": 2,
+        "type": "code",
+        "metrics": {
+            "must_contain": [
+                "gcd"
+            ],
+            "execution": {
+                "run_tests": [
+                    "assert lcm(12, 18) == 36",
+                    "assert lcm(5, 7) == 35",
+                    "assert lcm(0, 10) == 0"
+                ]
+            }
+        }
+    },
+    {
+        "id": "L1-BA-006",
+        "description": "Theoretical complexity of Binary Search.",
+        "query": "What is the time complexity of Binary Search in the worst-case scenario and why?",
+        "context_files": [],
+        "expected_intent": 1,
+        "type": "text",
+        "metrics": {
+            "must_contain": [
+                "O(log n)"
+            ],
+            "must_not_contain": [
+                "O(n^2)",
+                "linear"
+            ]
+        }
+    },
+    {
+        "id": "L1-BA-007",
+        "description": "Definition of a Factorial in mathematics.",
+        "query": "Can you define what a factorial of a non-negative integer is and provide the formula?",
+        "context_files": [],
+        "expected_intent": 1,
+        "type": "text",
+        "metrics": {
+            "must_contain": [
+                "product",
+                "n!"
+            ],
+            "must_not_contain": []
+        }
+    },
+    
+    {
         "id": "L1-BA-008",
+        "description": "Explanation of Euclidean distance formula.",
+        "query": "What is the Euclidean distance and how is it calculated between two points in a 2D plane?",
+        "context_files": [],
+        "expected_intent": 1,
+        "type": "text",
+        "metrics": {
+            "must_contain": [
+                "sqrt((x2 - x1)^2 + (y2 - y1)^2)",
+                "coordinates"
+            ],
+            "must_not_contain": []
+        }
+    },
+   
+    {
+        "id": "L1-BA-009",
         "description": "Efficient Binary Search implementation.",
         "query": "Implement an optimized `binary_search(arr, target)` function. Assume the input list is sorted.",
         "context_files": [],
@@ -146,7 +168,7 @@
         }
     },
     {
-        "id": "L1-BA-009",
+        "id": "L1-BA-010",
         "description": "Recursive or iterative Factorial calculation.",
         "query": "Write a function `factorial(n)` that returns the factorial of a given number n.",
         "context_files": [],
@@ -167,7 +189,7 @@
         }
     },
     {
-        "id": "L1-BA-010",
+        "id": "L1-BA-011",
         "description": "Fibonacci sequence number in Polish.",
         "query": "Napisz funkcję `fibonacci(n)`, która zwraca n-tą liczbę ciągu Fibonacciego (gdzie fib(0)=0, fib(1)=1).",
         "context_files": [],
@@ -188,7 +210,7 @@
         }
     },
     {
-        "id": "L1-BA-011",
+        "id": "L1-BA-012",
         "description": "Check if a number is prime.",
         "query": "Create a function `is_prime(n)` that returns True if the number is prime, and False otherwise.",
         "context_files": [],
@@ -211,7 +233,7 @@
         }
     },
     {
-        "id": "L1-BA-012",
+        "id": "L1-BA-013",
         "description": "Greatest Common Divisor (GCD) using Euclidean algorithm.",
         "query": "Write a function `gcd(a, b)` to find the greatest common divisor of two integers.",
         "context_files": [],
@@ -231,26 +253,7 @@
             }
         }
     },
-    {
-        "id": "L1-BA-013",
-        "description": "Least Common Multiple (LCM) calculation.",
-        "query": "Implement `lcm(a, b)` which calculates the least common multiple of two integers.",
-        "context_files": [],
-        "expected_intent": 2,
-        "type": "code",
-        "metrics": {
-            "must_contain": [
-                "gcd"
-            ],
-            "execution": {
-                "run_tests": [
-                    "assert lcm(12, 18) == 36",
-                    "assert lcm(5, 7) == 35",
-                    "assert lcm(0, 10) == 0"
-                ]
-            }
-        }
-    },
+    
     {
         "id": "L1-BA-014",
         "description": "Area of a rectangle in Polish.",

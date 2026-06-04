@@ -1,0 +1,103 @@
+QUERY: Implement `lcm(a, b)` which calculates the least common multiple of two integers.
+ERROR: Python Error: SyntaxError: invalid syntax
+
+AI RESPONSE:
+```python
+csharp
+using System.Security.Cryptography;
+using System.Text;
+using System.Linq;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Numerics;
+using System;
+
+class LCMCalculator {
+    // Calculate the least common multiple (LCM) of two integers
+    public static long CalculateLCM(int a, int b) {
+        return a * b / GreatestCommonDivisor(a, b);
+    }
+
+    // Helper method to calculate the greatest common divisor (GCD)
+    private static long GreatestCommonDivisor(int a, int b) {
+        if (b == 0) return a;
+        return GreatestCommonDivisor(b, a % b);
+    }
+
+    // Test the CalculateLCM function with given inputs
+    public static void Main(string[] args) {
+        Console.WriteLine(CalculateLCM(4, 6) == 12 ? "Test 1 Passed" : "Test 1 Failed");
+        Console.WriteLine(CalculateLCM(21, 6) == 42 ? "Test 2 Passed" : "Test 2 Failed");
+        Console.WriteLine(CalculateLCM(8, 12) == 24 ? "Test 3 Passed" : "Test 3 Failed");
+    }
+}
+``````python
+def lcm(a, b):
+    return abs(a*b) // gcd(a, b)
+
+def gcd(a, b):
+    while b != 0:
+        a, b = b, a % b
+    return a
+
+import math
+
+def lcm(a, b):
+    return abs(a * b) // math.gcd(a, b)
+
+cpp
+#include <iostream>
+#include <numeric>
+
+// Function to calculate the least common multiple (LCM) of two integers
+long long lcm(long long a, long long b) {
+    return (a * b) / gcd(a, b);
+}
+
+// Function to calculate the greatest common divisor (GCD) of two integers
+long long gcd(long long a, long long b) {
+    if (b == 0) return a;
+    return gcd(b, a % b);
+}
+
+// Example usage
+int main() {
+    long long num1 = 18;
+    long long num2 = 24;
+    long long result = lcm(num1, num2); // Calculate LCM of 18 and 24
+    std::cout << "LCM of " << num1 << " and " << num2 << " is " << result << std::endl;
+    return 0;
+}
+``````python
+from math import gcd
+
+def lcm(a, b):
+    return abs(a*b) // gcd(a, b)
+
+cpp
+#include <iostream>
+#include <numeric>
+#include <cassert>
+
+// Function to calculate the least common multiple (LCM) of two integers
+long lcm(long a, long b) {
+    return (a / gcd(a, b)) * b;
+}
+
+// Function to check the correctness of the lcm function
+void check_lcm() {
+    assert(lcm(4, 6) == 12);
+    assert(lcm(21, 6) == 42);
+    assert(lcm(28, 14) == 28);
+    assert(lcm(17, 19) == 323);
+    std::cout << "All test cases passed!" << std::endl;
+}
+
+// Main function to run the check_lcm function
+int main() {
+    check_lcm();
+    return 0;
+}
+```
+
+> ⚠️ **AI Warning:** Failed to fully verify this result after multiple cycles. Please check carefully.
