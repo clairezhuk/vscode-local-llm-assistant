@@ -1,0 +1,4 @@
+Notatka techniczna:
+Zaktualizuj bibliotekę **pandas** do wersji **2.1.0**.
+Wszystkie pliki CSV do analizy znajdują się pod adresem:
+https://data.source/sales

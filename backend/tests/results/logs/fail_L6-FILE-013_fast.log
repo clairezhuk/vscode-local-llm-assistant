@@ -1,0 +1,27 @@
+ERROR: NameError: name 'process_timestamps' is not defined
+RESPONSE:
+```python
+def format_date(timestamp):
+    """
+    Takes a Unix timestamp and returns a formatted string in 'YYYY-MM-DD HH:MM:SS' format.
+    
+    Parameters:
+    - timestamp (int): The Unix timestamp to format.
+    
+    Returns:
+    - str: The formatted date string.
+    """
+    # Convert timestamp to datetime object
+    from datetime import datetime
+    date_obj = datetime.fromtimestamp(timestamp)
+    
+    # Format the datetime object to 'YYYY-MM-DD HH:MM:SS'
+    formatted_date = date_obj.strftime("%Y-%m-%d %H:%M:%S")
+    
+    return formatted_date
+
+# Example usage:
+timestamp = 1633072000
+formatted_date = format_date(timestamp)
+print(formatted_date)
+```

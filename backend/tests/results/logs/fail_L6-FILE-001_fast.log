@@ -1,0 +1,16 @@
+ERROR: No code block
+RESPONSE:
+```json
+{
+  "app_name": "Example App",
+  "version": "1.0.0",
+  "database": {
+    "port": 5432,
+    "host": "localhost"
+  },
+  "logging": {
+    "level": "INFO",
+    "file": "app.log"
+  }
+}
+```

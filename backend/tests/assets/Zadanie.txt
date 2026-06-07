@@ -1,0 +1,5 @@
+Cel zadania: Stworzenie systemu Student Management.
+Wymagania: Należy zaimplementować listę studentów w taki sposób, 
+aby dostęp do danych był błyskawiczny (O(1)). 
+Wskazówka: Najlepszą strukturą danych do tego celu będzie **Hash Map** 
+(w Pythonie znany jako słownik/Dictionary).

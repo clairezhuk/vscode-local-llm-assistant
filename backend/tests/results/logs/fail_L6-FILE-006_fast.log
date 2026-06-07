@@ -1,0 +1,15 @@
+ERROR: Exec failed
+RESPONSE:
+```python
+from pathlib import Path
+import datetime
+
+def rename_files(prefix):
+    uploads_path = Path('C:\\Users\\user\\AppData\\Local\\Temp\\tmp7qlij1bj\\uploads')
+    for file_path in uploads_path.glob('*.jpg') + uploads_path.glob('*.png'):
+        new_file_name = f"{prefix}{file_path.name}"
+        file_path.rename(uploads_path / new_file_name)
+
+prefix = datetime.datetime.now().strftime('%Y-%m-%d')
+rename_files(prefix)
+```

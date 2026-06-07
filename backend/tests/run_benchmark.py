@@ -92,7 +92,7 @@ def run_benchmarks(target_suites: list = None, limit: int = None, mode_filter: s
                         }
                     }
 
-                    ai_text, tokens, start_time = "", 0, time.time()
+                    ai_text, start_time = "", time.time()
                     try:
                         with requests.post(API_URL, json=payload, timeout=180, stream=True) as r:
                             for line in r.iter_lines():
@@ -101,11 +101,6 @@ def run_benchmarks(target_suites: list = None, limit: int = None, mode_filter: s
                                     # CHANGED: Enhanced token & content capture
                                     if data.get("type") == "chunk":
                                         ai_text += data.get("content", "")
-                                    # Look for usage info in any part of the stream
-                                    if "usage" in data:
-                                        tokens = data["usage"].get("total_tokens", 0)
-                                    elif data.get("type") == "usage":
-                                        tokens = data.get("content", {}).get("total_tokens", 0)
                         elapsed = time.time() - start_time
                     except Exception as e:
                         print(f"Failed: {e}")
@@ -130,7 +125,6 @@ def run_benchmarks(target_suites: list = None, limit: int = None, mode_filter: s
                         "format_ok": format_ok,
                         "exec_ok": exec_ok,
                         "exec_msg": exec_msg,
-                        "tokens": tokens,
                         "warning": has_warning
                     }
                     

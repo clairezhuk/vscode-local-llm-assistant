@@ -1,0 +1,23 @@
+ERROR: Exec failed
+RESPONSE:
+```python
+import csv
+
+def calculate_average_amount():
+    with open('C:\\Users\\user\\AppData\\Local\\Temp\\tmpbr7ac0hy\\sales.csv', newline='') as file:
+        reader = csv.DictReader(file)
+        total_amount = 0
+        count = 0
+        for row in reader:
+            amount = float(row['Amount'])
+            total_amount += amount
+            count += 1
+        if count > 0:
+            average_amount = total_amount / count
+            return average_amount
+        else:
+            return "No data found in the file."
+
+average_value = calculate_average_amount()
+print(f"The average value of the 'Amount' column is: {average_value}")
+```

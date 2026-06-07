@@ -1,8 +1,0 @@
-id,type,time_s,true_intent,rec_intent,intent_ok,format_ok,exec_ok,exec_msg,tokens
-L5-ASYNC-001,code,22.32,2,1,False,True,False,"Expected [1, 2, 3], got ['Task 1 completed', 'Task 2 completed', 'Task 3 completed']",1059
-L5-ASYNC-002,code,22.13,2,1,False,True,True,Passed,1038
-L5-PAR-003,code,23.97,2,1,False,False,False,Python Error: concurrent.futures.process.BrokenProcessPool: A process in the process pool was terminated abruptly while the future was running or pending.,1097
-L5-API-004,code,25.22,2,1,False,True,True,Passed,1118
-L5-API-005,code,59.74,2,2,True,True,True,Passed,2545
-L5-SEC-006,code,25.7,2,1,False,False,False,NameError: name 'ai_code' is not defined,1262
-L5-SEC-007,code,33.39,2,2,True,True,False,AttributeError: 'NoneType' object has no attribute 'startswith',1330

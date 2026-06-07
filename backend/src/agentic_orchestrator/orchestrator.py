@@ -90,11 +90,12 @@ class Orchestrator:
         file_ctx = self.file_processor.process_files(attached_files, self.engine) if attached_files else ""
         full_ctx = f"Workspace: {workspace_path}\nFiles Context: {file_ctx}\n"
 
+        prep_query = self.preprocess_query(raw_query)
         if mode == "fast":
-            async for chunk in self._run_fast_mode(raw_query, full_ctx, intent):
+            async for chunk in self._run_fast_mode(prep_query, full_ctx, intent):
                 yield chunk
         else:
-            async for chunk in self._run_thinking_mode(raw_query, full_ctx, intent, workspace_path):
+            async for chunk in self._run_thinking_mode(prep_query, full_ctx, intent, workspace_path):
                 yield chunk
 
 

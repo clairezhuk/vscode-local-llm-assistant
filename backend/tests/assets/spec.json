@@ -1,0 +1,11 @@
+{
+  "system": {
+    "engine": "node",
+    "version": "18.x",
+    "env": "production"
+  },
+  "network": {
+    "api_port": 3001,
+    "host": "0.0.0.0"
+  }
+}

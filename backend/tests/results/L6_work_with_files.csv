@@ -1,11 +1,30 @@
-id,type,time_s,true_intent,rec_intent,intent_ok,format_ok,exec_ok,exec_msg,tokens
-L6-FILE-001,code,20.92,2,1,False,True,False,Assertion failed,1292
-L6-FILE-002,code,39.83,2,2,True,True,False,FileNotFoundError: [Errno 2] No such file or directory: 'errors.log',2355
-L6-FILE-003,code,29.31,2,1,False,False,False,Assertion failed,1216
-L6-FILE-004,code,36.35,2,1,False,True,False,Python Error: AttributeError: 'str' object has no attribute 'get',1318
-L6-FILE-005,code,25.89,2,1,False,True,False,Assertion failed,1360
-L6-FILE-006,code,23.05,2,1,False,False,False,Python Error: AttributeError: 'str' object has no attribute 'strftime',1339
-L6-FILE-007,code,68.26,2,2,True,True,True,Passed,5083
-L6-FILE-008,code,10.26,2,1,False,True,False,Python Error: FileNotFoundError: [Errno 2] No such file or directory: 'data.txt',937
-L6-FILE-009,code,73.5,2,2,True,False,False,Assertion failed,3886
-L6-FILE-010,code,20.47,2,2,True,False,False,Python Error: ModuleNotFoundError: No module named 'yaml',890
+id,processing_type,time_s,intent,format_ok,exec_ok,exec_msg,warning
+L6-FILE-001,fast,6.17,2,False,False,No code block,False
+L6-ANALYSIS-002,fast,5.72,1,False,,N/A,False
+L6-FILE-003,fast,6.47,2,False,False,No code block,False
+L6-CLI-004,fast,1.77,3,True,,N/A,False
+L6-ANALYSIS-005,fast,4.55,1,False,,N/A,False
+L6-FILE-006,fast,7.73,2,True,False,Exec failed,False
+L6-ANALYSIS-007,fast,3.57,1,False,,N/A,False
+L6-FILE-008,fast,11.21,2,False,False,,False
+L6-CLI-009,fast,3.07,3,False,,N/A,False
+L6-ANALYSIS-010,fast,13.55,1,False,,N/A,False
+L6-FILE-011,fast,9.91,2,True,False,Exec failed,False
+L6-ANALYSIS-012,fast,30.39,1,False,,N/A,False
+L6-FILE-013,fast,10.93,2,False,False,NameError: name 'process_timestamps' is not defined,False
+L6-ANALYSIS-014,fast,9.76,1,False,,N/A,False
+L6-FILE-015,fast,5.77,2,True,True,Passed,False
+L6-FILE-016,fast,4.53,2,True,False,Exec failed,False
+L6-FILE-017,fast,8.3,2,False,False,,False
+L6-FILE-018,fast,8.38,2,False,False,Exec failed,False
+L6-FILE-001,thinking,45.49,2,True,False,,False
+L6-ANALYSIS-002,thinking,54.85,1,False,,N/A,False
+L6-FILE-003,thinking,88.98,2,False,False,FileNotFoundError: [Errno 2] No such file or directory: 'errors.log',False
+L6-CLI-004,thinking,3.09,3,True,,N/A,False
+L6-ANALYSIS-005,thinking,39.02,1,False,,N/A,False
+L6-FILE-006,thinking,99.24,2,True,False,Exec failed,False
+L6-ANALYSIS-007,thinking,39.65,1,False,,N/A,False
+L6-FILE-008,thinking,251.44,2,True,False,NameError: name 'find_deepest_readme' is not defined,True
+L6-CLI-009,thinking,10.13,3,False,,N/A,False
+L6-ANALYSIS-010,thinking,74.46,1,False,,N/A,False
+L6-FILE-011,thinking,225.83,2,True,False,Exec failed,True

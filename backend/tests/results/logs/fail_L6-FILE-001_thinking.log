@@ -1,0 +1,16 @@
+ERROR: 
+RESPONSE:
+```python
+import json
+
+# Load the JSON configuration file
+with open('config.json', 'r') as file:
+    config_data = json.load(file)
+
+# Locate the key 'database' and the subkey 'port'
+config_data['database']['port'] = 5432
+
+# Save the changes with proper indentation
+with open('config.json', 'w') as file:
+    json.dump(config_data, file, indent=4)
+```

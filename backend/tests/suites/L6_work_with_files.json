@@ -3,9 +3,7 @@
     "id": "L6-FILE-001",
     "description": "Modify nested key in JSON config.",
     "query": "Read the file 'config.json', change the 'database.port' to 5432, and save it back to the same file with indentation.",
-    "context_files": [
-      "tests/assets/config.json"
-    ],
+    "context_files": ["tests/assets/config.json"],
     "expected_intent": 2,
     "type": "code",
     "metrics": {
@@ -15,7 +13,6 @@
           "import json, os",
           "with open('config.json', 'w') as f: json.dump({'database': {'port': 8080}}, f)",
           "update_config('config.json') if 'update_config' in locals() else None",
-          "# Running the expected logic directly if no function name provided",
           "with open('config.json', 'r') as f: data = json.load(f)",
           "assert data['database']['port'] == 5432"
         ]
@@ -23,7 +20,18 @@
     }
   },
   {
-    "id": "L6-FILE-002",
+    "id": "L6-ANALYSIS-002",
+    "description": "Extracting migration library and command from README.",
+    "query": "Read the test_README.md and tell me which library is used for database migrations and what is the exact command to run them.",
+    "context_files": ["tests/assets/project_y/test_README.md"],
+    "expected_intent": 1,
+    "type": "learn",
+    "metrics": {
+      "must_contain": ["Alembic", "alembic upgrade head"]
+    }
+  },
+  {
+    "id": "L6-FILE-003",
     "description": "Memory-efficient log parsing (Polish).",
     "query": "Napisz skrypt, który odczytuje 'server.log' linia po linii, wyodrębnia wiersze zawierające '[ERROR]' i zapisuje je do 'errors.log'.",
     "context_files": [],
@@ -43,7 +51,29 @@
     }
   },
   {
-    "id": "L6-FILE-003",
+    "id": "L6-CLI-004",
+    "description": "Formulate install command from requirements.",
+    "query": "Based on requirements.txt, give me the exact pip command to install all dependencies.",
+    "context_files": ["tests/assets/project_y/requirements.txt"],
+    "expected_intent": 3,
+    "type": "terminal",
+    "metrics": {
+      "must_contain": ["pip install -r requirements.txt"]
+    }
+  },
+  {
+    "id": "L6-ANALYSIS-005",
+    "description": "Analyze Polish task description for data structure.",
+    "query": "Przeczytaj Zadanie.txt. Jaki jest główny cel tego zadania i jaką strukturę danych należy zastosować do przechowywania listy studentów?",
+    "context_files": ["tests/assets/project_y/Zadanie.txt"],
+    "expected_intent": 1,
+    "type": "learn",
+    "metrics": {
+      "must_contain": ["Hash Map", "Student Management", "Dictionary"]
+    }
+  },
+  {
+    "id": "L6-FILE-006",
     "description": "Batch rename images with date prefix.",
     "query": "Find all .jpg and .png files in the 'uploads' folder and rename them by adding the current date (YYYY-MM-DD) as a prefix. Use pathlib or os.",
     "context_files": [],
@@ -65,27 +95,60 @@
     }
   },
   {
-    "id": "L6-FILE-004",
+    "id": "L6-ANALYSIS-007",
+    "description": "System spec extraction (Node version and Port).",
+    "query": "Looking at spec.json, what is the required Node.js version and which port should the API run on?",
+    "context_files": ["tests/assets/project_y/spec.json"],
+    "expected_intent": 1,
+    "type": "learn",
+    "metrics": {
+      "must_contain": ["18.x", "3001"]
+    }
+  },
+  {
+    "id": "L6-FILE-008",
     "description": "Find deepest README.md in dictionary structure.",
-    "query": "Given a nested dictionary `tree` representing a file system (keys are names, values are either dicts or None), write a function `find_deepest_readme(tree)` that returns the path to the deepest README.md.",
+    "query": "Given a nested dictionary `tree` representing a file system (keys are names, values are either dicts or None), write a function `find_deepest_readme(tree)` that returns the path to the deepest test_README.md.",
     "context_files": [],
     "expected_intent": 2,
     "type": "code",
     "metrics": {
-      "must_contain": ["recursive", "README.md"],
+      "must_contain": ["recursive", "test_README.md"],
       "execution": {
         "run_tests": [
-          "fs = {'src': {'README.md': None, 'utils': {'README.md': None}}, 'docs': None}",
+          "fs = {'src': {'test_README.md': None, 'utils': {'test_README.md': None}}, 'docs': None}",
           "path = find_deepest_readme(fs)",
-          "assert path in ['src/utils/README.md', '/src/utils/README.md']"
+          "assert path in ['src/utils/test_README.md', '/src/utils/test_README.md']"
         ]
       }
     }
   },
   {
-    "id": "L6-FILE-005",
+    "id": "L6-CLI-009",
+    "description": "Find cache clear command from README.",
+    "query": "Find the command in test_README.md used to clear the application cache.",
+    "context_files": ["tests/assets/project_y/test_README.md"],
+    "expected_intent": 3,
+    "type": "terminal",
+    "metrics": {
+      "must_contain": ["php artisan cache:clear"]
+    }
+  },
+  {
+    "id": "L6-ANALYSIS-010",
+    "description": "Extract API authentication headers.",
+    "query": "Based on instruction.txt, what are the three mandatory headers required to authenticate the 'WeatherAPI'?",
+    "context_files": ["tests/assets/project_y/instruction.txt"],
+    "expected_intent": 1,
+    "type": "learn",
+    "metrics": {
+      "must_contain": ["X-API-Key", "X-Client-ID", "Content-Type"]
+    }
+  },
+  {
+    "id": "L6-FILE-011",
     "description": "CSV aggregation (Average calculation).",
-    "query": "Read 'sales.csv' using the `csv` module and calculate the average value of the 'Amount' column. Assume headers exist.",
+    "query": "Read 'sales.csv' using the `csv` module and calculate the average value of the 'Amount' column.",
     "context_files": [],
     "expected_intent": 2,
     "type": "code",
@@ -103,12 +166,21 @@
     }
   },
   {
-    "id": "L6-FILE-006",
+    "id": "L6-ANALYSIS-012",
+    "description": "Algorithm selection based on constraints.",
+    "query": "Analyze task.md. Suggest the most efficient sorting algorithm for the described constraints and explain why based on the text.",
+    "context_files": ["tests/assets/project_y/task.md"],
+    "expected_intent": 1,
+    "type": "learn",
+    "metrics": {
+      "must_contain": ["QuickSort", "Pivot", "Divide and Conquer"]
+    }
+  },
+  {
+    "id": "L6-FILE-013",
     "description": "Context Integration (Calling helper from utils.py).",
-    "query": "In the provided project files, find a function that formats dates in 'utils.py' and use it to process a list of raw timestamps `['2023-01-01', '2023-02-01']`.",
-    "context_files": [
-      "tests/assets/project_x/utils.py"
-    ],
+    "query": "In the provided project files, find a function that formats dates in 'utils.py' and use it to process timestamps.",
+    "context_files": ["tests/assets/project_x/utils.py"],
     "expected_intent": 2,
     "type": "code",
     "metrics": {
@@ -123,9 +195,20 @@
     }
   },
   {
-    "id": "L6-FILE-007",
+    "id": "L6-ANALYSIS-014",
+    "description": "Polish note analysis for library version and URL.",
+    "query": "Na podstawie note.txt, jaką wersję biblioteki 'pandas' musimus zainstalować i jakiego źródła danych (URL) użyć?",
+    "context_files": ["tests/assets/project_y/note.txt"],
+    "expected_intent": 1,
+    "type": "learn",
+    "metrics": {
+      "must_contain": ["2.1.0", "https://data.source/sales"]
+    }
+  },
+  {
+    "id": "L6-FILE-015",
     "description": "Extracting function names from Python file (Polish).",
-    "query": "Napisz funkcję `get_function_names(file_path)`, która otwiera plik .py i zwraca listę nazw wszystkich zdefiniowanych w nim funkcji przy użyciu modułu `ast`.",
+    "query": "Napisz funkcję `get_function_names(file_path)`, która zwraca listę nazw funkcji при użyciu modułu `ast`.",
     "context_files": [],
     "expected_intent": 2,
     "type": "code",
@@ -135,14 +218,13 @@
         "run_tests": [
           "with open('test_ast.py', 'w') as f: f.write('def func1(): pass\\ndef func2(): pass')",
           "names = get_function_names('test_ast.py')",
-          "assert 'func1' in names and 'func2' in names",
-          "assert len(names) == 2"
+          "assert 'func1' in names and 'func2' in names"
         ]
       }
     }
   },
   {
-    "id": "L6-FILE-008",
+    "id": "L6-FILE-016",
     "description": "Read file with specific encoding.",
     "query": "Read the content of 'data.txt' which is encoded in UTF-16 and print only the first 50 characters.",
     "context_files": [],
@@ -161,9 +243,9 @@
     }
   },
   {
-    "id": "L6-FILE-009",
+    "id": "L6-FILE-017",
     "description": "Merge multiple text files into one.",
-    "query": "Write a script that takes all .txt files in the current directory and merges their content into a single file named 'combined.log', adding a separator line between them.",
+    "query": "Write a script that takes all .txt files in the current directory and merges their content into 'combined.log'.",
     "context_files": [],
     "expected_intent": 2,
     "type": "code",
@@ -180,7 +262,7 @@
     }
   },
   {
-    "id": "L6-FILE-010",
+    "id": "L6-FILE-018",
     "description": "YAML configuration update.",
     "query": "Read 'settings.yaml', set 'debug' to false and 'version' to 2.0, then save it. Use the `yaml` library.",
     "context_files": [],

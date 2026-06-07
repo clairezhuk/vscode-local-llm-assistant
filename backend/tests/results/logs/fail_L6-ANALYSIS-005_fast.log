@@ -1,0 +1,3 @@
+ERROR: N/A
+RESPONSE:
+The main goal of this assignment is to create a program that can manage a list of students. The structure for storing the list of students should be a simple text file where each student's information is stored on a separate line. The information should include the student's name, grade, and class.

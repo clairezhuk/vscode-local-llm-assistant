@@ -1,0 +1,5 @@
+Authentication for WeatherAPI:
+To successfully connect, your request must include these 3 mandatory headers:
+1. X-API-Key: Your secret token.
+2. X-Client-ID: Your application ID.
+3. Content-Type: Must be set to 'application/json'.
