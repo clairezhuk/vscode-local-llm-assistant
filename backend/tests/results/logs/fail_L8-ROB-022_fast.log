@@ -1,5 +1,19 @@
-ERROR: No code block
+ERROR: Exec failed
 RESPONSE:
-```regex
-\d{2}-\d{2}-\d{4}
+```python
+import re
+
+def find_dates_in_temp_folder():
+    temp_folder = "C:\\Users\\user\\AppData\\Local\\Temp\\tmpj2vf9wzs"
+    
+    # Regular expression to match dates in the format DD-MM-YYYY
+    date_pattern = r"\b\d{2}-\d{2}-\d{4}\b"
+    
+    # Find all matches in the temp folder path
+    matches = re.findall(date_pattern, temp_folder)
+    
+    return matches
+
+# Example usage:
+print(find_dates_in_temp_folder())
 ```

@@ -4,4 +4,4 @@ RESPONSE:
 
 ---
 ### Attempt 1
-Proposed command: `awk '!seen[$1]++' access.log | sort`
+Proposed command: `awk '{print $1}' access.log | sort -u`

@@ -4,9 +4,17 @@ RESPONSE:
 import pandas as pd
 
 def merge_data(df1, df2):
-    # left join on 'id' and 'year'
-    merged_df = pd.merge(df1, df2, on=['id', 'year'], how='left')
+    """
+    Performs a left join on two DataFrames using both 'id' and 'year' as common keys.
     
-    # return the merged DataFrame
+    Parameters:
+    - df1: First DataFrame to be joined.
+    - df2: Second DataFrame to be joined.
+    
+    Returns:
+    - A new DataFrame resulting from the left join of df1 and df2.
+    """
+    # Perform a left join on both 'id' and 'year'
+    merged_df = pd.merge(df1, df2, on=['id', 'year'], how='left')
     return merged_df
 ```

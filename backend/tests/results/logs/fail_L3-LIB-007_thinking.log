@@ -1,44 +1,66 @@
-ERROR: NameError: name 'create_plot' is not defined
+ERROR: 
 RESPONSE:
 
 
 ---
 ### Attempt 1
-```python
-import os
 
-def list_directory_contents(directory):
-    for root, dirs, files in os.walk(directory):
-        level = root.replace(directory, '').count(os.sep)
-        indent = ' ' * (level * 4)
-        print(f"{indent}{os.path.basename(root)}")
-        for file in files:
-            print(f"{indent}  {file}")
+```python
+import matplotlib.pyplot as plt
+
+def create_plot(x, y):
+    """
+    Generates a line plot with specified x and y data.
+    
+    Parameters:
+    - x: A list of values for the x-axis.
+    - y: A list of values for the y-axis.
+    """\n    plt.plot(x, y)\n    plt.xlabel(\'X Axis\')\n    plt.ylabel(\'Y Axis\')\n    plt.title(\'Line Plot\')\n    plt.show()
 ```
+
 
 ---
 ### Attempt 2
+
 ```python
-import os
+import matplotlib.pyplot as plt
 
-# Step 1: Define the workspace path
-workspace_path = r'C:\\Users\\user\\AppData\\Local\\Temp\\tmplnch24s3'
-
-# Step 2: List the files and directories in the workspace
-files_and_directories = os.listdir(workspace_path)
-
-# Step 3: Process the files
-for file_or_directory in files_and_directories:
-    file_or_directory_path = os.path.join(workspace_path, file_or_directory)
+def create_plot(x, y):
+    """
+    Generates a line plot with specified x and y data.
     
-    # Check if it's a file (not a directory)
-    if os.path.isfile(file_or_directory_path):
-        # Read the file content
-        with open(file_or_directory_path, 'r') as file:
-            file_content = file.read()
-        
-        # Process the file content (e.g., print the first 100 characters)
-        print(f"File: {file_or_directory}")
-        print(file_content[:100])
-        print()
+    Parameters:
+    - x: A list of values for the x-axis.
+    - y: A list of values for the y-axis.
+    """  
+    plt.plot(x, y)
+    plt.xlabel('X Axis')
+    plt.ylabel('Y Axis')
+    plt.title('Line Plot')
+    plt.show()
 ```
+
+
+---
+### Attempt 3
+
+```python
+import matplotlib.pyplot as plt
+
+def create_plot(x, y):
+    """
+    Generates a line plot with specified x and y data.
+    
+    Parameters:
+    - x: A list of values for the x-axis.
+    - y: A list of values for the y-axis.
+    """  
+    plt.plot(x, y)
+    plt.xlabel('X Axis Label')
+    plt.ylabel('Y Axis Label')
+    plt.title('Line Plot Title')
+    plt.show()
+```
+
+
+> ⚠️ **AI Warning:** Verification failed after max retries.

@@ -4,19 +4,24 @@ RESPONSE:
 import sqlite3
 
 def get_user_by_name(user_input):
-    # Connect to the SQLite database
-    conn = sqlite3.connect('users.db')
+    conn = sqlite3.connect('your_database.db')  # Replace 'your_database.db' with your actual database name
     cursor = conn.cursor()
     
-    # Use parameterized query to prevent SQL injection
-    cursor.execute("SELECT * FROM users WHERE name=?", (user_input,))
+    try:
+        cursor.execute("SELECT * FROM users WHERE name=?", (user_input,))
+        user = cursor.fetchone()
+        return user
+    except sqlite3.Error as e:
+        print(f"An error occurred: {e}")
+        return None
+    finally:
+        conn.close()
 
-    # Fetch all rows
-    rows = cursor.fetchall()
-
-    # Close the database connection
-    conn.close()
-
-    return rows
+# Example usage
+user_input = "JohnDoe"
+user = get_user_by_name(user_input)
+if user:
+    print("User found:", user)
+else:
+    print("User not found.")
 ```
-This code will connect to the SQLite database, execute a parameterized query to prevent SQL injection, fetch all rows, and then close the database connection.

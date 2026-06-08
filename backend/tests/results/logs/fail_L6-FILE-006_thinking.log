@@ -4,61 +4,105 @@ RESPONSE:
 
 ---
 ### Attempt 1
+
 ```python
-from pathlib import Path
-from datetime import datetime
+from pathlib import Path, FileNotFoundError
 
-uploads_folder = Path("uploads")
-all_files = uploads_folder.glob("*.jpg") | uploads_folder.glob("*.png")
+def rename_files_with_date_prefix(directory):
+    try:
+        # Ensure the directory exists
+        directory = Path(directory)
+        if not directory.exists():
+            raise FileNotFoundError(f"Directory {directory} does not exist.")
+        
+        # List all files in the directory
+        for file_path in directory.iterdir():
+            if file_path.is_file():
+                # Extract the base name and extension of the file
+                base_name, ext = file_path.stem, file_path.suffix
+                
+                # Generate a new date prefix
+                current_date = Path().strftime("%Y%m%d")
+                
+                # Construct the new file path with the date prefix
+                new_file_path = directory / f"{current_date}_{base_name}{ext}"
+                
+                # Rename the file
+                file_path.rename(new_file_path)
+                print(f"Renamed {file_path} to {new_file_path}")
+    except FileNotFoundError as e:
+        print(e)
+    except Exception as e:
+        print(f"An error occurred: {e}")
 
-for file_path in all_files:
-    new_name = f"{file_path.stem}_{datetime.now().strftime('%Y-%m-%d')}.{file_path.suffix}"
-    file_path.rename(new_name)
-    print(f"Renamed {file_path.name} to {new_name}")
+# Example usage
+directory = Path("path/to/your/directory")
+rename_files_with_date_prefix(directory)
 ```
+
 
 ---
 ### Attempt 2
-```python
-from pathlib import Path
-from datetime import datetime
 
-# Step 6: Iterate over the list of files
-for file in Path('uploads').glob('*.jpg;*.png'):
-    # Step 7: Get the current date
-    current_date = datetime.now().strftime('%Y-%m-%d')
-    
-    # Step 8: Create the new file path with the current date as a prefix
-    new_file_path = Path(file.parent, f'{current_date}_{file.stem}{file.suffix}')
-    
-    # Step 9: Rename the file
-    file.rename(new_file_path)
-    print(f'Renamed: {file.name} to {new_file_path.name}')
+```python
+from pathlib import Path, FileNotFoundError
+
+def list_files(directory):
+    return [f for f in directory.iterdir() if f.is_file()]
+
+def rename_files(files, prefix):
+    for file in files:
+        new_name = f"{prefix}_{file.name}"
+        file.rename(new_name)
+
+def main():
+    try:
+        # Step 1: Define the directory path
+        directory_path = Path("path/to/your/directory")
+        
+        # Step 2: List all files in the directory
+        files = list_files(directory_path)
+        
+        # Step 3: Choose a prefix for renaming (e.g., "file_")
+        prefix = "file_"
+        
+        # Step 4: Call the rename function
+        rename_files(files, prefix)
+        
+        print("Files renamed successfully.")
+    except FileNotFoundError as e:
+        print(f"Directory not found: {e}")
+    except Exception as e:
+        print(f"An error occurred: {e}")
+
+if __name__ == "__main__":
+    main()
 ```
+
 
 ---
 ### Attempt 3
+
 ```python
-from pathlib import Path
-import datetime
+from pathlib import Path, datetime
 
-# Step 1: Define the base path for the uploads folder
-uploads_folder = Path("uploads")
-
-# Step 2: Retrieve a list of all files with the specified extensions
-jpg_files = uploads_folder.glob("*.jpg")
-png_files = uploads_folder.glob("*.png")
-
-# Step 3: Rename each file by adding the current date as a prefix
-for file in jpg_files + png_files:
-    # Step 4: Create a new file name with the current date prefix
-    new_file_name = f"{datetime.datetime.now().strftime('%Y-%m-%d')}{file.suffix}"
-    
-    # Step 5: Rename the file
-    file.rename(new_file_name)
-
-    # Log the successful renaming
-    print(f"Renamed {file.name} to {new_file_name}")
+# Step 4: Iterate over each file in the directory
+for file_path in Path.cwd().iterdir():
+    # Check if the item is a file (not a directory)
+    if file_path.is_file():
+        try:
+            # Get the current date and time
+            now = datetime.now()
+            
+            # Create a new file name with the date prefix
+            new_name = f"{now.strftime(\'%Y%m%d%H%M%S\')}_{file_path.name}"
+            
+            # Rename the file
+            file_path.rename(new_name)
+            print(f"Renamed: {file_path.name} to {new_name}")
+        except Exception as e:
+            print(f"Error renaming {file_path.name}: {e}")
 ```
+
 
 > ⚠️ **AI Warning:** Verification failed after max retries.

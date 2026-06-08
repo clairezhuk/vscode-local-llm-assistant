@@ -1,106 +1,16 @@
-ERROR: NameError: name 'bounded_fetch' is not defined
+ERROR: Exec failed
 RESPONSE:
 
 
 ---
 ### Attempt 1
+
 ```python
 import asyncio
-import os
+from concurrent.futures import Semaphore
 
-async def process_file(file_path, semaphore):
-    try:
-        with open(file_path, 'r') as file:
-            # Process the file content
-            content = file.read()
-            print(f"Processing file: {file_path}")
-            # Simulate some processing time
-            await asyncio.sleep(1)
-    except FileNotFoundError:
-        print(f"File not found: {file_path}")
-    except Exception as e:
-        print(f"Error processing file: {file_path}. {e}")
-    finally:
-        semaphore.release()
-
-async def main(file_paths, max_concurrent):
-    semaphore = asyncio.Semaphore(max_concurrent)
-    tasks = [process_file(file_path, semaphore) for file_path in file_paths]
-    await asyncio.gather(*tasks)
-
-if __name__ == '__main__':
-    file_paths = [
-        'path/to/file1.txt',
-        'path/to/file2.txt',
-        'path/to/file3.txt',  # Repeat this as needed
-        # ...
-    ]
-    max_concurrent = 5
-    asyncio.run(main(file_paths, max_concurrent))
+async def bounded_fetch(sem, task_id):
+    async with sem:
+        await asyncio.sleep(0.1)
+        return task_id
 ```
-
----
-### Attempt 2
-```python
-import asyncio
-from asyncio import Semaphore
-
-class DataFetcher:
-    def __init__(self, max_concurrent_operations):
-        self.max_concurrent_operations = max_concurrent_operations
-        self.semaphore = Semaphore(max_concurrent_operations)
-
-    def fetch_data(self, url):
-        with self.semaphore:
-            print(f"Fetching data for {url}")
-            # Simulate the operation taking some time
-            import time
-            time.sleep(2)
-            print(f"Data fetched successfully for {url}")
-
-async def fetch_operations(urls):
-    async with DataFetcher(max_concurrent_operations=5) as fetcher:
-        for url in urls:
-            await fetcher.fetch_data(url)
-
-async def main():
-    urls = ["http://example.com", "http://example.org", "http://example.net", "http://example.com", "http://example.org", "http://example.net"]
-    await fetch_operations(urls)
-
-if __name__ == "__main__":
-    asyncio.run(main())
-```
-
----
-### Attempt 3
-```python
-import threading
-import time
-
-class AsyncDataFetcher:
-    def __init__(self, max_operations):
-        self.max_operations = max_operations
-        self.semaphore = threading.Semaphore(max_operations)
-        self.in_flight_operations = 0
-
-    def fetch_data(self, operation_id):
-        try:
-            with self.semaphore:
-                self.in_flight_operations += 1
-                print(f"Starting operation {operation_id}")
-                time.sleep(1)  # Simulate data fetching
-                self.in_flight_operations -= 1
-                print(f"Completed operation {operation_id}")
-        except Exception as e:
-            print(f"Error fetching data: {e}")
-
-# Usage
-fetcher = AsyncDataFetcher(3)
-fetcher.fetch_data("1")
-fetcher.fetch_data("2")
-fetcher.fetch_data("3")
-time.sleep(1)  # To allow operations to complete before new ones start
-fetcher.fetch_data("4")
-```
-
-> ⚠️ **AI Warning:** Verification failed after max retries.

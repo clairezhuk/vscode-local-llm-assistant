@@ -1,5 +1,5 @@
 ERROR: N/A
 RESPONSE:
-```sh
+```bash
 chmod 700 run.sh
 ```

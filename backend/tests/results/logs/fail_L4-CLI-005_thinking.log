@@ -4,4 +4,4 @@ RESPONSE:
 
 ---
 ### Attempt 1
-Proposed command: `chmod ugo+rwx run.sh`
+Proposed command: `chmod +x run.sh; chmod -R 444 run.sh`

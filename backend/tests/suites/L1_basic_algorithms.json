@@ -70,10 +70,12 @@
         "type": "text",
         "metrics": {
             "must_contain": [
-                "sequentially",
                 "Linear search"
             ],
-            "must_not_contain": []
+            "must_not_contain": [
+                "minimum or maximum value of a function",
+                "Line search"
+            ]
         }
     },
     {
@@ -85,7 +87,7 @@
         "type": "code",
         "metrics": {
             "must_contain": [
-                "gcd"
+                "gcd", "import math"
             ],
             "execution": {
                 "run_tests": [

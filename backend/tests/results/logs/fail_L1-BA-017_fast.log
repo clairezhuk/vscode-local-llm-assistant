@@ -1,7 +1,0 @@
-ERROR: TypeError: '>' not supported between instances of 'NoneType' and 'int'
-RESPONSE:
-```python
-def znajdz_duplikaty(lista):
-    duplicates = [element for element, count in dict.fromkeys(lista).items() if count > 1]
-    return duplicates
-```

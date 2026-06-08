@@ -1,3 +1,5 @@
 ERROR: N/A
 RESPONSE:
-rm -rf /Applications/Google\ Chrome.app/Caches
+```bash
+rm -rf C:\Users\user\AppData\Local\Temp\tmp_4yl97ji/cache
+```

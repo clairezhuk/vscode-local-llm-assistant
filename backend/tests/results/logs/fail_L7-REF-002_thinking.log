@@ -1,12 +1,16 @@
-ERROR: NameError: name 'process_request' is not defined
+ERROR: Passed
 RESPONSE:
 
 
 ---
 ### Attempt 1
+
 ```python
-# Step 1: Define the decorator
+from functools import wraps
+import time
+
 def log_time(func):
+    @wraps(func)
     def wrapper(*args, **kwargs):
         start_time = time.time()
         result = func(*args, **kwargs)
@@ -14,49 +18,82 @@ def log_time(func):
         print(f"Function {func.__name__} took {end_time - start_time:.4f} seconds to execute.")
         return result
     return wrapper
+
+# Apply the decorator to both functions
+@log_time
+def process_request(request):
+    # Your existing code here
+    pass
+
+@log_time
+def fetch_user_profile(user_id):
+    # Your existing code here
+    pass
+
+# Example usage:
+@log_time
+def example_function():
+    # Function implementation here
+    pass
+
+@log_time
+def another_example_function():
+    # Another function implementation here
+    pass
 ```
+
 
 ---
 ### Attempt 2
+
 ```python
 from functools import wraps
-from datetime import datetime
+import time
 
-# Log decorator to record the start and end time of each function
 def log_time(func):
     @wraps(func)
     def wrapper(*args, **kwargs):
-        start_time = datetime.now()
+        start_time = time.time()
         result = func(*args, **kwargs)
-        end_time = datetime.now()
-        print(f"Function '{func.__name__}' executed in {end_time - start_time} seconds")
+        end_time = time.time()
+        print(f"{func.__name__} took {end_time - start_time:.4f} seconds to execute.")
         return result
     return wrapper
 
-# Example usage of the decorator
-@api_handlers
 @log_time
 def process_request(request):
-    # Simulate processing time
-    import time
-    time.sleep(2)
+    # Simulate processing request
+    time.sleep(1)  # Simulating a delay
     return "Request processed"
 
-@api_handlers
 @log_time
 def fetch_user_profile(user_id):
-    # Simulate fetching user profile time
-    import time
-    time.sleep(3)
-    return f"User profile fetched for ID: {user_id}"
+    # Simulate fetching user profile
+    time.sleep(2)  # Simulating a delay
+    return f"User profile for {user_id} fetched"
 
-# Example API calls
-process_request("example_request")
-fetch_user_profile(1234)
+@log_time
+def fetch_data():
+    # Simulate fetching data from a database
+    time.sleep(2)  # Simulating delay for demonstration
+    return "Data fetched successfully"
+
+@log_time
+def process_data(data):
+    # Simulate processing the data
+    time.sleep(1)  # Simulating delay for demonstration
+    return f"Processed {data}"
+
+# Example usage
+if __name__ == "__main__":
+    print(fetch_data())
+    print(process_data("Sample Data"))
 ```
+
 
 ---
 ### Attempt 3
+
 ```python
 import time
 
@@ -65,10 +102,37 @@ def log_time(func):
         start_time = time.time()
         result = func(*args, **kwargs)
         end_time = time.time()
-        execution_time = end_time - start_time
-        print(f"Function {func.__name__} executed in {execution_time:.4f} seconds")
+        print(f"{func.__name__} took {end_time - start_time:.4f} seconds to execute")
         return result
     return wrapper
+
+@log_time
+def process_request(request):
+    # Process the request logic here
+    pass
+
+@log_time
+def fetch_user_profile(user_id):
+    # Fetch user profile logic here
+    pass
+
+# Example usage of the decorator
+@log_time
+def example_function():
+    # Simulate some work
+    for i in range(10000):
+        pass
+
+@log_time
+def another_example_function():
+    # Simulate some more work
+    for i in range(50000):
+        pass
+
+# Call the functions to verify execution time logging
+example_function()
+another_example_function()
 ```
+
 
 > ⚠️ **AI Warning:** Verification failed after max retries.

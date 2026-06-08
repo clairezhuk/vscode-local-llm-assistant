@@ -1,49 +1,25 @@
-ERROR: ModuleNotFoundError: No module named 'pandas'
+ERROR: Exec failed
 RESPONSE:
 
 
 ---
 ### Attempt 1
-```python
-import os
-import shutil
 
-def move_txt_files(source_dir, target_dir):
-    # Ensure the target directory exists
-    if not os.path.exists(target_dir):
-        os.makedirs(target_dir)
-    
-    # List all files in the source directory
-    for filename in os.listdir(source_dir):
-        file_path = os.path.join(source_dir, filename)
-        
-        # Check if the file is a text file
-        if filename.endswith('.txt'):
-            # Move the file to the target directory
-            shutil.move(file_path, target_dir)
-            print(f"Moved {filename} to {target_dir}")
+```python
+import pandas as pd
+
+def fill_nan_with_median(df):
+    df.fillna(df.median(), inplace=True)
 ```
+
 
 ---
 ### Attempt 2
+
 ```python
-import os
+import pandas as pd
 
-def load_context():
-    # Load the context from a file or source
-    # Replace this with your actual context loading logic
-    return "This is a sample context."
-
-def get_workspace_path():
-    # Get the path to the current working directory
-    current_directory = os.getcwd()
-    return current_directory
-
-def construct_file_path(filename, directory):
-    return os.path.join(directory, filename)
-
-def open_file(file_path):
-    # Open the file at the constructed path
-    with open(file_path, 'r') as file:
-        return file
+def fill_nan_with_median(df):
+    df.fillna(df.median(), inplace=True)
+    return df  # Add this line to return the modified DataFrame
 ```

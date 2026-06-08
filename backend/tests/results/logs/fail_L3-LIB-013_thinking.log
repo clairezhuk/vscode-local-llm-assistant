@@ -1,40 +1,51 @@
-ERROR: NameError: name 'normalize_columns' is not defined
+ERROR: Exec failed
 RESPONSE:
 
 
 ---
 ### Attempt 1
+
 ```python
-import os
+import numpy as np
 
-def list_files_without_tmp(directory_path):
-    # Step: Define the directory path where the files are located
-    directory_path = 'C:\\\\path\\\\to\\\\directory'
-
-    # Step: Ensure the directory exists
-    if not os.path.exists(directory_path):
-        print(f"Directory {directory_path} does not exist.")
-        return []
-
-    # Step: Create a list to store the file paths that match the pattern
-    filtered_files = []
-
-    # Step: Loop through each file in the directory
-    for filename in os.listdir(directory_path):
-        # Step: Check if the file name matches the pattern '*.txt'
-        if filename.endswith('.txt'):
-            # Step: Append the full file path to the filtered_files list
-            filtered_files.append(os.path.join(directory_path, filename))
-
-    # Step: Write the filtered file paths to a new file named 'filtered_files.txt'
-    with open('filtered_files.txt', 'w') as file:
-        for file_path in filtered_files:
-            file.write(file_path + '\n')
-
-    # Step: Print a confirmation message
-    print(f"Filtered file paths have been written to 'filtered_files.txt'.")
-    return filtered_files
-
-# Example usage
-filtered_files = list_files_without_tmp('C:\\\\path\\\\to\\\\directory')
+def normalize_columns(matrix):
+    """
+    Normalizes each column of a 2D NumPy array by subtracting the mean and dividing by the standard deviation.
+    
+    Parameters:
+    matrix (np.ndarray):. Step: Step 3: Inside the function, calculate the mean and standard deviation for each column using np.mean() and np.std() respectively. Code only.\n    """\n    # Calculate the mean of each column\n    means = np.mean(matrix, axis=0)\n    \n    # Calculate the standard deviation of each column\n    stds = np.std(matrix, axis=0)\n    \n    # Normalize each column by subtracting the mean and dividing by the standard deviation\n    normalized_matrix = (matrix - means) / stds\n    \n    return normalized_matrix
 ```
+
+
+---
+### Attempt 2
+
+```python
+import numpy as np
+
+def normalize_columns(matrix):
+    """
+    Normalizes each column of a 2D NumPy array by subtracting the mean and dividing by the standard deviation.
+    
+    Parameters:
+    matrix (np.ndarray):. Step: Step 1: Subtract the mean from each element in each column using np.subtract(). Code only.\n    """\n    # Calculate the mean of each column\n    means = np.mean(matrix, axis=0)\n    \n    # Subtract the mean from each element in the column\n    normalized_matrix = np.subtract(matrix, means)
+    \n    return normalized_matrix
+```
+
+
+---
+### Attempt 3
+
+```python
+import numpy as np
+
+def normalize_columns(matrix):
+    """
+    Normalizes each column of a 2D NumPy array by subtracting the mean and dividing by the standard deviation.
+    
+    Parameters:
+    matrix (np.ndarray):. Step: Calculate the standard deviation of each column. Code only.\n    """\n    std_dev = np.std(matrix, axis=0)\n    normalized_matrix = (matrix - np.mean(matrix, axis=0)) / std_dev\n    return normalized_matrix
+```
+
+
+> ⚠️ **AI Warning:** Verification failed after max retries.

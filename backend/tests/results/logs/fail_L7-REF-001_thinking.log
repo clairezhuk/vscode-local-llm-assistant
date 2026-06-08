@@ -1,24 +1,50 @@
-ERROR: NameError: name 'get_status_msg' is not defined
+ERROR: No code block
 RESPONSE:
 
 
 ---
 ### Attempt 1
+
 ```python
-file_type_map = {
-    '.txt': 'text',
-    '.png': 'image',
-    '.jpg': 'image',
-    '.jpeg': 'image',
-    '.gif': 'image',
-    '.pdf': 'document',
-    '.doc': 'document',
-    '.xls': 'document',
-    '.xlsx': 'document',
-    '.csv': 'document',
-    '.py': 'code',
-    '.java': 'code',
-    '.php': 'code',
-    '.json': 'data'
-}
+def get_status_msg(code):
+    status_map = {
+        'ST_01': 'Active',
+        'ST_02': 'Inactive',
+        'ST_03': 'Pending'
+    }
+    
+    return status_map.get(code, 'Unknown')
 ```
+
+
+---
+### Attempt 2
+
+```python
+import math
+
+def get_status_msg(code):
+    status_map = {
+        'ST_01': 'Active',
+        'ST_02': 'Inactive',
+        'ST_03': 'Error'
+    }
+
+    # Check if the code is missing the import statement for math and sys.
+    if 'import math' not in code or 'import sys' not in code:
+        return "Logic fix: The code is missing the import statement for math and sys. The logic for the function can be refactored to use a dictionary mapping instead of multiple if/elif statements. Here's the refactored code:"
+    else:
+        # Refactor the code using a dictionary mapping
+        return status_map[code]
+```
+
+
+---
+### Attempt 3
+
+```python
+
+```
+
+
+> ⚠️ **AI Warning:** Verification failed after max retries.

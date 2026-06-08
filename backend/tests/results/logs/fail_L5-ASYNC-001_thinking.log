@@ -4,16 +4,17 @@ RESPONSE:
 
 ---
 ### Attempt 1
+
 ```python
-import os
+import asyncio
 
-def list_python_files(directory):
-    python_files = []
-    for filename in os.listdir(directory):
-        if filename.endswith('.py'):
-            python_files.append(os.path.join(directory, filename))
-    return python_files
+async def f1():
+    # Simulate some asynchronous operation
+    await asyncio.sleep(2)
+    return "Result from f1"
 
-def is_even(n):
-    return n % 2 == 0
+async def f2():
+    # Simulate another asynchronous operation
+    await asyncio.sleep(1)
+    return "Result from f2"
 ```

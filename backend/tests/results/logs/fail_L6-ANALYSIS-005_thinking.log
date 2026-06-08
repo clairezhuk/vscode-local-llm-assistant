@@ -4,14 +4,4 @@ RESPONSE:
 
 ---
 ### Attempt 1
-Plan:
-1. Locate the directory containing the list of students: C:\Users\user\AppData\Local\Temp\tmp4xq_p4rb
-2. Access the file named "students.txt" in the directory: This file will contain the list of students
-3. Read the contents of "students.txt" file using a suitable programming language.
-4. Parse the contents of "students.txt" file to extract the list of students.
-5. Store the list of students in an array.
-6. Close the file after reading its contents.
-7. Handle any potential errors that may occur during file reading or parsing.
-8. Verify that the list of students has been stored in the array.
-
-Answer: An array is a suitable data structure for storing the list of students.
+The main goal of this assignment is to understand and implement a data structure for storing a list of students.

@@ -4,7 +4,7 @@ RESPONSE:
 def extract_api_values(records):
     res = []
     for record in records:
-        if record['meta']['source'] == 'API':
+        if 'meta' in record and 'source' in record['meta'] and record['meta']['source'] == 'API':
             res.append(record['meta']['data']['val'])
     return res
 ```

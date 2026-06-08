@@ -3,17 +3,20 @@ RESPONSE:
 ```python
 import requests
 
-def fetch_api_and_save_to_json():
-    api_url = 'https://api.example.com/data'
-    response = requests.get(api_url)
-    
+def fetch_data(url):
+    response = requests.get(url)
     if response.status_code == 200:
-        data = response.json()
-        with open('data.json', 'w') as file:
-            file.write(str(data))
-        print("Data fetched and saved to data.json")
+        return response.json()
     else:
-        print(f"Failed to fetch data. Status code: {response.status_code}")
+        return None
 
-fetch_api_and_save_to_json()
+url = "https://api.example.com/data"
+data = fetch_data(url)
+
+if data:
+    with open("output.json", "w") as file:
+        json.dump(data, file, indent=4)
+    print("Data has been saved to output.json")
+else:
+    print("Failed to retrieve data")
 ```

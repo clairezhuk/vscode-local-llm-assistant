@@ -1,51 +1,53 @@
-ERROR: Exec failed
+ERROR: 
 RESPONSE:
 
 
 ---
 ### Attempt 1
+
 ```python
-import os
-from pathlib import Path
-
-def load_file(file_name):
-    return Path(file_name).read_text()
-
-def process(file):
-    # Placeholder for processing logic
-    return file
-
-def save_file(file_name, content):
-    Path(file_name).write_text(content)
-
-def process_files():
-    file1_path = Path("file1.txt")
-    file2_path = Path("file2.txt")
-    
-    if file1_path.exists():
-        file1_content = load_file(file1_path)
-        processed_file1_content = process(file1_content)
-        save_file("processed_file1.txt", processed_file1_content)
-    
-    if file2_path.exists():
-        file2_content = load_file(file2_path)
-        processed_file2_content = process(file2_content)
-        save_file("processed_file2.txt", processed_file2_content)
+def bubble_sort(arr):
+    n = len(arr)
+    for i in range(n):
+        # Last i elements are already in place
+        for j in range(0, n-i-1):
+            # Traverse the array from 0 to. Step: Analyze requirements. Code only.
+            if arr[j] > arr[j+1]:
+                # Swap arr[j] and arr[j+1]
+                arr[j], arr[j+1] = arr[j+1], arr[j]
 ```
+
 
 ---
 ### Attempt 2
+
 ```python
-import os
-
-workspace_path = os.getcwd()
-files_directory = os.path.join(workspace_path, "files")
-print(files_directory)
-
-for filename in os.listdir('files'):
-    print(filename)
-
-files = ["file1.txt", "file2.txt", "file3.txt"]
-# or
-files_dict = {"file1.txt": "data1", "file2.txt": "data2", "file3.txt": "data3"}
+def bubble_sort(arr):
+    n = len(arr)
+    for i in range(n):
+        # Last i elements are already in place
+        for j in range(0, n-i-1):
+            # Traverse the array from 0 to. Step: Step 3: For each iteration, compare adjacent elements and swap them if they are in the wrong order (for j in range(0, n-i-1)). This ensures that the largest unsorted element bubbles up to its correct position.
+            if arr[j] > arr[j+1]:
+                # Swap arr[j] and arr[j+1]
+                arr[j], arr[j+1] = arr[j+1], arr[j]
 ```
+
+
+---
+### Attempt 3
+
+```python
+def bubble_sort(arr):
+    n = len(arr)
+    for i in range(n):
+        # Last i elements are already in place
+        for j in range(0, n-i-1):
+            # Traverse the array from 0 to. Step: Initialize the function with an array.
+            if arr[j] > arr[j+1]:
+                # Swap arr[j] and arr[j+1]
+                arr[j], arr[j+1] = arr[j+1], arr[j]
+```
+
+
+> ⚠️ **AI Warning:** Verification failed after max retries.

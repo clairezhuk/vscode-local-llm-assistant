@@ -4,14 +4,4 @@ RESPONSE:
 
 ---
 ### Attempt 1
-1. **Open Command Prompt or Terminal**: Launch your command prompt or terminal application.
-2. **Navigate to the Workspace Directory**: Change the directory to the location where your project is stored. You can use the `cd` command to do this. For example:
-   ```sh
-   cd C:\Users\user\AppData\Local\Temp\tmpbz6ypd24
-   ```
-3. **Run the Migrations Command**: Execute the command to run the migrations. Use the `npm run typeorm migration:run` command. For example:
-   ```sh
-   npm run typeorm migration:run
-   ```
-4. **Wait for Migrations to Run**: The command will run the database migrations specified in your `ormconfig.json` file. This may take some time depending on the complexity of your migrations.
-5. **Check Database Status**: After the migrations are complete, verify the status of your database to ensure that the new tables and data have been created as expected.
+To run database migrations using `sequelize`, you should execute the command `npx sequelize-cli db:migrate` from your terminal or command prompt. This command will execute all the migration scripts located in the `migrations` directory of your Sequelize project, ensuring that your database schema is up to date with the latest changes defined in your models.

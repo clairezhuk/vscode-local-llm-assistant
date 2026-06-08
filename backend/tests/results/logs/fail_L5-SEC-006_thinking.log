@@ -4,20 +4,29 @@ RESPONSE:
 
 ---
 ### Attempt 1
+
 ```python
 import sqlite3
 
-# Connect to the database
+# Step 2: Connect to the SQLite database using sqlite3.connect()
 conn = sqlite3.connect('example.db')
-# Create a cursor object
+
+# Step 3: Create a cursor object using the cursor() method of the connection object
 cursor = conn.cursor()
-# Define the query and parameters
+
+# Prepare the SQL query with placeholders for user input
 query = "SELECT * FROM users WHERE username = ? AND password = ?"
-params = ('username', 'password')
-# Execute the query with the parameters
-cursor.execute(query, params)
+
+# User input (replace with actual values)
+username = 'admin'
+password = 'secure_password'
+
+# Execute the prepared statement with user input
+cursor.execute(query, (username, password))
+
 # Fetch the results
 results = cursor.fetchall()
+
 # Close the connection
 conn.close()
 ```

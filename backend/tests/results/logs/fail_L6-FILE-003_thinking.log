@@ -1,17 +1,53 @@
-ERROR: FileNotFoundError: [Errno 2] No such file or directory: 'errors.log'
+ERROR: Exec failed
 RESPONSE:
 
 
 ---
 ### Attempt 1
-```python
-import os
 
-def extract_file_context(file_path):
-    try:
-        with open(file_path, 'r') as file:
-            content = file.read()
-        return content
-    except FileNotFoundError:
-        return f"File {file_path} not found."
+```python
+#!/bin/bash
+
+# Read server.log line by line
+while IFS= read -r line; do
+    # Check if the line contains [ERROR]
+    if [[ $line == *"[ERROR]"* ]]; then 
+        echo "Error: $line"
+    fi
+done < server.log
 ```
+
+
+---
+### Attempt 2
+
+```python
+#!/bin/bash
+
+# Read server.log line by line
+while IFS= read -r line; do
+    # Check if the line contains [ERROR]
+    if [[ $line == *"[ERROR]"* ]]; then
+        echo "Fix this: SyntaxError: invalid syntax. Maybe you meant '==' or ':=' instead of '='? (<unknown>, line 4)"
+    fi
+done < server.log
+```
+
+
+---
+### Attempt 3
+
+```python
+#!/bin/bash
+
+# Read server.log line by line
+while IFS= read -r line; do
+    # Check if the line contains [ERROR]
+    if [[ $line == *"[ERROR]"* ]]; then
+        echo "Error found: $line"
+    fi
+done < server.log
+```
+
+
+> ⚠️ **AI Warning:** Verification failed after max retries.

@@ -5,13 +5,17 @@ import os
 
 def merge_txt_files():
     combined_content = ""
-    for filename in os.listdir():
-        if filename.endswith(".txt"):
-            with open(filename, 'r') as file:
-                combined_content += file.read() + "\n"
+    
+    for file_name in os.listdir("."):
+        if file_name.endswith(".txt"):
+            with open(file_name, 'r') as file:
+                content = file.read()
+                combined_content += content
+    
     with open("combined.log", 'w') as file:
         file.write(combined_content)
-    print("Merging complete!")
+    
+    return "Combined log created successfully."
 
-merge_txt_files()
+print(merge_txt_files())
 ```

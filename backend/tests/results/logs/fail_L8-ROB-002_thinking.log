@@ -1,16 +1,20 @@
-ERROR: Passed
+ERROR: Exec failed
 RESPONSE:
 
 
 ---
 ### Attempt 1
-```python
-import os
 
-workspace_path = os.getcwd()
-for filename in os.listdir('.'):
-    print(filename)
-def filter_files_by_extension(directory, extension):
-    filtered_files = [file_name for file_name in os.listdir(directory) if file_name.endswith(extension)]
-    return filtered_files
+```python
+import requests
+
+# URL API
+url = 'https://api.example.com/data'
+
+# Make a GET request to the API
+response = requests.get(url)
+
+# Check if the request was successful
+if response.status_code == 200:
+    print("Request successful!")
 ```

@@ -7,11 +7,12 @@ def get_probabilities(logits):
     """
     Applies the Softmax function to a 1D PyTorch tensor of logits along the correct dimension.
 
-    Args:
-    logits (torch.Tensor): A 1D tensor of logits.
+    Parameters:
+    - logits (torch.Tensor): A 1D tensor of logits, where each element is a probability score for a class.
 
     Returns:
-    torch.Tensor: A 1D tensor of probabilities.
+    - torch.Tensor: A 1D tensor of probabilities after applying Softmax.
     """
+    # Apply Softmax to the input tensor
     return torch.softmax(logits, dim=0)
 ```

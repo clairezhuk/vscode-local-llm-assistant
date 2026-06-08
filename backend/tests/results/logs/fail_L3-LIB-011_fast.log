@@ -11,5 +11,5 @@ class MyDataset(torch.utils.data.Dataset):
         return len(self.numbers)
 
     def __getitem__(self, idx):
-        return torch.tensor([self.numbers[idx]])
+        return torch.tensor([self.numbers[idx]], dtype=torch.float)
 ```

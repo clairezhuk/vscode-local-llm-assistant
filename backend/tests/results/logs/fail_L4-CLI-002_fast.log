@@ -1,3 +1,5 @@
 ERROR: N/A
 RESPONSE:
-`findstr "IP" "C:\Users\user\AppData\Local\Temp\tmp2dkthmam\access.log" | findstr /R ".\d+\.\d+\.\d+\.\d+" | sort -u`
+```sh
+findstr -i "192\.168\." C:\Users\user\AppData\Local\Temp\tmp9idk6g83 | sort -u
+```

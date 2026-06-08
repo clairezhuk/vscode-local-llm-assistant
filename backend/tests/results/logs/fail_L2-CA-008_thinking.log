@@ -1,23 +1,42 @@
-ERROR: NameError: name 'ucb1' is not defined
+ERROR: 
 RESPONSE:
 
 
 ---
 ### Attempt 1
+
 ```python
 import math
 
-def ucb1_score(node, parent, child, n_visited, n_total):
-    # UCB1 formula: UCB1 = Q(node) + c * sqrt(ln(n_total) / n_visited)
-    # Q(node): Expected value of the node, calculated using the expected reward from all children
-    # c: A trade-off parameter that controls the exploration-exploitation trade-off
-    # n_visited: Number of times the node has been visited
-    # n_total: Total number of visits to all nodes
-    return node.q_value + (2.5 * (math.log(n_total) / n_visited))
+def ucb1(node_win_rate, node_visits, total_parent_visits, exploration_weight=1.41):
+    return (node_win_rate / node_visits) + exploration_weight * math.sqrt(math.log(total_parent_visits) / node_visits)
 
-def calculate_ucb1_score(node, exploration_constant=2.5):
-    # Assuming node has 'reward' and 'num_visits' attributes
-    # Calculate the UCB1 score using the formula: UCB1 = reward + exploration_constant * sqrt(log(num_visits) / node.num_visits)
-    ucb1_score = node.reward + exploration_constant * (2.5 ** (node.num_visits / 2))
-    return ucb1_score
+def check_ucb1():
+    # Test data
+    node_win_rate = 0.8
+    node_visits = 5
+    total_parent_visits = 20
+    
+    # Expected result
+    expected_result = (node_win_rate / node_visits) + exploration_weight * math.sqrt(math.log(total_parent_visits) / node_visits)
+    
+    # Calculate actual result using the function
+    actual_result = ucb1(node_win_rate, node_visits, total_parent_visits)
+    
+    # Check if the actual result matches the expected result
+    assert math.isclose(actual_result, expected_result), f"Expected {expected_result}, but got {actual_result}"
+
+# Run the check function to verify the correctness of the ucb1 function
+check_ucb1()
+```
+
+
+---
+### Attempt 2
+
+```python
+import math
+
+def ucb1(node_win_rate, node_visits, total_parent_visits, exploration_weight=1.41):
+    return (node_win_rate / node_visits) + exploration_weight * math.sqrt(math.log(total_parent_visits) / math.log(2))
 ```

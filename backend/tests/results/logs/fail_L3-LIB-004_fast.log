@@ -1,7 +1,11 @@
-ERROR: ModuleNotFoundError: No module named 'pandas'
+ERROR: Exec failed
 RESPONSE:
 ```python
+import pandas as pd
+
 def get_category_prices(df):
-    # Group the DataFrame by the 'Category' column and calculate the average of the 'Price' column
-    return df.groupby('Category')['Price'].mean().reset_index()
+    # Grupuj DataFrame według kolumny 'Category' i oblicza średnią kolumny 'Price'
+    grouped = df.groupby('Category')['Price'].mean()
+    
+    return grouped
 ```

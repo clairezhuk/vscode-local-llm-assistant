@@ -1,14 +1,29 @@
-ERROR: Passed
+ERROR: NameError: name 'distance' is not defined
 RESPONSE:
 
 
 ---
 ### Attempt 1
+
 ```python
 import math
 
-def distance(p1, p2):
-    x1, y1 = p1
-    x2, y2 = p2
+def euclidean_distance(point1, point2):
+    """Calculate the Euclidean distance between two points in a 2D space.
+
+    Args:
+    point1 (tuple): The coordinates of the first point (x1, y1).
+    point2 (tuple): The coordinates of the second point (x2, y2).
+
+    Returns:
+    float: The Euclidean distance between the two points.
+    """
+    x1, y1 = point1
+    x2, y2 = point2
     return math.sqrt((x2 - x1)**2 + (y2 - y1)**2)
+
+# Test the function with provided data points
+point1 = (1, 2)
+point2 = (4, 6)
+print(euclidean_distance(point1, point2))  # Output: 5.0
 ```

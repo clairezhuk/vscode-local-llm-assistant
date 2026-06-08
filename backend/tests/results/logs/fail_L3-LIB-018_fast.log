@@ -1,0 +1,7 @@
+ERROR: 
+RESPONSE:
+```python
+def subtract_row_vec(matrix, vec):
+    # Subtract the vector from each row of the matrix using broadcasting
+    return matrix - vec[:, None]
+```

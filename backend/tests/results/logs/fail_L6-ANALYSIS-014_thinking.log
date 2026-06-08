@@ -4,10 +4,41 @@ RESPONSE:
 
 ---
 ### Attempt 1
-To install the 'pandas' library, you can use the following command:
+To install pandas version 1.3.5 and use the URL 'https://www.example.com/data.csv' as the data source, you can follow these steps:
 
-```bash
-pip install pandas
-```
+1. **Open Command Prompt or PowerShell**:
+   - On Windows, press `Win + R`, type `cmd` and press Enter.
+   - On macOS or Linux, open Terminal.
 
-This command will download and install the 'pandas' library along with its dependencies from the Python Package Index (PyPI).
+2. **Install pandas using pip**:
+   - Run the following command to install pandas version 1.3.5:
+     ```sh
+     pip install pandas==1.3.5
+     ```
+
+3. **Verify the installation**:
+   - After installation, you can verify that pandas has been installed correctly by running:
+     ```sh
+     python -c "import pandas; print(pandas.__version__)"
+     ```
+   - This should output `1.3.5`.
+
+4. **Read data from the URL**:
+   - Use pandas to read the CSV file from the specified URL. Here's an example code snippet:
+     ```python
+     import pandas as pd
+
+     # Specify the URL of the CSV file
+     url = 'https://www.example.com/data.csv'
+
+     # Read the CSV file into a DataFrame
+     df = pd.read_csv(url)
+
+     # Display the first few rows of the DataFrame
+     print(df.head())
+     ```
+
+5. **Handle any errors**:
+   - Ensure that the URL is correct and accessible. If there are issues with the URL or network, you may need to check the URL or try again later.
+
+By following these steps, you should be able to install pandas version 1.3.5 and use the specified URL as the data source.

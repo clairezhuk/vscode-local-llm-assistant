@@ -22,7 +22,15 @@ class Orchestrator:
         self.lock = asyncio.Lock()
 
     def preprocess_query(self, query: str) -> str:
-        sys_prompt = "You are a strict translation API. Your ONLY job is to translate the text to English and fix typos. DO NOT output greetings like 'Sure' or 'Here is'. Output ONLY the raw translated string."
+        sys_prompt = (
+            "You are a strict translation and text-normalization API. "
+            "Your ONLY job is to translate the text to English and fix clear spelling typos. "
+            "CRITICAL: Preserve all technical terms, algorithm names (e.g., 'Linear Search', 'Bubble Sort'), "
+            "and code-like identifiers (e.g., function names, variables) exactly as they are. "
+            "DO NOT attempt to improve the logic or rewrite the query. "
+            "If the text is already correct English, return it unchanged. "
+            "Output ONLY the raw processed string."
+        )
         prompt = f"<|im_start|>system\n{sys_prompt}<|im_end|>\n<|im_start|>user\nTranslate:\n[[[{query}]]]<|im_end|>\n<|im_start|>assistant\n"        
         res = self.engine.generate(prompt, max_tokens=128)["text"].strip()
         if "```" in res or "def " in res or len(res) > len(query) * 3 + 50:
@@ -55,32 +63,42 @@ class Orchestrator:
         return "Command rejected by user."
     
     def _static_code_check(self, code: str) -> str:
-        if not code: return "No code block found."
+        if not code: return "Empty code."
         try:
             tree = ast.parse(code)
         except SyntaxError as e:
             return f"SyntaxError: {e}"
-
-        defined_funcs = {node.name for node in ast.walk(tree) if isinstance(node, ast.FunctionDef)}
         called_funcs = {node.func.id for node in ast.walk(tree) if isinstance(node, ast.Call) and isinstance(node.func, ast.Name)}
+        defined = {node.name for node in ast.walk(tree) if isinstance(node, (ast.FunctionDef, ast.ClassDef))}
+        imported = set()
+        for node in ast.walk(tree):
+            if isinstance(node, ast.Import):
+                for n in node.names: imported.add(n.name)
+            elif isinstance(node, ast.ImportFrom):
+                for n in node.names: imported.add(n.name)
+
+        builtins = set(__builtins__.keys()) | {"print", "len", "range", "int", "str", "list", "dict", "sum", "max", "min"}
+        common_libs = {"math", "os", "sys", "json", "re", "datetime", "requests", "np", "pd", "plt", "torch"}
         
-        builtins = {"print", "len", "range", "int", "str", "list", "set", "dict", "enumerate", "type", "sum", "max", "min", "open", "abs", "any", "all", "hasattr", "getattr", "setattr"}
-        missing = called_funcs - defined_funcs - builtins
-        if missing:
-            return f"NameError: You called undefined functions: {', '.join(missing)}. Please define them or import them."
-            
+        for func in called_funcs:
+            if func not in defined and func not in builtins and func not in imported:
+                if func in ["gcd", "sqrt", "sin", "cos", "floor"]:
+                    return f"Missing 'import math' for {func}."
+                return f"NameError: '{func}' is not defined or imported."
+
         for node in ast.walk(tree):
             if isinstance(node, ast.FunctionDef):
-                has_return = any(isinstance(child, (ast.Return, ast.Yield)) for child in ast.walk(node))
-                if not has_return:
-                    return f"LogicError: Function '{node.name}' is missing a 'return' statement."
+                if node.name.startswith('__'): continue
+                has_ret = any(isinstance(child, (ast.Return, ast.Yield)) for child in ast.walk(node))
+                if not has_ret:
+                    return f"Function '{node.name}' might need a 'return' statement."
 
         return ""
     
-    async def _ask_llm(self, system_prompt: str, user_prompt: str, max_tokens: int = 512):
-        full_prompt = f"<|im_start|>system\n{system_prompt}. BE BRIEF. DO NOT REPEAT INSTRUCTIONS.<|im_end|>\n<|im_start|>user\n{user_prompt}<|im_end|>\n<|im_start|>assistant\n"
+    async def _ask_llm(self, system_prompt: str, user_prompt: str, max_tokens: int = 512, temp=0.2):
+        full_prompt = f"<|im_start|>system\n{system_prompt}. BE BRIEF. DO NOT REPEAT INSTRUCTIONS. IMPORTANT: Focus ONLY on the user's query. Ignore workspace files unless they are explicitly mentioned in the query.<|im_end|>\n<|im_start|>user\n{user_prompt}<|im_end|>\n<|im_start|>assistant\n"
         async with self.lock:
-            res = await asyncio.to_thread(self.engine.generate, full_prompt, max_tokens=max_tokens)
+            res = await asyncio.to_thread(self.engine.generate, full_prompt, max_tokens=max_tokens, temp=temp)
         return res["text"].strip()
     
     async def process_chat(self, raw_query: str, context: dict):
@@ -88,11 +106,26 @@ class Orchestrator:
         mode = context.get("mode", "fast") 
         attached_files = context.get("attached_files", [])
         workspace_path = context.get("workspace_path")
+        context_parts = []
+        if workspace_path:
+            context_parts.append(f"Current Workspace: {workspace_path}")
+        if attached_files:
+            # --- START OF FILE [filename] ---
+            # [content]
+            # --- END OF FILE ---
+            file_ctx = self.file_processor.process_files(attached_files, self.engine)
+            if file_ctx.strip():
+                context_parts.append("### ATTACHED_FILES_CONTEXT ###")
+                context_parts.append(file_ctx)
+                context_parts.append("##############################")
 
-        file_ctx = self.file_processor.process_files(attached_files, self.engine) if attached_files else ""
-        full_ctx = f"Workspace: {workspace_path}\nFiles Context: {file_ctx}\n"
-
+        full_ctx = "\n".join(context_parts) if context_parts else ""
         prep_query = self.preprocess_query(raw_query)
+        if attached_files:
+            print(f" [Orchestrator] Processing with {len(attached_files)} files in context.")
+        else:
+            print(" [Orchestrator] Processing without file context.")
+
         if mode == "fast":
             async for chunk in self._run_fast_mode(prep_query, full_ctx, intent):
                 yield chunk
@@ -127,10 +160,8 @@ class Orchestrator:
         self.workspace_path = workspace
 
         yield json.dumps({"type": "status", "content": "Analyzing goal..."}) + "\n"
-        goal_info = await self._ask_llm("Analyze core goal", query, max_tokens=100)
-        goal_info = goal_info.split('\n')[0]
-        yield json.dumps({"type": "status", "content": f"Goal: {goal_info[:50]}..."}) + "\n"
-
+        goal_info = await self._ask_llm("Core goal in 5 words", query, max_tokens=50)
+        yield json.dumps({"type": "status", "content": f"Goal: {goal_info}"}) + "\n"
         yield json.dumps({"type": "start_content"}) + "\n"
 
         while attempts < self.max_retries and not success:
@@ -141,28 +172,26 @@ class Orchestrator:
             yield json.dumps({"type": "chunk", "content": separator}) + "\n"
 
             if intent == 1: # LEARN
-                plan = self.planner.generate_plan(f"Goal: {goal_info}", context)
-                yield json.dumps({"type": "plan", "content": plan}) + "\n"
-                
-                exec_prompt = f"Goal: {goal_info}. {critique}\nProvide answer based on plan. Do not repeat plan."
+                exec_prompt = f"Goal: {goal_info}. {critique}\nProvide a concise, expert answer. Focus on facts."
                 prompt = self.context_manager.format_prompt("Technical Expert", exec_prompt, context)
                 
                 full_ans = ""
                 async with self.lock:
-                    for token in self.engine.generate_stream(prompt):
+                    for token in self.engine.generate_stream(prompt, temp=0.3):
                         full_ans += token
                         yield json.dumps({"type": "chunk", "content": token}) + "\n"
                 
-                verify = await self._ask_llm("Does this answer goal? YES/NO", f"Goal: {goal_info}\nAns: {full_ans[:200]}", max_tokens=50)
-                if "YES" in verify.upper(): success = True
-                else: critique = f"Previous failed: {verify}"
+                verify_prompt = f"Check for: 1. Hallucinations 2. Logic errors. If OK, output 'CLEAR'. Else, describe error.\nAns: {full_ans[:300]}"
+                verify = await self._ask_llm("Reviewer", verify_prompt, max_tokens=50)
+                if "CLEAR" in verify.upper(): success = True
+                else: critique = f"Improve response: {verify}"
 
             elif intent == 3: # TERMINAL
                 cmd_prompt = f"Goal: {goal_info}. {critique} Generate ONLY terminal command."
                 cmd_raw = await self._ask_llm("Terminal expert", cmd_prompt)
                 cmd = self._extract_code(cmd_raw)
                 
-                verify = await self._ask_llm("Safe? YES/NO", f"Cmd: {cmd}", max_tokens=50)
+                verify = await self._ask_llm("Safe? YES/NO", f"Cmd: {cmd}", max_tokens=50, temp=0.0)
                 if "YES" in verify.upper():
                     self.pending_command = {"cmd": cmd, "cwd": workspace}
                     yield json.dumps({"type": "chunk", "content": f"Proposed command: `{cmd}`"}) + "\n"
@@ -172,23 +201,30 @@ class Orchestrator:
 
             elif intent == 2: # CODE
                 plan = self.planner.generate_plan(f"Goal: {goal_info}", context)
-                yield json.dumps({"type": "plan", "content": plan}) + "\n"
+                final_code = ""
+                if len(plan) <= 1:
+                    yield json.dumps({"type": "status", "content": "Generating solution..."}) + "\n"
+                    res = await self._ask_llm("Senior Developer", f"Goal: {goal_info}. {critique}\nWrite clean, simple code with all imports.", max_tokens=800, temp=0.1)
+                    final_code = self._extract_code(res)
+                else:
+                    yield json.dumps({"type": "plan", "content": plan}) + "\n"
+                    fragments = []
+                    for step in plan:
+                        res = await self._ask_llm("Coder", f"Goal: {goal_info}. Step: {step}. Code only.", max_tokens=400, temp=0.1)
+                        fragments.append(self._extract_code(res))
+                    yield json.dumps({"type": "status", "content": "Assembling..."}) + "\n"
+                    assembly_prompt = f"Goal: {goal_info}. Join these fragments into one clean file. Fix missing imports:\n{fragments}"
+                    final_code_raw = await self._ask_llm("Architect", assembly_prompt, max_tokens=1024, temp=0.1)
+                    final_code = self._extract_code(final_code_raw)
                 
-                fragments = []
-                for step in plan:
-                    yield json.dumps({"type": "status", "content": f"Step: {step}"}) + "\n"
-                    res = await self._ask_llm("Coder", f"Goal: {goal_info}. Step: {step}. Code only.", max_tokens=400)
-                    fragments.append(self._extract_code(res))
-                
-                yield json.dumps({"type": "status", "content": "Assembling..."}) + "\n"
-                assembly_prompt = f"Assemble: {fragments}. Goal: {goal_info}. Clean code only."
-                final_code_raw = await self._ask_llm("Architect", assembly_prompt, max_tokens=1024)
-                final_code = self._extract_code(final_code_raw)
-                
-                yield json.dumps({"type": "chunk", "content": f"```python\n{final_code}\n```"}) + "\n"
+                yield json.dumps({"type": "chunk", "content": f"\n```python\n{final_code}\n```\n"}) + "\n"
                 err = self._static_code_check(final_code)
-                if not err: success = True
-                else: critique = f"Fix syntax/imports: {err}"
+                if err:
+                    critique = f"Fix this: {err}"
+                else:
+                    logic_check = await self._ask_llm("Reviewer", f"Is this code missing imports (like math or sys) or logic for: {goal_info}? If perfect, output 'CLEAR'.", max_tokens=100)
+                    if "CLEAR" in logic_check.upper(): success = True
+                    else: critique = f"Logic fix: {logic_check}"
 
         if not success:
             yield json.dumps({"type": "chunk", "content": "\n\n> ⚠️ **AI Warning:** Verification failed after max retries."}) + "\n"

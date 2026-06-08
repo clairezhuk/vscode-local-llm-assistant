@@ -4,18 +4,4 @@ RESPONSE:
 
 ---
 ### Attempt 1
-1. Open the workspace directory `C:\Users\user\AppData\Local\Temp\tmp96i97zs3`.
-2. Locate the two files that contain the coordinates of the two points. These files should be named `point1.txt` and `point2.txt`.
-3. Open the files and copy the coordinates of the two points into your chosen text editor or spreadsheet program.
-4. Convert the coordinates to decimal format if they are not already in decimal format.
-5. Identify the coordinates of the first point. Let's call it `(x1, y1)`.
-6. Identify the coordinates of the second point. Let's call it `(x2, y2)`.
-7. Use the Euclidean distance formula to calculate the distance between the two points:
-   \[
-   \text{distance} = \sqrt{(x2 - x1)^2 + (y2 - y1)^2}
-   \]
-8. Substitute the values of `x1`, `y1`, `x2`, and `y2` into the formula and calculate the result.
-9. Copy the result to your clipboard.
-10. Open a new text file or spreadsheet and write the result in the appropriate format.
-11. Save the new file with a name such as `euclidean_distance.txt`.
-12. Close all open files and the workspace directory.
+The Euclidean distance between two points (x1, y1) and (x2, y2) in a 2D plane is calculated using the formula: sqrt((x2 - x1)^2 + (y2 - y1)^2).

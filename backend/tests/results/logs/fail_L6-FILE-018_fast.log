@@ -3,15 +3,15 @@ RESPONSE:
 ```python
 import yaml
 
-# Load the YAML file
-with open('settings.yaml', 'r') as file:
+# Load the settings.yaml file
+with open('C:\\Users\\user\\AppData\\Local\\Temp\\tmp0wkssnzi/settings.yaml', 'r') as file:
     settings = yaml.safe_load(file)
 
-# Update the 'debug' and 'version' fields
+# Set debug to false and version to 2.0
 settings['debug'] = False
 settings['version'] = '2.0'
 
-# Save the updated YAML file
-with open('settings.yaml', 'w') as file:
+# Save the updated settings.yaml file
+with open('C:\\Users\\user\\AppData\\Local\\Temp\\tmp0wkssnzi/settings.yaml', 'w') as file:
     yaml.safe_dump(settings, file)
 ```

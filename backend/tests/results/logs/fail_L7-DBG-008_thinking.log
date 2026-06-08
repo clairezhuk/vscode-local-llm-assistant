@@ -1,72 +1,58 @@
-ERROR: 
+ERROR: FileNotFoundError: [Errno 2] No such file or directory: 'folder'
 RESPONSE:
 
 
 ---
 ### Attempt 1
+
 ```python
 import os
+import shutil
 
-def move_to_backup(source_file, destination_path):
-    # Ensure the destination path ends with a slash for proper directory handling
-    if not destination_path.endswith('/'):
-        destination_path += '/'
+def move_to_backup(source_path, backup_directory):
+    # Use os.path.join to concatenate the source path and backup directory
+    destination_path = os.path.join(backup_directory, os.path.basename(source_path))
     
-    # Use os.path.join to combine the source file and the destination path
-    backup_file = os.path.join(destination_path, source_file)
-    
-    # Perform the file move operation
-    try:
-        os.rename(source_file, backup_file)
-        print(f"Backup file created: {backup_file}")
-    except Exception as e:
-        print(f"Error moving file: {e}")
+    # Move the file from source to destination using shutil.move
+    shutil.move(source_path, destination_path)
 ```
+
 
 ---
 ### Attempt 2
+
 ```python
 import os
+import shutil
 
-def move_to_backup(file_path, backup_path):
-    """Move a file to a backup location using os.path.join.
-
-    Args:
-    file_path (str): The path of the file to be moved.
-    backup_path (str): The path where the file will be moved to.
-
-    Returns:
-    None
-    """
-    # Ensure the backup path exists
-    os.makedirs(os.path.dirname(backup_path), exist_ok=True)
+def move_to_backup(source_path, backup_path):
+    # Use os.path.join to concatenate the source and backup paths
+    full_backup_path = os.path.join(backup_path, os.path.basename(source_path))
     
-    # Use os.path.join to correctly combine paths
-    backup_path = os.path.join(backup_path, os.path.basename(file_path))
-    
-    # Move the file
-    os.replace(file_path, backup_path)
+    # Perform the file move operation using shutil.move or os.rename
+    # Example: shutil.move(source_path, full_backup_path)
+    # Example: os.rename(source_path, full_backup_path)
 ```
+
 
 ---
 ### Attempt 3
+
 ```python
 import os
+import shutil
 
-def move_to_backup(file_path, backup_folder):
-    try:
-        # Correctly combine the file path with the backup folder using os.path.join
-        backup_path = os.path.join(backup_folder, os.path.basename(file_path))
-        
-        # Check if the backup path already exists
-        if os.path.exists(backup_path):
-            print(f"Backup file already exists: {backup_path}")
-            return
-        
-        # Move the file to the backup folder
-        os.rename(file_path, backup_path)
-        print(f"File moved to backup: {backup_path}")
-    except Exception as e:
-        # Log the error with a meaningful message
-        print(f"An error occurred: {e}")
+def move_to_backup(source, destination):
+    # Use os.path.join to concatenate the source and destination paths
+    backup_path = os.path.join(destination, 'backup')
+    
+    # Ensure the backup directory exists
+    if not os.path.exists(backup_path):
+        os.makedirs(backup_path)
+    
+    # Move the file to the backup directory
+    shutil.move(source, backup_path)
 ```
+
+
+> ⚠️ **AI Warning:** Verification failed after max retries.

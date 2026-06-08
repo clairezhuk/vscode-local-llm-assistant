@@ -1,8 +1,19 @@
 ERROR: Exec failed
 RESPONSE:
 ```python
-def organize_ingredients_by_weight(ingredients_dict):
-    # Sorting the dictionary by values in descending order
-    sorted_ingredients = dict(sorted(ingredients_dict.items(), key=lambda item: item[1], reverse=True))
+def sort_by_weight(ingredients):
+    # Sort the dictionary by values in descending order
+    sorted_ingredients = dict(sorted(ingredients.items(), key=lambda item: item[1], reverse=True))
     return sorted_ingredients
+
+# Example usage:
+ingredients = {
+    "flour": 200,
+    "sugar": 300,
+    "eggs": 400,
+    "milk": 500
+}
+
+sorted_ingredients = sort_by_weight(ingredients)
+print(sorted_ingredients)
 ```

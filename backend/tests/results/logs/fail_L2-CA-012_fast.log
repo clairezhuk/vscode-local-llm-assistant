@@ -1,0 +1,29 @@
+ERROR: NameError: name 'heapq' is not defined
+RESPONSE:
+```python
+def grid_shortest_path(grid, start, end):
+    rows, cols = len(grid), len(grid[0])
+    directions = [(0, 1), (0, -1), (1, 0), (-1, 0)]
+    
+    # Initialize the distance matrix with infinity
+    dist = [[float('inf')] * cols for _ in range(rows)]
+    dist[start[0]][start[1]] = 0
+    
+    # Priority queue to store nodes to visit
+    pq = [(0, start)]
+    
+    while pq:
+        current_dist, (x, y) = heapq.heappop(pq)
+        
+        if (x, y) == end:
+            return current_dist
+        
+        for dx, dy in directions:
+            nx, ny = x + dx, y + dy
+            
+            if 0 <= nx < rows and 0 <= ny < cols and grid[nx][ny] == 0 and current_dist + 1 < dist[nx][ny]:
+                dist[nx][ny] = current_dist + 1
+                heapq.heappush(pq, (dist[nx][ny], (nx, ny)))
+    
+    return -1
+```

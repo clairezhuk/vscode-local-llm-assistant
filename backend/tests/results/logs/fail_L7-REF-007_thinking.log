@@ -4,43 +4,41 @@ RESPONSE:
 
 ---
 ### Attempt 1
+
 ```python
-class Person:
-    def __init__(self, age):
-        self.age = age
-
-    def _validate_age(self):
-        return 0 <= self.age <= 120
-
-    def is_valid(self):
-        return self._validate_age()
+class AgeValidator:
+    def _validate_age(self, age):
+        # Check if the age is a positive integer
+        if not isinstance(age, int) or age <= 0:
+            raise ValueError("Age must be a positive integer")
+        
+        # Additional validation logic can be added here
+        # For example, check if the age is within a certain range
+        if age < 18 or age > 65:
+            raise ValueError("Age must be between 18 and 65")
 ```
+
 
 ---
 ### Attempt 2
+
 ```python
 class AgeValidator:
-    def validate_age(self, age):
-        return self._validate_age(age)
-
     def _validate_age(self, age):
-        if age < 0 or age > 120:
-            raise ValueError("Age must be between 0 and 120")
-        return age
+        # Implement validation logic here
+        if not isinstance(age, int) or age < 0:
+            raise ValueError("Age must be a non-negative integer")
 ```
+
 
 ---
 ### Attempt 3
+
 ```python
 class AgeValidator:
-    def __init__(self, age):
-        self.age = age
-
-    def _validate_age(self):
-        return 0 <= self.age <= 120
-
-    def is_valid(self):
-        return self._validate_age()
+    def _validate_age(self, age):
+        # Check if the age is a positive integer
+        if not isinstance(age, int) or age <= 0:
+            raise ValueError("Age must be a positive integer")
+        return True
 ```
-
-> ⚠️ **AI Warning:** Verification failed after max retries.

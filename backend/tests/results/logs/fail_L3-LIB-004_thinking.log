@@ -1,21 +1,13 @@
-ERROR: ModuleNotFoundError: No module named 'pandas'
+ERROR: Exec failed
 RESPONSE:
 
 
 ---
 ### Attempt 1
+
 ```python
-import os
+import pandas as pd
 
-def filter_python_files(directory):
-    python_files = [file for file in os.listdir(directory) if file.endswith(('.py', '.pyc', '.pyo', '.pyd'))]
-    return python_files
-
-# List of Python files
-python_files = ["file1.py", "file2.py", "file3.py"]
-
-# Write the list to a file
-with open("python_files.txt", "w") as file:
-    for file_name in python_files:
-        file.write(file_name + "\\n")
+def get_category_prices(df):
+    return df.groupby('Category')['Price'].mean()
 ```

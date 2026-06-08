@@ -6,9 +6,12 @@ import concurrent.futures
 def square(x):
     return x * x
 
-input_list = list(range(1, 1001))
+# List of integers from 1 to 1000
+numbers = list(range(1, 1001))
+
+# Using ProcessPoolExecutor to map the function to the list of numbers
 with concurrent.futures.ProcessPoolExecutor() as executor:
-    results = list(executor.map(square, input_list))
+    results = list(executor.map(square, numbers))
 
 return results
 ```

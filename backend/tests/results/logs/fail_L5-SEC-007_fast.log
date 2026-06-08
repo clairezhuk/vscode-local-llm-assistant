@@ -4,12 +4,12 @@ RESPONSE:
 import os
 
 def get_safe_path(base_dir, user_file):
-    # Ensure base_dir is absolute
-    base_dir = os.path.abspath(base_dir)
-    
-    # Check if user_file starts with base_dir
-    if user_file.startswith(base_dir):
-        return os.path.abspath(user_file)
-    else:
+    # Check if the user file starts with the base directory
+    if not user_file.startswith(base_dir):
         return None
+    
+    # Use os.path.abspath to ensure the path is absolute and safe from '../' attacks
+    safe_path = os.path.abspath(user_file)
+    
+    return safe_path
 ```

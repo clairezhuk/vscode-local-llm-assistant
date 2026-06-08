@@ -2,9 +2,6 @@ ERROR: NameError: name 'find_longest' is not defined
 RESPONSE:
 ```python
 def find_longest_word(words):
-    return max(words, key=len)
-
-# Example usage
-words = ["hello", "world", "coding", "challenge"]
-print(find_longest_word(words))  # Output: "challenge"
+    longest = max(words, key=len)
+    return longest
 ```

@@ -4,6 +4,8 @@ RESPONSE:
 import pandas as pd
 
 def filter_data(df):
+    # Filter the DataFrame based on the conditions
     filtered_df = df[(df['Age'] > 25) & (df['City'] == 'Warsaw')]
+    
     return filtered_df
 ```

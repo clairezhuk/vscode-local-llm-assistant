@@ -4,23 +4,35 @@ RESPONSE:
 
 ---
 ### Attempt 1
+
 ```python
-def check_file_operations():
-    try:
-        # Example: Trying to read from a non-existent file
-        with open('nonexistent_file.txt', 'r') as file:
-            content = file.read()
-            print("File content:", content)
-    except FileNotFoundError:
-        print("File not found. Please check the file name or path.")
-    except IOError:
-        print("An error occurred while reading the file.")
-    except Exception as e:
-        print("An unexpected error occurred:", e)
+def print_hello():
+    print("Hello")
+
+print_hello()
 ```
+
 
 ---
 ### Attempt 2
+
 ```python
-print("Hello, World!")
+def print_hello():
+    print("Hello")
+
+print_hello()
 ```
+
+
+---
+### Attempt 3
+
+```python
+def print_hello():
+    print("Hello")
+
+print_hello()
+```
+
+
+> ⚠️ **AI Warning:** Verification failed after max retries.

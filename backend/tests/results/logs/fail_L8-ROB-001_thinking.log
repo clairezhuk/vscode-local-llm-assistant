@@ -4,48 +4,11 @@ RESPONSE:
 
 ---
 ### Attempt 1
+
 ```python
-def safe_divide(num1, num2):
-    if num2 == 0:
-        return None
-    return num1 / num2
-
-def divide_numbers(dividend, divisor):
-    if divisor == 0:
-        raise ValueError("Cannot divide by zero.")
-    return dividend / divisor
-```
-
----
-### Attempt 2
-```python
-def safe_divide(numerator, denominator):
-    if denominator == 0:
-        return "Error: Division by zero is not allowed."
-    return numerator / denominator
-
-def divide_numbers(dividend, divisor):
-    if divisor == 0:
-        return "Error: Division by zero is not allowed."
-    return dividend / divisor
-
-def divide(a, b):
+def divide_numbers(a, b):
     if b == 0:
         return "Error: Division by zero is not allowed."
-    return a / b
-
-test_cases = [
-    (10, 2, 5),  # Should return 5
-    (0, 5, 0),   # Should return 0 (no error)
-    (-10, -2, 5), # Should return 5
-    (10, 0, "Error: Division by zero is not allowed."), # Should return error
-    (5.5, 2.2, 2.5)  # Should return 2.5
-]
-
-for num1, num2, expected in test_cases:
-    result = divide_numbers(num1, num2)
-    if result == expected:
-        print(f"Test passed for inputs ({num1}, {num2}). Result: {result}")
     else:
-        print(f"Test failed for inputs ({num1}, {num2}). Expected {expected}, got {result}")
+        return a / b
 ```

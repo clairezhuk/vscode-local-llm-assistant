@@ -1,7 +1,0 @@
-ERROR: N/A
-RESPONSE:
-
-
----
-### Attempt 1
-Proposed command: `ps -ef | grep 8080 | grep -v grep | awk '{print $2}' | kill -9 $2`

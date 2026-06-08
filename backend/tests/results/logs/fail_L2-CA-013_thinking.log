@@ -4,19 +4,110 @@ RESPONSE:
 
 ---
 ### Attempt 1
+
 ```python
+# Define the path to the log file
+log_file_path = "/path/to/your/logfile.log"
+
+# Step 2: Open the log file and read its contents line by line.
+with open(log_file_path, 'r') as file:
+    for line in file:
+        # Process each line to extract module statuses
+        # Example: Assuming module statuses are in a specific format like "ModuleX status: Active"
+        if 'status:' in line:
+            module_status = line.split(': ')[1].strip()
+            print(f"Module status: {module_status}")
+
+# Import re for regular expressions
 import re
 
-def parse_nested_logs(lines):
-    log_dict = {}
-    for line in lines:
-        # Extract module name and status value using regex
-        match = re.search(r'^(.+):\\s*(\d+)', line)
+def parse_nested_logs(logs):
+    # Initialize an empty dictionary to store module statuses
+    module_statuses = {}
+    
+    for line in logs:
+        # Extract module name and status using regular expressions
+        match = re.search(r'(\w+) (Active|Inactive|Running|Stopped)', line)
         if match:
-            module_name = match.group(1)
-            status_value = int(match.group(2))
-            if module_name not in log_dict:
-                log_dict[module_name] = []
-            log_dict[module_name].append(status_value)
-    return log_dict
+            module_name, status = match.groups()
+            # Store the status under the module name in a dictionary
+            module_statuses[module_name] = status
+    return module_statuses
+
+# Example usage
+logs = [
+    "Module1 Active",
+    "Module2 Inactive",
+    "Module3 Running",
+    "Module4 Stopped"
+]
+
+print(parse_nested_logs(logs))
+
+# Define a function to parse nested logs and store the data in a dictionary
+def parse_logs(logs):
+    # Initialize an empty dictionary to store module statuses
+    module_statuses = {}
+    
+    for log_entry in logs:
+        # Split the log entry into components (module name, status)
+        parts = log_entry.split()
+        
+        # Extract the module name and status from the parts
+        module_name = parts[0]
+        status = parts[1]
+        
+        # If the module is already in the dictionary, update its status
+        if module_name in module_statuses:
+            module_statuses[module_name] += f", {status}"
+        else:
+            # Otherwise, add the module and its initial status to the dictionary
+            module_statuses[module_name] = status
+    return module_statuses
+
+# Example usage of the function
+logs = [
+    "Module1: Running",
+    "Module2: Stopped",
+    "Module1: Paused",
+    "Module3: Running"
+]
+
+print(parse_logs(logs))
+
+# Import re for regular expressions
+import re
+
+def parse_nested_logs(logs):
+    # Regular expression to match module statuses in logs
+    pattern = r'(\w+): (\d+)'
+    
+    # Initialize an empty dictionary to store module statuses
+    module_statuses = {}
+    
+    # Iterate over each log line
+    for line in logs:
+        # Find all matches of the pattern in the current line
+        matches = re.findall(pattern, line)
+        
+        # If there are matches, update the module statuses dictionary
+        if matches:
+            for match in matches:
+                module_name, status = match
+                if module_name not in module_statuses:
+                    module_statuses[module_name] = []
+                module_statuses[module_name].append(status)
+    return module_statuses
+
+# Example usage
+logs = [
+    "Module1: 20",
+    "Module2: 30",
+    "Module1: 40",
+    "Module3: 50",
+    "Module2: 60"
+]
+
+parsed_data = parse_nested_logs(logs)
+print(parsed_data)
 ```

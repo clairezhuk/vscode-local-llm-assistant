@@ -7,26 +7,32 @@ class FileProcessor:
         self.storage = {}
 
     def process_files(self, files: list, engine) -> str:
-        summaries = []
+        file_blocks = []
         for f in files:
             name = f.get("name", "unknown")
             content = f.get("content", "")
             self.storage[name] = content 
             
-            ext = name.split('.')[-1].lower() if '.' in name else ''
-            
-            if ext == "py":
-                summary = self._parse_py(content)
-            elif ext == "json":
-                summary = self._parse_json(content)
-            elif ext in ["js", "ts", "cpp", "c", "java"]:
-                summary = self._regex_code_parse(content)
+            if len(content) < 1500: 
+                display_content = content
             else:
-                summary = self._summarize_text(content, engine)
-                
-            summaries.append(f"File: {name}\nContent Info:\n{summary}")
+                ext = name.split('.')[-1].lower() if '.' in name else ''
+                if ext == "py":
+                    summary = self._parse_py(content)
+                elif ext == "json":
+                    summary = self._parse_json(content)
+                else:
+                    summary = self._summarize_text(content, engine)
+                display_content = f"[File is too large. Summary: {summary}]"
+
+            block = (
+                f"--- START OF FILE: {name} ---\n"
+                f"{display_content}\n"
+                f"--- END OF FILE: {name} ---"
+            )
+            file_blocks.append(block)
         
-        return "\n\n".join(summaries)
+        return "\n\n".join(file_blocks)
 
     def _parse_py(self, content: str) -> str:
         try:

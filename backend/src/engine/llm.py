@@ -7,19 +7,28 @@ class LLMEngine:
     def __init__(self):
         self.llm = Llama(model_path=MODEL_PATH, n_ctx=4096, n_gpu_layers=-1, n_batch=128, verbose=False)
 
-    def generate(self, prompt: str, max_tokens: int = 1024, stop: list = None) -> dict:
-        response = self.llm(prompt, max_tokens=max_tokens, stop=stop or ["<|im_end|>"])
+    def generate(self, prompt: str, max_tokens: int = 1024, stop: list = None, temp: float = 0.2) -> dict:
+        response = self.llm(prompt, 
+                            max_tokens=max_tokens, 
+                            stop=stop or ["<|im_end|>"],
+                            temperature=temp,    
+                            top_p=0.95,            
+                            repeat_penalty=1.1,   
+                            )
         return {
             "text": response["choices"][0]["text"].strip(),
             "usage": response.get("usage", {})
         }
     
-    def generate_stream(self, prompt: str, max_tokens: int = 1024, stop: list = None):
+    def generate_stream(self, prompt: str, max_tokens: int = 1024, stop: list = None, temp: float = 0.2):
         stream = self.llm(
             prompt, 
             max_tokens=max_tokens, 
             stop=stop or ["<|im_end|>"], 
-            stream=True
+            stream=True,
+            temperature=temp,      
+            top_p=0.95,
+            repeat_penalty=1.1
         )
         for chunk in stream:
             token = chunk["choices"][0]["text"]

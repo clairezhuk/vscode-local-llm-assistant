@@ -1,8 +1,9 @@
 ERROR: Exec failed
 RESPONSE:
 ```python
-def divide(a, b):
+def divide_numbers(a, b):
     if b == 0:
-        return "Error: Division by zero"
-    return a / b
+        return "Error: Division by zero is not allowed."
+    else:
+        return a / b
 ```

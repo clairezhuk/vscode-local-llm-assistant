@@ -9,5 +9,6 @@ def get_status_msg(code):
         'ST_04': 'Deleted',
         'ST_05': 'Archived'
     }
+    
     return status_map.get(code, 'Unknown')
 ```

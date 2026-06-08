@@ -4,16 +4,13 @@ RESPONSE:
 import re
 
 def parse_nested_logs(lines):
-    result = {}
-    pattern = r'Module\[(.*?)\]:\s*Status\[(.*?)\]'
+    log_dict = {}
     for line in lines:
-        match = re.search(pattern, line)
+        match = re.search(r'Module\[(.*?)\]: Status\[(.*?)\]', line)
         if match:
-            name = match.group(1)
-            value = match.group(2)
-            if name in result:
-                result[name].append(value)
-            else:
-                result[name] = [value]
-    return result
+            module_name, status_value = match.groups()
+            if module_name not in log_dict:
+                log_dict[module_name] = []
+            log_dict[module_name].append(status_value)
+    return log_dict
 ```

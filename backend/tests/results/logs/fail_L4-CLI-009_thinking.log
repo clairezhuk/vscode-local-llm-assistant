@@ -4,4 +4,4 @@ RESPONSE:
 
 ---
 ### Attempt 1
-Proposed command: `for i in *.jpg; do mv "$i" "backup_$i"; done`
+Proposed command: `for file in *.jpg; do mv "$file" "backup_$file"; done`

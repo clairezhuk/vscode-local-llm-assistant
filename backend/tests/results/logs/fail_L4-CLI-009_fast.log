@@ -1,5 +1,5 @@
 ERROR: N/A
 RESPONSE:
 ```sh
-rename *.jpg backup_*
+for %f in (*.jpg) do ren "%f" "backup_%~nf.jpg"
 ```

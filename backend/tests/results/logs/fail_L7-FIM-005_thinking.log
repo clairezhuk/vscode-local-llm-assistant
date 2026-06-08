@@ -1,39 +1,14 @@
-ERROR: Exec failed
+ERROR: 
 RESPONSE:
 
 
 ---
 ### Attempt 1
+
 ```python
-import os
-from os import listdir
-
-def list_files_in_directory(directory_path):
-    files = []
-    for _, _, files in os.walk(directory_path):
-        for file in files:
-            files.append(os.path.join(directory_path, file))
-    return files
-
-directory_path = input("Enter the directory path: ")
-files = list_files_in_directory(directory_path)
-
-for file in files:
-    print(file)
-```
-
----
-### Attempt 2
-```python
-# Step: Read the files located in the context. Code only
-import os
-
-# List all files in the directory (assuming the context variable contains the directory path)
-files = os.listdir(context)
-
-# Filter out only the files that are text files (assuming text files have a .txt extension)
-text_files = [file for file in files if file.endswith('.txt')]
-
-# Print the list of text files
-print(text_files)
+def safe_get(data_dict, default):
+    if 'value' in data_dict:
+        return data_dict['value']
+    else:
+        return default
 ```

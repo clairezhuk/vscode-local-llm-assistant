@@ -4,8 +4,4 @@ RESPONSE:
 
 ---
 ### Attempt 1
-
-
----
-### Attempt 2
-Proposed command: `du -h --max-depth=1`
+Proposed command: `du -sh * | sort -rh`

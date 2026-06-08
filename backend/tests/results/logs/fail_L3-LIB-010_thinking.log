@@ -4,25 +4,13 @@ RESPONSE:
 
 ---
 ### Attempt 1
+
 ```python
-import os
+import torch.nn as nn
 
-directory_path = 'path/to/directory'
-
-files = os.listdir('.')
-def filter_files_by_extension(directory, extension):
-    filtered_files = [filename for filename in os.listdir(directory) if filename.endswith(extension)]
-    return filtered_files
-
-directory = "/path/to/directory"
-extension = ".txt"
-filtered_files = filter_files_by_extension(directory, extension)
-
-for file in filtered_files:
-    with open(file, 'r') as f:
-        data = f.read()
-    numbers = [int(num) for num in data.split()]
-    total_sum = sum(numbers)
-    with open(f'{file}_results.txt', 'w') as f:
-        f.write(f'Total sum of numbers in {file}: {total_sum}')
+class SimpleNet(nn.Module):
+    def __init__(self):
+        super(SimpleNet, self).__init__()
+        self.fc1 = nn.Linear(10, 20)
+        self.fc2 = nn.Linear(20, 30)  # Step 4: Add another fully connected layer with 30 units
 ```

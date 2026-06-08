@@ -1,19 +1,34 @@
-ERROR: NameError: name 'assign_clusters' is not defined
+ERROR: 
 RESPONSE:
 
 
 ---
 ### Attempt 1
+
 ```python
-import os
+clusters = []
+for point in points:
+    distances = [euclidean_distance(point, centroid) for centroid in centroids]
+    closest_index = distances.index(min(distances))
+    clusters.append(closest_index)
+return clusters
+```
 
-# Get the current directory
-current_directory = os.getcwd()
 
-# List all .py files in the directory
-python_files = [f for f in os.listdir(current_directory) if f.endswith('.py')]
+---
+### Attempt 2
 
-# Print the names of the .py files
-for file_name in python_files:
-    print(file_name)
+```python
+import math
+
+def euclidean_distance(point1, point2):
+    return math.sqrt(sum((x - y) ** 2 for x, y in zip(point1, point2)))
+
+def assign_clusters(points, centroids):
+    clusters = []
+    for point in points:
+        distances = [euclidean_distance(point, centroid) for centroid in centroids]
+        closest_index = distances.index(min(distances))
+        clusters.append(closest_index)
+    return clusters
 ```

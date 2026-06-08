@@ -4,75 +4,31 @@ RESPONSE:
 
 ---
 ### Attempt 1
-```python
-# Open the CSV file for reading
-with open('sales.csv', newline='') as file:
-    # Create a CSV reader object
-    reader = csv.reader(file)
-    # Skip the header row
-    header = next(reader)
-    
-    # Initialize a list to hold all 'Amount' values
-    amounts = []
-    
-    # Iterate over the rows, excluding the header
-    for row in reader:
-        # Convert the 'Amount' string to a float and add it to the list
-        amounts.append(float(row[0]))
-    
-    # Calculate the sum of the 'Amount' values
-    total_amount = sum(amounts)
-    
-    # Calculate the number of 'Amount' values
-    num_amounts = len(amounts)
-    
-    # Calculate the average
-    average_amount = total_amount / num_amounts
-    
-    # Print the average
-    print("The average value of the 'Amount' column is:", average_amount)
-```
 
----
-### Attempt 2
-```python
-1. Open the 'sales.csv' file.
-2. Skip the header row.
-3. Initialize a variable to hold the total sum of 'Amount' values.
-4. Iterate over each row in the CSV file.
-5. Add the 'Amount' value to the total sum.
-6. Calculate the average.
-7. Print the average.
-```
-
----
-### Attempt 3
 ```python
 import csv
 
-# Define the file path
-file_path = 'sales.csv'
-
-# Initialize the sum and count of amounts
-total_amount = 0
-count = 0
-
-# Open the CSV file
-with open(file_path, mode='r', newline='') as file:
+# Step 1: Open the CSV file in read mode
+with open('sales.csv', 'r') as file:
     reader = csv.reader(file)
-    next(reader)  # Skip the header row
+    
+    # Skip the header row if it exists
+    next(reader, None)
+    
+    # Initialize a variable to store the sum of amounts
+    total_amount = 0
+    
+    # Step 3: Iterate over each row in the CSV file
     for row in reader:
-        # Convert the 'Amount' column to a float
+        # Step 4: Extract the 'Amount' value from the current row
         amount = float(row[1])
-        # Add the amount to the total and increment the count
+        
+        # Step 5: Add the 'Amount' to the total sum
         total_amount += amount
-        count += 1
-
-# Calculate the average
-average_amount = total_amount / count
-
-# Print the average amount
-print(f"The average value of the 'Amount' column is: ${average_amount:.2f}")
+    
+    # Calculate the average by dividing the total sum by the number of rows
+    average_amount = total_amount / len(reader)
+    
+    # Step 6: Print the calculated average value
+    print(f"The average value of the 'Amount' column is: {average_amount}")
 ```
-
-> ⚠️ **AI Warning:** Verification failed after max retries.

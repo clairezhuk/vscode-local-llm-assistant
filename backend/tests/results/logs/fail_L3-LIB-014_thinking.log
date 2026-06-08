@@ -1,11 +1,13 @@
-ERROR: ModuleNotFoundError: No module named 'pandas'
+ERROR: Exec failed
 RESPONSE:
 
 
 ---
 ### Attempt 1
+
 ```python
-def filter_dataframe(df):
-    filtered_df = df[(df['Age'] > 25) & (df['City'] == 'Warsaw')]
-    return filtered_df
+import pandas as pd
+
+def filter_data(df):
+    return df[(df['Age'] > 25) & (df['City'] == 'Warsaw')]
 ```

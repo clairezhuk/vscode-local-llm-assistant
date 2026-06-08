@@ -4,9 +4,10 @@ RESPONSE:
 
 ---
 ### Attempt 1
+
 ```python
 import random
 
-def generate_random_number():
+def random_number():
     return random.randint(1, 100)
 ```

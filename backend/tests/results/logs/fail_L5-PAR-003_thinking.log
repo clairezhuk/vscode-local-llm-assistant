@@ -4,51 +4,17 @@ RESPONSE:
 
 ---
 ### Attempt 1
+
 ```python
 from concurrent.futures import ProcessPoolExecutor
+
 def square(x):
-    # Simulate computation
-    import time
-    time.sleep(0.001)
     return x * x
 
-# List of integers from 1 to 1000
-numbers = list(range(1, 1001))
-
-# Parallelize mapping using ProcessPoolExecutor
-with ProcessPoolExecutor() as executor:
-    results = list(executor.map(square, numbers))
-
-print(results[:10])  # Print the first 10 results for verification
-```
-
----
-### Attempt 2
-```python
-from concurrent.futures import ProcessPoolExecutor
-
-def square(x):
-    return x ** 2
-
 numbers = list(range(1, 1001))
 
 with ProcessPoolExecutor() as executor:
     results = list(executor.map(square, numbers))
-```
-
----
-### Attempt 3
-```python
-from concurrent.futures import ProcessPoolExecutor
-from concurrent.futures import ProcessPoolExecutor
-
-def square(x):
-    return x ** 2
-
-with ProcessPoolExecutor() as executor:
-    results = list(executor.map(square, range(1, 1001)))
 
 print(results)
 ```
-
-> ⚠️ **AI Warning:** Verification failed after max retries.

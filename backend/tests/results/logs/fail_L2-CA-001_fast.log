@@ -3,15 +3,18 @@ RESPONSE:
 ```python
 def dfs_path(graph, start, goal):
     visited = set()
-    stack = [start]
-    while stack:
-        current = stack.pop()
-        if current not in visited:
-            visited.add(current)
-            if current == goal:
-                return [goal]
-            for neighbor in graph[current]:
-                if neighbor not in visited:
-                    stack.append(neighbor)
-    return []
+    path = []
+    
+    def dfs(node):
+        if node == goal:
+            return True
+        visited.add(node)
+        for neighbor in graph[node]:
+            if neighbor not in visited and dfs(neighbor):
+                path.append(node)
+                return True
+        return False
+    
+    dfs(start)
+    return path[::-1]  # Reverse the path to get the correct order
 ```

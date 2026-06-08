@@ -1,5 +1,5 @@
 ERROR: N/A
 RESPONSE:
-```bash
-dir /a-d /s | findstr /r "\b\d+\.?\d+\b" | sort -rh | for /f "tokens=3" %%I in ('dir /a-d /s | findstr /r "\b\d+\.?\d+\b"') do echo %%I
+```sh
+ls -lh --max-depth=1 | sort -rh
 ```

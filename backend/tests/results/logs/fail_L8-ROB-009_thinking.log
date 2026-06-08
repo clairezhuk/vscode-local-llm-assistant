@@ -4,13 +4,16 @@ RESPONSE:
 
 ---
 ### Attempt 1
+
 ```python
-# Open the file in read mode
-with open('filename.txt', 'r') as file:
-    # Read all lines from the file
-    lines = file.readlines()
-    # Count the number of lines
-    total_lines = len(lines)
-    # Print the total number of lines
-    print(f"Total number of lines in the file: {total_lines}")
+def count_lines(file_path):
+    try:
+        with open(file_path, 'r') as f:
+            return len(f.readlines())
+    except FileNotFoundError:
+        print("File not found.")
+        return 0
+    except Exception as e:
+        print("An error occurred:", e)
+        return 0
 ```

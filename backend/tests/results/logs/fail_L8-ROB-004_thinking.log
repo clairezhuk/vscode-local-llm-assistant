@@ -4,6 +4,4 @@ RESPONSE:
 
 ---
 ### Attempt 1
-To start the server, you can run the following command:
-
-`node server.js`
+To start the server, you should execute the command `start_server` in your current workspace directory.

@@ -4,23 +4,9 @@ RESPONSE:
 
 ---
 ### Attempt 1
-```python
-import sys
 
-def main():
-    # Read the first 50 characters of data.txt encoded in UTF-16
-    with open('data.txt', 'r', encoding='utf-16') as file:
-        first_50_chars = file.read(50)
-        print(first_50_chars)
-
-if __name__ == "__main__":
-    main()
-```
-
----
-### Attempt 2
 ```python
 with open('data.txt', 'r', encoding='utf-16') as file:
-    content = file.read(50)
-    print(content)
+    content = file.read()
+print(content[:50])
 ```

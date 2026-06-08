@@ -1,11 +1,28 @@
-ERROR: TypeError: apply_window() missing 1 required positional argument: 'N'
+ERROR: Exec failed
 RESPONSE:
 
 
 ---
 ### Attempt 1
+
 ```python
-def apply_window(signal, N):
-    result = [signal[i] * 0.5 * (1 - math.cos(2 * math.pi * i / (N-1))) for i in range(N)]
-    return result
+import math
+
+def apply_window(signal):
+    N = len(signal)
+    return [0.5 * (1 - math.cos(2 * math.pi * i / (N-1))) * s[i] for i in range(N)]
+
+# Test signal
+signal = np.random.randn(10)
+
+# Apply window
+windowed_signal = apply_window(signal)
+
+# Expected windowed signal (example)
+expected_windowed_signal = np.array([0.5 * (1 - math.cos(2*np.pi*i / 9)) * s[i] for i in range(9)])
+
+# Check if the output matches the expected result
+assert np.allclose(windowed_signal, expected_windowed_signal), "The windowed signal does not match the expected result."
+
+print("Verification successful!")
 ```

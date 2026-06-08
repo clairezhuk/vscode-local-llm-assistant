@@ -1,23 +1,25 @@
-ERROR: NameError: name 'extract_api_values' is not defined
+ERROR: Exec failed
 RESPONSE:
 
 
 ---
 ### Attempt 1
+
 ```python
-import sys
-import numpy as np
-import matplotlib.pyplot as plt
-directory_path = "path_to_your_directory"
-import os
+import json
 
-# List files in the current directory
-files = os.listdir()
+# Read the input records from the specified path
+with open('input_records.json', 'r') as file:
+    records = json.load(file)
 
-# Print the list of files
-for file in files:
-    print(file)
+def extract_api_values(records):
+    res = []
+    for record in records:
+        if record['meta']['source'] == 'API':
+            res.append(record['meta']['data']['val'])
+    return res
 
-# Step 5: Output Results
-print("Output Results")
+# Example usage
+api_values = extract_api_values(records)
+print(api_values)  # Output: ['API Value 1', 'API Value 2', 'API Value 3']
 ```

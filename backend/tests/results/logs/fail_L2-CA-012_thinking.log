@@ -4,68 +4,30 @@ RESPONSE:
 
 ---
 ### Attempt 1
+
 ```python
-def find_shortest_path(grid):
+from collections import deque
+
+def bfs_shortest_path(grid, start, end):
     rows, cols = len(grid), len(grid[0])
-    directions = [(0, 1), (0, -1), (1, 0), (-1, 0)]
-
-    queue = deque([(0, 0, 0)])  # (x, y, path_length)
-    visited = set()
-    max_length = 0
-
+    directions = [(1, 0), (-1, 0), (0, 1), (0, -1)]
+    
+    queue = deque([(start, 0)])  # Queue to store nodes and their distances from the start
+    visited = set([start])  # Set to keep track of visited nodes
+    
     while queue:
-        x, y, path_length = queue.popleft()
-        if (x, y) == (rows - 1, cols - 1):
-            return path_length
-        if (x, y) in visited:
-            continue
-        visited.add((x, y))
+        current, steps = queue.popleft()
+        
+        if current == end:
+            return steps
+        
         for dx, dy in directions:
-            nx, ny = x + dx, y + dy
-            if 0 <= nx < rows and 0 <= ny < cols and grid[nx][ny] == 0:
-                queue.append((nx, ny, path_length + 1))
-                max_length = max(max_length, path_length + 1)
-
-    return -1
-```
-
----
-### Attempt 2
-```python
-def shortest_path(grid):
-    rows, cols = len(grid), len(grid[0])
-    
-    # Check if the start or end is a wall
-    if grid[0][0] == 1 or grid[rows-1][cols-1] == 1:
-        return -1
-    
-    # Directions for moving up, down, left, and right
-    directions = [(-1, 0), (1, 0), (0, -1), (0, 1)]
-    
-    # Initialize a priority queue for Dijkstra's algorithm
-    import heapq
-    heap = [(0, (0, 0))]
-    visited = set()
-    
-    # Dijkstra's algorithm
-    while heap:
-        cost, (x, y) = heapq.heappop(heap)
-        
-        # If the current node is the end, return the length of the path
-        if x == rows-1 and y == cols-1:
-            return cost
-        
-        # Mark the current node as visited
-        visited.add((x, y))
-        
-        # Explore all four possible directions
-        for dx, dy in directions:
-            nx, ny = x + dx, y + dy
+            x, y = current[0] + dx, current[1] + dy
             
-            # Check if the new coordinates are within the grid and not a wall
-            if 0 <= nx < rows and 0 <= ny < cols and grid[nx][ny] == 0 and (nx, ny) not in visited:
-                heapq.heappush(heap, (cost + 1, (nx, ny)))
+            if 0 <= x < rows and 0 <= y < cols and grid[x][y] != '#':
+                if (x, y) not in visited:
+                    visited.add((x, y))
+                    queue.append(((x, y), steps + 1))
     
-    # If no path is found, return -1
     return -1
 ```

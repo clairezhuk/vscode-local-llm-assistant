@@ -5,4 +5,9 @@ class User:
     def __init__(self, name, email):
         self.name = name
         self.email = email
+
+# Example usage
+user1 = User("John Doe", "john.doe@example.com")
+print(user1.name)  # Output: John Doe
+print(user1.email)  # Output: john.doe@example.com
 ```

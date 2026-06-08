@@ -4,20 +4,19 @@ RESPONSE:
 
 ---
 ### Attempt 1
+
 ```python
 import yaml
 
-# Load the settings from the YAML file
+# Load the settings.yaml file
 with open('settings.yaml', 'r') as file:
     settings = yaml.safe_load(file)
 
-# Set the 'debug' flag to False
+# Modify debug to False and version to 2.0
 settings['debug'] = False
-
-# Set the 'version' to 2.0
 settings['version'] = '2.0'
 
-# Save the updated settings back to the YAML file
+# Save the modified settings back to the file
 with open('settings.yaml', 'w') as file:
-    yaml.safe_dump(settings, file)
+    yaml.dump(settings, file)
 ```

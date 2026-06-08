@@ -180,7 +180,7 @@ def create_dashboard():
                     bbox=dict(facecolor='#000', edgecolor='#3498db', boxstyle='round,pad=0.5'))
 
     plt.tight_layout()
-    plt.savefig('results/dashboard_v2.png', dpi=150)
+    plt.savefig('results/dashboard_v3.png', dpi=150)
     plt.show()
 
 if __name__ == "__main__":

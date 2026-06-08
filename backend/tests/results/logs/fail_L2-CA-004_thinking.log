@@ -1,63 +1,33 @@
-ERROR: Standard knapsack failed
+ERROR: Exec failed
 RESPONSE:
 
 
 ---
 ### Attempt 1
+
 ```python
-cpp
-#include <vector>
+from typing import List
 
-struct Item {
-    int weight;
-    int value;
-};
+def knapsack(capacity: int, weights: List[int], values: List[int]) -> int:
+    n = len(weights)
+    
+    # Create a 2D array to store the maximum value that can be obtained with a given capacity and weight limit
+    dp = [[0 for _ in range(capacity + 1)] for _ in range(n + 1)]
+    
+    # Fill the dp table
+    for i in range(1, n + 1):
+        for w in range(1, capacity + 1):
+            if weights[i - 1] <= w:
+                dp[i][w] = max(values[i - 1] + dp[i - 1][w - weights[i - 1]], dp[i - 1][w])
+            else:
+                dp[i][w] = dp[i - 1][w]
+    
+    # The maximum value that can be obtained with the given capacity is stored in dp[n][capacity]
+    return dp[n][capacity]
 
-// Function to find the maximum value that can be achieved in a knapsack with given weights, values, and capacity
-int knapsack(Item items[], int n, int capacity) {
-    std::vector<std::vector<int>> dp(n + 1, std::vector<int>(capacity + 1));
-    
-    for (int i = 1; i <= n; i++) {
-        for (int w = 1; w <= capacity; w++) {
-            if (items[i - 1].weight <= w) {
-                dp[i][w] = std::max(items[i - 1].value + dp[i - 1][w - items[i - 1].weight], dp[i - 1][w]);
-            } else {
-                dp[i][w] = dp[i - 1][w];
-            }
-        }
-    }
-    
-    return dp[n][capacity];
-}
-
-// Function to print the items that are included in the knapsack
-void printItems(Item items[], int n, int capacity, int weight) {
-    if (weight == 0) {
-        return;
-    }
-    
-    if (items[n - 1].weight <= weight) {
-        printItems(items, n - 1, weight - items[n - 1].weight, items[n - 1].value + dp[n - 1][weight - items[n - 1].weight]);
-        std::cout << items[n - 1].value << " ";
-    }
-    
-    printItems(items, n - 1, weight, dp[n - 1][weight]);
-}
-```
-
----
-### Attempt 2
-```python
-def knapsack(weights, values, capacity):
-    # Base case: if capacity is zero, return 0
-    if capacity == 0:
-        return 0
-    # Base case: if there are no items to consider, return 0
-    if len(weights) == 0:
-        return 0
-    # Recursive case: decide whether to include the current item in the knapsack
-    if weights[0] <= capacity:
-        return max(values[0] + knapsack(weights[1:], values[1:], capacity - weights[0]), knapsack(weights[1:], values, capacity))
-    else:
-        return knapsack(weights[1:], values, capacity)
+# Example usage
+weights = [3, 4, 5]
+values = [2, 3, 4]
+capacity = 7
+print(knapsack(weights, values, capacity))  # Output: 9
 ```

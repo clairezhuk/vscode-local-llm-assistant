@@ -4,40 +4,61 @@ RESPONSE:
 
 ---
 ### Attempt 1
-Plan: 
-1. Open a terminal window.
-2. Navigate to the directory where your project files are located, using the `cd` command. For example, if your files are in the `C:\Users\user\AppData\Local\Temp\tmp77_f9stq` directory, you would type `cd C:\Users\user\AppData\Local\Temp\tmp77_f9stq`.
-3. Check the current Node.js version by typing `node -v` in the terminal.
-4. If the version is less than 12, you will need to update Node.js. You can download the latest version of Node.js from the official website and follow the installation instructions.
-5. Once Node.js is updated to version 12 or higher, open a new terminal window.
-6. Navigate to the directory where your project files are located.
-7. Install the required dependencies for your API by running the following command: `npm install`.
-8. Run the API by typing `node app.js` in the terminal.
-9. Check if the API is running on port 3000 by opening a web browser and navigating to `http://localhost:3000`. If the API is running, you should see the expected output.
+To meet the requirements of running Node.js version 14.x and API on port 3000, you can follow these steps:
 
----
-### Attempt 2
-To address the issue with the Node.js version being lower than 12 or the API running on a port that was already in use, we can follow these steps:
+1. **Install Node.js**: First, ensure that Node.js 14.x is installed on your system. You can download it from the official [Node.js website](https://nodejs.org/en/download/). Follow the installation instructions for your operating system.
 
-1. Verify the Node.js version:
+2. **Set Environment Variables**:
    - Open the command prompt or terminal.
-   - Run the command `node -v` to check the current version of Node.js installed.
+   - Set the `NODE_PATH` environment variable to point to the directory where Node.js is installed. For example, if Node.js is installed in `C:\Program Files\nodejs`, you can set it as follows:
+     ```sh
+     set NODE_PATH=C:\Program Files\nodejs
+     ```
+   - Add the path to the `npm` executable to your system's PATH environment variable. This allows you to run `npm` commands from anywhere in your command prompt or terminal.
 
-2. If the Node.js version is lower than 12, update Node.js:
-   - Download the latest LTS version of Node.js from the official website: https://nodejs.org/
-   - Follow the installation instructions for your operating system.
+3. **Create a New Node.js Project**:
+   - Navigate to your desired workspace directory using the command prompt or terminal.
+   ```sh
+   cd C:\Users\user\AppData\Local\Temp\tmp188qfjve
+   ```
+   - Initialize a new Node.js project by running:
+     ```sh
+     npm init -y
+     ```
 
-3. Verify that the API is running on port 3000:
-   - Open the command prompt or terminal.
-   - Navigate to the project directory where the API code is located.
-   - Run the command `netstat -ano | findstr 3000` to check if port 3000 is already in use by another process.
+4. **Install Dependencies**:
+   - Install the necessary dependencies for your API. For example, if you are using Express, you can install it with:
+     ```sh
+     npm install express
+     ```
 
-4. If port 3000 is in use, change the port number in the API code:
-   - Locate the API code file(s) where the server is running.
-   - Find the line where the server is listening on port 3000 and change it to a different port number (e.g., 3001).
+5. **Create an API Server**:
+   - Create a new file named `app.js` in your project directory.
+   ```sh
+   touch app.js
+   ```
+   - Open the `app.js` file and add the following code to create a simple Express server that listens on port 3000:
+     ```javascript
+     const express = require('express');
+     const app = express();
+     const port = 3000;
 
-5. Restart the API server:
-   - Save the changes to the API code file(s).
-   - Run the command `node <api-file-name>` to restart the API server using the new port number.
+     app.get('/', (req, res) => {
+       res.send('Hello, World!');
+     });
 
-By following these steps, we should be able to resolve the issues with the Node.js version and the API running on the same port.
+     app.listen(port, () => {
+       console.log(`Server is running on http://localhost:${port}`);
+     });
+     ```
+
+6. **Run the API Server**:
+   - Run the API server by executing the following command in your terminal:
+     ```sh
+     node app.js
+     ```
+
+7. **Verify the Installation**:
+   - Open a web browser and navigate to `http://localhost:3000`. You should see the message "Hello, World!" displayed.
+
+By following these steps, you will have successfully set up Node.js version 14.x and created an API running on port 3000.

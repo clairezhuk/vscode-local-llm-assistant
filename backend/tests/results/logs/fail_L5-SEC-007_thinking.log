@@ -1,17 +1,17 @@
-ERROR: NameError: name 'get_safe_path' is not defined
+ERROR: AttributeError: 'NoneType' object has no attribute 'startswith'
 RESPONSE:
 
 
 ---
 ### Attempt 1
+
 ```python
 import os
 
-workspace_dir = os.path.abspath(os.getcwd())
-files_and_directories = os.listdir(workspace_dir)
-print(files_and_directories)
-
-directory_path = '.'
-files_dict = {item: os.path.join(directory_path, item) for item in os.listdir(directory_path) if os.path.isfile(os.path.join(directory_path, item))}
-print(files_dict)
+def get_safe_path(base_dir, user_file):
+    # Check if the user file starts with the absolute path of the base directory using os.path.abspath(base_dir)
+    if user_file.startswith(os.path.abspath(base_dir)):
+        return os.path.abspath(user_file)
+    else:
+        return None  # Return None if the condition is false'
 ```

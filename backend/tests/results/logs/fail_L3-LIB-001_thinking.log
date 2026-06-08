@@ -4,13 +4,33 @@ RESPONSE:
 
 ---
 ### Attempt 1
+
 ```python
-# Define the workspace path
-workspace_path = r'C:\Users\user\AppData\Local\Temp\tmps_2dcthw'
+import numpy as np
 
-# Locate the files using the workspace path
-files = [f for f in workspace_path.glob('tmps_2dcthw*')]
-
-# Output the results
-print(files)
+def get_row_max_indices(matrix):
+    """
+    Returns the indices of the maximum values in each row of a 2D NumPy array.
+    
+    Parameters:
+    matrix (np.ndarray): A 2. Step: Step 1: Import numpy. Code only.\n    """\n    return np.argmax(matrix, axis=1)
 ```
+
+
+---
+### Attempt 2
+
+```python
+[1, 2, 3]
+```
+
+
+---
+### Attempt 3
+
+```python
+To get the indices of the maximum values in each row of a 2D NumPy array, you can use the np.argmax() function with the axis=1 parameter. This will return an array containing the indices of the maximum value in each row.
+```
+
+
+> ⚠️ **AI Warning:** Verification failed after max retries.

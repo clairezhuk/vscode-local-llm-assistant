@@ -4,15 +4,33 @@ RESPONSE:
 
 ---
 ### Attempt 1
-Step 1: Open the command prompt (cmd) in the C:\Users\user\AppData\Local\Temp\tmpx6j4n4vi directory.
-Step 2: Enter the following command to accept the Authorization request:
-curl -X POST -d 'username=admin&password=admin' http://localhost:8080/api/authorization
-Step 3: Enter the following command to set the Accept header to application/json:
-curl -X POST -d 'username=admin&password=admin' http://localhost:8080/api/authorization -H "Accept: application/json"
-Step 4: Enter the following command to set the Content-Type header to application/json:
-curl -X POST -d 'username=admin&password=admin' http://localhost:8080/api/authorization -H "Content-Type: application/json"
-Step 5: Execute the commands to accept the Authorization request, set the Accept and Content-Type headers, and send the request.
+To set the necessary headers for authorization, content type, and accept in a HTTP request, you can use the following code snippet:
 
----
-### Attempt 2
-Plan: Verify the content type, check for authorization, and handle any errors.
+```python
+import requests
+
+# Define the URL of the API endpoint
+url = 'https://api.example.com/data'
+
+# Set the headers with required parameters
+headers = {
+    'Authorization': 'Bearer your_access_token',
+    'Content-Type': 'application/json',
+    'Accept': 'application/json'
+}
+
+# Make a GET request to the API endpoint
+response = requests.get(url, headers=headers)
+
+# Print the response status code and content
+print(f"Status Code: {response.status_code}")
+print("Response Content:")
+print(response.json())
+```
+
+In this example:
+- `Authorization`: This header is used for authentication. Replace `'your_access_token'` with your actual access token.
+- `Content-Type`: This header specifies the type of data being sent in the request body. In this case, it's set to 'application/json'.
+- `Accept`: This header indicates what format the server should respond with. Here, it's set to 'application/json', which means the server should return JSON formatted data.
+
+These headers are crucial for setting up a proper HTTP request and ensuring that the server understands the type of data being sent and expected in response.
