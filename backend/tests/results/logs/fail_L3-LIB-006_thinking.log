@@ -1,0 +1,83 @@
+ERROR: Exec failed
+RESPONSE:
+
+
+---
+### Attempt 1
+```python
+import numpy as np
+import pandas as pd
+workspace_path = "/path/to/your/workspace"
+file_paths = []
+
+def walk_directory(directory):
+    for root, dirs, files in os.walk(directory):
+        for file in files:
+            print(os.path.join(root, file))
+        for dir in dirs:
+            walk_directory(os.path.join(root, dir))
+
+import os
+file_paths = [f for f in os.listdir('.') if os.path.isfile(f)]
+
+filtered_paths = [path for path in file_paths if '.txt' not in path]
+
+print(filtered_paths)
+```
+
+---
+### Attempt 2
+```python
+import os
+
+# Set the workspace directory
+workspace_dir = "/path/to/workspace"
+
+# Change to the workspace directory
+os.chdir(workspace_dir)
+
+# Create the files context directory
+files_context_dir = "files_context"
+os.makedirs(files_context_dir, exist_ok=True)
+
+# Define the directory containing the files
+directory = 'path_to_your_directory'
+
+# Get a list of all files in the directory
+files = os.listdir(directory)
+
+# Filter out non-text files (e.g., images, videos)
+text_files = [file for file in files if file.endswith(('.txt', '.pdf', '.docx', '.html', '.css'))]
+
+# Print the list of text files
+print(text_files)
+
+with open('filename.txt', 'r') as file:
+    content = file.read()
+
+def process_file_content(file_path):
+    # Ensure the file exists
+    if not os.path.exists(file_path):
+        print(f"File {file_path} does not exist.")
+        return
+    
+    # Read the file content
+    with open(file_path, 'r') as file:
+        content = file.read()
+    
+    # Process the content (e.g., convert to uppercase, remove punctuation)
+    processed_content = content.upper().replace(" ", "")
+    
+    return processed_content
+
+# Step 5: Save the processed content back to the file
+file_name = "example.txt"
+with open(file_name, "w") as file:
+    file.write(processed_content)
+
+try:
+    # Your code here
+    pass
+except Exception as e:
+    print("An error occurred:", e)
+```

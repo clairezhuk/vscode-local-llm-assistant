@@ -1,7 +1,7 @@
 ERROR: Exec failed
 RESPONSE:
 ```python
-with open('data.txt', 'r', encoding='utf-16') as file:
-    first_50_chars = file.read(50)
-    print(first_50_chars)
+with open('data.txt', 'rb') as file:
+    content = file.read(50)
+    return content.decode('utf-16')
 ```

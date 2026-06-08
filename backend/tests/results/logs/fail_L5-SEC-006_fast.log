@@ -1,0 +1,22 @@
+ERROR: NameError: name 'ai_code' is not defined
+RESPONSE:
+```python
+import sqlite3
+
+def get_user_by_name(user_input):
+    # Connect to the SQLite database
+    conn = sqlite3.connect('users.db')
+    cursor = conn.cursor()
+    
+    # Use parameterized query to prevent SQL injection
+    cursor.execute("SELECT * FROM users WHERE name=?", (user_input,))
+
+    # Fetch all rows
+    rows = cursor.fetchall()
+
+    # Close the database connection
+    conn.close()
+
+    return rows
+```
+This code will connect to the SQLite database, execute a parameterized query to prevent SQL injection, fetch all rows, and then close the database connection.

@@ -1,0 +1,18 @@
+ERROR: Exec failed
+RESPONSE:
+```python
+import pandas as pd
+
+def pivot_sales(df):
+    """
+    Create a pivot table with the sum of 'Sales' for 'Region' (index) and 'Year' (columns).
+    
+    Args:
+    df (pd.DataFrame): DataFrame containing columns 'Region' and 'Year' with 'Sales' values.
+    
+    Returns:
+    pd.DataFrame: Pivot table with 'Region' as the index and 'Year' as columns, showing the sum of 'Sales'.
+    """
+    pivot_table = df.pivot_table(index='Region', columns='Year', values='Sales', aggfunc='sum')
+    return pivot_table
+```

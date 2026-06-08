@@ -1,0 +1,12 @@
+ERROR: ModuleNotFoundError: No module named 'torch'
+RESPONSE:
+
+
+---
+### Attempt 1
+```python
+def transform_tensor(tensor):
+    reshaped_tensor = tensor.reshape(2, 8)
+    transposed_tensor = reshaped_tensor.transpose(0, 1)
+    return transposed_tensor
+```

@@ -1,16 +1,29 @@
-ERROR: No code block
+ERROR: 
 RESPONSE:
-```json
+```python
+# Define the content of config.json
+config_content = '''
 {
-  "app_name": "Example App",
-  "version": "1.0.0",
-  "database": {
-    "port": 5432,
-    "host": "localhost"
-  },
-  "logging": {
-    "level": "INFO",
-    "file": "app.log"
-  }
+    "app_name": "My App",
+    "version": "1.0.0",
+    "database": {
+        "host": "localhost",
+        "port": 5432,
+        "name": "mydatabase"
+    },
+    "logging": {
+        "level": "info"
+    }
 }
+'''
+
+# Replace 'port' with 5432
+config_content = config_content.replace('port": 5432', 'port": 5432')
+
+# Save the modified content back to config.json
+with open('config.json', 'w') as file:
+    file.write(config_content)
+
+# Print the modified content for verification
+print(config_content)
 ```

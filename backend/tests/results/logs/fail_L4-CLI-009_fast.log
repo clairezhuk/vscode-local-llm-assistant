@@ -1,0 +1,5 @@
+ERROR: N/A
+RESPONSE:
+```sh
+rename *.jpg backup_*
+```

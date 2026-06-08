@@ -1,0 +1,23 @@
+ERROR: NameError: name 'ucb1' is not defined
+RESPONSE:
+
+
+---
+### Attempt 1
+```python
+import math
+
+def ucb1_score(node, parent, child, n_visited, n_total):
+    # UCB1 formula: UCB1 = Q(node) + c * sqrt(ln(n_total) / n_visited)
+    # Q(node): Expected value of the node, calculated using the expected reward from all children
+    # c: A trade-off parameter that controls the exploration-exploitation trade-off
+    # n_visited: Number of times the node has been visited
+    # n_total: Total number of visits to all nodes
+    return node.q_value + (2.5 * (math.log(n_total) / n_visited))
+
+def calculate_ucb1_score(node, exploration_constant=2.5):
+    # Assuming node has 'reward' and 'num_visits' attributes
+    # Calculate the UCB1 score using the formula: UCB1 = reward + exploration_constant * sqrt(log(num_visits) / node.num_visits)
+    ucb1_score = node.reward + exploration_constant * (2.5 ** (node.num_visits / 2))
+    return ucb1_score
+```

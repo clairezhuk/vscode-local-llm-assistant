@@ -1,0 +1,3 @@
+ERROR: N/A
+RESPONSE:
+`findstr "IP" "C:\Users\user\AppData\Local\Temp\tmp2dkthmam\access.log" | findstr /R ".\d+\.\d+\.\d+\.\d+" | sort -u`

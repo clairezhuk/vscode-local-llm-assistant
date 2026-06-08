@@ -1,0 +1,16 @@
+ERROR: Passed
+RESPONSE:
+
+
+---
+### Attempt 1
+```python
+import os
+
+workspace_path = os.getcwd()
+for filename in os.listdir('.'):
+    print(filename)
+def filter_files_by_extension(directory, extension):
+    filtered_files = [file_name for file_name in os.listdir(directory) if file_name.endswith(extension)]
+    return filtered_files
+```

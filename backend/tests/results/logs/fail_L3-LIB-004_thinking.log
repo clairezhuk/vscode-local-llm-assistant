@@ -1,0 +1,21 @@
+ERROR: ModuleNotFoundError: No module named 'pandas'
+RESPONSE:
+
+
+---
+### Attempt 1
+```python
+import os
+
+def filter_python_files(directory):
+    python_files = [file for file in os.listdir(directory) if file.endswith(('.py', '.pyc', '.pyo', '.pyd'))]
+    return python_files
+
+# List of Python files
+python_files = ["file1.py", "file2.py", "file3.py"]
+
+# Write the list to a file
+with open("python_files.txt", "w") as file:
+    for file_name in python_files:
+        file.write(file_name + "\\n")
+```

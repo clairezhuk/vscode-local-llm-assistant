@@ -1,0 +1,46 @@
+ERROR: AttributeError: 'NoneType' object has no attribute '_validate_age'
+RESPONSE:
+
+
+---
+### Attempt 1
+```python
+class Person:
+    def __init__(self, age):
+        self.age = age
+
+    def _validate_age(self):
+        return 0 <= self.age <= 120
+
+    def is_valid(self):
+        return self._validate_age()
+```
+
+---
+### Attempt 2
+```python
+class AgeValidator:
+    def validate_age(self, age):
+        return self._validate_age(age)
+
+    def _validate_age(self, age):
+        if age < 0 or age > 120:
+            raise ValueError("Age must be between 0 and 120")
+        return age
+```
+
+---
+### Attempt 3
+```python
+class AgeValidator:
+    def __init__(self, age):
+        self.age = age
+
+    def _validate_age(self):
+        return 0 <= self.age <= 120
+
+    def is_valid(self):
+        return self._validate_age()
+```
+
+> ⚠️ **AI Warning:** Verification failed after max retries.

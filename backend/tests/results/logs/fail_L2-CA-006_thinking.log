@@ -1,0 +1,18 @@
+ERROR: 
+RESPONSE:
+
+
+---
+### Attempt 1
+```python
+import re
+
+def get_valid_emails(text):
+    # Regular expression pattern for matching email addresses
+    email_pattern = r'\\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Z|a-z]{2,}\\b'
+    
+    # Find all matches in the text
+    valid_emails = re.findall(email_pattern, text)
+    
+    return valid_emails
+```

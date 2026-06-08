@@ -1,0 +1,9 @@
+ERROR: Exec failed
+RESPONSE:
+
+
+---
+### Attempt 1
+```python
+result = ''.join(text[::-1])
+```

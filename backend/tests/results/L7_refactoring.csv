@@ -1,0 +1,21 @@
+id,processing_type,time_s,intent,format_ok,exec_ok,exec_msg,warning
+L7-REF-001,fast,13.08,2,False,True,Passed,False
+L7-REF-001,thinking,49.4,2,False,False,NameError: name 'get_status_msg' is not defined,False
+L7-REF-002,fast,16.29,2,False,True,Passed,False
+L7-REF-002,thinking,131.99,2,False,False,NameError: name 'process_request' is not defined,True
+L7-DBG-003,fast,12.99,2,True,True,Passed,False
+L7-DBG-003,thinking,72.65,2,True,True,Passed,False
+L7-DBG-004,fast,5.08,2,False,False,List 1 should only contain Alice,False
+L7-DBG-004,thinking,40.24,2,False,False,TypeError: add_user_to_list() missing 1 required positional argument: 'user',False
+L7-FIM-005,fast,5.86,2,True,False,,False
+L7-FIM-005,thinking,55.21,2,False,False,Exec failed,False
+L7-FIM-006,fast,9.0,2,True,False,NameError: name 'get_active_ids' is not defined,False
+L7-FIM-006,thinking,18.86,2,True,False,Exec failed,False
+L7-REF-007,fast,14.97,2,True,False,AttributeError: 'NoneType' object has no attribute '_validate_age',False
+L7-REF-007,thinking,143.9,2,True,False,AttributeError: 'NoneType' object has no attribute '_validate_age',True
+L7-DBG-008,fast,10.67,2,True,False,TypeError: move_to_backup() takes 1 positional argument but 2 were given,False
+L7-DBG-008,thinking,144.08,2,True,False,,False
+L7-FIM-009,fast,7.0,2,False,True,Passed,False
+L7-FIM-009,thinking,20.93,2,False,False,NameError: name 'extract_api_values' is not defined,False
+L7-REF-010,fast,6.93,2,True,True,Passed,False
+L7-REF-010,thinking,20.25,2,False,False,Exec failed,False

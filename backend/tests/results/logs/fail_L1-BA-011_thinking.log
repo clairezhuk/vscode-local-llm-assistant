@@ -1,0 +1,17 @@
+ERROR: Exec failed
+RESPONSE:
+
+
+---
+### Attempt 1
+```python
+import os
+
+workspace_path = 'your_workspace_path_here'
+python_files = [f for f in os.listdir(workspace_path) if f.endswith('.py')]
+for file in python_files:
+    with open(os.path.join(workspace_path, file), 'r') as f:
+        content = f.read()
+        if 'sensitive_data' in content or 'hardcoded_credentials' in content:
+            print(f'Security vulnerability found in {file}')
+```

@@ -1,0 +1,15 @@
+id,processing_type,time_s,intent,format_ok,exec_ok,exec_msg,warning
+L5-ASYNC-001,fast,7.76,2,True,False,"Expected [1, 2, 3], got ['Result of f1', 'Result of f2', 'Result of f3']",False
+L5-ASYNC-001,thinking,44.49,2,False,False,NameError: name 'run_tasks' is not defined,False
+L5-ASYNC-002,fast,14.69,2,True,False,Exec failed,False
+L5-ASYNC-002,thinking,272.2,2,False,False,NameError: name 'bounded_fetch' is not defined,True
+L5-PAR-003,fast,6.29,2,False,False,Exec failed,False
+L5-PAR-003,thinking,104.81,2,False,False,Exec failed,True
+L5-API-004,fast,9.17,2,True,True,Passed,False
+L5-API-004,thinking,34.64,2,True,False,NameError: name 'post_data' is not defined,False
+L5-API-005,fast,14.08,2,False,False,Exec failed,False
+L5-API-005,thinking,60.94,2,False,False,"Expected at least 3 retries, got 0",False
+L5-SEC-006,fast,10.69,2,True,False,NameError: name 'ai_code' is not defined,False
+L5-SEC-006,thinking,51.54,2,False,False,Exec failed,False
+L5-SEC-007,fast,7.53,2,True,False,AttributeError: 'NoneType' object has no attribute 'startswith',False
+L5-SEC-007,thinking,29.83,2,False,False,NameError: name 'get_safe_path' is not defined,False

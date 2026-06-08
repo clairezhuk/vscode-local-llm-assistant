@@ -1,0 +1,18 @@
+ERROR: Expected [1, 2, 3], got ['Result of f1', 'Result of f2', 'Result of f3']
+RESPONSE:
+```python
+import asyncio
+
+async def f1():
+    return "Result of f1"
+
+async def f2():
+    return "Result of f2"
+
+async def f3():
+    return "Result of f3"
+
+async def run_tasks():
+    tasks = [f1(), f2(), f3()]
+    return await asyncio.gather(*tasks)
+```

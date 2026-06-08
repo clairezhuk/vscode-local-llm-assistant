@@ -1,0 +1,31 @@
+ERROR: N/A
+RESPONSE:
+To start the server, follow these steps:
+
+1. **Open Command Prompt as Administrator:**
+   - Press `Win + X` on your keyboard.
+   - Select `Command Prompt` from the menu.
+   - Right-click on the Command Prompt window and choose `Run as administrator`.
+
+2. **Navigate to the Server Directory:**
+   - Use the `cd` command to change the directory to where the server is located. For example, if the server is located in `C:\Server\bin\`, you would type:
+     ```shell
+     cd C:\Server\bin\
+     ```
+
+3. **Run the Server:**
+   - Execute the server executable file. The exact name may vary depending on how the server is configured, but a common name is `server.exe`. Type:
+     ```shell
+     server.exe
+     ```
+
+4. **Wait for the Server to Start:**
+   - The server should start and display a message indicating that it is running. It might also log a message in the console or a log file.
+
+5. **Access the Server:**
+   - Once the server is running, you can access it by navigating to the appropriate URL or port in your web browser.
+
+6. **Stop the Server:**
+   - If you need to stop the server, you can do so by using the `CTRL + C` combination in the Command Prompt window. This will terminate the server process.
+
+If you encounter any issues or need further assistance, please provide more details about the server and the error messages you are seeing.

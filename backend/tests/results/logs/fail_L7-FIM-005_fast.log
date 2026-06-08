@@ -1,0 +1,9 @@
+ERROR: 
+RESPONSE:
+```python
+def safe_get(data_dict, default):
+    try:
+        return data_dict['value']
+    except KeyError:
+        return default
+```

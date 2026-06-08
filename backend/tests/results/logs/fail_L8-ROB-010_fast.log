@@ -1,0 +1,9 @@
+ERROR: NameError: name 'sum_list' is not defined
+RESPONSE:
+```python
+def sum_numbers(numbers):
+    total_sum = 0
+    for number in numbers:
+        total_sum += number
+    return total_sum
+```

@@ -1,0 +1,22 @@
+ERROR: Exec failed
+RESPONSE:
+
+
+---
+### Attempt 1
+```python
+import re
+
+def parse_nested_logs(lines):
+    log_dict = {}
+    for line in lines:
+        # Extract module name and status value using regex
+        match = re.search(r'^(.+):\\s*(\d+)', line)
+        if match:
+            module_name = match.group(1)
+            status_value = int(match.group(2))
+            if module_name not in log_dict:
+                log_dict[module_name] = []
+            log_dict[module_name].append(status_value)
+    return log_dict
+```

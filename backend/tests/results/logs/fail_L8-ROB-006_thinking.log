@@ -1,0 +1,23 @@
+ERROR: Exec failed
+RESPONSE:
+
+
+---
+### Attempt 1
+```python
+import os
+
+# Workspace directory
+workspace = 'path_to_your_workspace'
+files = [f for f in os.listdir(workspace) if os.path.isfile(os.path.join(workspace, f))]
+
+# List of all files in the current directory
+all_files = os.listdir()
+
+# Filter out files that do not end with '.py'
+python_files = [file for file in all_files if file.endswith('.py')]
+
+# Print the filtered list of Python files
+for file in python_files:
+    print(file)
+```

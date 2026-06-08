@@ -1,0 +1,31 @@
+ERROR: Passed
+RESPONSE:
+```python
+import matplotlib.pyplot as plt
+
+def plot_two_charts(data1, data2):
+    """
+    Plots data1 on the first subplot and data2 on the second subplot in a 1x2 grid.
+    
+    Parameters:
+    - data1: A list or array of data points to be plotted on the first subplot.
+    - data2: A list or array of data points to be plotted on the second subplot.
+    """
+    fig, axs = plt.subplots(1, 2, figsize=(10, 5))
+    
+    axs[0].plot(data1, label='Data 1')
+    axs[0].set_title('First Chart')
+    axs[0].legend()
+    
+    axs[1].plot(data2, label='Data 2')
+    axs[1].set_title('Second Chart')
+    axs[1].legend()
+    
+    plt.tight_layout()
+    plt.show()
+
+# Example usage
+data1 = [1, 2, 3, 4, 5]
+data2 = [5, 4, 3, 2, 1]
+plot_two_charts(data1, data2)
+```

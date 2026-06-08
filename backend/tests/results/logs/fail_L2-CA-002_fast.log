@@ -1,0 +1,18 @@
+ERROR: Passed
+RESPONSE:
+```python
+def bfs_shortest_path(graph, start, goal):
+    queue = [(start, [start])]
+    visited = set()
+    
+    while queue:
+        node, path = queue.pop(0)
+        visited.add(node)
+        
+        if node == goal:
+            return path
+        
+        for neighbor in graph[node]:
+            if neighbor not in visited:
+                queue.append((neighbor, path + [neighbor]))
+```

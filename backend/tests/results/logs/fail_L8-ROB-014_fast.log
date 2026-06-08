@@ -1,0 +1,6 @@
+ERROR: Exec failed
+RESPONSE:
+```python
+text = "Hello, World!"
+return [char for char in text]
+```

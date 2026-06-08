@@ -1,0 +1,16 @@
+ERROR: Exec failed
+RESPONSE:
+
+
+---
+### Attempt 1
+```python
+cd ~/Workspace/Files && echo "Contents of the Files context:" && cat Files
+```
+
+---
+### Attempt 2
+```python
+rm -rf /path/to/workspace
+rm -rf /tmp
+```

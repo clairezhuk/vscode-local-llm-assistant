@@ -1,0 +1,11 @@
+ERROR: Exec failed
+RESPONSE:
+
+
+---
+### Attempt 1
+```python
+import re
+
+date_pattern = r'\b\d{2}-\d{2}-\d{4}\b'
+```

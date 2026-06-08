@@ -1,0 +1,31 @@
+id,processing_type,time_s,intent,format_ok,exec_ok,exec_msg,warning
+L2-CA-001,fast,8.06,2,True,False,Path must start at A and end at E,False
+L2-CA-001,thinking,180.21,2,False,False,NameError: name 'dfs_path' is not defined,False
+L2-CA-002,fast,7.97,2,False,True,Passed,False
+L2-CA-002,thinking,241.19,2,True,True,Passed,True
+L2-CA-003,fast,17.56,2,True,False,Exec failed,False
+L2-CA-003,thinking,272.16,2,True,False,Exec failed,True
+L2-CA-004,fast,15.26,2,True,False,TypeError: object of type 'int' has no len(),False
+L2-CA-004,thinking,265.97,2,False,False,Standard knapsack failed,False
+L2-CA-005,fast,17.11,2,True,True,Passed,False
+L2-CA-005,thinking,227.4,2,True,True,Passed,False
+L2-CA-006,fast,7.5,2,True,True,Passed,False
+L2-CA-006,thinking,40.95,2,True,False,,False
+L2-CA-007,fast,10.75,2,False,False,Exec failed,False
+L2-CA-007,thinking,66.32,2,False,False,Exec failed,False
+L2-CA-008,fast,15.22,2,True,False,NameError: name 'math' is not defined,False
+L2-CA-008,thinking,54.93,2,False,False,NameError: name 'ucb1' is not defined,False
+L2-CA-009,fast,10.38,2,True,True,Passed,False
+L2-CA-009,thinking,22.44,2,False,False,Exec failed,False
+L2-CA-010,fast,14.12,2,True,False,,False
+L2-CA-010,thinking,35.83,2,False,False,NameError: name 'assign_clusters' is not defined,False
+L2-CA-011,fast,14.14,2,False,False,NameError: name 'cos' is not defined,False
+L2-CA-011,thinking,72.4,2,False,False,NameError: name 'rotate_z' is not defined,False
+L2-CA-012,fast,17.48,2,True,True,Passed,False
+L2-CA-012,thinking,273.99,2,True,False,NameError: name 'grid_shortest_path' is not defined,False
+L2-CA-013,fast,8.46,2,False,False,Exec failed,False
+L2-CA-013,thinking,52.49,2,False,False,Exec failed,False
+L2-CA-014,fast,8.74,2,True,True,Passed,False
+L2-CA-014,thinking,50.55,2,True,False,TypeError: apply_window() missing 1 required positional argument: 'N',False
+L2-CA-015,fast,6.33,2,True,True,Passed,False
+L2-CA-015,thinking,105.44,2,True,False,NameError: name 'scale_3d' is not defined,False

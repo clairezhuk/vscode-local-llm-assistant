@@ -1,0 +1,19 @@
+ERROR: NameError: name 'run_tasks' is not defined
+RESPONSE:
+
+
+---
+### Attempt 1
+```python
+import os
+
+def list_python_files(directory):
+    python_files = []
+    for filename in os.listdir(directory):
+        if filename.endswith('.py'):
+            python_files.append(os.path.join(directory, filename))
+    return python_files
+
+def is_even(n):
+    return n % 2 == 0
+```

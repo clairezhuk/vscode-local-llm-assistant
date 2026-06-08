@@ -1,0 +1,15 @@
+ERROR: Exec failed
+RESPONSE:
+
+
+---
+### Attempt 1
+```python
+import pandas as pd
+
+# Step 4: Create Pivot Table
+pivot_table = df.pivot_table(values='Sales', index='Region', columns='Year')
+
+# Step 5: Save Pivot Table as CSV
+pivot_table.to_csv('pivot_table.csv', index=True)
+```

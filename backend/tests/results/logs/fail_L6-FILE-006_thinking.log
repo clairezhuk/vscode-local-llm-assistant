@@ -1,38 +1,64 @@
 ERROR: Exec failed
 RESPONSE:
+
+
+---
+### Attempt 1
 ```python
-import os
+from pathlib import Path
 from datetime import datetime
 
-# Step 1: Open the directory containing the files
-directory = 'uploads'
+uploads_folder = Path("uploads")
+all_files = uploads_folder.glob("*.jpg") | uploads_folder.glob("*.png")
 
-# Get the current date
-current_date = datetime.now().strftime('%Y-%m-%d')
-
-# Loop through all files in the directory
-for filename in os.listdir(directory):
-    if filename.endswith('.jpg') or filename.endswith('.png'):
-        # Construct the new filename with the date prefix
-        new_filename = current_date + '_' + filename
-
-        # Construct the full paths for the old and new files
-        old_file_path = os.path.join(directory, filename)
-        new_file_path = os.path.join(directory, new_filename)
-
-        # Rename the file
-        os.rename(old_file_path, new_file_path)
-
-# Step 6: Repeat steps 3-5 for all files in the 'uploads' folder
-for filename in os.listdir('uploads'):
-    if filename.endswith('.jpg') or filename.endswith('.png'):
-        # Step 3: Move the file to a new directory
-        new_filename = datetime.now().strftime('%Y-%m-%d') + '_' + filename
-        os.rename(os.path.join('uploads', filename), os.path.join('uploads', new_filename))
-
-        # Step 4: Rename the file in the current directory
-        os.rename(os.path.join('uploads', new_filename), os.path.join('uploads', new_filename))
-
-        # Step 5: Rename the file in the original directory
-        os.rename(os.path.join('uploads', new_filename), os.path.join('uploads', new_filename))
+for file_path in all_files:
+    new_name = f"{file_path.stem}_{datetime.now().strftime('%Y-%m-%d')}.{file_path.suffix}"
+    file_path.rename(new_name)
+    print(f"Renamed {file_path.name} to {new_name}")
 ```
+
+---
+### Attempt 2
+```python
+from pathlib import Path
+from datetime import datetime
+
+# Step 6: Iterate over the list of files
+for file in Path('uploads').glob('*.jpg;*.png'):
+    # Step 7: Get the current date
+    current_date = datetime.now().strftime('%Y-%m-%d')
+    
+    # Step 8: Create the new file path with the current date as a prefix
+    new_file_path = Path(file.parent, f'{current_date}_{file.stem}{file.suffix}')
+    
+    # Step 9: Rename the file
+    file.rename(new_file_path)
+    print(f'Renamed: {file.name} to {new_file_path.name}')
+```
+
+---
+### Attempt 3
+```python
+from pathlib import Path
+import datetime
+
+# Step 1: Define the base path for the uploads folder
+uploads_folder = Path("uploads")
+
+# Step 2: Retrieve a list of all files with the specified extensions
+jpg_files = uploads_folder.glob("*.jpg")
+png_files = uploads_folder.glob("*.png")
+
+# Step 3: Rename each file by adding the current date as a prefix
+for file in jpg_files + png_files:
+    # Step 4: Create a new file name with the current date prefix
+    new_file_name = f"{datetime.datetime.now().strftime('%Y-%m-%d')}{file.suffix}"
+    
+    # Step 5: Rename the file
+    file.rename(new_file_name)
+
+    # Log the successful renaming
+    print(f"Renamed {file.name} to {new_file_name}")
+```
+
+> ⚠️ **AI Warning:** Verification failed after max retries.

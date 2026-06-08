@@ -1,0 +1,42 @@
+ERROR: NameError: name 'dfs_path' is not defined
+RESPONSE:
+
+
+---
+### Attempt 1
+```python
+from collections import deque
+
+def find_path(graph, start, goal):
+    queue = deque([[start]])
+    while queue:
+        path = queue.popleft()
+        vertex = path[-1]
+        if vertex == goal:
+            return path[::-1]
+        for neighbor in graph[vertex]:
+            if neighbor not in path:
+                new_path = list(path)
+                new_path.append(neighbor)
+                queue.append(new_path)
+    return []
+```
+
+---
+### Attempt 2
+```python
+def find_path(graph, start, goal):
+    if start == goal:
+        return [start]
+    visited = set()
+    queue = [(start, [start])]
+    
+    while queue:
+        current, path = queue.pop(0)
+        if current not in visited:
+            visited.add(current)
+            for neighbor in graph[current]:
+                if neighbor not in path:
+                    queue.append((neighbor, path + [neighbor]))
+    return []
+```

@@ -1,0 +1,6 @@
+ERROR: Passed
+RESPONSE:
+```python
+def sum_list(arr):
+    return sum(arr)
+```

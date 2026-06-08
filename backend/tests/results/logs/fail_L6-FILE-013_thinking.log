@@ -1,0 +1,23 @@
+ERROR: NameError: name 'process_timestamps' is not defined
+RESPONSE:
+
+
+---
+### Attempt 1
+```python
+from datetime import datetime
+
+def format_date(timestamp):
+    # Convert timestamp to datetime object
+    dt_object = datetime.fromtimestamp(timestamp)
+    
+    # Format the datetime object as a string in 'YYYY-MM-DD' format
+    formatted_date = dt_object.strftime('%Y-%m-%d')
+    
+    return formatted_date
+
+# Example usage:
+timestamp = 1633072800
+formatted_date = format_date(timestamp)
+print(formatted_date)  # Output: '2021-10-01'
+```

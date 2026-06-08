@@ -1,9 +1,3 @@
 ERROR: N/A
 RESPONSE:
-The library used for database migrations in this workspace is **db-migrate**. To run the migrations, you would execute the following command:
-
-```sh
-npm run migrate
-```
-
-This command assumes that **db-migrate** is installed as a dependency in your project and that your project uses npm or yarn. If you use a different package manager or a different version of **db-migrate**, you might need to adjust the command accordingly.
+The test_README.md file indicates that the library used for database migrations is Sequelize. The exact command to run the migrations is `npm run db:migrate`.

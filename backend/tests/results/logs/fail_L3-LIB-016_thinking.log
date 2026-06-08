@@ -1,0 +1,57 @@
+ERROR: Exec failed
+RESPONSE:
+
+
+---
+### Attempt 1
+```python
+import os
+
+def list_directory(directory):
+    if os.path.exists(directory):
+        contents = os.listdir(directory)
+        for item in contents:
+            print(os.path.join(directory, item))
+            if os.path.isfile(os.path.join(directory, item)):
+                with open(os.path.join(directory, item), 'r') as file:
+                    content = file.read()
+                    print(f"File {item}: {content}")
+            elif os.path.isdir(os.path.join(directory, item)):
+                print(f"Directory {item}")
+    else:
+        print(f"Directory \'{directory}\' does not exist.")
+
+directory = 'tmpnsr6hten'
+list_directory(directory)
+```
+
+---
+### Attempt 2
+```python
+import os
+
+def identify_workspace_directory():
+    return os.getcwd()
+
+def navigate_to_workspace_directory(workspace_dir):
+    os.chdir(workspace_dir)
+
+def list_files_and_directories(workspace_dir, filter_criteria=None):
+    if filter_criteria:
+        return [f for f in os.listdir(workspace_dir) if os.path.isfile(os.path.join(workspace_dir, f))]
+    else:
+        return os.listdir(workspace_dir)
+
+# Example usage
+workspace_dir = identify_workspace_directory()
+navigate_to_workspace_directory(workspace_dir)
+files = list_files_and_directories(workspace_dir)
+print("Files and directories in the workspace:", files)
+```
+
+---
+### Attempt 3
+```python
+directory_path = 'your_directory_path_here'
+files = os.listdir(directory_path)
+```

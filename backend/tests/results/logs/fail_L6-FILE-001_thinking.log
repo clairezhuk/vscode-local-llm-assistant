@@ -1,16 +1,95 @@
-ERROR: 
+ERROR: Exec failed
 RESPONSE:
+
+
+---
+### Attempt 1
 ```python
 import json
 
-# Load the JSON configuration file
-with open('config.json', 'r') as file:
-    config_data = json.load(file)
+def change_port_to_5432(file_path):
+    # Load the JSON data from the file
+    with open(file_path, 'r') as file:
+        config_data = json.load(file)
 
-# Locate the key 'database' and the subkey 'port'
-config_data['database']['port'] = 5432
+    # Find the 'database.port' in the data
+    for key, value in config_data.items():
+        if key == 'database' and 'port' in value:
+            value['port'] = 5432
+            break
 
-# Save the changes with proper indentation
-with open('config.json', 'w') as file:
-    json.dump(config_data, file, indent=4)
+    # Save the modified data back to the file with indentation
+    with open(file_path, 'w') as file:
+        json.dump(config_data, file, indent=4)
+
+# Example usage
+change_port_to_5432('config.json')
 ```
+
+---
+### Attempt 2
+```python
+import json
+
+# Function to update the 'database.port' in 'config.json'
+def update_port():
+    # Reading the current 'config.json' file
+    with open('config.json', 'r') as file:
+        config_data = json.load(file)
+    
+    # Updating the 'database.port' to 5432
+    config_data['database']['port'] = 5432
+    
+    # Writing the updated 'config.json' back to the file
+    with open('config.json', 'w') as file:
+        json.dump(config_data, file, indent=4)
+    
+    # Verification to ensure the change is made
+    with open('config.json', 'r') as file:
+        updated_config_data = json.load(file)
+        print(updated_config_data['database']['port'])
+
+# Calling the function to update the port
+update_port()
+```
+
+---
+### Attempt 3
+```python
+import json
+import subprocess
+
+def modify_config(port):
+    # Load the existing config.json
+    with open('config.json', 'r') as file:
+        config_data = json.load(file)
+
+    # Change the port value
+    config_data['database']['port'] = port
+
+    # Save the modified config.json
+    with open('config.json', 'w') as file:
+        json.dump(config_data, file, indent=4)
+
+# Step 5: Save the modified 'config.json' file with proper indentation
+subprocess.run(['sed', '-i', 's/"database.port": [0-9]*/"database.port": 5432/', 'config.json'])
+
+# Step 5: Open the 'config.json' file in a text editor
+subprocess.run(['nano', 'config.json'])
+
+# Step 6: Change the 'database.port' to 5432
+# Assuming the current value is 5431, change it to 5432
+subprocess.run(['sed', '-i', 's/5431/5432/g', 'config.json'])
+
+# Step 7: Save and close the file
+subprocess.run(['Ctrl', 'X', 'Y', 'Enter'])
+
+# Step 8: Verify the changes
+# Open the 'config.json' file in a text editor to ensure the port value is 5432
+subprocess.run(['nano', 'config.json'])
+
+# Check if the 'database.port' value is indeed 5432
+subprocess.run(['cat', 'config.json', '|', 'grep', '"database.port"'])
+```
+
+> ⚠️ **AI Warning:** Verification failed after max retries.

@@ -1,21 +1,8 @@
 ERROR: N/A
 RESPONSE:
-To authenticate the 'WeatherAPI' in the context of the given files, the three mandatory headers required are:
+The three mandatory headers required to authenticate the 'WeatherAPI' are:
 
-1. **Authorization Header**: This header is used to authenticate the request with the API. The value of this header should be set to your API key, which is a unique identifier provided by the API provider. It should be sent in the format `Authorization: Bearer your_api_key`.
+1. Content-Type: application/json
+2. Authorization: Bearer <Your_API_Key>
 
-2. **Content-Type Header**: This header specifies the type of data being sent in the request body. For JSON requests, the value of this header is usually `application/json`.
-
-3. **Accept Header**: This header specifies the format in which the response is expected. It is often set to `application/json` to indicate that the API should return JSON data.
-
-Here is a sample request with these headers included:
-
-```
-GET /api/weather HTTP/1.1
-Authorization: Bearer your_api_key
-Content-Type: application/json
-Accept: application/json
-Host: api.weather.com
-```
-
-Make sure to replace `your_api_key` with the actual API key you receive from the API provider.
+Replace `<Your_API_Key>` with your actual API key for the 'WeatherAPI'.

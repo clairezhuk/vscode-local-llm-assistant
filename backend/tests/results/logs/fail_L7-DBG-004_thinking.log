@@ -1,0 +1,11 @@
+ERROR: TypeError: add_user_to_list() missing 1 required positional argument: 'user'
+RESPONSE:
+
+
+---
+### Attempt 1
+```python
+def add_user_to_list(items, user):
+    items.append(user)
+    return items
+```

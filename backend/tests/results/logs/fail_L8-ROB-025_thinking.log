@@ -1,0 +1,26 @@
+ERROR: Exec failed
+RESPONSE:
+
+
+---
+### Attempt 1
+```python
+def check_file_operations():
+    try:
+        # Example: Trying to read from a non-existent file
+        with open('nonexistent_file.txt', 'r') as file:
+            content = file.read()
+            print("File content:", content)
+    except FileNotFoundError:
+        print("File not found. Please check the file name or path.")
+    except IOError:
+        print("An error occurred while reading the file.")
+    except Exception as e:
+        print("An unexpected error occurred:", e)
+```
+
+---
+### Attempt 2
+```python
+print("Hello, World!")
+```

@@ -1,0 +1,24 @@
+ERROR: NameError: name 'get_status_msg' is not defined
+RESPONSE:
+
+
+---
+### Attempt 1
+```python
+file_type_map = {
+    '.txt': 'text',
+    '.png': 'image',
+    '.jpg': 'image',
+    '.jpeg': 'image',
+    '.gif': 'image',
+    '.pdf': 'document',
+    '.doc': 'document',
+    '.xls': 'document',
+    '.xlsx': 'document',
+    '.csv': 'document',
+    '.py': 'code',
+    '.java': 'code',
+    '.php': 'code',
+    '.json': 'data'
+}
+```

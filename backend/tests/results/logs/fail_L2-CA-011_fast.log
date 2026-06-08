@@ -1,0 +1,20 @@
+ERROR: NameError: name 'cos' is not defined
+RESPONSE:
+```python
+def rotate_z(point, angle_rad):
+    # Define the rotation matrix
+    rotation_matrix = [[cos(angle_rad), 0, -sin(angle_rad)],
+                     [0, 1, 0],
+                     [sin(angle_rad), 0, cos(angle_rad)]]
+    
+    # Convert the point to a 3x1 matrix
+    point_matrix = [point[0], point[1], point[2]]
+    
+    # Perform matrix multiplication
+    rotated_point_matrix = [sum(a*b for a,b in zip(row, point_matrix)) for row in rotation_matrix]
+    
+    # Convert the rotated point matrix back to a 3D point
+    rotated_point = (rotated_point_matrix[0], rotated_point_matrix[1], rotated_point_matrix[2])
+    
+    return rotated_point
+```

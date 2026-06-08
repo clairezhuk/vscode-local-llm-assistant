@@ -1,0 +1,63 @@
+ERROR: Standard knapsack failed
+RESPONSE:
+
+
+---
+### Attempt 1
+```python
+cpp
+#include <vector>
+
+struct Item {
+    int weight;
+    int value;
+};
+
+// Function to find the maximum value that can be achieved in a knapsack with given weights, values, and capacity
+int knapsack(Item items[], int n, int capacity) {
+    std::vector<std::vector<int>> dp(n + 1, std::vector<int>(capacity + 1));
+    
+    for (int i = 1; i <= n; i++) {
+        for (int w = 1; w <= capacity; w++) {
+            if (items[i - 1].weight <= w) {
+                dp[i][w] = std::max(items[i - 1].value + dp[i - 1][w - items[i - 1].weight], dp[i - 1][w]);
+            } else {
+                dp[i][w] = dp[i - 1][w];
+            }
+        }
+    }
+    
+    return dp[n][capacity];
+}
+
+// Function to print the items that are included in the knapsack
+void printItems(Item items[], int n, int capacity, int weight) {
+    if (weight == 0) {
+        return;
+    }
+    
+    if (items[n - 1].weight <= weight) {
+        printItems(items, n - 1, weight - items[n - 1].weight, items[n - 1].value + dp[n - 1][weight - items[n - 1].weight]);
+        std::cout << items[n - 1].value << " ";
+    }
+    
+    printItems(items, n - 1, weight, dp[n - 1][weight]);
+}
+```
+
+---
+### Attempt 2
+```python
+def knapsack(weights, values, capacity):
+    # Base case: if capacity is zero, return 0
+    if capacity == 0:
+        return 0
+    # Base case: if there are no items to consider, return 0
+    if len(weights) == 0:
+        return 0
+    # Recursive case: decide whether to include the current item in the knapsack
+    if weights[0] <= capacity:
+        return max(values[0] + knapsack(weights[1:], values[1:], capacity - weights[0]), knapsack(weights[1:], values, capacity))
+    else:
+        return knapsack(weights[1:], values, capacity)
+```

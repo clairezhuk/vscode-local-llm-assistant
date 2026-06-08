@@ -3,21 +3,25 @@ RESPONSE:
 ```python
 import csv
 
-def calculate_average_amount():
-    with open('C:\\Users\\user\\AppData\\Local\\Temp\\tmpbr7ac0hy\\sales.csv', newline='') as file:
-        reader = csv.DictReader(file)
-        total_amount = 0
-        count = 0
-        for row in reader:
-            amount = float(row['Amount'])
-            total_amount += amount
-            count += 1
-        if count > 0:
-            average_amount = total_amount / count
-            return average_amount
-        else:
-            return "No data found in the file."
-
-average_value = calculate_average_amount()
-print(f"The average value of the 'Amount' column is: {average_value}")
+# Open the sales.csv file in read mode
+with open('sales.csv', 'r') as file:
+    # Create a CSV reader object
+    reader = csv.reader(file)
+    
+    # Skip the header row
+    next(reader)
+    
+    # Initialize a list to store the 'Amount' values
+    amount_values = []
+    
+    # Iterate over each row in the CSV
+    for row in reader:
+        # Append the 'Amount' value to the list
+        amount_values.append(float(row[1]))
+    
+    # Calculate the average value of the 'Amount' column
+    average_amount = sum(amount_values) / len(amount_values)
+    
+    # Return the average value
+    return average_amount
 ```

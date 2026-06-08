@@ -1,15 +1,18 @@
 ERROR: N/A
 RESPONSE:
-To authenticate the 'WeatherAPI' with the three mandatory headers, you will need to follow these steps:
 
-1. **Choose an Authentication Method**: First, decide which authentication method to use for the 'WeatherAPI'. Common methods include API keys, OAuth, or Basic Auth. This will determine the format of the headers you need to include.
 
-2. **Create the Headers**: Based on the chosen authentication method, create the headers with the appropriate values. Here are some common formats:
+---
+### Attempt 1
+Step 1: Open the command prompt (cmd) in the C:\Users\user\AppData\Local\Temp\tmpx6j4n4vi directory.
+Step 2: Enter the following command to accept the Authorization request:
+curl -X POST -d 'username=admin&password=admin' http://localhost:8080/api/authorization
+Step 3: Enter the following command to set the Accept header to application/json:
+curl -X POST -d 'username=admin&password=admin' http://localhost:8080/api/authorization -H "Accept: application/json"
+Step 4: Enter the following command to set the Content-Type header to application/json:
+curl -X POST -d 'username=admin&password=admin' http://localhost:8080/api/authorization -H "Content-Type: application/json"
+Step 5: Execute the commands to accept the Authorization request, set the Accept and Content-Type headers, and send the request.
 
-   - **API Key**:
-     - Header: `Authorization: Bearer <your_api_key>`
-     - Example: `Authorization: Bearer 1234567890abcdef`
-
-   - **OAuth**:
-     - Header: `Authorization: Bearer <access_token>`
-     - Example: `Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDAwIiwicmVhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDAwIiwicmVhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDAwIiwicmVhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDAwIiwicmVhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDAwIiwicmVhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDAwIiwicmVhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDAwIiwicmVhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDAwIiwicmVhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDAwIiwicmVhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDAwIiwicmVhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0Ijox
+---
+### Attempt 2
+Plan: Verify the content type, check for authorization, and handle any errors.

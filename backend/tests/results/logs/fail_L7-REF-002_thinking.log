@@ -1,0 +1,74 @@
+ERROR: NameError: name 'process_request' is not defined
+RESPONSE:
+
+
+---
+### Attempt 1
+```python
+# Step 1: Define the decorator
+def log_time(func):
+    def wrapper(*args, **kwargs):
+        start_time = time.time()
+        result = func(*args, **kwargs)
+        end_time = time.time()
+        print(f"Function {func.__name__} took {end_time - start_time:.4f} seconds to execute.")
+        return result
+    return wrapper
+```
+
+---
+### Attempt 2
+```python
+from functools import wraps
+from datetime import datetime
+
+# Log decorator to record the start and end time of each function
+def log_time(func):
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+        start_time = datetime.now()
+        result = func(*args, **kwargs)
+        end_time = datetime.now()
+        print(f"Function '{func.__name__}' executed in {end_time - start_time} seconds")
+        return result
+    return wrapper
+
+# Example usage of the decorator
+@api_handlers
+@log_time
+def process_request(request):
+    # Simulate processing time
+    import time
+    time.sleep(2)
+    return "Request processed"
+
+@api_handlers
+@log_time
+def fetch_user_profile(user_id):
+    # Simulate fetching user profile time
+    import time
+    time.sleep(3)
+    return f"User profile fetched for ID: {user_id}"
+
+# Example API calls
+process_request("example_request")
+fetch_user_profile(1234)
+```
+
+---
+### Attempt 3
+```python
+import time
+
+def log_time(func):
+    def wrapper(*args, **kwargs):
+        start_time = time.time()
+        result = func(*args, **kwargs)
+        end_time = time.time()
+        execution_time = end_time - start_time
+        print(f"Function {func.__name__} executed in {execution_time:.4f} seconds")
+        return result
+    return wrapper
+```
+
+> ⚠️ **AI Warning:** Verification failed after max retries.

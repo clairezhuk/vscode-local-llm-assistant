@@ -1,0 +1,11 @@
+ERROR: TypeError: apply_window() missing 1 required positional argument: 'N'
+RESPONSE:
+
+
+---
+### Attempt 1
+```python
+def apply_window(signal, N):
+    result = [signal[i] * 0.5 * (1 - math.cos(2 * math.pi * i / (N-1))) for i in range(N)]
+    return result
+```

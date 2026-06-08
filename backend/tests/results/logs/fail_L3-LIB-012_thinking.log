@@ -1,0 +1,37 @@
+ERROR: Exec failed
+RESPONSE:
+
+
+---
+### Attempt 1
+```python
+import os
+
+# Set the current directory
+os.chdir('C:\\Users\\user\\AppData\\Local\\Temp\\tmplwytefzh')
+
+# List all files in the current directory
+files = os.listdir('.')
+print(files)
+
+# Specify the directory to search for files
+directory = 'path/to/directory'
+
+# List all files in the directory
+files = os.listdir(directory)
+
+# Filter files with .py extension
+python_files = [file for file in files if file.endswith('.py')]
+
+# Print the filtered file names
+print("Python files:", python_files)
+
+# Example list of files
+files = ["file1.txt", "file2.txt", "file3.txt", "file4.txt", "file5.txt"]
+
+# Filter list of files
+filtered_files = [file for file in files if file.endswith(".txt")]
+
+# Display the list of filtered files
+print(filtered_files)
+```

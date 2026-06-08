@@ -1,0 +1,21 @@
+ERROR: ModuleNotFoundError: No module named 'torch'
+RESPONSE:
+```python
+def train_step(model, optimizer, criterion, x, y):
+    # Zero gradients
+    model.zero_grad()
+
+    # Forward pass
+    output = model(x)
+
+    # Calculate loss
+    loss = criterion(output, y)
+
+    # Backward pass
+    loss.backward()
+
+    # Perform optimizer step
+    optimizer.step()
+
+    return loss.item()
+```

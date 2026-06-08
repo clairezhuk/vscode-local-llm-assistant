@@ -1,0 +1,17 @@
+ERROR: NameError: name 'get_safe_path' is not defined
+RESPONSE:
+
+
+---
+### Attempt 1
+```python
+import os
+
+workspace_dir = os.path.abspath(os.getcwd())
+files_and_directories = os.listdir(workspace_dir)
+print(files_and_directories)
+
+directory_path = '.'
+files_dict = {item: os.path.join(directory_path, item) for item in os.listdir(directory_path) if os.path.isfile(os.path.join(directory_path, item))}
+print(files_dict)
+```

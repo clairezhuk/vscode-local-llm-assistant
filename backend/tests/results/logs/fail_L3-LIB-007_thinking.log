@@ -1,0 +1,44 @@
+ERROR: NameError: name 'create_plot' is not defined
+RESPONSE:
+
+
+---
+### Attempt 1
+```python
+import os
+
+def list_directory_contents(directory):
+    for root, dirs, files in os.walk(directory):
+        level = root.replace(directory, '').count(os.sep)
+        indent = ' ' * (level * 4)
+        print(f"{indent}{os.path.basename(root)}")
+        for file in files:
+            print(f"{indent}  {file}")
+```
+
+---
+### Attempt 2
+```python
+import os
+
+# Step 1: Define the workspace path
+workspace_path = r'C:\\Users\\user\\AppData\\Local\\Temp\\tmplnch24s3'
+
+# Step 2: List the files and directories in the workspace
+files_and_directories = os.listdir(workspace_path)
+
+# Step 3: Process the files
+for file_or_directory in files_and_directories:
+    file_or_directory_path = os.path.join(workspace_path, file_or_directory)
+    
+    # Check if it's a file (not a directory)
+    if os.path.isfile(file_or_directory_path):
+        # Read the file content
+        with open(file_or_directory_path, 'r') as file:
+            file_content = file.read()
+        
+        # Process the file content (e.g., print the first 100 characters)
+        print(f"File: {file_or_directory}")
+        print(file_content[:100])
+        print()
+```

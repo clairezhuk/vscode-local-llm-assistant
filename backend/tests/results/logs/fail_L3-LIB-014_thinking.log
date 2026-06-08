@@ -1,0 +1,11 @@
+ERROR: ModuleNotFoundError: No module named 'pandas'
+RESPONSE:
+
+
+---
+### Attempt 1
+```python
+def filter_dataframe(df):
+    filtered_df = df[(df['Age'] > 25) & (df['City'] == 'Warsaw')]
+    return filtered_df
+```

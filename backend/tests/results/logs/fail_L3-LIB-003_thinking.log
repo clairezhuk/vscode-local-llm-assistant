@@ -1,0 +1,9 @@
+ERROR: NameError: name 'cosine_distance' is not defined
+RESPONSE:
+
+
+---
+### Attempt 1
+```python
+# Clean code
+```

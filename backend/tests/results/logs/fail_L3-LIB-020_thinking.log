@@ -1,0 +1,21 @@
+ERROR: Exec failed
+RESPONSE:
+
+
+---
+### Attempt 1
+```python
+import torch
+
+def get_probabilities(logits):
+    """ Applies the Softmax function to the input tensor of logits.
+    
+    Parameters:
+    - logits (torch.Tensor): A 1D PyTorch tensor of shape (num_classes,).
+    
+    Returns:
+    - torch.Tensor: A 1D PyTorch tensor of shape (num_classes,) containing the probabilities corresponding to the input logits.
+    """
+    probabilities = torch.nn.functional.softmax(logits, dim=0)
+    return probabilities
+```

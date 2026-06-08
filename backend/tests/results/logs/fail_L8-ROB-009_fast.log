@@ -1,0 +1,11 @@
+ERROR: Exec failed
+RESPONSE:
+```python
+def count_lines_in_file(file_path):
+    try:
+        with open(file_path, 'r') as file:
+            lines = file.readlines()
+            return len(lines)
+    except FileNotFoundError:
+        return 0
+```

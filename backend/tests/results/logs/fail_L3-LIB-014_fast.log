@@ -1,0 +1,9 @@
+ERROR: Exec failed
+RESPONSE:
+```python
+import pandas as pd
+
+def filter_data(df):
+    filtered_df = df[(df['Age'] > 25) & (df['City'] == 'Warsaw')]
+    return filtered_df
+```

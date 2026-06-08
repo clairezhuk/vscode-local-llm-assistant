@@ -1,0 +1,26 @@
+ERROR: NameError: name 'binary_search' is not defined
+RESPONSE:
+
+
+---
+### Attempt 1
+```python
+def binary_search_optimized(arr, target):
+    if not arr:
+        return -1
+
+    def recursive_search(start, end):
+        if start > end:
+            return -1
+
+        mid = (start + end) // 2
+
+        if arr[mid] == target:
+            return mid
+        elif arr[mid] < target:
+            return recursive_search(mid + 1, end)
+        else:
+            return recursive_search(start, mid - 1)
+
+    return recursive_search(0, len(arr) - 1)
+```

@@ -1,0 +1,19 @@
+ERROR: TypeError: move_to_backup() takes 1 positional argument but 2 were given
+RESPONSE:
+```python
+import os
+
+def move_to_backup(file_path):
+    # Define the backup directory path
+    backup_dir = os.path.join(os.path.expanduser("~"), "Documents", "Backup")
+    
+    # Define the new file path with backup directory
+    new_file_path = os.path.join(backup_dir, os.path.basename(file_path))
+    
+    # Check if the backup directory exists, if not, create it
+    if not os.path.exists(backup_dir):
+        os.makedirs(backup_dir)
+    
+    # Move the file to the backup directory
+    return os.rename(file_path, new_file_path)
+```

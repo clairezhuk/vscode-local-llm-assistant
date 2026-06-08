@@ -1,0 +1,14 @@
+ERROR: Exec failed
+RESPONSE:
+```python
+import concurrent.futures
+
+def square(x):
+    return x * x
+
+input_list = list(range(1, 1001))
+with concurrent.futures.ProcessPoolExecutor() as executor:
+    results = list(executor.map(square, input_list))
+
+return results
+```

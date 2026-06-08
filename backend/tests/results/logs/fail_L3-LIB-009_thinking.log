@@ -1,0 +1,45 @@
+ERROR: 
+RESPONSE:
+
+
+---
+### Attempt 1
+```python
+from sklearn.model_selection import train_test_split
+
+def split_data(X, y):
+    """Splits the dataset into training and testing sets with a 80/20 ratio."""
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+    return X_train, X_test, y_train, y_test
+```
+
+---
+### Attempt 2
+```python
+from sklearn.model_selection import train_test_split
+
+def split_data(X, y):
+    """
+    Dzieli zbiór danych na zbiór treningowy (70%) i testowy (30%), zachowując proporcję klas.
+
+    :param X: Zbiór cech (DataFrame)
+    :param y: Zbiór etykiet (Series)
+    :return: Zbiory treningowe X_train i testowe X_test, oraz etykiety treningowe y_train i testowe y_test
+    """
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42, stratify=y)
+    return X_train, X_test, y_train, y_test
+```
+
+---
+### Attempt 3
+```python
+from sklearn.model_selection import train_test_split
+
+def split_data(X, y):
+    # Split dataset into training and testing sets with a test set size of 20% and a random state of 42
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+    
+    return X_train, X_test, y_train, y_test
+```
+
+> ⚠️ **AI Warning:** Verification failed after max retries.

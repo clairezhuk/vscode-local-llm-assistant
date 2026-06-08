@@ -1,0 +1,18 @@
+ERROR: Exec failed
+RESPONSE:
+
+
+---
+### Attempt 1
+```python
+def parse_log_errors(log_data):
+    """
+    Parses a log file and extracts error messages.
+
+    :param log_data: A string containing the log data.
+    :return: A list of error messages.
+    """
+    lines = log_data.split('\n')
+    errors = [line.strip() for line in lines if "ERROR" in line]
+    return errors
+```

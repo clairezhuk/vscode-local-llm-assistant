@@ -1,0 +1,19 @@
+ERROR: Exec failed
+RESPONSE:
+```python
+import re
+
+def parse_nested_logs(lines):
+    result = {}
+    pattern = r'Module\[(.*?)\]:\s*Status\[(.*?)\]'
+    for line in lines:
+        match = re.search(pattern, line)
+        if match:
+            name = match.group(1)
+            value = match.group(2)
+            if name in result:
+                result[name].append(value)
+            else:
+                result[name] = [value]
+    return result
+```

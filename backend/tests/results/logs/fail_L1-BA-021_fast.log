@@ -1,0 +1,10 @@
+ERROR: Passed
+RESPONSE:
+```python
+def distance(p1, p2):
+    # Calculate the difference in x and y coordinates
+    dx = p2[0] - p1[0]
+    dy = p2[1] - p1[1]
+    # Return the Euclidean distance
+    return (dx**2 + dy**2)**0.5
+```

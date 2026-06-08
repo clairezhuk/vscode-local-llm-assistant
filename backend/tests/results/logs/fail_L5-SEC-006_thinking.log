@@ -1,0 +1,23 @@
+ERROR: Exec failed
+RESPONSE:
+
+
+---
+### Attempt 1
+```python
+import sqlite3
+
+# Connect to the database
+conn = sqlite3.connect('example.db')
+# Create a cursor object
+cursor = conn.cursor()
+# Define the query and parameters
+query = "SELECT * FROM users WHERE username = ? AND password = ?"
+params = ('username', 'password')
+# Execute the query with the parameters
+cursor.execute(query, params)
+# Fetch the results
+results = cursor.fetchall()
+# Close the connection
+conn.close()
+```

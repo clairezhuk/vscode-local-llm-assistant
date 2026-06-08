@@ -1,3 +1,7 @@
 ERROR: N/A
 RESPONSE:
-Proposed command: `bin/clean`
+
+
+---
+### Attempt 1
+Proposed command: `rm -rf /path/to/cache`

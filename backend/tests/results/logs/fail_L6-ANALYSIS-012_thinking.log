@@ -1,0 +1,64 @@
+ERROR: N/A
+RESPONSE:
+
+
+---
+### Attempt 1
+Sure, here's a plan for implementing Merge Sort:
+
+1. **Divide the Array**: Divide the array into two halves. This can be done by finding the middle index of the array.
+2. **Sort the Left Half**: Recursively sort the left half of the array using the same approach.
+3. **Sort the Right Half**: Recursively sort the right half of the array using the same approach.
+4. **Merge the Sorted Arrays**: Once the left and right halves are sorted, merge them back into a single sorted array.
+
+Here is the implementation in Python:
+
+```python
+def merge_sort(arr):
+    if len(arr) <= 1:
+        return arr
+    
+    mid = len(arr) // 2
+    left_half = merge_sort(arr[:mid])
+    right_half = merge_sort(arr[mid:])
+    
+    return merge(left_half, right_half)
+
+def merge(left, right):
+    merged = []
+    i = j = 0
+    
+    while i < len(left) and j < len(right):
+        if left[i] < right[j]:
+            merged.append(left[i])
+            i += 1
+        else:
+            merged.append(right[j])
+            j += 1
+    
+    # Append remaining elements
+    merged.extend(left[i:])
+    merged.extend(right[j:])
+    
+    return merged
+
+# Example usage
+arr = [34, 7, 23, 32, 5, 62]
+sorted_arr = merge_sort(arr)
+print(sorted_arr)
+```
+
+### Explanation:
+1. **merge_sort Function**:
+   - If the length of the array is 1 or less, it is already sorted, so it returns the array as is.
+   - Otherwise, it divides the array into two halves.
+   - It recursively sorts the left and right halves.
+   - Finally, it merges the sorted left and right halves back into a single sorted array using the `merge` function.
+
+2. **merge Function**:
+   - This function merges two sorted arrays into a single sorted array.
+   - It uses two pointers, `i` for the left array and `j` for the right array.
+   - It appends the smaller element to the merged array and moves the pointer of the smaller element.
+   - After one of the arrays is exhausted, it appends the remaining elements from the other array to the merged array.
+
+This plan ensures that the space complexity is O(n) because the recursion depth is at most log n, and each recursive call creates new subarrays.

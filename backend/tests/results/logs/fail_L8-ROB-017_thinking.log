@@ -1,0 +1,102 @@
+ERROR: Exec failed
+RESPONSE:
+
+
+---
+### Attempt 1
+```python
+csharp
+csharp
+string workspaceDirectory = @"C:\\Your\\Workspace\\Directory";
+
+FileContext context = new FileContext();
+
+public void ReadFilesInContext()
+{
+    string directoryPath = "path/to/your/directory";
+
+    if (Directory.Exists(directoryPath))
+    {
+        string[] files = Directory.GetFiles(directoryPath);
+
+        foreach (string file in files)
+        {
+            string fileContent = ReadFileContent(file);
+            ProcessFileContent(fileContent);
+        }
+    }
+    else
+    {
+        Console.WriteLine("Directory does not exist.");
+    }
+}
+```
+
+---
+### Attempt 2
+```python
+csharp
+using System;
+using System.Collections.Generic;
+using System.IO;
+
+class Program
+{
+    static void Main()
+    {
+        // Define a list of files and directories to filter
+        List<string> filesAndDirectories = new List<string>
+        {
+            "file1.txt", "file2.txt", "directory1", "directory2",
+            "subdirectory1\\file3.txt", "subdirectory2\\file4.txt"
+        };
+
+        // Define the filter criteria
+        string filter = "*.txt";
+
+        // Display the filtered list of files and directories
+        Console.WriteLine("Filtered files and directories:");
+        foreach (string fileOrDirectory in filesAndDirectories)
+        {
+            if (Path.HasExtension(fileOrDirectory) && Path.GetFileName(fileOrDirectory).EndsWith(filter))
+            {
+                Console.WriteLine(fileOrDirectory);
+            }
+        }
+    }
+}
+```
+
+---
+### Attempt 3
+```python
+csharp
+using System;
+using System.IO;
+using System.Linq;
+
+class Program
+{
+    static void Main()
+    {
+        string sourceDirectory = @"C:\\Source";
+        string destinationDirectory = @"C:\\Destination";
+
+        if (Directory.Exists(sourceDirectory))
+        {
+            string[] files = Directory.GetFiles(sourceDirectory, "*.txt");
+
+            foreach (string file in files)
+            {
+                File.Copy(file, Path.Combine(destinationDirectory, Path.GetFileName(file)));
+            }
+        }
+        else
+        {
+            Console.WriteLine("Source directory does not exist.");
+        }
+    }
+}
+```
+
+> ⚠️ **AI Warning:** Verification failed after max retries.

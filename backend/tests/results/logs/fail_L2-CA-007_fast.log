@@ -1,0 +1,16 @@
+ERROR: Exec failed
+RESPONSE:
+```python
+import re
+
+def parse_log_errors(logs):
+    log_entries = re.findall(r'\[(.*?)\] \[(.*?)\] (.*?)\n', logs)
+    parsed_logs = []
+    for entry in log_entries:
+        date = entry[0].split()[0]
+        level = entry[1]
+        message = entry[2]
+        if level == 'ERROR':
+            parsed_logs.append({'date': date, 'message': message})
+    return parsed_logs
+```

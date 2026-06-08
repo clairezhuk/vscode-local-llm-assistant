@@ -1,13 +1,13 @@
 Project Essence
 
-A local AI programming assistant (similar to GitHub Copilot) built as a VS Code
+A local AI programming assistant built as a VS Code
 extension.
 
   - Resources: Optimized for entry-level hardware (2GB VRAM, 8GB RAM). Utilizes
-    quantized Qwen 2.5 Coder 1.5B via llama.cpp з обмеженим контекстом (2048
-    n_ctx) та зменшеним розміром батчів для стабільності CUDA.
+    quantized Qwen 2.5 Coder 1.5B via llama.cpp with a restricted context window
+    (2048 n_ctx) and reduced batch size (128 n_batch) for CUDA stability.
   - Key Features: Real-time streaming chat, Agentic Thinking workflows,
-    concurrency management for shared GPU access, and human-in-the-loop command
+    concurrency management for shared GPU access, and human-in-the-loop terminal
     execution.
 
 Class Responsibilities
@@ -15,64 +15,77 @@ Class Responsibilities
 Frontend (VS Code Extension - TypeScript):
 
   - chat_view.ts (ChatViewProvider): Manages the Webview UI. Implements
-    JSON-stream buffering (захист від розрізаних чанків), передає шлях робочої
-    директорії до бекенду та обробляє AbortController для безпечного
-    переривання генерації.
-  - ghost_text.ts (GhostTextProvider): Забезпечує автодоповнення коду. Працює
-    паралельно з чатом через чергу запитів на бекенді.
+    JSON-stream buffering (protection against fragmented chunks), passes the
+    workspace directory path to the backend, and handles the AbortController for
+    safe generation interruption.
+  - ghost_text.ts (GhostTextProvider): Provides inline code completions.
+    Operates via the backend's request queue, functioning alongside the chat.
+  - Webview Script: Handles real-time markdown rendering and interactive UI
+    elements like Accept/Reject buttons for terminal commands.
 
 Backend (FastAPI - Python):
 
-  - llm.py (LLMEngine): Обертка над llama_cpp. Налаштована на thread-safe роботу
-    (atomic/streaming). Оптимізована під низьку пам'ять через параметри n_batch
-    та n_gpu_layers.
-  - orchestrator.py (Orchestrator): Центральний контролер. Керує чергою доступу
-    до GPU через asyncio.Lock, запобігаючи Access Violation. Реалізує складні
-    цикли самоперевірки та багатоетапного планування.
-  - planner.py (TaskPlanner): Генерує кроки для виконання складних задач,
-    мінімізуючи "галюцинації" моделі через розбиття контексту.
-  - tools.py (ToolExecutor): Виконує команди у контексті workspace_path
-    користувача.
+  - llm.py (LLMEngine): A wrapper for llama_cpp. Configured for thread-safe
+    operations (atomic/streaming). Optimized for low-memory environments via
+    n_batch and n_gpu_layers parameters.
+  - orchestrator.py (Orchestrator): The central logic controller. Manages GPU
+    access via asyncio.Lock, preventing CUDA Access Violation errors. Implements
+    self-correction cycles and multi-stage planning.
+  - planner.py (TaskPlanner): Deconstructs complex coding tasks into logical
+    steps, minimizing model "hallucinations" through context segmentation.
+  - tools.py (ToolExecutor): Executes terminal commands within the user's
+    specific workspace_path context.
 
 Current State
 
-Впроваджено Agentic Reasoning Pipeline, що дозволяє моделі 1.5B вирішувати
-складні задачі через самокритику:
+An Agentic Reasoning Pipeline is implemented, allowing the 1.5B model to solve
+complex tasks through self-critique:
 
-1.  Concurrency Safety (GPU Locking): Реалізовано механізм замків
-    (asyncio.Lock). Тепер запити від Ghost Text та чату шикуються в чергу, що
-    запобігає краху CUDA при одночасному зверненні до пам'яті відеокарти.
-2.  Fast Mode: Пряма генерація відповіді для простих питань.
+1.  Concurrency Safety (GPU Locking): Implemented a locking mechanism
+    (asyncio.Lock). Requests from Ghost Text and Chat are queued, preventing
+    CUDA crashes during simultaneous VRAM access.
+2.  Fast Mode: Direct response generation for simple questions and quick
+    instructions.
 3.  Thinking Mode (Recursive Chain-of-Thought):
-      - Goal Analysis: Модель спочатку формулює стислу мету запиту, щоб тримати
-        "фокус" протягом усього циклу.
-      - Iterative Critique: Кожна відповідь перевіряється (логічно або через
-        ast.parse). Якщо результат не задовольняє мету, причина помилки
-        повертається в наступну ітерацію (до 3 спроб).
-      - Code Assembly: Для Intent 2 (Code) система генерує фрагменти за планом,
-        а окремий етап "Архітектора" збирає їх у фінальний файл, усуваючи
-        дублювання імпортів та функцій.
-4.  Robust Streaming: Фронтенд використовує текстовий буфер для збирання
-    розірваних JSON-пакетів, що забезпечує плавне відображення тексту
-    навіть при нестабільній швидкості генерації.
-5.  Safe Terminal: Команди генеруються з урахуванням технічних обмежень
-    середовища, відображаються користувачу для перевірки та виконуються
-    строго в робочій директорії проекту.
+      - Goal Analysis: The model first formulates a concise goal to maintain
+        "focus" throughout the entire cycle.
+      - Iterative Critique: Every response is verified (logically or via
+        ast.parse). If the result fails to meet the goal, the error reason is
+        fed back into the next iteration (up to 3 attempts).
+      - Code Assembly: For coding tasks, the system generates fragments based on
+        a plan. A final "Architect" stage assembles these fragments into a
+        single file, removing duplicate imports and functions.
+      - Attempt Transparency: The UI displays all reasoning cycles and attempts
+        separated by headers, allowing the user to compare different versions.
+4.  Robust Streaming: The frontend utilizes a text buffer to collect fragmented
+    JSON packets, ensuring smooth text rendering even during unstable generation
+    speeds.
+5.  Safe Terminal: Commands are generated based on environment constraints,
+    displayed for user verification, and executed strictly within the project's
+    working directory.
 
 Testing System (Benchmarks)
 
-Автоматизована пісочниця для перевірки стабільності архітектури.
+An automated sandbox designed to verify architectural stability and reasoning
+quality.
 
-  - Structure: Тематичні блоки (Алгоритми, CLI, Логіка).
-  - Runner: Створює ізольовані temp-директорії, виконує згенерований код та
-    перевіряє результат через assert.
-  - Current Metric: Фокус зміщений на успішність проходження циклу
-    самовиправлення (Success Rate після ретраїв).
+  - Structure: Thematic test suites (Algorithms, CLI, Logic).
+  - Runner: Creates isolated temp directories, executes generated code, and
+    verifies results via assert statements. Supports real-time CSV logging and
+    manual mode selection (fast vs. thinking).
+  - Metrics: Focuses on the Self-Correction Success Rate (success after
+    retries), processing time, and token usage.
+  - Warning Detection: Automatically detects if the AI output contains a
+    "Warning" badge, indicating failed internal verification.
 
 Technical Constraints & Solutions
 
-  - VRAM Limit (2GB): Вирішено через зменшення n_ctx до 2048 та n_batch до 128.
-    Це дозволяє уникнути out of memory при глибоких роздумах.
-  - Thread Safety: Вирішено через asyncio.to_thread та глобальний asyncio.Lock в
-    межах об'єкта Orchestrator, що робить локальний сервер стійким до
-    паралельних запитів від VS Code.
+  - VRAM Limit (2GB): Solved by reducing n_ctx to 2048 and n_batch to 128. This
+    prevents "Out of Memory" errors during deep reasoning cycles.
+  - Thread Safety: Resolved using asyncio.to_thread for the execution of
+    synchronous llama_cpp calls and a global asyncio.Lock within the
+    Orchestrator, making the local server stable under parallel requests from VS
+    Code.
+  - Instruction Adherence: Addressed by strictly limiting tokens in planning
+    stages and using specialized system prompts to prevent the 1.5B model from
+    looping or repeating instructions.

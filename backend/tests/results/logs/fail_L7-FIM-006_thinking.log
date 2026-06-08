@@ -1,0 +1,19 @@
+ERROR: Exec failed
+RESPONSE:
+
+
+---
+### Attempt 1
+```python
+import json
+from contextlib import contextmanager
+
+@contextmanager
+def load_user_data(file_path):
+    with open(file_path, 'r') as file:
+        data = json.load(file)
+    yield data
+
+with load_user_data('user_data.json') as users:
+    print([user['id'] for user in users if user['is_active']])
+```

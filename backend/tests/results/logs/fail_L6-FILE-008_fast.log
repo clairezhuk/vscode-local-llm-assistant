@@ -2,15 +2,13 @@ ERROR:
 RESPONSE:
 ```python
 def find_deepest_readme(tree):
-    def search(path, current):
-        if current is not None:
-            if 'test_README.md' in current:
-                return path
-            for key, value in current.items():
-                result = search(path + [key], value)
-                if result:
-                    return result
-        return None
-
-    return search([], tree)
+    def walk(tree, current_path=''):
+        if isinstance(tree, dict):
+            for key, value in tree.items():
+                path = walk(value, current_path + key + '\\')
+                if path is not None:
+                    return path
+        elif isinstance(tree, str) and tree == 'test_README.md':
+            return current_path
+    return walk(tree)
 ```

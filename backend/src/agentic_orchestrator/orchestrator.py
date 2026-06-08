@@ -34,8 +34,10 @@ class Orchestrator:
         return res
 
     def _extract_code(self, text):
-        text = text.split('```')[1] if '```' in text else text
-        for lang in ['python', 'bash', 'sh', 'javascript', 'typescript']:
+        if '```' in text:
+            blocks = text.split('```')
+            text = blocks[-2] if len(blocks) > 1 else blocks[0]
+        for lang in ['python', 'bash', 'sh', 'javascript', 'typescript', 'json']:
             if text.lower().startswith(lang):
                 text = text[len(lang):].strip()
         return text.strip().replace('`', '')
@@ -122,90 +124,79 @@ class Orchestrator:
         attempts = 0
         critique = ""
         success = False
-        final_result = ""
         self.workspace_path = workspace
 
-        # --- STEP 1: GOAL AND REQUAREMENTS ---
         yield json.dumps({"type": "status", "content": "Analyzing goal..."}) + "\n"
-        goal_info = await self._ask_llm("Analyze user request core goal", query, max_tokens=100)
+        goal_info = await self._ask_llm("Analyze core goal", query, max_tokens=100)
         goal_info = goal_info.split('\n')[0]
+        yield json.dumps({"type": "status", "content": f"Goal: {goal_info[:50]}..."}) + "\n"
 
-        yield json.dumps({"type": "status", "content": f"Goal identified: {goal_info[:50]}..."}) + "\n"
+        yield json.dumps({"type": "start_content"}) + "\n"
 
         while attempts < self.max_retries and not success:
             attempts += 1
-            yield json.dumps({"type": "status", "content": f"Thinking cycle {attempts}/{self.max_retries}..."}) + "\n"
+            yield json.dumps({"type": "status", "content": f"Cycle {attempts}/{self.max_retries}..."}) + "\n"
 
-            if intent == 1: # LEARN/EXPLAIN
-                # 1. Plan
+            separator = f"\n\n---\n### Attempt {attempts}\n"
+            yield json.dumps({"type": "chunk", "content": separator}) + "\n"
+
+            if intent == 1: # LEARN
                 plan = self.planner.generate_plan(f"Goal: {goal_info}", context)
                 yield json.dumps({"type": "plan", "content": plan}) + "\n"
-                # 2. Creating
-                yield json.dumps({"type": "start_content", "clear": True}) + "\n"
-                exec_prompt = f"Goal: {goal_info}. {critique}\nProvide a comprehensive answer based on the plan. Do not repeat the plan itself."
+                
+                exec_prompt = f"Goal: {goal_info}. {critique}\nProvide answer based on plan. Do not repeat plan."
                 prompt = self.context_manager.format_prompt("Technical Expert", exec_prompt, context)
+                
                 full_ans = ""
-                for token in self.engine.generate_stream(prompt):
-                    full_ans += token
-                    yield json.dumps({"type": "chunk", "content": token}) + "\n"
-                # 3. Verification
-                verify = await self._ask_llm("Does this answer the goal? YES/NO + reason", f"Goal: {goal_info}\nAnswer: {full_ans[:200]}", max_tokens=50)
+                async with self.lock:
+                    for token in self.engine.generate_stream(prompt):
+                        full_ans += token
+                        yield json.dumps({"type": "chunk", "content": token}) + "\n"
+                
+                verify = await self._ask_llm("Does this answer goal? YES/NO", f"Goal: {goal_info}\nAns: {full_ans[:200]}", max_tokens=50)
                 if "YES" in verify.upper(): success = True
-                else: critique = f"Previous attempt failed verification: {verify}"
+                else: critique = f"Previous failed: {verify}"
 
             elif intent == 3: # TERMINAL
-                # 1. Generation
-                cmd_prompt = f"Goal: {goal_info}. Requirements: {context}. {critique} Generate ONLY the terminal command."
-                cmd = await self._ask_llm("Terminal expert", cmd_prompt)
-                cmd = self._extract_code(cmd)
-                # 2. Verification goal and security
-                verify = await self._ask_llm("Security specialist", f"Goal: {goal_info}. Command: {cmd}. Will it work and is it safe? Answer YES or NO + reason.")
+                cmd_prompt = f"Goal: {goal_info}. {critique} Generate ONLY terminal command."
+                cmd_raw = await self._ask_llm("Terminal expert", cmd_prompt)
+                cmd = self._extract_code(cmd_raw)
+                
+                verify = await self._ask_llm("Safe? YES/NO", f"Cmd: {cmd}", max_tokens=50)
                 if "YES" in verify.upper():
                     self.pending_command = {"cmd": cmd, "cwd": workspace}
-                    yield json.dumps({"type": "start_content", "clear": True}) + "\n"
                     yield json.dumps({"type": "chunk", "content": f"Proposed command: `{cmd}`"}) + "\n"
                     yield json.dumps({"type": "command_proposal", "command": cmd}) + "\n"
                     success = True
-                else:
-                    critique = f"Command '{cmd}' rejected: {verify}"
+                else: critique = f"Rejected: {verify}"
 
-            elif intent == 2: # CODE GENERATION
-                # 1. Plan
+            elif intent == 2: # CODE
                 plan = self.planner.generate_plan(f"Goal: {goal_info}", context)
                 yield json.dumps({"type": "plan", "content": plan}) + "\n"
-                # 2. Steps
+                
                 fragments = []
                 for step in plan:
-                    yield json.dumps({"type": "status", "content": f"Working on: {step}"}) + "\n"
-                    f_prompt = f"Goal: {goal_info}. Task: {step}. Write ONLY the code fragment."
-                    res = await self._ask_llm("Senior Developer", f_prompt, max_tokens=400)
+                    yield json.dumps({"type": "status", "content": f"Step: {step}"}) + "\n"
+                    res = await self._ask_llm("Coder", f"Goal: {goal_info}. Step: {step}. Code only.", max_tokens=400)
                     fragments.append(self._extract_code(res))
-                # 3. Assembly
-                yield json.dumps({"type": "status", "content": "Assembling code..."}) + "\n"
-                assembly_prompt = f"Assemble these parts into a single valid Python file. Parts: {fragments}. Fix duplicates."
-                final_code = await self._ask_llm("Architect", assembly_prompt, max_tokens=1024)
-                final_code = self._extract_code(final_code)
                 
-                yield json.dumps({"type": "start_content", "clear": True}) + "\n"
+                yield json.dumps({"type": "status", "content": "Assembling..."}) + "\n"
+                assembly_prompt = f"Assemble: {fragments}. Goal: {goal_info}. Clean code only."
+                final_code_raw = await self._ask_llm("Architect", assembly_prompt, max_tokens=1024)
+                final_code = self._extract_code(final_code_raw)
+                
                 yield json.dumps({"type": "chunk", "content": f"```python\n{final_code}\n```"}) + "\n"
-                
-                # 4. Verification (Goal + Static check)
                 err = self._static_code_check(final_code)
                 if not err: success = True
-                else: critique = f"Fix syntax: {err}"
+                else: critique = f"Fix syntax/imports: {err}"
 
         if not success:
-            yield json.dumps({"type": "chunk", "content": "\n\n> ⚠️ **AI Warning:** Failed to fully verify this result after multiple cycles. Please check carefully."}) + "\n"
-        
+            yield json.dumps({"type": "chunk", "content": "\n\n> ⚠️ **AI Warning:** Verification failed after max retries."}) + "\n"
         yield json.dumps({"type": "end"}) + "\n"
 
 
     async def process_completion(self, prompt_text: str) -> dict:
         prompt = f"<|fim_prefix|>{prompt_text}<|fim_suffix|><|fim_middle|>"
         async with self.lock:
-            result = self.engine.generate(
-                prompt, 
-                max_tokens=32, 
-                stop=["<|file_separator|>", "<|fim_prefix|>", "<|im_end|>", "\n\n", "\r\n\r\n"]
-            )
+            result = await asyncio.to_thread(self.engine.generate, prompt, max_tokens=32, stop=["<|im_end|>", "\n\n"])
         return result

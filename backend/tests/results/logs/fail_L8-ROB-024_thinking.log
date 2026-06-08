@@ -1,0 +1,103 @@
+ERROR: Exec failed
+RESPONSE:
+
+
+---
+### Attempt 1
+```python
+import numpy as np
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
+from sklearn.linear_model import LinearRegression
+from sklearn.metrics import mean_squared_error
+import os
+def find_all_files(workspace):
+    return [os.path.join(root, filename) for root, dirs, filenames in os.walk(workspace) for filename in filenames]
+def filter_files(directory, extensions, min_size):
+    return [file for file in os.listdir(directory) if file.endswith(extensions) and os.path.getsize(os.path.join(directory, file)) >= min_size]
+def handle_errors_and_edge_cases():
+    try:
+        result = 10 / 0
+        print("Result:", result)
+    except ZeroDivisionError:
+        print("Error: Division by zero is not allowed.")
+    except Exception as e:
+        print("An error occurred:", e)
+    else:
+        print("Operation completed successfully.")
+    finally:
+        print("This block will always execute.")
+```
+
+---
+### Attempt 2
+```python
+import os
+
+# Get the current working directory
+current_directory = os.getcwd()
+
+# List all files and directories in the current directory
+files_and_directories = os.listdir(current_directory)
+
+# Print the list of files and directories
+for item in files_and_directories:
+    print(item)
+
+# Define the format of the content of interest
+content_format = 'your_format_here'  # e.g., 'text', 'html', 'json'
+
+# List of files to process
+files_to_process = ['file1.txt', 'file2.html', 'file3.json']
+
+# Function to process a single file
+def process_file(file_path):
+    with open(file_path, 'r', encoding='utf-8') as file:
+        content = file.read()
+
+        if content_format == 'text':
+            # Extract text content
+            print(f"Text content of {file_path}:")
+            print(content)
+        elif content_format == 'html':
+            # Extract HTML content
+            print(f"HTML content of {file_path}:")
+            print(content)
+        elif content_format == 'json':
+            # Extract JSON content
+            print(f"JSON content of {file_path}:")
+            print(content)
+        else:
+            print(f"Unsupported content format: {content_format}")
+
+# Process each file
+for file in files_to_process:
+    process_file(file)
+```
+
+---
+### Attempt 3
+```python
+import os
+from shutil import copytree
+
+# Define the path of the workspace directory
+workspace_path = 'Workspace'
+
+# Define the path of the files_context directory
+files_context_path = os.path.join(workspace_path, 'files_context')
+
+# Create the files_context directory if it does not exist
+if not os.path.exists(files_context_path):
+    os.makedirs(files_context_path)
+
+# Define the source and destination directories
+src_dir = 'Files Context'
+dst_dir = 'New Directory'
+
+# Copy all files and subdirectories from src_dir to dst_dir
+copytree(src_dir, dst_dir)
+```
+
+> ⚠️ **AI Warning:** Verification failed after max retries.

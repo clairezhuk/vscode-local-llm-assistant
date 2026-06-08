@@ -1,0 +1,19 @@
+ERROR: NameError: name 'post_data' is not defined
+RESPONSE:
+
+
+---
+### Attempt 1
+```python
+import requests
+
+def post_to_url(url, data, token):
+    # Create headers with the token in the Authorization header
+    headers = {
+        'Authorization': f'Bearer {token}'
+    }
+    # Send a POST request to the specified URL with the data and headers
+    response = requests.post(url, json=data, headers=headers)
+    # Return the response from the server
+    return response
+```

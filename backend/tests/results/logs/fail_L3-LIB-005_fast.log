@@ -1,0 +1,19 @@
+ERROR: Exec failed
+RESPONSE:
+```python
+import pandas as pd
+
+def fill_nan_with_median(df):
+    """
+    Fills all NaN values in a DataFrame with the median of their respective columns.
+    
+    Args:
+    df (pd.DataFrame): The input DataFrame with potential NaN values.
+    
+    Returns:
+    pd.DataFrame: The DataFrame with NaN values filled with the median of their respective columns.
+    """
+    median_values = df.median()
+    df.fillna(median_values, inplace=True)
+    return df
+```

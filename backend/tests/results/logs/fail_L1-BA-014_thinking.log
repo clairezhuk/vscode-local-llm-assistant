@@ -1,0 +1,30 @@
+ERROR: NameError: name 'pole_prostokata' is not defined
+RESPONSE:
+
+
+---
+### Attempt 1
+```python
+import os
+import subprocess
+import numpy as np
+
+# Check if Python is installed and install if not
+python_installed = subprocess.check_output(['python', '--version'], text=True).strip().startswith('Python')
+if not python_installed:
+    os.system('python3 -m ensurepip')
+    os.system('python3 -m pip install --upgrade pip')
+
+# Check if pip is installed and install if not
+pip_installed = subprocess.check_output(['pip', '--version'], text=True).strip().startswith('pip')
+if not pip_installed:
+    os.system('python3 -m ensurepip')
+    os.system('python3 -m pip install --upgrade pip')
+
+# Open files directory
+os.startfile(os.path.expanduser('~\\Documents'))
+
+# Example data
+data = np.array([[1, 2, 3], [4, 5, 6], [7, 8, 9]])
+np.savetxt('results.txt', data, delimiter=',', header='Column1,Column2,Column3')
+```

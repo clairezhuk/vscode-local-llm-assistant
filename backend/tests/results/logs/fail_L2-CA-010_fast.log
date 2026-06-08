@@ -1,0 +1,16 @@
+ERROR: 
+RESPONSE:
+```python
+import math
+
+def assign_clusters(points, centroids):
+    def euclidean_distance(point, centroid):
+        return math.sqrt(sum((point[i] - centroid[i]) ** 2 for i in range(len(point))))
+
+    clusters = []
+    for point in points:
+        distances = [euclidean_distance(point, centroid) for centroid in centroids]
+        closest_index = distances.index(min(distances))
+        clusters.append(closest_index)
+    return clusters
+```

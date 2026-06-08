@@ -1,18 +1,9 @@
-ERROR: No code block
+ERROR: Exec failed
 RESPONSE:
-```bash
-#!/bin/bash
-
-# Define the input and output file paths
-input_file="server.log"
-output_file="errors.log"
-
-# Open the input file in read mode
-while IFS= read -r line; do
-    # Check if the line contains the error message
-    if [[ $line == *"[ERROR]"* ]]; then
-        # Append the line to the output file
-        echo "$line" >> "$output_file"
-    fi
-done < "$input_file"
+```python
+with open('server.log', 'r') as file:
+    with open('errors.log', 'w') as error_file:
+        for line in file:
+            if '[ERROR]' in line:
+                error_file.write(line)
 ```
