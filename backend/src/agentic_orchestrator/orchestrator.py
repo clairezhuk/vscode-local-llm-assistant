@@ -42,13 +42,26 @@ class Orchestrator:
         return res
 
     def _extract_code(self, text):
-        if '```' in text:
-            blocks = text.split('```')
-            text = blocks[-2] if len(blocks) > 1 else blocks[0]
-        for lang in ['python', 'bash', 'sh', 'javascript', 'typescript', 'json']:
-            if text.lower().startswith(lang):
-                text = text[len(lang):].strip()
-        return text.strip().replace('`', '')
+        blocks = re.findall(r'```(?:\w+)?\s*(.*?)\s*```', text, re.DOTALL)      
+        if blocks:
+            code = blocks[-1]
+        else:
+            code = text.strip()
+        noise_patterns = [
+            r'^\s*#?\s*Step\s*\d+:.*$',      
+            r'^\s*#?\s*Attempt\s*\d+:.*$',   
+            r'^\s*---.*$',                   
+            r'^\s*###.*$',                   
+            r'^.*Code only.*$',              
+            r'^.*Assembling.*$'             
+        ]       
+        lines = code.split('\n')
+        clean_lines = []
+        for line in lines:
+            if any(re.match(pattern, line, re.IGNORECASE) for pattern in noise_patterns):
+                continue
+            clean_lines.append(line)          
+        return '\n'.join(clean_lines).strip()
 
     def execute_confirmed(self):
         if not self.pending_command:
@@ -138,9 +151,9 @@ class Orchestrator:
         yield json.dumps({"type": "status", "content": "Fast processing..."}) + "\n"
         sys_prompts = {
             1: "You are a helpful assistant. Explain clearly. Do not run commands.",
-            2: "You are a coding assistant. \nWrite ONLY the code inside a markdown block. All code must be self-contained and use 'return'.",
-            3: "You are a terminal assistant. Write ONLY the EXACT terminal command inside a markdown block. No explanations."
-        }
+            2: "You are a coding assistant. Use Python unless specified otherwise. \nWrite ONLY the code inside a markdown block. All code must be self-contained and use 'return'.",
+            3: r"You are a terminal assistant. Write ONLY the EXACT terminal command inside a markdown block. No explanations. NEVER hardcode absolute paths like 'C:\Users\...' in the code. Always use relative paths or function parameters."
+            }
         prompt = self.context_manager.format_prompt(sys_prompts[intent], query, context)
         
         yield json.dumps({"type": "start_content"}) + "\n"
@@ -187,7 +200,10 @@ class Orchestrator:
                 else: critique = f"Improve response: {verify}"
 
             elif intent == 3: # TERMINAL
-                cmd_prompt = f"Goal: {goal_info}. {critique} Generate ONLY terminal command."
+                cmd_prompt = f"Goal: {goal_info}. {critique} Generate ONLY terminal command."\
+                    r"NEVER hardcode absolute paths like 'C:\Users\...' in the code. Always use relative " \
+                    "paths or function parameters. IMPORTANT: Use relative paths for file operations. " \
+                    r"The environment is Linux-based Docker."
                 cmd_raw = await self._ask_llm("Terminal expert", cmd_prompt)
                 cmd = self._extract_code(cmd_raw)
                 
@@ -202,19 +218,37 @@ class Orchestrator:
             elif intent == 2: # CODE
                 plan = self.planner.generate_plan(f"Goal: {goal_info}", context)
                 final_code = ""
+                target_func = re.search(r'([a-zA-Z0-9_]+)\(', query)
+                func_hint = f"Use exactly the name '{target_func.group(1)}' and argument order from the Task." if target_func else ""
                 if len(plan) <= 1:
                     yield json.dumps({"type": "status", "content": "Generating solution..."}) + "\n"
-                    res = await self._ask_llm("Senior Developer", f"Goal: {goal_info}. {critique}\nWrite clean, simple code with all imports.", max_tokens=800, temp=0.1)
+                    res = await self._ask_llm("Senior Python Developer", 
+                        f"Task: {query}. {func_hint}\nWrite ONLY the implementation. {critique}", 
+                        temp=0.1)
                     final_code = self._extract_code(res)
                 else:
                     yield json.dumps({"type": "plan", "content": plan}) + "\n"
                     fragments = []
                     for step in plan:
-                        res = await self._ask_llm("Coder", f"Goal: {goal_info}. Step: {step}. Code only.", max_tokens=400, temp=0.1)
+                        res = await self._ask_llm("Coder", f"Goal: {goal_info}. Step: {step}. Code only." \
+                            "Your output must be PURE code. DO NOT include comments like 'Step 1' or 'Final implementation'. " \
+                            "If I see the word 'Step' inside the code, it's a failure.",
+                            max_tokens=400, temp=0.1)
                         fragments.append(self._extract_code(res))
                     yield json.dumps({"type": "status", "content": "Assembling..."}) + "\n"
-                    assembly_prompt = f"Goal: {goal_info}. Join these fragments into one clean file. Fix missing imports:\n{fragments}"
-                    final_code_raw = await self._ask_llm("Architect", assembly_prompt, max_tokens=1024, temp=0.1)
+                    assembly_prompt = (
+                        f"Task: {query}. Below is a rough draft consisting of code fragments. "
+                        f"Your job is to refine these fragments into a single, clean, and fully functional Python file. "
+                        f"Fix any missing imports, logical inconsistencies, or syntax errors. "
+                        f"When using libraries, always use standard aliases: import numpy as np, import pandas as pd, "
+                        f"import torch.nn as nn, import matplotlib.pyplot as plt. "
+                        f"Your function MUST be named exactly as requested. Check the task description again before finalizing. "
+                        f"{func_hint}\n\n"
+                        "IMPORTANT: Use relative paths for file operations. The environment is Linux-based Docker."
+                        f"Draft fragments:\n{fragments}\n\n"
+                        f"Final code only (no explanations):"
+                    )
+                    final_code_raw = await self._ask_llm("Python Architect", assembly_prompt, max_tokens=1024, temp=0.1)
                     final_code = self._extract_code(final_code_raw)
                 
                 yield json.dumps({"type": "chunk", "content": f"\n```python\n{final_code}\n```\n"}) + "\n"

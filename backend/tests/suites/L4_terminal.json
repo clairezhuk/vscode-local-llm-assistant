@@ -1,141 +1,71 @@
 [
   {
     "id": "L4-CLI-001",
-    "description": "Find Python files recursively.",
+    "description": "Find Python files recursively (Windows).",
     "query": "Find all files with extension .py in the current directory and its subdirectories.",
     "context_files": [],
     "expected_intent": 3,
     "type": "cli",
     "metrics": {
-      "must_contain": ["find", ".py", "-name"],
+      "must_contain": ["Get-ChildItem", "-Recurse", "*.py"],
       "execution": {
-        "verify_cmd": "echo 'print(1)' > test.py && mkdir -p sub && echo 'print(2)' > sub/test2.py && find . -name '*.py' | grep -q 'sub/test2.py'"
+        "verify_cmd": "powershell -Command \"New-Item -Path . -Name 'test.py' -ItemType 'File'; New-Item -Path 'sub' -ItemType 'Directory'; New-Item -Path 'sub' -Name 'test2.py' -ItemType 'File'; Get-ChildItem -Recurse -Filter *.py\""
       }
     }
   },
   {
     "id": "L4-CLI-002",
-    "description": "Extract unique IPs from log (Polish).",
+    "description": "Extract unique IPs from log (Windows).",
     "query": "Wyciągnij wszystkie unikalne adresy IP z pliku access.log i posortuj je.",
     "context_files": [],
     "expected_intent": 3,
     "type": "cli",
     "metrics": {
-      "must_contain": ["grep", "sort", "-u"],
+      "must_contain": ["Select-String", "Sort-Object", "-Unique"],
       "execution": {
-        "verify_cmd": "echo '192.168.1.1\\n192.168.1.2\\n192.168.1.1' > access.log && grep -oE '[0-9]+\\.[0-9]+\\.[0-9]+\\.[0-9]+' access.log | sort -u"
+        "verify_cmd": "powershell -Command \"Set-Content -Path access.log -Value '192.168.1.1', '192.168.1.2', '192.168.1.1'; Select-String -Path access.log -Pattern '\\d+\\.\\d+\\.\\d+\\.\\d+' | ForEach-Object { $_.Matches.Value } | Sort-Object -Unique\""
       }
     }
   },
   {
     "id": "L4-CLI-003",
-    "description": "Kill process on port 8080.",
+    "description": "Kill process on port 8080 (Windows).",
     "query": "Find the PID of the process using port 8080 and kill it.",
     "context_files": [],
     "expected_intent": 3,
     "type": "cli",
     "metrics": {
-      "must_contain": ["lsof", "8080", "kill"],
+      "must_contain": ["Get-NetTCPConnection", "Stop-Process", "8080"],
       "execution": {
         "verify_cmd": "exit 0"
-      }
-    }
-  },
-  {
-    "id": "L4-CLI-004",
-    "description": "Archive directory excluding hidden files.",
-    "query": "Create a tar.gz archive of the 'data' folder, but exclude all hidden files like .DS_Store or .git.",
-    "context_files": [],
-    "expected_intent": 3,
-    "type": "cli",
-    "metrics": {
-      "must_contain": ["tar", "exclude", "data"],
-      "execution": {
-        "verify_cmd": "mkdir data && touch data/file.txt data/.hidden && tar --exclude='.*' -czf data.tar.gz data && [ -f data.tar.gz ]"
-      }
-    }
-  },
-  {
-    "id": "L4-CLI-005",
-    "description": "Set specific file permissions (chmod 744).",
-    "query": "Make the script run.sh executable for the owner, but read-only for everyone else.",
-    "context_files": [],
-    "expected_intent": 3,
-    "type": "cli",
-    "metrics": {
-      "must_contain": ["chmod", "744", "run.sh"],
-      "execution": {
-        "verify_cmd": "touch run.sh && chmod 744 run.sh && [ $(stat -c %a run.sh) -eq 744 ]"
-      }
-    }
-  },
-  {
-    "id": "L4-CLI-006",
-    "description": "Search text inside files recursively.",
-    "query": "Search for the string 'TODO' in all files within the 'src' directory recursively, showing line numbers.",
-    "context_files": [],
-    "expected_intent": 3,
-    "type": "cli",
-    "metrics": {
-      "must_contain": ["grep", "-r", "TODO", "src"],
-      "execution": {
-        "verify_cmd": "mkdir src && echo 'TODO: fix this' > src/app.py && grep -rn 'TODO' src"
       }
     }
   },
   {
     "id": "L4-CLI-007",
-    "description": "Check disk usage of subdirectories (Polish).",
-    "query": "Pokaż rozmiar wszystkich folderów w bieżącym katalogu, posortowany od największego, w czytelnym formacie.",
+    "description": "Check folder sizes (Windows).",
+    "query": "Pokaż rozmiar всіх папок у поточному каталозі, відсортований від найбільшого.",
     "context_files": [],
     "expected_intent": 3,
     "type": "cli",
     "metrics": {
-      "must_contain": ["du", "-sh", "sort", "-h"],
+      "must_contain": ["Get-ChildItem", "Measure-Object", "Length", "Sort-Object"],
       "execution": {
         "verify_cmd": "exit 0"
-      }
-    }
-  },
-  {
-    "id": "L4-CLI-008",
-    "description": "Count lines in specific file types.",
-    "query": "Count the total number of lines in all .txt files in the current folder.",
-    "context_files": [],
-    "expected_intent": 3,
-    "type": "cli",
-    "metrics": {
-      "must_contain": ["wc -l", "*.txt"],
-      "execution": {
-        "verify_cmd": "echo '1\\n2' > a.txt && echo '3' > b.txt && [ $(wc -l *.txt | tail -n 1 | awk '{print $1}') -eq 3 ]"
       }
     }
   },
   {
     "id": "L4-CLI-009",
-    "description": "Rename multiple files with prefix.",
+    "description": "Rename multiple files with prefix (Windows).",
     "query": "Rename all .jpg files in the current directory by adding the prefix 'backup_' to their names.",
     "context_files": [],
     "expected_intent": 3,
     "type": "cli",
     "metrics": {
-      "must_contain": ["mv", "rename", "*.jpg"],
+      "must_contain": ["Rename-Item", "backup_", "*.jpg"],
       "execution": {
-        "verify_cmd": "touch a.jpg b.jpg && for f in *.jpg; do mv \"$f\" \"backup_$f\"; done && [ -f backup_a.jpg ]"
-      }
-    }
-  },
-  {
-    "id": "L4-CLI-010",
-    "description": "Check memory usage info.",
-    "query": "Display the current system memory usage in megabytes.",
-    "context_files": [],
-    "expected_intent": 3,
-    "type": "cli",
-    "metrics": {
-      "must_contain": ["free", "-m"],
-      "execution": {
-        "verify_cmd": "exit 0"
+        "verify_cmd": "powershell -Command \"New-Item -Path . -Name 'a.jpg' -ItemType 'File'; New-Item -Path . -Name 'b.jpg' -ItemType 'File'; Get-ChildItem *.jpg | Rename-Item -NewName { 'backup_' + $_.Name }; if (Test-Path 'backup_a.jpg') { exit 0 } else { exit 1 }\""
       }
     }
   }

@@ -1,4 +1,6 @@
-ERROR: Exec failed
+ERROR: File "/app/exec.py", line 21
+    assert u.name == 'A'
+SyntaxError: expected 'except' or 'finally' block
 RESPONSE:
 ```python
 class User:
@@ -6,8 +8,15 @@ class User:
         self.name = name
         self.email = email
 
-# Example usage
-user1 = User("John Doe", "john.doe@example.com")
-print(user1.name)  # Output: John Doe
-print(user1.email)  # Output: john.doe@example.com
+    def get_name(self):
+        return self.name
+
+    def set_name(self, name):
+        self.name = name
+
+    def get_email(self):
+        return self.email
+
+    def set_email(self, email):
+        self.email = email
 ```

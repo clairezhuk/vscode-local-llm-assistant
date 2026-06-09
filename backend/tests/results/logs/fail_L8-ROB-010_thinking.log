@@ -7,14 +7,5 @@ RESPONSE:
 
 ```python
 def sum_numbers(numbers):
-    return sum(numbers)
-
-# Verify the result of sum_numbers([1, 2, 3]) should be 6.
-assert sum_numbers([1, 2, 3]) == 6
-
-# Verify the result of sum_numbers([-1, -2, -3]) should be -6.
-assert sum_numbers([-1, -2, -3]) == -6
-
-# Verify the result of sum_numbers([]) should be 0.
-assert sum_numbers([]) == 0
+    return sum(int(num) for num in numbers)
 ```

@@ -1,4 +1,7 @@
-ERROR: Exec failed
+ERROR: File "/app/exec.py", line 4
+    grep -E '\\[ERROR\\]' server.log > errors.log
+            ^^^^^^^^^^^^^
+SyntaxError: invalid syntax
 RESPONSE:
 
 
@@ -8,13 +11,8 @@ RESPONSE:
 ```python
 #!/bin/bash
 
-# Read server.log line by line
-while IFS= read -r line; do
-    # Check if the line contains [ERROR]
-    if [[ $line == *"[ERROR]"* ]]; then 
-        echo "Error: $line"
-    fi
-done < server.log
+# Read server.log and extract lines containing [ERROR]
+grep -E '\\[ERROR\\]' server.log > errors.log
 ```
 
 
@@ -24,13 +22,8 @@ done < server.log
 ```python
 #!/bin/bash
 
-# Read server.log line by line
-while IFS= read -r line; do
-    # Check if the line contains [ERROR]
-    if [[ $line == *"[ERROR]"* ]]; then
-        echo "Fix this: SyntaxError: invalid syntax. Maybe you meant '==' or ':=' instead of '='? (<unknown>, line 4)"
-    fi
-done < server.log
+# Read server.log and extract lines containing [ERROR]
+grep -E '\\[ERROR\\]' server.log > errors.log
 ```
 
 
@@ -40,13 +33,8 @@ done < server.log
 ```python
 #!/bin/bash
 
-# Read server.log line by line
-while IFS= read -r line; do
-    # Check if the line contains [ERROR]
-    if [[ $line == *"[ERROR]"* ]]; then
-        echo "Error found: $line"
-    fi
-done < server.log
+# Read server.log and extract lines containing [ERROR]
+grep -E '\\[ERROR\\]' server.log > errors.log
 ```
 
 

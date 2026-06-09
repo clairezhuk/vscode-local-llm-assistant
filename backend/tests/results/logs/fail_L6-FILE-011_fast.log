@@ -1,24 +1,31 @@
-ERROR: Exec failed
+ERROR: Traceback (most recent call last):
+  File "/app/exec.py", line 21, in <module>
+    average_amount = calculate_average_amount(file_path)
+  File "/app/exec.py", line 7, in calculate_average_amount
+    with open(file_path, mode='r', newline='') as file:
+FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\user\\AppData\\Local\\Temp\tmpp3pchih4\\sales.csv'
 RESPONSE:
 ```python
 import csv
 
-def calculate_average_amount():
-    with open('C:\\Users\\user\\AppData\\Local\\Temp\\tmp4k7ozv8u/sales.csv', mode='r') as file:
+def calculate_average_amount(file_path):
+    total_amount = 0
+    count = 0
+    
+    with open(file_path, mode='r', newline='') as file:
         reader = csv.DictReader(file)
-        total_amount = 0
-        count = 0
         for row in reader:
             amount = float(row['Amount'])
             total_amount += amount
             count += 1
+    
     if count > 0:
         average_amount = total_amount / count
         return average_amount
     else:
         return None
 
-# Example usage
-average = calculate_average_amount()
-print(f"The average value of the 'Amount' column is: {average}")
+file_path = 'C:\\Users\\user\\AppData\\Local\\Temp\tmpp3pchih4\\sales.csv'
+average_amount = calculate_average_amount(file_path)
+print(f"The average amount is: {average_amount}")
 ```

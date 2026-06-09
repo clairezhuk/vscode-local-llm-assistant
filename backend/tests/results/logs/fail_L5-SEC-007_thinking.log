@@ -9,9 +9,5 @@ RESPONSE:
 import os
 
 def get_safe_path(base_dir, user_file):
-    # Check if the user file starts with the absolute path of the base directory using os.path.abspath(base_dir)
-    if user_file.startswith(os.path.abspath(base_dir)):
-        return os.path.abspath(user_file)
-    else:
-        return None  # Return None if the condition is false'
+    return os.path.abspath(os.path.join(base_dir, user_file)) if user_file.startswith(base_dir) else None
 ```

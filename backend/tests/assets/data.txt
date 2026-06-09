@@ -1,0 +1,1 @@
+This is a test file encoded in UTF-16 with some special characters: ©®µ.

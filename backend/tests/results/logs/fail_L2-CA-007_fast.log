@@ -1,11 +1,28 @@
-ERROR: Exec failed
+ERROR: File "/app/exec.py", line 25
+    data = '[2023-10-01 10:00:00] [INFO] Start
+           ^
+SyntaxError: unterminated string literal (detected at line 25)
 RESPONSE:
 ```python
 import re
 
 def parse_log_errors(logs):
-    pattern = r'\[(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2})\] (ERROR) (.+)'
+    # Regular expression to match the log entry format
+    pattern = r'\[(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2})\] \[ERROR\] (.+)'
+    
+    # Find all matches in the logs
     matches = re.findall(pattern, logs)
     
-    return [{'date': date, 'message': message} for date, message in matches]
+    # Convert matches to a list of dictionaries
+    log_entries = [{'date': date, 'message': message} for date, message in matches]
+    
+    return log_entries
+
+# Example usage:
+logs = """
+2023-10-05 14:30:00 [ERROR] Connection failed to server
+2023-10-05 14:31:00 [INFO] Server is up and running
+2023-10-05 14:32:00 [ERROR] Network issue detected
+"""
+print(parse_log_errors(logs))
 ```

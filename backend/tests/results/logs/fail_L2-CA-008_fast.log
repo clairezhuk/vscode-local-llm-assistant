@@ -1,7 +1,7 @@
-ERROR: 
+ERROR: FAIL:
 RESPONSE:
 ```python
 def ucb1(node_win_rate, node_visits, total_parent_visits, exploration_weight=1.41):
     # Calculate the UCB1 score using the formula: UCB1 = win_rate + exploration_weight * sqrt(log(total_parent_visits) / node_visits)
-    return node_win_rate + exploration_weight * (0.5 * (1 + 2 * node_visits / total_parent_visits)) ** 0.5
+    return node_win_rate + exploration_weight * (0.5 * (1 + 2 * node_visits / total_parent_visits)**0.5)
 ```

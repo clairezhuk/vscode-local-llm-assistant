@@ -1,4 +1,4 @@
-ERROR: Exec failed
+ERROR: Passed
 RESPONSE:
 
 
@@ -8,25 +8,20 @@ RESPONSE:
 ```python
 import sqlite3
 
-# Step 2: Connect to the SQLite database using sqlite3.connect()
-conn = sqlite3.connect('example.db')
+def execute(query, params):
+    conn = sqlite3.connect('example.db')
+    cursor = conn.cursor()
+    
+    try:
+        cursor.execute(query, params)
+        conn.commit()
+        return "Query executed successfully"
+    except Exception as e:
+        print(f"Error executing query: {e}")
+        return f"Failed to execute query: {e}"
+    finally:
+        conn.close()
 
-# Step 3: Create a cursor object using the cursor() method of the connection object
-cursor = conn.cursor()
-
-# Prepare the SQL query with placeholders for user input
-query = "SELECT * FROM users WHERE username = ? AND password = ?"
-
-# User input (replace with actual values)
-username = 'admin'
-password = 'secure_password'
-
-# Execute the prepared statement with user input
-cursor.execute(query, (username, password))
-
-# Fetch the results
-results = cursor.fetchall()
-
-# Close the connection
-conn.close()
+# Example usage
+print(execute("SELECT * FROM users WHERE username = ? AND password = ?", ('admin', 'securepassword')))
 ```

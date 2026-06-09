@@ -1,11 +1,16 @@
-ERROR: Exec failed
+ERROR: NameError: name 'get_metrics' is not defined
 RESPONSE:
 ```python
 from sklearn.metrics import mean_squared_error, r2_score
 
-# Assuming 'y_true' and 'y_pred' are the true and predicted values respectively
-mse = mean_squared_error(y_true, y_pred)
-r2 = r2_score(y_true, y_pred)
+def compute_metrics(y_true, y_pred):
+    mse = mean_squared_error(y_true, y_pred)
+    r2 = r2_score(y_true, y_pred)
+    return (mse, r2)
 
-return mse, r2
+# Example usage:
+true_labels = [1, 2, 3, 4, 5]
+predicted_values = [1.1, 2.2, 3.3, 4.4, 5.5]
+metrics = compute_metrics(true_labels, predicted_values)
+print(metrics)  # Output: (0.0, 1.0)
 ```

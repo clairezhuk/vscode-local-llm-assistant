@@ -1,4 +1,6 @@
-ERROR: Exec failed
+ERROR: File "/app/exec.py", line 8
+    assert reverse_logic(text) == 'olleh'
+SyntaxError: expected 'except' or 'finally' block
 RESPONSE:
 
 
@@ -6,7 +8,7 @@ RESPONSE:
 ### Attempt 1
 
 ```python
-input_text = input().split()
-reversed_words = [word[::-1] for word in input_text]
-print(reversed_words)
+input_text = input()
+reversed_texts = [text[::-1] for text in input_text.split()]
+print(reversed_texts)
 ```

@@ -1,37 +1,67 @@
 id,processing_type,time_s,intent,format_ok,exec_ok,exec_msg,warning
-L6-FILE-001,fast,8.64,2,False,False,No code block,False
-L6-FILE-001,thinking,19.15,2,False,False,,False
-L6-ANALYSIS-002,fast,13.75,1,False,,N/A,False
-L6-ANALYSIS-002,thinking,8.97,1,False,,N/A,False
-L6-FILE-003,fast,6.67,2,True,False,Exec failed,False
-L6-FILE-003,thinking,22.43,2,False,False,Exec failed,True
-L6-CLI-004,fast,2.3,3,True,,N/A,False
-L6-CLI-004,thinking,3.35,3,True,,N/A,False
-L6-ANALYSIS-005,fast,5.81,1,False,,N/A,False
-L6-ANALYSIS-005,thinking,5.84,1,False,,N/A,False
-L6-FILE-006,fast,15.46,2,True,False,Exec failed,False
-L6-FILE-006,thinking,243.62,2,False,False,Exec failed,True
-L6-ANALYSIS-007,fast,4.72,1,False,,N/A,False
-L6-ANALYSIS-007,thinking,41.25,1,False,,N/A,False
-L6-FILE-008,fast,12.54,2,False,False,KeyError: 'left',False
-L6-FILE-008,thinking,34.87,2,False,False,,False
-L6-CLI-009,fast,3.61,3,False,,N/A,False
-L6-CLI-009,thinking,3.61,3,False,,N/A,False
-L6-ANALYSIS-010,fast,17.09,1,False,,N/A,False
-L6-ANALYSIS-010,thinking,19.84,1,False,,N/A,False
-L6-FILE-011,fast,11.83,2,True,False,Exec failed,False
-L6-FILE-011,thinking,109.59,2,True,False,Exec failed,False
-L6-ANALYSIS-012,fast,38.9,1,False,,N/A,False
-L6-ANALYSIS-012,thinking,7.17,1,False,,N/A,False
-L6-FILE-013,fast,14.48,2,False,False,Exec failed,False
-L6-FILE-013,thinking,54.45,2,False,False,NameError: name 'process_timestamps' is not defined,False
-L6-ANALYSIS-014,fast,23.37,1,False,,N/A,False
-L6-ANALYSIS-014,thinking,26.93,1,False,,N/A,False
-L6-FILE-015,fast,6.4,2,True,True,Passed,False
-L6-FILE-015,thinking,43.07,2,True,True,Passed,False
-L6-FILE-016,fast,7.05,2,True,False,Exec failed,False
-L6-FILE-016,thinking,38.4,2,True,False,Exec failed,False
-L6-FILE-017,fast,8.22,2,False,False,,False
-L6-FILE-017,thinking,36.55,2,False,False,Exec failed,True
-L6-FILE-018,fast,10.95,2,False,False,Exec failed,False
-L6-FILE-018,thinking,34.12,2,True,False,Exec failed,False
+L6-FILE-001,fast,9.46,2,True,True,Passed,False
+L6-FILE-001,thinking,54.98,2,True,True,Passed,True
+L6-ANALYSIS-002,fast,5.42,1,True,,N/A,False
+L6-ANALYSIS-002,thinking,7.22,1,False,,N/A,False
+L6-FILE-003,fast,8.25,2,True,False,FAIL:,False
+L6-FILE-003,thinking,48.22,2,False,False,"File ""/app/exec.py"", line 4
+    grep -E '\\[ERROR\\]' server.log > errors.log
+            ^^^^^^^^^^^^^
+SyntaxError: invalid syntax",True
+L6-CLI-004,fast,3.33,3,True,,N/A,False
+L6-CLI-004,thinking,3.47,3,True,,N/A,False
+L6-ANALYSIS-005,fast,7.8,1,False,,N/A,False
+L6-ANALYSIS-005,thinking,9.94,1,False,,N/A,False
+L6-FILE-006,fast,13.79,2,True,False,FAIL:,False
+L6-FILE-006,thinking,196.59,2,False,False,"File ""/app/exec.py"", line 7
+    new_name = f""{datetime.datetime.now().strftime(\'%Y%m%d%H%M%S\')}_{file_path.name}""
+                                                                                       ^
+SyntaxError: f-string expression part cannot include a backslash",True
+L6-ANALYSIS-007,fast,4.67,1,True,,N/A,False
+L6-ANALYSIS-007,thinking,28.83,1,False,,N/A,False
+L6-FILE-008,fast,10.02,2,False,False,FAIL:,False
+L6-FILE-008,thinking,69.73,2,False,False,FAIL:,False
+L6-CLI-009,fast,3.28,3,True,,N/A,False
+L6-CLI-009,thinking,4.21,3,False,,N/A,False
+L6-ANALYSIS-010,fast,5.39,1,True,,N/A,False
+L6-ANALYSIS-010,thinking,6.92,1,True,,N/A,False
+L6-FILE-011,fast,12.12,2,True,False,"Traceback (most recent call last):
+  File ""/app/exec.py"", line 21, in <module>
+    average_amount = calculate_average_amount(file_path)
+  File ""/app/exec.py"", line 7, in calculate_average_amount
+    with open(file_path, mode='r', newline='') as file:
+FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\user\\AppData\\Local\\Temp\tmpp3pchih4\\sales.csv'",False
+L6-FILE-011,thinking,29.93,2,False,False,"200.0
+FAIL:",False
+L6-ANALYSIS-012,fast,19.73,1,True,,N/A,False
+L6-ANALYSIS-012,thinking,9.41,1,True,,N/A,False
+L6-FILE-013,fast,15.33,2,False,False,"Formatted date: 2023-10-15
+Traceback (most recent call last):
+  File ""/app/exec.py"", line 19, in <module>
+    is_valid = validate_timestamp(valid_timestamp)
+NameError: name 'validate_timestamp' is not defined. Did you mean: 'valid_timestamp'?",False
+L6-FILE-013,thinking,22.99,2,False,False,NameError: name 'process_timestamps' is not defined,False
+L6-ANALYSIS-014,fast,8.28,1,True,,N/A,False
+L6-ANALYSIS-014,thinking,12.9,1,False,,N/A,False
+L6-FILE-015,fast,6.28,2,True,True,Passed,False
+L6-FILE-015,thinking,41.76,2,True,True,Passed,False
+L6-FILE-016,fast,5.96,2,True,False,"Traceback (most recent call last):
+  File ""/app/exec.py"", line 2, in <module>
+    content = file.read()
+  File ""/usr/local/lib/python3.10/codecs.py"", line 322, in decode
+    (result, consumed) = self._buffer_decode(data, self.errors, final)
+  File ""/usr/local/lib/python3.10/encodings/utf_16.py"", line 61, in _buffer_decode
+    codecs.utf_16_ex_decode(input, errors, 0, final)
+UnicodeDecodeError: 'utf-16-le' codec can't decode byte 0x2e in position 74: truncated data",False
+L6-FILE-016,thinking,19.81,2,True,False,"Traceback (most recent call last):
+  File ""/app/exec.py"", line 2, in <module>
+    first_50_chars = file.read(50)
+  File ""/usr/local/lib/python3.10/codecs.py"", line 322, in decode
+    (result, consumed) = self._buffer_decode(data, self.errors, final)
+  File ""/usr/local/lib/python3.10/encodings/utf_16.py"", line 67, in _buffer_decode
+    raise UnicodeError(""UTF-16 stream does not start with BOM"")
+UnicodeError: UTF-16 stream does not start with BOM",False
+L6-FILE-017,fast,14.08,2,False,False,FileNotFoundError: [Errno 2] No such file or directory: 'combined.log',False
+L6-FILE-017,thinking,30.43,2,False,False,FAIL:,False
+L6-FILE-018,fast,8.78,2,True,False,FAIL:,False
+L6-FILE-018,thinking,35.61,2,True,False,FAIL:,False

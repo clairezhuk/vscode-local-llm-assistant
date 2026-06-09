@@ -1,19 +1,22 @@
-ERROR: Exec failed
+ERROR: File "/app/exec.py", line 21
+    assert re.search(r'\d{2}-\d{2}-\d{4}', '12-10-2024') is not None
+SyntaxError: expected 'except' or 'finally' block
 RESPONSE:
 ```python
 import re
 
-def find_dates_in_temp_folder():
-    temp_folder = "C:\\Users\\user\\AppData\\Local\\Temp\\tmpj2vf9wzs"
+def find_dates(directory):
+    pattern = r'\b\d{2}-\d{2}-\d{4}\b'
+    matches = []
     
-    # Regular expression to match dates in the format DD-MM-YYYY
-    date_pattern = r"\b\d{2}-\d{2}-\d{4}\b"
-    
-    # Find all matches in the temp folder path
-    matches = re.findall(date_pattern, temp_folder)
+    for root, dirs, files in os.walk(directory):
+        for file in files:
+            if file.endswith('.txt'):
+                file_path = os.path.join(root, file)
+                with open(file_path, 'r') as f:
+                    content = f.read()
+                    dates = re.findall(pattern, content)
+                    matches.extend(dates)
     
     return matches
-
-# Example usage:
-print(find_dates_in_temp_folder())
 ```

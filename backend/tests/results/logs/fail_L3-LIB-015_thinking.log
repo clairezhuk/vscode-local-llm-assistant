@@ -1,4 +1,4 @@
-ERROR: Exec failed
+ERROR: Passed
 RESPONSE:
 
 
@@ -10,12 +10,23 @@ import matplotlib.pyplot as plt
 
 def plot_two_charts(data1, data2):
     """
-    Plots two sets of data on a single figure with 1 row and 2 columns.
+    Plots two datasets on a single figure with 1 row and 2 columns of subplots.
     
     Parameters:
-    - data1: Step: Step 3: Create a figure and two subplots using plt.subplots(1, 2). Code only.\n    """\n    fig, axs = plt.subplots(1, 2)
+        data1 (array-like): The first dataset to be plotted.
+        data2 (array-like): The second dataset to be plotted.
+    """
+    fig, axs = plt.subplots(1, 2)
+    
+    # Plotting data1 on the first subplot
     axs[0].plot(data1)
+    axs[0].set_title('Data 1')
+    
+    # Plotting data2 on the second subplot
     axs[1].plot(data2)
+    axs[1].set_title('Data 2')
+    
+    plt.tight_layout()
     plt.show()
 ```
 
@@ -27,23 +38,12 @@ def plot_two_charts(data1, data2):
 import matplotlib.pyplot as plt
 
 def plot_two_charts(data1, data2):
-    """
-    Plots two sets of data on a single figure with 1 row and 2 columns.
-    
-    Parameters:
-    - data1: A list or array of numerical values representing the first set of data.
-    - data2: A list or array of numerical values representing the second set of data.
-    """
+    """Plots two datasets on a single figure with 1 row and 2 columns of subplots."""
     fig, axs = plt.subplots(1, 2)
-    
-    # Plotting the first set of data
     axs[0].plot(data1)
-    axs[0].set_title('Data Set 1')
-    
-    # Plotting the second set of data
     axs[1].plot(data2)
-    axs[1].set_title('Data Set 2')
-    
+    plt.title('Chart 1')
+    plt.legend()
     plt.tight_layout()
     plt.show()
 ```
@@ -56,12 +56,19 @@ def plot_two_charts(data1, data2):
 import matplotlib.pyplot as plt
 
 def plot_two_charts(data1, data2):
-    """
-    Plots two sets of data on a single figure with 1 row and 2 columns.
+    """Plots two datasets on a single figure with 1 row and 2 columns of subplots."""
+    fig, axs = plt.subplots(1, 2)
     
-    Parameters:
-    - data1: Step 2: Define the plot_two_charts function with parameters data1 and data2. Code only.
-    """\n    plt.figure(figsize=(10, 5))\n    plt.subplot(1, 2, 1)\n    plt.plot(data1)\n    plt.title('Chart 1')\n    \n    plt.subplot(1, 2, 2)\n    plt.plot(data2)\n    plt.title('Chart 2')\n    \n    plt.tight_layout()\n    plt.show()
+    # Plotting data1 on the first subplot
+    axs[0].plot(data1)
+    axs[0].set_title('Data 1')
+    
+    # Plotting data2 on the second subplot
+    axs[1].plot(data2)
+    axs[1].set_title('Data 2')
+    
+    plt.tight_layout()  # Adjusts subplots to fit in figure area
+    plt.show()
 ```
 
 

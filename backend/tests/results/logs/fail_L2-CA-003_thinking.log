@@ -1,4 +1,7 @@
-ERROR: Exec failed
+ERROR: File "/app/exec.py", line 27
+    assert distances['D'] == 4, f'Shortest path to D should be 4 (A-B-C-D), got {distances.get('D')}'
+                                                                                                ^
+SyntaxError: f-string: unmatched '('
 RESPONSE:
 
 
@@ -6,7 +9,25 @@ RESPONSE:
 ### Attempt 1
 
 ```python
-The result of the function dijkstra(graph, start) is a dictionary where each key represents a node in the graph and its value represents the shortest distance from the starting node to that node. The function uses Dijkstra's algorithm to find the shortest path from the given start node to all other nodes in the graph.
+import heapq
+
+def dijkstra(graph, start):
+    distances = {node: float('inf') for node in graph}
+    distances[start] = 0
+    queue = [(0, start)]
+    
+    while queue:
+        current_distance, current_node = heapq.heappop(queue)
+        
+        if current_distance > distances[current_node]:
+            continue
+        
+        for neighbor, weight in graph[current_node].items():
+            distance = current_distance + weight
+            
+            if distance < distances[neighbor]:
+                distances[neighbor] = distance
+                heapq.heappush(queue, (distance, neighbor))
 ```
 
 
@@ -14,7 +35,25 @@ The result of the function dijkstra(graph, start) is a dictionary where each key
 ### Attempt 2
 
 ```python
-The result of the function dijkstra(graph, start) is a dictionary where each key represents a node in the graph and its value represents the shortest distance from the starting node to that node.
+import heapq
+
+def dijkstra(graph, start):
+    distances = {node: float('inf') for node in graph}
+    distances[start] = 0
+    queue = [(0, start)]
+    
+    while queue:
+        current_distance, current_node = heapq.heappop(queue)
+        
+        if current_distance > distances[current_node]:
+            continue
+        
+        for neighbor, weight in graph[current_node].items():
+            distance = current_distance + weight
+            
+            if distance < distances[neighbor]:
+                distances[neighbor] = distance
+                heapq.heappush(queue, (distance, neighbor))
 ```
 
 
@@ -22,20 +61,25 @@ The result of the function dijkstra(graph, start) is a dictionary where each key
 ### Attempt 3
 
 ```python
-distances = {node: float('inf') for node in graph}
-distances[start] = 0
-queue = [(0, start)]
+import heapq
 
-while queue:
-    current_distance, current_node = heapq.heappop(queue)
+def dijkstra(graph, start):
+    distances = {node: float('inf') for node in graph}
+    distances[start] = 0
+    queue = [(0, start)]
 
-    if current_distance > distances[current_node]:
-        continue
+    while queue:
+        current_distance, current_node = heapq.heappop(queue)
 
-    for neighbor, weight in graph[current_node].items():
-        distance_through_current = current_distance + weight
+        if current_distance > distances[current_node]:
+            continue
 
-        if distance_through_current < distances[neighbor]:
-            distances[neighbor] = distance_through_current
-            heapq.heappush(queue, (distance_through_current, neighbor))
+        for neighbor, weight in graph[current_node].items():
+            distance_through_current = current_distance + weight
+
+            if distance_through_current < distances[neighbor]:
+                distances[neighbor] = distance_through_current
+                heapq.heappush(queue, (distance_through_current, neighbor))
+
+    return distances
 ```

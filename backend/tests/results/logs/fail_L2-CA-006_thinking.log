@@ -1,0 +1,14 @@
+ERROR: FAIL:
+RESPONSE:
+
+
+---
+### Attempt 1
+
+```python
+import re
+
+def get_valid_emails(text):
+    pattern = r'\\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Z|a-z]{2,}\\b'
+    return re.findall(pattern, text)
+```

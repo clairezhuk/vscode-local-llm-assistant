@@ -44,7 +44,7 @@
   {
     "id": "L5-PAR-003",
     "description": "Parallel processing with ProcessPoolExecutor.",
-    "query": "Use `concurrent.futures.ProcessPoolExecutor` to map a function `square(x)` to a list of integers from 1 to 1000. Return the list of results.",
+    "query": "Use `concurrent.futures.ProcessPoolExecutor` to map a function `square(x)` to a list of integers from 1 to 1000. Return the list of results. Write a function run_parallel_task(func, data)",
     "context_files": [],
     "expected_intent": 2,
     "type": "code",
@@ -123,16 +123,17 @@
           "import sqlite3",
           "conn = sqlite3.connect(':memory:')",
           "cursor = conn.cursor()",
-          "cursor.execute('CREATE TABLE users (name text)')",
-          "cursor.execute('INSERT INTO users VALUES (\"admin\")')",
-          "user_input = \"admin\"",
-          "# The AI code should define a safe way to call this. We test if it works.",
-          "def safe_query(cursor, user_input):",
-          "    # We expect AI to provide a line similar to this inside a function",
-          "    pass",
-          "import re",
-          "code = \"\"\"ai_code_here\"\"\"",
-          "assert '?' in ai_code or '%s' in ai_code, 'Must use parameters'"
+          "cursor.execute('CREATE TABLE users (name text, secret text)')",
+          "cursor.execute('INSERT INTO users VALUES (\"admin\", \"TOP_SECRET\")')",
+          "cursor.execute('INSERT INTO users VALUES (\"guest\", \"HELLO\")')",
+          "malicious_input = \"' OR '1'='1\"",
+          "try:",
+          "    results = safe_query(cursor, malicious_input)",
+          "    assert len(results) == 0, 'SQL Injection successful! Logic is vulnerable.'",
+          "    print('PASSED')",
+          "except Exception as e:",
+          "    if 'safe_query' not in locals(): print('ERROR: Function safe_query not found')",
+          "    else: raise e"
         ]
       }
     }

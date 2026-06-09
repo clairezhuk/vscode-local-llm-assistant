@@ -1,4 +1,4 @@
-ERROR: 
+ERROR: FAIL:
 RESPONSE:
 
 
@@ -10,12 +10,18 @@ import matplotlib.pyplot as plt
 
 def create_plot(x, y):
     """
-    Generates a line plot with specified x and y data.
-    
+    Generates a line plot with specified data points.
+
     Parameters:
-    - x: A list of values for the x-axis.
-    - y: A list of values for the y-axis.
-    """\n    plt.plot(x, y)\n    plt.xlabel(\'X Axis\')\n    plt.ylabel(\'Y Axis\')\n    plt.title(\'Line Plot\')\n    plt.show()
+    x (list): The x-coordinates of the data points.
+    y (list): The y-coordinates of the data points.
+    """
+    plt.plot(x, y)
+    plt.xlabel('X-axis')
+    plt.ylabel('Y-axis')
+    plt.title('Line Plot')
+    plt.legend()
+    plt.show()
 ```
 
 
@@ -27,16 +33,17 @@ import matplotlib.pyplot as plt
 
 def create_plot(x, y):
     """
-    Generates a line plot with specified x and y data.
-    
+    Generates a line plot with specified data points.
+
     Parameters:
-    - x: A list of values for the x-axis.
-    - y: A list of values for the y-axis.
-    """  
+    x (list): The x-coordinates of the data points.
+    y (list): The y-coordinates of the data points.
+    """
     plt.plot(x, y)
-    plt.xlabel('X Axis')
-    plt.ylabel('Y Axis')
+    plt.xlabel('X-axis')
+    plt.ylabel('Y-axis')
     plt.title('Line Plot')
+    plt.legend()
     plt.show()
 ```
 
@@ -48,17 +55,12 @@ def create_plot(x, y):
 import matplotlib.pyplot as plt
 
 def create_plot(x, y):
-    """
-    Generates a line plot with specified x and y data.
-    
-    Parameters:
-    - x: A list of values for the x-axis.
-    - y: A list of values for the y-axis.
-    """  
-    plt.plot(x, y)
-    plt.xlabel('X Axis Label')
-    plt.ylabel('Y Axis Label')
-    plt.title('Line Plot Title')
+    """Generates a line plot with specified data points."""
+    fig, ax = plt.subplots()
+    ax.plot(x, y)
+    ax.set_xlabel('X-axis Label')
+    ax.set_ylabel('Y-axis Label')
+    ax.set_title('Line Plot')
     plt.show()
 ```
 

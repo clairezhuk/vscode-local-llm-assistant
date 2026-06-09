@@ -1,21 +1,21 @@
 id,processing_type,time_s,intent,format_ok,exec_ok,exec_msg,warning
-L7-REF-001,fast,11.5,2,False,True,Passed,False
-L7-REF-001,thinking,76.52,2,True,False,No code block,True
-L7-REF-002,fast,12.88,2,False,True,Passed,False
-L7-REF-002,thinking,147.2,2,False,True,Passed,True
-L7-DBG-003,fast,17.6,2,True,True,Passed,False
-L7-DBG-003,thinking,120.84,2,True,False,Exec failed,True
-L7-DBG-004,fast,5.67,2,False,False,List 1 should only contain Alice,False
-L7-DBG-004,thinking,130.59,2,False,False,TypeError: add_user_to_list() missing 1 required positional argument: 'step',True
-L7-FIM-005,fast,5.78,2,True,False,,False
-L7-FIM-005,thinking,22.92,2,False,False,,False
-L7-FIM-006,fast,5.25,2,True,True,Passed,False
-L7-FIM-006,thinking,17.33,2,False,False,Exec failed,False
-L7-REF-007,fast,13.35,2,True,False,AttributeError: 'NoneType' object has no attribute '_validate_age',False
-L7-REF-007,thinking,63.8,2,True,False,AttributeError: 'NoneType' object has no attribute '_validate_age',False
-L7-DBG-008,fast,5.98,2,True,True,Passed,False
-L7-DBG-008,thinking,50.47,2,True,False,FileNotFoundError: [Errno 2] No such file or directory: 'folder',True
-L7-FIM-009,fast,8.84,2,False,True,Passed,False
-L7-FIM-009,thinking,31.65,2,False,False,Exec failed,False
-L7-REF-010,fast,12.01,2,True,True,Passed,False
-L7-REF-010,thinking,33.15,2,True,True,Passed,False
+L7-REF-001,fast,12.98,2,False,True,Passed,False
+L7-REF-001,thinking,52.14,2,False,True,Passed,False
+L7-REF-002,fast,12.98,2,False,True,Passed,False
+L7-REF-002,thinking,128.46,2,False,False,NameError: name 'process_request' is not defined,True
+L7-DBG-003,fast,20.43,2,True,True,Passed,False
+L7-DBG-003,thinking,161.12,2,True,True,Passed,True
+L7-DBG-004,fast,7.17,2,False,False,FAIL: List 1 should only contain Alice,False
+L7-DBG-004,thinking,146.84,2,False,False,FAIL: List 1 should only contain Alice,False
+L7-FIM-005,fast,5.6,2,True,False,FAIL:,False
+L7-FIM-005,thinking,20.79,2,True,False,FAIL:,False
+L7-FIM-006,fast,4.44,2,True,True,Passed,False
+L7-FIM-006,thinking,11.68,2,True,True,Passed,False
+L7-REF-007,fast,13.51,2,True,False,AttributeError: 'NoneType' object has no attribute '_validate_age',False
+L7-REF-007,thinking,78.63,2,True,False,AttributeError: 'NoneType' object has no attribute '_validate_age',True
+L7-DBG-008,fast,6.32,2,True,True,Passed,False
+L7-DBG-008,thinking,72.07,2,True,False,FileNotFoundError: [Errno 2] No such file or directory: 'folder/file.txt' -> 'folder/backup/file.txt',True
+L7-FIM-009,fast,9.36,2,False,True,Passed,False
+L7-FIM-009,thinking,31.48,2,False,True,Passed,False
+L7-REF-010,fast,10.76,2,True,True,Passed,False
+L7-REF-010,thinking,34.09,2,True,True,Passed,False

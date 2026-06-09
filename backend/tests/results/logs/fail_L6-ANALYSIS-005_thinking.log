@@ -4,4 +4,4 @@ RESPONSE:
 
 ---
 ### Attempt 1
-The main goal of this assignment is to understand and implement a data structure for storing a list of students.
+The primary goal of this assignment is to develop a data structure that allows for efficient access to student information, specifically focusing on O(1) time complexity. The chosen data structure is a hash map (also known as a dictionary in Python). This approach ensures that the retrieval of any student's details can be done quickly and easily, making it suitable for applications where speed is critical.

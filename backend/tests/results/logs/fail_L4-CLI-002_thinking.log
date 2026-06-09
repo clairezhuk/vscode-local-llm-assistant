@@ -4,4 +4,4 @@ RESPONSE:
 
 ---
 ### Attempt 1
-Proposed command: `awk '{print $1}' access.log | sort -u`
+Proposed command: `cat access.log | awk '{print $1}' | sort -u`

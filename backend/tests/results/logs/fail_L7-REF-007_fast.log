@@ -1,25 +1,20 @@
 ERROR: AttributeError: 'NoneType' object has no attribute '_validate_age'
 RESPONSE:
 ```python
-class AgeValidator:
+class AgeManager:
     def __init__(self):
-        pass
-
-    def _validate_age(self, age):
-        if 0 <= age <= 120:
-            return True
-        else:
-            raise ValueError('Invalid age')
+        self._age = None
 
     def set_driver_age(self, age):
-        if self._validate_age(age):
-            print('Valid')
-        else:
+        if not self._validate_age(age):
             raise ValueError('Invalid age')
+        self._age = age
 
     def set_voter_age(self, age):
-        if self._validate_age(age):
-            print('Valid')
-        else:
+        if not self._validate_age(age):
             raise ValueError('Invalid age')
+        self._age = age
+
+    def _validate_age(self, age):
+        return 0 <= age <= 120
 ```

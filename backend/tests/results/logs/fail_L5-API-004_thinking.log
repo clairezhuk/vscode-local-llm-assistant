@@ -14,5 +14,5 @@ def post_data(url, data_dict, token):
         'Content-Type': 'application/json'
     }
     response = requests.post(url, json=data_dict)
-    return response.json()
+    return response
 ```

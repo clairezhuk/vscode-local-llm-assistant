@@ -1,0 +1,7 @@
+[
+  {"meta": {"source": "API", "data": {"val": 10}}},
+  {"meta": {"source": "DB", "data": {"val": 20}}},
+  {"meta": {"source": "API", "data": {"val": 55}}},
+  {"meta": {"source": "Legacy", "data": {"val": 100}}},
+  {"meta": {"source": "API", "data": {"val": 35}}}
+]

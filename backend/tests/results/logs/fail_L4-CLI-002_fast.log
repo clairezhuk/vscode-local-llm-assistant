@@ -1,5 +1,5 @@
 ERROR: N/A
 RESPONSE:
 ```sh
-findstr -i "192\.168\." C:\Users\user\AppData\Local\Temp\tmp9idk6g83 | sort -u
+findstr -r "^\s+([0-9]+\.[0-9]+\.[0-9]+\.[0-9]+)" C:\Users\user\AppData\Local\Temp\tmpzucaj8lj | sort -u
 ```

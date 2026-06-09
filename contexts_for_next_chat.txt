@@ -74,9 +74,10 @@ quality.
     verifies results via assert statements. Supports real-time CSV logging and
     manual mode selection (fast vs. thinking).
   - Metrics: Focuses on the Self-Correction Success Rate (success after
-    retries), processing time, and token usage.
+    retries), processing time.
   - Warning Detection: Automatically detects if the AI output contains a
     "Warning" badge, indicating failed internal verification.
+  - Running from Docker
 
 Technical Constraints & Solutions
 

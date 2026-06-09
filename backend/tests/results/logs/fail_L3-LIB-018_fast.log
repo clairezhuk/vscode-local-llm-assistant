@@ -1,4 +1,4 @@
-ERROR: 
+ERROR: FAIL:
 RESPONSE:
 ```python
 def subtract_row_vec(matrix, vec):

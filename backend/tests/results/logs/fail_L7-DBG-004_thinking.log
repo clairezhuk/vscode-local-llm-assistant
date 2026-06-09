@@ -1,4 +1,4 @@
-ERROR: TypeError: add_user_to_list() missing 1 required positional argument: 'step'
+ERROR: FAIL: List 1 should only contain Alice
 RESPONSE:
 
 
@@ -6,9 +6,12 @@ RESPONSE:
 ### Attempt 1
 
 ```python
-def add_user_to_list(user, items):
-    if user not in items:
+def add_user_to_list(user, items=[]):
+    if not items or user in items:
+        return "Błąd: Lista jest pusta lub zawiera duplikat użytkownika."
+    else:
         items.append(user)
+        return "Użytkownik został dodany do listy."
 ```
 
 
@@ -16,31 +19,26 @@ def add_user_to_list(user, items):
 ### Attempt 2
 
 ```python
-def add_user_to_list(user):
-    # Add user to list here
-    pass  # Placeholder for adding user to list
+import json
+
+def add_user_to_list(user, items=[]):
+    try:
+        with open('user_list.txt', 'r') as file:
+            existing_items = file.readlines()
+        
+        for item in existing_items:
+            if user == item.strip():
+                return "User already exists in the list."
+        
+        items.append(user)
+        with open('user_list.txt', 'w') as file:
+            file.writelines(items)
+    except FileNotFoundError:
+        items = [user]
+        with open('user_list.txt', 'w') as file:
+            file.writelines(items)
+
+# Example usage
+add_user_to_list("Alice")
+add_user_to_list("Bob")
 ```
-
-
----
-### Attempt 3
-
-```python
-def add_user_to_list(user, step):
-    # Initialize the items list if it hasn't been initialized yet
-    if 'items' not in locals():
-        items = []
-    
-    # Add the user to the items list
-    items.append(user)
-    
-    # Optionally, you can print or return the updated items list
-    print(items)
-
-# Example usage:
-add_user_to_list({'name': 'Alice', 'age': 30}, 1)
-add_user_to_list({'name': 'Bob', 'age': 25}, 2)
-```
-
-
-> ⚠️ **AI Warning:** Verification failed after max retries.

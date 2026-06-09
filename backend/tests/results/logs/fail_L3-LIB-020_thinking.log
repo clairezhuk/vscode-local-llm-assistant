@@ -1,4 +1,4 @@
-ERROR: Exec failed
+ERROR: ValueError: Logits must be a 2D numpy array.
 RESPONSE:
 
 
@@ -6,10 +6,23 @@ RESPONSE:
 ### Attempt 1
 
 ```python
-import torch
+import numpy as np
 
 def get_probabilities(logits):
-    # Convert logits to probabilities using the softmax function
-    probabilities = np.exp(logits) / np.sum(np.exp(logits))
+    """Compute the probabilities from logits.
+
+    Args:
+        logits (np.ndarray): The input logits, a 2D array of shape (batch_size, num_classes).
+
+    Returns:
+        np.ndarray: The computed probabilities, a 2D array of shape (batch_size, num_classes).
+    """
+    # Ensure logits are valid
+    if not isinstance(logits, np.ndarray) or len(logits.shape) != 2:
+        raise ValueError("Logits must be a 2D numpy array.")
+    
+    # Compute the softmax to get probabilities
+    probabilities = np.exp(logits) / np.sum(np.exp(logits), axis=1, keepdims=True)
+    
     return probabilities
 ```

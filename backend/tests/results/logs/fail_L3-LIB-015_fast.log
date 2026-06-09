@@ -5,11 +5,11 @@ import matplotlib.pyplot as plt
 
 def plot_two_charts(data1, data2):
     """
-    Plots two sets of data on a 1x2 grid of subplots.
+    Plots two sets of data on a figure with 1 row and 2 columns of subplots.
 
     Parameters:
-    - data1: A list or array of values to be plotted on the first subplot.
-    - data2: A list or array of values to be plotted on the second subplot.
+        - data1: A list or array of numerical values to be plotted on the first subplot.
+        - data2: A list or array of numerical values to be plotted on the second subplot.
     """
     fig, axs = plt.subplots(1, 2)
     
@@ -21,6 +21,6 @@ def plot_two_charts(data1, data2):
     axs[1].plot(data2)
     axs[1].set_title('Data 2')
     
-    plt.tight_layout()  # Adjusts subplots to make sure they fit well in the figure.
+    plt.tight_layout()
     return fig
 ```

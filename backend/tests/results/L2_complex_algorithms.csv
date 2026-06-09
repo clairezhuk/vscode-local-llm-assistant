@@ -1,31 +1,49 @@
 id,processing_type,time_s,intent,format_ok,exec_ok,exec_msg,warning
-L2-CA-001,fast,13.65,2,False,False,Path must start at A and end at E,False
-L2-CA-001,thinking,30.73,2,True,True,Passed,False
-L2-CA-002,fast,14.7,2,True,False,"Expected [A, C, F], got ['F']",False
-L2-CA-002,thinking,237.11,2,True,False,Exec failed,False
-L2-CA-003,fast,16.05,2,False,False,Exec failed,False
-L2-CA-003,thinking,158.34,2,True,False,Exec failed,False
-L2-CA-004,fast,20.52,2,True,True,Passed,False
-L2-CA-004,thinking,111.72,2,True,False,Exec failed,False
-L2-CA-005,fast,20.67,2,True,True,Passed,False
-L2-CA-005,thinking,108.48,2,True,True,Passed,False
-L2-CA-006,fast,10.74,2,True,True,Passed,False
-L2-CA-006,thinking,49.73,2,True,True,Passed,False
-L2-CA-007,fast,14.58,2,False,False,Exec failed,False
-L2-CA-007,thinking,25.59,2,False,False,Exec failed,False
-L2-CA-008,fast,15.32,2,False,False,,False
-L2-CA-008,thinking,118.77,2,True,False,,False
-L2-CA-009,fast,15.83,2,True,True,Passed,False
-L2-CA-009,thinking,138.33,2,True,True,Passed,False
-L2-CA-010,fast,15.38,2,False,False,,False
-L2-CA-010,thinking,96.45,2,False,False,,False
-L2-CA-011,fast,17.08,2,True,False,,False
-L2-CA-011,thinking,92.16,2,True,False,Exec failed,False
-L2-CA-012,fast,24.81,2,False,False,NameError: name 'heapq' is not defined,False
-L2-CA-012,thinking,134.66,2,True,False,NameError: name 'grid_shortest_path' is not defined,False
-L2-CA-013,fast,14.17,2,False,False,Exec failed,False
-L2-CA-013,thinking,135.88,2,True,False,Exec failed,False
-L2-CA-014,fast,12.63,2,True,True,Passed,False
-L2-CA-014,thinking,75.17,2,True,False,Exec failed,False
-L2-CA-015,fast,8.59,2,True,True,Passed,False
-L2-CA-015,thinking,48.88,2,True,True,Passed,False
+L2-CA-001,fast,8.63,2,True,True,Passed,False
+L2-CA-001,thinking,69.9,2,True,True,Passed,False
+L2-CA-002,fast,16.05,2,True,True,Passed,False
+L2-CA-002,thinking,127.96,2,True,False,"FAIL: Expected [A, C, F], got 2",False
+L2-CA-003,fast,16.07,2,False,False,"File ""/app/exec.py"", line 21
+    assert distances['D'] == 4, f'Shortest path to D should be 4 (A-B-C-D), got {distances.get('D')}'
+                                                                                                ^
+SyntaxError: f-string: unmatched '('",False
+L2-CA-003,thinking,179.55,2,True,False,"File ""/app/exec.py"", line 27
+    assert distances['D'] == 4, f'Shortest path to D should be 4 (A-B-C-D), got {distances.get('D')}'
+                                                                                                ^
+SyntaxError: f-string: unmatched '('",False
+L2-CA-004,fast,21.11,2,True,True,Passed,False
+L2-CA-004,thinking,105.86,2,True,True,Passed,False
+L2-CA-005,fast,20.65,2,True,True,Passed,False
+L2-CA-005,thinking,85.33,2,True,True,Passed,False
+L2-CA-006,fast,12.76,2,True,True,Passed,False
+L2-CA-006,thinking,37.23,2,True,False,FAIL:,False
+L2-CA-007,fast,23.25,2,False,False,"File ""/app/exec.py"", line 25
+    data = '[2023-10-01 10:00:00] [INFO] Start
+           ^
+SyntaxError: unterminated string literal (detected at line 25)",False
+L2-CA-007,thinking,59.58,2,False,False,"File ""/app/exec.py"", line 11
+    data = '[2023-10-01 10:00:00] [INFO] Start
+           ^
+SyntaxError: unterminated string literal (detected at line 11)",False
+L2-CA-008,fast,14.66,2,False,False,FAIL:,False
+L2-CA-008,thinking,39.38,2,True,False,FAIL:,False
+L2-CA-009,fast,15.76,2,True,True,Passed,False
+L2-CA-009,thinking,101.05,2,True,True,Passed,True
+L2-CA-010,fast,15.92,2,False,False,FAIL:,False
+L2-CA-010,thinking,70.96,2,False,False,FAIL:,False
+L2-CA-011,fast,19.72,2,True,False,FAIL:,False
+L2-CA-011,thinking,32.19,2,True,False,IndexError: list index out of range,False
+L2-CA-012,fast,19.99,2,True,False,FAIL: Should go around the wall,False
+L2-CA-012,thinking,500.28,2,True,True,Passed,True
+L2-CA-013,fast,10.94,2,False,False,"File ""/app/exec.py"", line 18
+    logs = 'Module[Auth]: Status[OK]
+           ^
+SyntaxError: unterminated string literal (detected at line 18)",False
+L2-CA-013,thinking,31.26,2,False,False,"File ""/app/exec.py"", line 12
+    logs = 'Module[Auth]: Status[OK]
+           ^
+SyntaxError: unterminated string literal (detected at line 12)",False
+L2-CA-014,fast,10.44,2,True,True,Passed,False
+L2-CA-014,thinking,31.95,2,True,False,NameError: name 'i' is not defined,False
+L2-CA-015,fast,9.2,2,True,True,Passed,False
+L2-CA-015,thinking,31.57,2,True,True,Passed,False

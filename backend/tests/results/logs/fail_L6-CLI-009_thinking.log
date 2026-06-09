@@ -4,4 +4,4 @@ RESPONSE:
 
 ---
 ### Attempt 1
-Proposed command: `rm -rf /path/to/cache`
+Proposed command: `rm -rf /app/cache`

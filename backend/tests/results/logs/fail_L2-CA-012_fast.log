@@ -1,29 +1,30 @@
-ERROR: NameError: name 'heapq' is not defined
+ERROR: FAIL: Should go around the wall
 RESPONSE:
 ```python
 def grid_shortest_path(grid, start, end):
     rows, cols = len(grid), len(grid[0])
     directions = [(0, 1), (0, -1), (1, 0), (-1, 0)]
     
-    # Initialize the distance matrix with infinity
-    dist = [[float('inf')] * cols for _ in range(rows)]
-    dist[start[0]][start[1]] = 0
+    # Initialize a queue for BFS and a dictionary to keep track of the parent node
+    queue = [start]
+    parent = {start: None}
     
-    # Priority queue to store nodes to visit
-    pq = [(0, start)]
-    
-    while pq:
-        current_dist, (x, y) = heapq.heappop(pq)
+    while queue:
+        current = queue.pop(0)
         
-        if (x, y) == end:
-            return current_dist
+        if current == end:
+            path_length = 0
+            while current is not None:
+                path_length += 1
+                current = parent[current]
+            return path_length
         
         for dx, dy in directions:
-            nx, ny = x + dx, y + dy
+            new_x, new_y = current[0] + dx, current[1] + dy
             
-            if 0 <= nx < rows and 0 <= ny < cols and grid[nx][ny] == 0 and current_dist + 1 < dist[nx][ny]:
-                dist[nx][ny] = current_dist + 1
-                heapq.heappush(pq, (dist[nx][ny], (nx, ny)))
+            if 0 <= new_x < rows and 0 <= new_y < cols and grid[new_x][new_y] == 0 and (new_x, new_y) not in parent:
+                queue.append((new_x, new_y))
+                parent[(new_x, new_y)] = current
     
     return -1
 ```

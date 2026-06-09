@@ -1,4 +1,6 @@
-ERROR: Exec failed
+ERROR: File "/app/exec.py", line 18
+    assert re.search(r'\d{2}-\d{2}-\d{4}', '12-10-2024') is not None
+SyntaxError: expected 'except' or 'finally' block
 RESPONSE:
 
 
@@ -8,7 +10,15 @@ RESPONSE:
 ```python
 import re
 
-def validate_date(date_str):
-    pattern = r'\b\d{2}-\d{2}-\d{4}\b'
-    return bool(re.match(pattern, date_str))
+def parse_date(date_str):
+    pattern = r'\d{2}-\d{2}-\d{4}'
+    if re.match(pattern, date_str):
+        return True
+    else:
+        return False
+
+# Example usage
+date_input = "15-03-2023"
+is_valid = parse_date(date_input)
+print(is_valid)  # Output: True
 ```

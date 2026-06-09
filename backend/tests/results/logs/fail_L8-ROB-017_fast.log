@@ -1,19 +1,11 @@
-ERROR: Exec failed
+ERROR: File "/app/exec.py", line 10
+    res = sort_dict(d)
+SyntaxError: expected 'except' or 'finally' block
 RESPONSE:
 ```python
-def sort_by_weight(ingredients):
+def sort_ingredients_by_weight(ingredients):
     # Sort the dictionary by values in descending order
     sorted_ingredients = dict(sorted(ingredients.items(), key=lambda item: item[1], reverse=True))
+    
     return sorted_ingredients
-
-# Example usage:
-ingredients = {
-    "flour": 200,
-    "sugar": 300,
-    "eggs": 400,
-    "milk": 500
-}
-
-sorted_ingredients = sort_by_weight(ingredients)
-print(sorted_ingredients)
 ```

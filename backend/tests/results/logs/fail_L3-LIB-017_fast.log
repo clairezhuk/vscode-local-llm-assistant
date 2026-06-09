@@ -1,4 +1,4 @@
-ERROR: Exec failed
+ERROR: Passed
 RESPONSE:
 ```python
 import torch

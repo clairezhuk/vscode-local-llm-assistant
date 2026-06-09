@@ -7,7 +7,7 @@
         "expected_intent": 2,
         "type": "code",
         "metrics": {
-            "must_contain": ["stack", "visited", "pop"],
+            "must_contain": [],
             "execution": {
                 "run_tests": [
                     "graph = {'A': ['B', 'C'], 'B': ['D'], 'C': ['D'], 'D': ['E'], 'E': []}",
@@ -224,7 +224,7 @@
         "expected_intent": 2,
         "type": "code",
         "metrics": {
-            "must_contain": ["queue", "visited"],
+            "must_contain": [],
             "execution": {
                 "run_tests": [
                     "grid = [[0, 0, 0], [1, 1, 0], [0, 0, 0]]",

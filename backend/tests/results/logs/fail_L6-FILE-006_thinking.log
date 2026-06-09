@@ -1,4 +1,7 @@
-ERROR: Exec failed
+ERROR: File "/app/exec.py", line 7
+    new_name = f"{datetime.datetime.now().strftime(\'%Y%m%d%H%M%S\')}_{file_path.name}"
+                                                                                       ^
+SyntaxError: f-string expression part cannot include a backslash
 RESPONSE:
 
 
@@ -6,38 +9,28 @@ RESPONSE:
 ### Attempt 1
 
 ```python
-from pathlib import Path, FileNotFoundError
+from pathlib import Path
+import datetime
 
-def rename_files_with_date_prefix(directory):
+def rename_files_with_datetime(directory):
     try:
-        # Ensure the directory exists
-        directory = Path(directory)
-        if not directory.exists():
-            raise FileNotFoundError(f"Directory {directory} does not exist.")
-        
-        # List all files in the directory
         for file_path in directory.iterdir():
-            if file_path.is_file():
-                # Extract the base name and extension of the file
-                base_name, ext = file_path.stem, file_path.suffix
-                
-                # Generate a new date prefix
-                current_date = Path().strftime("%Y%m%d")
-                
-                # Construct the new file path with the date prefix
-                new_file_path = directory / f"{current_date}_{base_name}{ext}"
-                
-                # Rename the file
-                file_path.rename(new_file_path)
-                print(f"Renamed {file_path} to {new_file_path}")
-    except FileNotFoundError as e:
-        print(e)
+            if file_path.is_file() and (file_path.suffix == '.jpg' or file_path.suffix == '.png'):
+                new_name = f"{datetime.datetime.now().strftime(\'%Y%m%d%H%M%S\')}_{file_path.name}"
+                new_path = Path(directory / new_name)
+                old_path = Path(file_path)
+                old_path.rename(new_path)
+                print(f"Renamed {old_path} to {new_path}")
+    except FileNotFoundError:
+        print("Directory not found.")
+    except PermissionError:
+        print("Permission denied.")
     except Exception as e:
         print(f"An error occurred: {e}")
 
 # Example usage
-directory = Path("path/to/your/directory")
-rename_files_with_date_prefix(directory)
+directory_path = Path('path/to/your/directory')
+rename_files_with_datetime(directory_path)
 ```
 
 
@@ -45,38 +38,20 @@ rename_files_with_date_prefix(directory)
 ### Attempt 2
 
 ```python
-from pathlib import Path, FileNotFoundError
+from pathlib import Path
+import datetime
 
-def list_files(directory):
-    return [f for f in directory.iterdir() if f.is_file()]
+def rename_files_with_datetime(directory):
+    for file_path in directory.iterdir():
+        if file_path.is_file() and (file_path.suffix == '.jpg' or file_path.suffix == '.png'):
+            new_name = f"{datetime.datetime.now().strftime(\'%Y%m%d%H%M%S\')}_{file_path.name}"
+            new_path = file_path.with_name(new_name)
+            file_path.rename(new_path)
+            print(f"Renamed {file_path} to {new_path}")
 
-def rename_files(files, prefix):
-    for file in files:
-        new_name = f"{prefix}_{file.name}"
-        file.rename(new_name)
-
-def main():
-    try:
-        # Step 1: Define the directory path
-        directory_path = Path("path/to/your/directory")
-        
-        # Step 2: List all files in the directory
-        files = list_files(directory_path)
-        
-        # Step 3: Choose a prefix for renaming (e.g., "file_")
-        prefix = "file_"
-        
-        # Step 4: Call the rename function
-        rename_files(files, prefix)
-        
-        print("Files renamed successfully.")
-    except FileNotFoundError as e:
-        print(f"Directory not found: {e}")
-    except Exception as e:
-        print(f"An error occurred: {e}")
-
-if __name__ == "__main__":
-    main()
+# Example usage
+directory_path = Path('path/to/your/directory')
+rename_files_with_datetime(directory_path)
 ```
 
 
@@ -84,24 +59,16 @@ if __name__ == "__main__":
 ### Attempt 3
 
 ```python
-from pathlib import Path, datetime
+from pathlib import Path, FileNotFoundError
+import datetime
 
-# Step 4: Iterate over each file in the directory
-for file_path in Path.cwd().iterdir():
-    # Check if the item is a file (not a directory)
-    if file_path.is_file():
-        try:
-            # Get the current date and time
-            now = datetime.now()
-            
-            # Create a new file name with the date prefix
-            new_name = f"{now.strftime(\'%Y%m%d%H%M%S\')}_{file_path.name}"
-            
-            # Rename the file
-            file_path.rename(new_name)
-            print(f"Renamed: {file_path.name} to {new_name}")
-        except Exception as e:
-            print(f"Error renaming {file_path.name}: {e}")
+def rename_files_with_datetime(directory):
+    for file_path in directory.iterdir():
+        if file_path.is_file() and (file_path.suffix == '.jpg' or file_path.suffix == '.png'):
+            new_name = f"{datetime.datetime.now().strftime(\'%Y%m%d%H%M%S\')}_{file_path.name}"
+            new_file_path = directory / new_name
+            file_path.rename(new_file_path)
+            print(f"Renamed {file_path} to {new_file_path}")
 ```
 
 

@@ -7,10 +7,13 @@ class TaskPlanner:
 
     def generate_plan(self, query: str, context: str = "") -> list:
         sys_prompt = (
-            "You are a technical architect. Break down the task into logical steps. "
+            "You are a technical architect. Your job is to extract the core technical task from the user's input, "
+            "even if the input contains irrelevant stories, noise, or typos. "
+            "Break down the technical task into logical steps. "
             "IMPORTANT: If the task is simple (e.g., a single function or a simple question), "
             "provide ONLY ONE step. Use more steps (max 4) ONLY for complex multi-stage tasks. "
-            "Output ONLY a JSON array of strings. Example: [\"Step 1\"]."
+            "Output ONLY a JSON array. DO NOT include function names or code in the steps. "
+            "Example: [\"Initialize DP table\", \"Fill values\", \"Return max\"]."
         )
         
         prompt = f"<|im_start|>system\n{sys_prompt}<|im_end|>\n"

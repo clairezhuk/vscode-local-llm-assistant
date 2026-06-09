@@ -1,42 +1,20 @@
-ERROR: 
+ERROR: ValueError: Buffer has wrong number of dimensions (expected 1, got 2)
 RESPONSE:
 ```python
-import numpy as np
+import pandas as pd
 
 def split_data(X, y):
     """
-    Splits the data into a training set and a test set (20% test) while preserving class proportions.
+    Splits the data into training and test sets (20% test) while preserving class proportions.
 
     Parameters:
-        X (numpy.ndarray): The feature matrix.
-        y (numpy.ndarray): The target vector.
+    X (pd.DataFrame): Features of the dataset.
+    y (pd.Series): Target variable of the dataset.
 
     Returns:
-        tuple: A tuple containing the training set features (X_train), training set targets (y_train),
-               test set features (X_test), and test set targets (y_test).
+    tuple: A tuple containing two pandas DataFrames, the first for training and the second for testing.
     """
-    # Calculate the number of samples in each class
-    class_counts = np.bincount(y)
-    
-    # Determine the size of the test set based on 20% of the total samples
-    test_size = int(len(X) * 0.2)
-    
-    # Create a list to store indices for each class
-    class_indices = [[] for _ in range(max(class_counts))]
-    
-    # Assign indices to each class
-    for i, idx in enumerate(y):
-        class_indices[idx].append(i)
-    
-    # Shuffle the indices for each class
-    for indices in class_indices:
-        np.random.shuffle(indices)
-    
-    # Split the data into training and test sets while preserving class proportions
-    X_train = np.vstack([X[i] for i in class_indices[0][:test_size]])
-    y_train = np.array([y[i] for i in class_indices[0][:test_size]])
-    X_test = np.vstack([X[i] for i in class_indices[1][test_size:]])
-    y_test = np.array([y[i] for i in class_indices[1][test_size:]])
-    
-    return X_train, y_train, X_test, y_test
+    # Splitting the data into train and test sets while preserving class proportions
+    X_train, X_test, y_train, y_test = pd.factorize(X), pd.factorize(y), pd.factorize(X), pd.factorize(y)
+    return (X_train, X_test, y_train, y_test)
 ```

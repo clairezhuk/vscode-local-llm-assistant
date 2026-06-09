@@ -1,4 +1,4 @@
-ERROR: Exec failed
+ERROR: IndexError: list index out of range
 RESPONSE:
 
 
@@ -6,28 +6,17 @@ RESPONSE:
 ### Attempt 1
 
 ```python
-
-```
-
-
----
-### Attempt 2
-
-```python
 import math
 
 def rotate_z(point, angle_rad):
-    # Define the rotation matrix around the Z-axis
+    # Define the rotation matrix around the Z axis
     rotation_matrix = [[math.cos(angle_rad), -math.sin(angle_rad), 0],
                       [math.sin(angle_rad), math.cos(angle_rad), 0]]
     
-    # Apply the rotation to each point in the list
-    rotated_points = []
-    for x, y, z in point:
-        new_x = x * rotation_matrix[0][0] + y * rotation_matrix[0][1] + z * rotation_matrix[0][2]
-        new_y = x * rotation_matrix[1][0] + y * rotation_matrix[1][1] + z * rotation_matrix[1][2]
-        new_z = x * rotation_matrix[2][0] + y * rotation_matrix[2][1] + z * rotation_matrix[2][2]
-        rotated_points.append((new_x, new_y, new_z))
+    # Apply the rotation matrix to the point
+    rotated_point = [
+        sum(rotation_matrix[i][j] * point[j] for j in range(3)) for i in range(3)
+    ]
     
-    return rotated_points
+    return tuple(rotated_point)
 ```

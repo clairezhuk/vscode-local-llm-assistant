@@ -1,4 +1,6 @@
-ERROR: Exec failed
+ERROR: File "/app/exec.py", line 7
+    from contextlib import redirect_stdout
+SyntaxError: expected 'except' or 'finally' block
 RESPONSE:
 ```python
 def print_hello():

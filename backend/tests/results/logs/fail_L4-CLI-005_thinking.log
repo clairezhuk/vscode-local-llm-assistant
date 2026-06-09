@@ -1,7 +1,0 @@
-ERROR: N/A
-RESPONSE:
-
-
----
-### Attempt 1
-Proposed command: `chmod +x run.sh; chmod -R 444 run.sh`

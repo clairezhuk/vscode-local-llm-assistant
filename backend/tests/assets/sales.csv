@@ -1,0 +1,5 @@
+TransactionID,Product,Amount,Date
+1,Laptop,100,2023-10-01
+2,Mouse,250,2023-10-02
+3,Keyboard,50,2023-10-03
+4,Monitor,400,2023-10-04

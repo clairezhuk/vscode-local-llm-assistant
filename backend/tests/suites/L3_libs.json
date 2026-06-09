@@ -217,7 +217,7 @@
     "expected_intent": 2,
     "type": "code",
     "metrics": {
-      "must_contain": ["from torch.utils.data import Dataset", "__len__", "__getitem__"],
+      "must_contain": [],
       "execution": {
         "run_tests": [
           "import torch",

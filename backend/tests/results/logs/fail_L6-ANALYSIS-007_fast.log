@@ -1,3 +1,0 @@
-ERROR: N/A
-RESPONSE:
-The required Node.js version is specified in the `spec.json` file under the "nodeVersion" field. The port on which the API should run is specified in the "port" field.

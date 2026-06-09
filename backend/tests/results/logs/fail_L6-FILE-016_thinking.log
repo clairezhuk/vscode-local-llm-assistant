@@ -1,4 +1,11 @@
-ERROR: Exec failed
+ERROR: Traceback (most recent call last):
+  File "/app/exec.py", line 2, in <module>
+    first_50_chars = file.read(50)
+  File "/usr/local/lib/python3.10/codecs.py", line 322, in decode
+    (result, consumed) = self._buffer_decode(data, self.errors, final)
+  File "/usr/local/lib/python3.10/encodings/utf_16.py", line 67, in _buffer_decode
+    raise UnicodeError("UTF-16 stream does not start with BOM")
+UnicodeError: UTF-16 stream does not start with BOM
 RESPONSE:
 
 
@@ -7,6 +14,6 @@ RESPONSE:
 
 ```python
 with open('data.txt', 'r', encoding='utf-16') as file:
-    content = file.read()
-print(content[:50])
+    first_50_chars = file.read(50)
+print(first_50_chars)
 ```

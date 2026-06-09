@@ -1,5 +1,0 @@
-ERROR: N/A
-RESPONSE:
-```bash
-wmic os get FreePhysicalMemory /value | findstr "Value"
-```

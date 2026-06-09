@@ -25,8 +25,11 @@ def extract_code(text: str) -> str:
 def load_context_assets(file_paths: list) -> list:
     assets = []
     for rel_path in file_paths:
+        if ".." in rel_path or rel_path.startswith("/") or ":" in rel_path:
+             print(f"Illegal path ignored: {rel_path}")
+             continue
         full_path = PROJECT_ROOT / rel_path
-        if full_path.exists():
+        if full_path.exists() and full_path.is_relative_to(PROJECT_ROOT):
             try:
                 content = full_path.read_text(encoding='utf-8')
                 assets.append({"name": full_path.name, "content": content})
@@ -43,19 +46,28 @@ def run_isolated_code(ai_code: str, asserts: list, context_data: list = None) ->
         if context_data:
             for file_info in context_data:
                 p = os.path.join(tmpdir, file_info['name'])
-                os.makedirs(os.path.dirname(p), exist_ok=True)
                 with open(p, "w", encoding="utf-8") as f: f.write(file_info['content'])
         
         script_p = os.path.join(tmpdir, "exec.py")
         with open(script_p, "w", encoding="utf-8") as f: f.write(full_code)
         try:
-            res = subprocess.run(["python", script_p], cwd=tmpdir, capture_output=True, text=True, timeout=15)
+            res = subprocess.run([
+                "docker", "run", "--rm", 
+                "-v", f"{Path(tmpdir).absolute()}:/app", 
+                "-w", "/app",                           
+                "--network", "none",                    
+                "--memory", "128m",                     
+                "ai-benchmark-runner",                     
+                "python", "exec.py"                     
+            ], capture_output=True, text=True, timeout=20)
             out = res.stdout + res.stderr
             if "PASSED" in out: return True, "Passed"
-            if "FAIL:" in out: return False, re.search(r'FAIL: (.*)', out).group(1).strip()
-            if "ERROR:" in out: return False, re.search(r'ERROR: (.*)', out).group(1).strip()
-            return False, "Exec failed"
-        except subprocess.TimeoutExpired: return False, "Timeout"
+            if "ERROR:" in out: return False, out.split("ERROR:")[1].strip()
+            return False, out.strip() or "Exec failed"
+        except subprocess.TimeoutExpired:
+            return False, "Timeout"
+        except Exception as e:
+            return False, f"Docker Error: {e}"
 
 def run_benchmarks(target_suites: list = None, limit: int = None, mode_filter: str = None):
     test_files = [Path(f"{SUITES_DIR}/{n}.json") for n in target_suites] if target_suites else list(Path(SUITES_DIR).glob("*.json"))

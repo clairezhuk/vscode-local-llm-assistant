@@ -4,4 +4,4 @@ RESPONSE:
 
 ---
 ### Attempt 1
-To run database migrations using `sequelize`, you should execute the command `npx sequelize-cli db:migrate` from your terminal or command prompt. This command will execute all the migration scripts located in the `migrations` directory of your Sequelize project, ensuring that your database schema is up to date with the latest changes defined in your models.
+To run database migrations using Sequelize, you can use the command `npx sequelize-cli db:migrate`. This command will execute all pending migration scripts in your project's directory.

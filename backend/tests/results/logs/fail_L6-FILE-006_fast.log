@@ -1,24 +1,23 @@
-ERROR: Exec failed
+ERROR: FAIL:
 RESPONSE:
 ```python
 from pathlib import Path
 import datetime
 
-# Define the path to the uploads folder
-uploads_folder = Path('C:\\Users\\user\\AppData\\Local\\Temp\\tmplztz8rou\\uploads')
-
-# Get all .jpg and .png files in the uploads folder
-files_to_rename = [file for file in uploads_folder.glob('*.jpg') + uploads_folder.glob('*.png')]
-
-# Rename each file by adding the current date as a prefix
-for file in files_to_rename:
-    # Extract the base name of the file without extension
-    base_name = file.stem
+def rename_files_with_date():
+    uploads_folder = Path('C:\\Users\\user\\AppData\\Local\\Temp\\tmpjwdpjn05\\uploads')
+    
     # Get the current date in YYYY-MM-DD format
     current_date = datetime.datetime.now().strftime('%Y-%m-%d')
-    # Create the new file path with the prefix and original extension
-    new_file_path = uploads_folder / f'{current_date}_{base_name}{file.suffix}'
     
-    # Rename the file
-    file.rename(new_file_path)
+    # List all .jpg and .png files in the uploads folder
+    jpg_files = list(uploads_folder.glob('*.jpg'))
+    png_files = list(uploads_folder.glob('*.png'))
+    
+    # Rename each file with the current date as a prefix
+    for file in jpg_files + png_files:
+        new_name = f"{current_date}_{file.name}"
+        file.rename(file.with_name(new_name))
+        
+    return "Files renamed successfully."
 ```

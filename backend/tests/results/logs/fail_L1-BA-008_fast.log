@@ -7,4 +7,8 @@ The Euclidean distance between two points in a 2D plane is the straight-line dis
 where:
 - \( (x_1, y_1) \) and \( (x_2, y_2) \) are the coordinates of the two points.
 
-In your context, the Euclidean distance between the points \( C:\Users\user\AppData\Local\Temp\tmppth66wb9 \) and another point can be calculated by subtracting their respective x-coordinates and y-coordinates from each other, squaring these differences, adding them together, and then taking the square root of the sum.
+For example, if you have two points A(3, 4) and B(6, 8), you can calculate the distance as follows:
+
+\[ \text{Distance} = \sqrt{(6 - 3)^2 + (8 - 4)^2} = \sqrt{3^2 + 4^2} = \sqrt{9 + 16} = \sqrt{25} = 5 \]
+
+This distance represents the shortest path between the two points, which is a straight line.

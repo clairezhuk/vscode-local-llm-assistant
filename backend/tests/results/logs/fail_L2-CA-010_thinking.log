@@ -1,22 +1,9 @@
-ERROR: 
+ERROR: FAIL:
 RESPONSE:
 
 
 ---
 ### Attempt 1
-
-```python
-clusters = []
-for point in points:
-    distances = [euclidean_distance(point, centroid) for centroid in centroids]
-    closest_index = distances.index(min(distances))
-    clusters.append(closest_index)
-return clusters
-```
-
-
----
-### Attempt 2
 
 ```python
 import math

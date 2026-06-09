@@ -1,4 +1,4 @@
-ERROR: 
+ERROR: FileNotFoundError: [Errno 2] No such file or directory: 'combined.log'
 RESPONSE:
 ```python
 import os
@@ -6,16 +6,17 @@ import os
 def merge_txt_files():
     combined_content = ""
     
-    for file_name in os.listdir("."):
-        if file_name.endswith(".txt"):
-            with open(file_name, 'r') as file:
-                content = file.read()
-                combined_content += content
+    # Get all .txt files in the current directory
+    txt_files = [f for f in os.listdir() if f.endswith('.txt')]
     
-    with open("combined.log", 'w') as file:
-        file.write(combined_content)
+    for file_name in txt_files:
+        with open(file_name, 'r', encoding='utf-8') as file:
+            content = file.read()
+            combined_content += content + '\n'  # Add a newline to separate files
+    
+    # Write the combined content to a new file
+    with open('combined.log', 'w', encoding='utf-8') as combined_file:
+        combined_file.write(combined_content)
     
     return "Combined log created successfully."
-
-print(merge_txt_files())
 ```

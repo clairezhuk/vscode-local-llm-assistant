@@ -1,4 +1,4 @@
-ERROR: 
+ERROR: FAIL:
 RESPONSE:
 
 
@@ -9,34 +9,5 @@ RESPONSE:
 import math
 
 def ucb1(node_win_rate, node_visits, total_parent_visits, exploration_weight=1.41):
-    return (node_win_rate / node_visits) + exploration_weight * math.sqrt(math.log(total_parent_visits) / node_visits)
-
-def check_ucb1():
-    # Test data
-    node_win_rate = 0.8
-    node_visits = 5
-    total_parent_visits = 20
-    
-    # Expected result
-    expected_result = (node_win_rate / node_visits) + exploration_weight * math.sqrt(math.log(total_parent_visits) / node_visits)
-    
-    # Calculate actual result using the function
-    actual_result = ucb1(node_win_rate, node_visits, total_parent_visits)
-    
-    # Check if the actual result matches the expected result
-    assert math.isclose(actual_result, expected_result), f"Expected {expected_result}, but got {actual_result}"
-
-# Run the check function to verify the correctness of the ucb1 function
-check_ucb1()
-```
-
-
----
-### Attempt 2
-
-```python
-import math
-
-def ucb1(node_win_rate, node_visits, total_parent_visits, exploration_weight=1.41):
-    return (node_win_rate / node_visits) + exploration_weight * math.sqrt(math.log(total_parent_visits) / math.log(2))
+    return (node_win_rate / node_visits) + exploration_weight * (math.sqrt(math.log(total_parent_visits)))
 ```

@@ -1,4 +1,4 @@
-ERROR: 
+ERROR: FAIL:
 RESPONSE:
 ```python
 import math
@@ -10,8 +10,8 @@ def assign_clusters(points, centroids):
     clusters = []
     for point in points:
         distances = [euclidean_distance(point, centroid) for centroid in centroids]
-        closest_index = distances.index(min(distances))
-        clusters.append(closest_index)
+        closest_centroid_index = distances.index(min(distances))
+        clusters.append(closest_centroid_index)
     
     return clusters
 ```

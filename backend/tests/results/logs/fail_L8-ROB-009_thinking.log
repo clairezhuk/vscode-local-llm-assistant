@@ -1,4 +1,6 @@
-ERROR: Exec failed
+ERROR: File "/app/exec.py", line 8
+    assert count_lines('test.txt') == 3
+SyntaxError: expected 'except' or 'finally' block
 RESPONSE:
 
 
@@ -6,14 +8,7 @@ RESPONSE:
 ### Attempt 1
 
 ```python
-def count_lines(file_path):
-    try:
-        with open(file_path, 'r') as f:
-            return len(f.readlines())
-    except FileNotFoundError:
-        print("File not found.")
-        return 0
-    except Exception as e:
-        print("An error occurred:", e)
-        return 0
+def count_lines_in_file(file_path):
+    with open(file_path, 'r') as file:
+        return len(file.readlines())
 ```

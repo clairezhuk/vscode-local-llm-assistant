@@ -1,4 +1,6 @@
-ERROR: Exec failed
+ERROR: File "/app/exec.py", line 9
+    assert 1 <= n <= 100
+SyntaxError: expected 'except' or 'finally' block
 RESPONSE:
 ```python
 import random

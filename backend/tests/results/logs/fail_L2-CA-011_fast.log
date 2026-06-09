@@ -1,4 +1,4 @@
-ERROR: 
+ERROR: FAIL:
 RESPONSE:
 ```python
 import math
@@ -7,18 +7,18 @@ def rotate_z(point, angle_rad):
     x, y, z = point
     cos_angle = math.cos(angle_rad)
     sin_angle = math.sin(angle_rad)
-
-    # Rotation matrix around the Z axis
+    
+    # Rotation matrix around the Z-axis
     rotation_matrix = [
         [cos_angle, -sin_angle, 0],
         [sin_angle, cos_angle, 0],
         [0, 0, 1]
     ]
-
-    # Apply rotation to each coordinate
-    new_x = sum(rotation_matrix[0][i] * x + rotation_matrix[1][i] * y for i in range(3))
-    new_y = sum(rotation_matrix[0][i] * y + rotation_matrix[1][i] * z for i in range(3))
-    new_z = sum(rotation_matrix[0][i] * z + rotation_matrix[1][i] * x for i in range(3))
-
+    
+    # Apply the rotation matrix to the point
+    new_x = sum(rotation_matrix[0][i] * x + rotation_matrix[1][i] * y + rotation_matrix[2][i] * z for i in range(3))
+    new_y = sum(rotation_matrix[0][i] * x + rotation_matrix[1][i] * y + rotation_matrix[2][i] * z for i in range(3))
+    new_z = sum(rotation_matrix[0][i] * x + rotation_matrix[1][i] * y + rotation_matrix[2][i] * z for i in range(3))
+    
     return (new_x, new_y, new_z)
 ```

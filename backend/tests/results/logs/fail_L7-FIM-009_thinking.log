@@ -1,4 +1,4 @@
-ERROR: Exec failed
+ERROR: Passed
 RESPONSE:
 
 
@@ -6,20 +6,10 @@ RESPONSE:
 ### Attempt 1
 
 ```python
-import json
-
-# Read the input records from the specified path
-with open('input_records.json', 'r') as file:
-    records = json.load(file)
-
 def extract_api_values(records):
     res = []
     for record in records:
         if record['meta']['source'] == 'API':
             res.append(record['meta']['data']['val'])
     return res
-
-# Example usage
-api_values = extract_api_values(records)
-print(api_values)  # Output: ['API Value 1', 'API Value 2', 'API Value 3']
 ```

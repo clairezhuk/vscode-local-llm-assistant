@@ -1,16 +1,21 @@
-ERROR: Exec failed
+ERROR: File "/app/exec.py", line 18
+    logs = 'Module[Auth]: Status[OK]
+           ^
+SyntaxError: unterminated string literal (detected at line 18)
 RESPONSE:
 ```python
 import re
 
 def parse_nested_logs(lines):
-    log_dict = {}
+    log_pattern = r'Module\[(.*?)\]: Status\[(.*?)\]'
+    matches = {}
+    
     for line in lines:
-        match = re.search(r'Module\[(.*?)\]: Status\[(.*?)\]', line)
+        match = re.search(log_pattern, line)
         if match:
-            module_name, status_value = match.groups()
-            if module_name not in log_dict:
-                log_dict[module_name] = []
-            log_dict[module_name].append(status_value)
-    return log_dict
+            name = match.group(1)
+            value = match.group(2)
+            matches[name] = value
+    
+    return matches
 ```

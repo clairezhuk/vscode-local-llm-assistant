@@ -5,7 +5,4 @@ RESPONSE:
 ---
 ### Attempt 1
 Proposed command: `curl -sL https://deb.nodesource.com/setup_14.x | sudo bash -
-sudo apt-get install -y nodejs npm
-mkdir myproject
-cd myproject
-npm init -y`
+sudo apt-get install -y nodejs`

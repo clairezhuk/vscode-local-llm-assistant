@@ -1,0 +1,7 @@
+ERROR: N/A
+RESPONSE:
+
+
+---
+### Attempt 1
+Proposed command: `kill -9 $(lsof -i :8080 | grep -oP '\d+')`

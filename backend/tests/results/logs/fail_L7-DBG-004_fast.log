@@ -1,4 +1,4 @@
-ERROR: List 1 should only contain Alice
+ERROR: FAIL: List 1 should only contain Alice
 RESPONSE:
 ```python
 def add_user_to_list(user, user_list=[]):

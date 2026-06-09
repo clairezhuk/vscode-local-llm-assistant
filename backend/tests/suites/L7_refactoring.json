@@ -114,7 +114,7 @@
   {
     "id": "L7-REF-007",
     "description": "Consolidate duplicated logic into a helper method.",
-    "query": "Refactor these two functions into a class where the common validation logic (checking if age is between 0 and 120) is moved to a private method `_validate_age`.\n\ndef set_driver_age(age):\n    if 0 <= age <= 120:\n        print('Valid')\n    else:\n        raise ValueError('Invalid age')\n\ndef set_voter_age(age):\n    if 0 <= age <= 120:\n        print('Valid')\n    else:\n        raise ValueError('Invalid age')",
+    "query": "Refactor these two functions into a class where the common validation logic (checking if age is between 0 and 120) is moved to a private method `_validate_age`.\n\ndef set_driver_age(age):\n    if 0 <= age <= 120:\n        print('Valid')\n    else:\n        raise ValueError('Invalid age')\n\ndef set_voter_age(age):\n    if 0 <= age <= 120:\n        print('Valid')\n    else:\n        raise ValueError('Invalid age')\n\nRefactor into a class named AgeManager",
     "context_files": [],
     "expected_intent": 2,
     "type": "code",
@@ -156,7 +156,7 @@
     "id": "L7-FIM-009",
     "description": "Fill middle with complex data extraction.",
     "query": "Given a list of records like `{'meta': {'source': 'API', 'data': {'val': 10}}}`, complete the middle of the function to return a list of all 'val' numbers where source is 'API'.\n\ndef extract_api_values(records):\n    res = []\n    # START FIM\n    # END FIM\n    return res",
-    "context_files": [],
+    "context_files": ["tests/assets/input_records.json"],
     "expected_intent": 2,
     "type": "code",
     "metrics": {

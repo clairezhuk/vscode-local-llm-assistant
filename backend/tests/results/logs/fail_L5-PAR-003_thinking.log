@@ -1,4 +1,4 @@
-ERROR: Exec failed
+ERROR: AttributeError: Can't pickle local object '__run_test.<locals>.square'
 RESPONSE:
 
 
@@ -6,15 +6,13 @@ RESPONSE:
 ### Attempt 1
 
 ```python
-from concurrent.futures import ProcessPoolExecutor
+import concurrent.futures
 
 def square(x):
     return x * x
 
-numbers = list(range(1, 1001))
-
-with ProcessPoolExecutor() as executor:
-    results = list(executor.map(square, numbers))
-
-print(results)
+def run_parallel_task(func, data):
+    with concurrent.futures.ProcessPoolExecutor() as executor:
+        results = list(executor.map(func, data))
+    return results
 ```

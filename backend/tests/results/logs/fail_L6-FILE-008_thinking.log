@@ -1,4 +1,4 @@
-ERROR: 
+ERROR: FAIL:
 RESPONSE:
 
 
@@ -7,14 +7,16 @@ RESPONSE:
 
 ```python
 def find_deepest_readme(tree):
-    def traverse(node, path=''):
-        if node is None:
-            return
+    def traverse(node, path):
         if 'test_README.md' in node:
-            return path + '/test_README.md'
+            return path + ['test_README.md']
+        deepest_path = None
         for key, value in node.items():
-            result = traverse(value, path + '/' + key)
-            if result is not None:
-                return result
-    return traverse(tree)
+            if isinstance(value, dict):
+                new_path = traverse(value, path + [key])
+                if new_path and (deepest_path is None or len(new_path) > len(deepest_path)):
+                    deepest_path = new_path
+        return deepest_path
+
+    return traverse(tree, [])
 ```

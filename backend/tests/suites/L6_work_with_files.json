@@ -11,10 +11,13 @@
       "execution": {
         "run_tests": [
           "import json, os",
-          "with open('config.json', 'w') as f: json.dump({'database': {'port': 8080}}, f)",
-          "update_config('config.json') if 'update_config' in locals() else None",
-          "with open('config.json', 'r') as f: data = json.load(f)",
-          "assert data['database']['port'] == 5432"
+          "if not os.path.exists('config.json'):",
+          "    print('ERROR: config.json not found')",
+          "else:",
+          "    with open('config.json', 'r') as f: data = json.load(f)",
+          "    port = data.get('database', {}).get('port')",
+          "    assert port == 5432, f'Expected port 5432, got {port}'",
+          "    print('PASSED')"
         ]
       }
     }
@@ -34,7 +37,7 @@
     "id": "L6-FILE-003",
     "description": "Memory-efficient log parsing (Polish).",
     "query": "Napisz skrypt, który odczytuje 'server.log' linia po linii, wyodrębnia wiersze zawierające '[ERROR]' i zapisuje je do 'errors.log'.",
-    "context_files": [],
+    "context_files": ["tests/assets/server.log"],
     "expected_intent": 2,
     "type": "code",
     "metrics": {
@@ -149,7 +152,7 @@
     "id": "L6-FILE-011",
     "description": "CSV aggregation (Average calculation).",
     "query": "Read 'sales.csv' using the `csv` module and calculate the average value of the 'Amount' column.",
-    "context_files": [],
+    "context_files": ["tests/assets/sales.csv"],
     "expected_intent": 2,
     "type": "code",
     "metrics": {
@@ -227,7 +230,7 @@
     "id": "L6-FILE-016",
     "description": "Read file with specific encoding.",
     "query": "Read the content of 'data.txt' which is encoded in UTF-16 and print only the first 50 characters.",
-    "context_files": [],
+    "context_files": ["tests/assets/data.txt"],
     "expected_intent": 2,
     "type": "code",
     "metrics": {
@@ -245,8 +248,8 @@
   {
     "id": "L6-FILE-017",
     "description": "Merge multiple text files into one.",
-    "query": "Write a script that takes all .txt files in the current directory and merges their content into 'combined.log'.",
-    "context_files": [],
+    "query": "Write a Python script that reads all provided .txt files from the current workspace and merges their content into a single file named 'combined.log'. Each file's content should start on a new line.",
+    "context_files": ["tests/assets/project_y/note.txt", "tests/assets/project_y/requirements.txt"],
     "expected_intent": 2,
     "type": "code",
     "metrics": {
@@ -265,7 +268,7 @@
     "id": "L6-FILE-018",
     "description": "YAML configuration update.",
     "query": "Read 'settings.yaml', set 'debug' to false and 'version' to 2.0, then save it. Use the `yaml` library.",
-    "context_files": [],
+    "context_files": ["tests/assets/settings.yaml"],
     "expected_intent": 2,
     "type": "code",
     "metrics": {

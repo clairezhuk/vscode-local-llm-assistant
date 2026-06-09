@@ -8,7 +8,7 @@ def log_time(func):
         start = time.time()
         result = func(*args, **kwargs)
         end = time.time()
-        print(f"{func.__name__} executed in {end - start}s")
+        print(f"Execution time for {func.__name__}: {end - start}s")
         return result
     return wrapper
 

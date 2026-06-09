@@ -1,6 +1,0 @@
-ERROR: Passed
-RESPONSE:
-```python
-def sum_list(arr):
-    return sum(filter(lambda x: isinstance(x, (int, float)), arr))
-```

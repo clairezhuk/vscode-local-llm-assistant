@@ -1,41 +1,46 @@
 id,processing_type,time_s,intent,format_ok,exec_ok,exec_msg,warning
-L3-LIB-001,fast,14.69,2,True,True,Passed,False
-L3-LIB-001,thinking,103.35,2,True,False,Exec failed,True
-L3-LIB-002,fast,12.88,2,True,True,Passed,False
-L3-LIB-002,thinking,24.79,2,True,True,Passed,False
-L3-LIB-003,fast,15.18,2,True,True,Passed,False
-L3-LIB-003,thinking,229.63,2,True,False,Exec failed,True
-L3-LIB-004,fast,9.49,2,True,False,Exec failed,False
-L3-LIB-004,thinking,24.86,2,True,False,Exec failed,False
-L3-LIB-005,fast,12.98,2,True,False,Exec failed,False
-L3-LIB-005,thinking,43.9,2,True,False,Exec failed,False
-L3-LIB-006,fast,16.54,2,True,False,Exec failed,False
-L3-LIB-006,thinking,37.97,2,True,False,Exec failed,False
-L3-LIB-007,fast,18.62,2,True,False,Timeout,False
-L3-LIB-007,thinking,77.33,2,False,False,,True
-L3-LIB-008,fast,7.91,2,True,True,Passed,False
-L3-LIB-008,thinking,20.05,2,True,True,Passed,False
-L3-LIB-009,fast,25.35,2,False,False,,False
-L3-LIB-009,thinking,112.05,2,False,False,Exec failed,True
-L3-LIB-010,fast,15.53,2,False,False,Exec failed,False
-L3-LIB-010,thinking,35.98,2,False,False,Exec failed,False
-L3-LIB-011,fast,11.45,2,False,False,Exec failed,False
-L3-LIB-011,thinking,46.29,2,False,False,Exec failed,False
-L3-LIB-012,fast,10.73,2,True,False,Exec failed,False
-L3-LIB-012,thinking,61.77,2,True,False,ModuleNotFoundError: No module named 'torch',True
-L3-LIB-013,fast,19.39,2,True,True,Passed,False
-L3-LIB-013,thinking,204.03,2,True,False,Exec failed,True
-L3-LIB-014,fast,6.59,2,True,False,Exec failed,False
-L3-LIB-014,thinking,27.65,2,True,False,Exec failed,False
-L3-LIB-015,fast,16.28,2,False,True,Passed,False
-L3-LIB-015,thinking,134.74,2,False,False,Exec failed,True
-L3-LIB-016,fast,6.52,2,True,False,Exec failed,False
-L3-LIB-016,thinking,80.47,2,True,False,TypeError: cannot unpack non-iterable NoneType object,True
-L3-LIB-017,fast,8.63,2,False,False,Exec failed,False
-L3-LIB-017,thinking,38.91,2,False,False,Exec failed,False
-L3-LIB-018,fast,5.63,2,True,False,,False
-L3-LIB-018,thinking,58.51,2,True,False,Exec failed,False
-L3-LIB-019,fast,10.8,2,True,False,Exec failed,False
-L3-LIB-019,thinking,43.16,2,True,False,Exec failed,False
-L3-LIB-020,fast,14.6,2,True,False,Exec failed,False
-L3-LIB-020,thinking,26.99,2,False,False,Exec failed,False
+L3-LIB-001,fast,15.04,2,True,True,Passed,False
+L3-LIB-001,thinking,194.1,2,True,True,Passed,True
+L3-LIB-002,fast,14.29,2,True,True,Passed,False
+L3-LIB-002,thinking,33.46,2,True,True,Passed,False
+L3-LIB-003,fast,19.14,2,True,True,Passed,False
+L3-LIB-003,thinking,38.27,2,True,True,Passed,False
+L3-LIB-004,fast,13.08,2,True,True,Passed,False
+L3-LIB-004,thinking,22.51,2,True,True,Passed,False
+L3-LIB-005,fast,13.23,2,True,True,Passed,False
+L3-LIB-005,thinking,23.38,2,True,True,Passed,False
+L3-LIB-006,fast,16.2,2,True,True,Passed,False
+L3-LIB-006,thinking,44.06,2,True,True,Passed,False
+L3-LIB-007,fast,19.27,2,True,True,Passed,False
+L3-LIB-007,thinking,87.98,2,True,False,FAIL:,True
+L3-LIB-008,fast,8.08,2,True,True,Passed,False
+L3-LIB-008,thinking,24.48,2,True,True,Passed,False
+L3-LIB-009,fast,12.89,2,False,False,"ValueError: Buffer has wrong number of dimensions (expected 1, got 2)",False
+L3-LIB-009,thinking,37.13,2,True,True,Passed,False
+L3-LIB-010,fast,15.25,2,False,False,NameError: name 'torch' is not defined,False
+L3-LIB-010,thinking,31.28,2,False,False,"NotImplementedError: Module [SimpleNet] is missing the required ""forward"" function",False
+L3-LIB-011,fast,11.66,2,True,True,Passed,False
+L3-LIB-011,thinking,58.22,2,True,True,Passed,False
+L3-LIB-012,fast,11.8,2,True,False,AttributeError: 'float' object has no attribute 'item',False
+L3-LIB-012,thinking,69.32,2,True,False,AttributeError: 'NoneType' object has no attribute 'item',True
+L3-LIB-013,fast,23.24,2,True,True,Passed,False
+L3-LIB-013,thinking,99.97,2,True,True,Passed,False
+L3-LIB-014,fast,7.58,2,True,True,Passed,False
+L3-LIB-014,thinking,20.45,2,True,True,Passed,False
+L3-LIB-015,fast,17.77,2,False,True,Passed,False
+L3-LIB-015,thinking,235.97,2,False,True,Passed,True
+L3-LIB-016,fast,12.24,2,True,False,NameError: name 'get_metrics' is not defined,False
+L3-LIB-016,thinking,37.47,2,True,True,Passed,False
+L3-LIB-017,fast,12.77,2,False,True,Passed,False
+L3-LIB-017,thinking,17.25,2,False,True,Passed,False
+L3-LIB-018,fast,5.28,2,True,False,FAIL:,False
+L3-LIB-018,thinking,59.68,2,True,False,"Traceback (most recent call last):
+  File ""/app/exec.py"", line 21, in <module>
+    result = subtract_vector_from_matrix(matrix, vector)
+  File ""/app/exec.py"", line 15, in subtract_vector_from_matrix
+    result = matrix - vector[:, None]
+ValueError: operands could not be broadcast together with shapes (2,3) (3,1)",False
+L3-LIB-019,fast,11.23,2,True,True,Passed,False
+L3-LIB-019,thinking,109.73,2,True,True,Passed,False
+L3-LIB-020,fast,12.4,2,True,True,Passed,False
+L3-LIB-020,thinking,42.02,2,False,False,ValueError: Logits must be a 2D numpy array.,False

@@ -1,20 +1,22 @@
-ERROR: Exec failed
+ERROR: File "/app/exec.py", line 21
+    assert distances['D'] == 4, f'Shortest path to D should be 4 (A-B-C-D), got {distances.get('D')}'
+                                                                                                ^
+SyntaxError: f-string: unmatched '('
 RESPONSE:
 ```python
 def dijkstra(graph, start):
     distances = {node: float('inf') for node in graph}
     distances[start] = 0
 
-    while len(distances) > 0:
+    while graph:
         current_node = min(distances, key=distances.get)
         if distances[current_node] == float('inf'):
             break
-        del distances[current_node]
 
         for neighbor, weight in graph[current_node].items():
-            distance = distances[current_node] + weight
-            if distance < distances[neighbor]:
-                distances[neighbor] = distance
+            new_distance = distances[current_node] + weight
+            if new_distance < distances[neighbor]:
+                distances[neighbor] = new_distance
 
     return distances
 ```

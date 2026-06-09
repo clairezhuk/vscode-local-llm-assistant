@@ -1,4 +1,6 @@
-ERROR: Exec failed
+ERROR: File "/app/exec.py", line 11
+    divide(10, 0)
+IndentationError: expected an indented block after 'try' statement on line 10
 RESPONSE:
 ```python
 def divide_numbers(a, b):

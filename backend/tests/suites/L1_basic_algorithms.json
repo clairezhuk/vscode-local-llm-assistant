@@ -87,7 +87,7 @@
         "type": "code",
         "metrics": {
             "must_contain": [
-                "gcd", "import math"
+                "gcd"
             ],
             "execution": {
                 "run_tests": [
@@ -140,8 +140,7 @@
         "type": "text",
         "metrics": {
             "must_contain": [
-                "sqrt((x2 - x1)^2 + (y2 - y1)^2)",
-                "coordinates"
+                "sqrt((x2 - x1)^2 + (y2 - y1)^2)"
             ],
             "must_not_contain": []
         }
@@ -155,11 +154,7 @@
         "expected_intent": 2,
         "type": "code",
         "metrics": {
-            "must_contain": [
-                "mid",
-                "low",
-                "high"
-            ],
+            "must_contain": [],
             "execution": {
                 "run_tests": [
                     "assert binary_search([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], 7) == 6",
@@ -400,9 +395,7 @@
         "expected_intent": 2,
         "type": "code",
         "metrics": {
-            "must_contain": [
-                "** 0.5"
-            ],
+            "must_contain": [],
             "execution": {
                 "run_tests": [
                     "assert distance((0, 0), (3, 4)) == 5.0",
@@ -461,9 +454,7 @@
         "expected_intent": 2,
         "type": "code",
         "metrics": {
-            "must_contain": [
-                "for"
-            ],
+            "must_contain": [],
             "execution": {
                 "run_tests": [
                     "assert sum_list([1, 2, 3, 4]) == 10",

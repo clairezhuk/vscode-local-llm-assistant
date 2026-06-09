@@ -1,4 +1,5 @@
-ERROR: Exec failed
+ERROR: 200.0
+FAIL:
 RESPONSE:
 
 
@@ -6,29 +7,14 @@ RESPONSE:
 ### Attempt 1
 
 ```python
-import csv
+import pandas as pd
 
-# Step 1: Open the CSV file in read mode
-with open('sales.csv', 'r') as file:
-    reader = csv.reader(file)
-    
-    # Skip the header row if it exists
-    next(reader, None)
-    
-    # Initialize a variable to store the sum of amounts
-    total_amount = 0
-    
-    # Step 3: Iterate over each row in the CSV file
-    for row in reader:
-        # Step 4: Extract the 'Amount' value from the current row
-        amount = float(row[1])
-        
-        # Step 5: Add the 'Amount' to the total sum
-        total_amount += amount
-    
-    # Calculate the average by dividing the total sum by the number of rows
-    average_amount = total_amount / len(reader)
-    
-    # Step 6: Print the calculated average value
-    print(f"The average value of the 'Amount' column is: {average_amount}")
+# Load the sales data from a CSV file
+sales_data = pd.read_csv('sales.csv')
+
+# Calculate the average of the 'Amount' column
+average_amount = sales_data['Amount'].mean()
+
+# Print the result
+print(average_amount)
 ```

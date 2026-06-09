@@ -1,4 +1,9 @@
-ERROR: Exec failed
+ERROR: Traceback (most recent call last):
+  File "/app/exec.py", line 21, in <module>
+    result = subtract_vector_from_matrix(matrix, vector)
+  File "/app/exec.py", line 15, in subtract_vector_from_matrix
+    result = matrix - vector[:, None]
+ValueError: operands could not be broadcast together with shapes (2,3) (3,1)
 RESPONSE:
 
 
@@ -8,19 +13,24 @@ RESPONSE:
 ```python
 import numpy as np
 
-# Load the matrix and vector
+def subtract_vector_from_matrix(matrix, vector):
+    """
+    Subtract a given vector from each row of the matrix using broadcasting.
+    
+    Parameters:
+    - matrix: A 2D numpy array representing the matrix.
+    - vector: A 1D numpy array representing the vector to be subtracted.
+    
+    Returns:
+    - A new 2D numpy array with the vector subtracted from each row of the original matrix.
+    """
+    # Subtract the vector from each row using broadcasting
+    result = matrix - vector[:, None]
+    return result
+
+# Example usage
 matrix = np.array([[1, 2, 3], [4, 5, 6]])
-vector = np.array([10, 20, 30])
-
-# Define the matrix and the vector
-matrix = [[1, 2, 3], [4, 5, 6]]
-vector = [7, 8, 9]
-
-# Prepare the matrix for broadcasting by adding a new dimension to it
-matrix_with_new_dim = matrix + [[[0]] * len(vector)] * len(matrix)
-
-# Subtract each row of the matrix from the vector using broadcasting
-result = matrix_with_new_dim - vector
-
+vector = np.array([7, 8, 9])
+result = subtract_vector_from_matrix(matrix, vector)
 print(result)
 ```

@@ -1,4 +1,4 @@
-ERROR: Exec failed
+ERROR: FAIL:
 RESPONSE:
 
 
@@ -12,11 +12,11 @@ import yaml
 with open('settings.yaml', 'r') as file:
     settings = yaml.safe_load(file)
 
-# Modify debug to False and version to 2.0
+# Set debug to false and version to 2.0
 settings['debug'] = False
 settings['version'] = '2.0'
 
-# Save the modified settings back to the file
+# Save the updated settings back to the file
 with open('settings.yaml', 'w') as file:
     yaml.dump(settings, file)
 ```

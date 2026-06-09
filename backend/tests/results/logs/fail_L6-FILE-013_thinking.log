@@ -6,15 +6,13 @@ RESPONSE:
 ### Attempt 1
 
 ```python
-# utils.py
 from datetime import datetime
 
-def format_timestamp(timestamp):
-    """Formats a timestamp string into a more readable format."""
-    return datetime.strptime(timestamp, '%Y-%m-%d %H:%M:%S').strftime('%Y-%m-%d %H:%M:%S')
+def format_date(timestamp):
+    return datetime.fromtimestamp(timestamp).strftime('%Y-%m-%d %H:%M:%S')
 
-# Example usage
-timestamp = '2023-10-05 14:30:00'
-formatted_timestamp = format_timestamp(timestamp)
-print(formatted_timestamp)  # Output: 2023-10-05 14:30:00
+# Example usage:
+timestamps = [1633072800, 1633158400]
+formatted_dates = [format_date(ts) for ts in timestamps]
+print(formatted_dates)
 ```

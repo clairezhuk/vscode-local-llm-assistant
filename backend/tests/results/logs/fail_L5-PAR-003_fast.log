@@ -1,4 +1,4 @@
-ERROR: Exec failed
+ERROR: AttributeError: Can't pickle local object '__run_test.<locals>.square'
 RESPONSE:
 ```python
 import concurrent.futures
@@ -6,12 +6,10 @@ import concurrent.futures
 def square(x):
     return x * x
 
-# List of integers from 1 to 1000
-numbers = list(range(1, 1001))
-
-# Using ProcessPoolExecutor to map the function to the list of numbers
-with concurrent.futures.ProcessPoolExecutor() as executor:
-    results = list(executor.map(square, numbers))
-
-return results
+def run_parallel_task(func, data):
+    with concurrent.futures.ProcessPoolExecutor() as executor:
+        results = list(executor.map(func, data))
+    return results
 ```
+
+This code defines a function `square` that takes an integer and returns its square. The `run_parallel_task` function uses the `concurrent.futures.ProcessPoolExecutor` to map the `square` function to a list of integers from 1 to 1000. It then returns the list of results.
