@@ -1,0 +1,46 @@
+ERROR: File "/app/exec.py", line 1
+    ---
+       ^
+SyntaxError: invalid syntax
+RESPONSE:
+
+
+---
+### Attempt 1
+
+```python
+def fibonacci(n):
+    if n <= 1:
+        return n
+    else:
+        a, b = 0, 1
+        for _ in range(2, n + 1):
+            a, b = b, a + b
+        return b
+```
+
+
+---
+### Attempt 2
+
+```python
+```
+```
+
+
+---
+### Attempt 3
+
+```python
+def fibonacci(n):
+    if n <= 1:
+        return n
+    else:
+        a, b = 0, 1
+        for _ in range(2, n + 1):
+            a, b = b, a + b
+        return b
+```
+
+
+> ⚠️ **AI Warning:** Verification failed after max retries.

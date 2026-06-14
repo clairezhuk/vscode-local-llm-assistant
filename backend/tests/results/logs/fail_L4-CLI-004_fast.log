@@ -1,4 +1,6 @@
-ERROR: No command found
+ERROR: mv: cannot stat 'file': No such file or directory
+mv: cannot stat 'file': No such file or directory
+
 RESPONSE:
 ```bash
 for file in *.txt; do mv "$file" "${file%.txt}.bak"; done

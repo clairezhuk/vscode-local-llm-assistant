@@ -1,7 +1,0 @@
-ERROR: Passed
-RESPONSE:
-
-
----
-### Attempt 1
-Proposed command: `ls -lh data.log`

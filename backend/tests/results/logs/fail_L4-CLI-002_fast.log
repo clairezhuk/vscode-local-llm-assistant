@@ -1,5 +1,0 @@
-ERROR: No command found
-RESPONSE:
-```bash
-du -h data.log
-```

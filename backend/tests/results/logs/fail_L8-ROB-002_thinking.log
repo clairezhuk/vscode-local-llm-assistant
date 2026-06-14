@@ -1,0 +1,18 @@
+ERROR: FAIL:
+RESPONSE:
+
+
+---
+### Attempt 1
+
+```python
+def simple_div(x, y):
+    # Convert inputs to floating-point numbers using IEEE 754 standard and mantissa alignment
+    x = float.fromhex(f"{x:032b}")
+    y = float.fromhex(f"{y:032b}")
+
+    # Perform division using IEEE 754 standard and mantissa alignment
+    result = x / y
+
+    return result
+```

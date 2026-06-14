@@ -1,27 +1,27 @@
 id,processing_type,time_s,intent,format_ok,exec_ok,exec_msg,warning
-L8-ROB-001,fast,7.16,2,True,True,Passed,False
-L8-ROB-001,thinking,20.02,2,True,True,Passed,False
-L8-ROB-002,fast,8.95,2,True,True,Passed,False
-L8-ROB-002,thinking,55.71,2,True,True,Passed,False
-L8-ROB-003,fast,8.56,2,True,True,Passed,False
-L8-ROB-003,thinking,12.39,2,True,True,Passed,False
-L8-ROB-004,fast,6.0,2,True,True,Passed,False
-L8-ROB-004,thinking,13.75,2,True,True,Passed,False
-L8-ROB-005,fast,7.7,2,True,True,Passed,False
-L8-ROB-005,thinking,12.05,2,True,True,Passed,False
-L8-ROB-006,fast,8.38,2,False,True,Passed,False
-L8-ROB-006,thinking,72.42,2,False,True,Passed,True
-L8-ROB-007,fast,7.23,2,True,True,Passed,False
-L8-ROB-007,thinking,20.31,2,True,False,TypeError: 'NoneType' object is not callable,False
-L8-ROB-008,fast,12.67,2,True,True,Passed,False
-L8-ROB-008,thinking,17.08,2,True,True,Passed,False
-L8-ROB-009,fast,8.99,2,True,True,Passed,False
-L8-ROB-009,thinking,14.01,2,True,True,Passed,False
-L8-ROB-010,fast,7.43,2,True,True,Passed,False
-L8-ROB-010,thinking,32.63,2,True,True,Passed,False
-L8-ROB-011,fast,7.73,2,True,True,Passed,False
-L8-ROB-011,thinking,22.27,2,True,True,Passed,False
-L8-ROB-012,fast,3.26,3,True,False,No command found,False
-L8-ROB-012,thinking,3.79,3,True,True,Passed,False
-L8-ROB-013,fast,5.06,3,True,False,No command found,False
-L8-ROB-013,thinking,5.42,3,True,True,Passed,False
+L8-ROB-006,fast,8.34,2,True,True,Passed,False
+L8-ROB-006,thinking,88.06,2,True,True,Passed,True
+L8-ROB-007,fast,8.76,2,True,True,Passed,False
+L8-ROB-007,thinking,23.1,2,True,False,TypeError: 'NoneType' object is not callable,False
+L8-ROB-008,fast,9.73,2,True,True,Passed,False
+L8-ROB-008,thinking,17.03,2,True,True,Passed,False
+L8-ROB-009,fast,8.98,2,True,True,Passed,False
+L8-ROB-009,thinking,19.07,2,True,True,Passed,False
+L8-ROB-010,fast,7.68,2,True,True,Passed,False
+L8-ROB-010,thinking,18.23,2,True,True,Passed,False
+L8-ROB-011,fast,8.19,2,True,True,Passed,False
+L8-ROB-011,thinking,17.5,2,True,True,Passed,False
+L8-ROB-012,fast,3.45,3,True,True,Passed,False
+L8-ROB-012,thinking,4.28,3,True,True,Passed,False
+L8-ROB-013,fast,5.48,3,True,True,Passed,False
+L8-ROB-013,thinking,6.11,3,True,True,Passed,False
+L8-ROB-001,fast,7.69,2,True,True,Passed,False
+L8-ROB-001,thinking,18.7,2,True,True,Passed,False
+L8-ROB-002,fast,7.48,2,True,True,Passed,False
+L8-ROB-002,thinking,140.81,2,True,True,Passed,False
+L8-ROB-003,fast,9.2,2,True,True,Passed,False
+L8-ROB-003,thinking,12.98,2,True,True,Passed,False
+L8-ROB-004,fast,6.62,2,True,True,Passed,False
+L8-ROB-004,thinking,22.59,2,True,True,Passed,False
+L8-ROB-005,fast,9.28,2,True,True,Passed,False
+L8-ROB-005,thinking,13.0,2,True,True,Passed,False

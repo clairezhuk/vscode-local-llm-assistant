@@ -16,9 +16,12 @@ RESULTS_DIR = "results"
 LOGS_DIR = os.path.join(RESULTS_DIR, "logs")
 
 def extract_code(text: str) -> str:
-    blocks = re.findall(r'```(?:python)?\s*\n(.*?)\n```', text, re.DOTALL | re.IGNORECASE)
+    blocks = re.findall(r'```(?:\w+)?\s*\n?(.*?)\n?```', text, re.DOTALL | re.IGNORECASE)
+    clean_blocks = [b.strip() for b in blocks if b.strip() and "### Attempt" not in b]
+    if clean_blocks:
+        return clean_blocks[-1] 
     if blocks:
-        return blocks[-1].strip() 
+        return blocks[-1].strip()
     inline_match = re.search(r'`(.*?)`', text, re.DOTALL)
     return inline_match.group(1).strip() if inline_match else ""
 
