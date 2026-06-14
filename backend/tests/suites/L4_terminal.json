@@ -1,71 +1,99 @@
 [
   {
     "id": "L4-CLI-001",
-    "description": "Find Python files recursively (Windows).",
-    "query": "Find all files with extension .py in the current directory and its subdirectories.",
+    "description": "Recursive find .py files",
+    "query": "Find all files with extension .py in the current directory and its subdirectories. System: Linux.",
     "context_files": [],
     "expected_intent": 3,
     "type": "cli",
     "metrics": {
-      "must_contain": ["Get-ChildItem", "-Recurse", "*.py"],
+      "must_contain": ["find", ".py"],
       "execution": {
-        "verify_cmd": "powershell -Command \"New-Item -Path . -Name 'test.py' -ItemType 'File'; New-Item -Path 'sub' -ItemType 'Directory'; New-Item -Path 'sub' -Name 'test2.py' -ItemType 'File'; Get-ChildItem -Recurse -Filter *.py\""
+        "verify_cmd": "mkdir -p sub; touch a.py sub/b.py c.txt; OUTPUT=$({COMMAND}); if echo \"$OUTPUT\" | grep -q \"a.py\" && echo \"$OUTPUT\" | grep -q \"b.py\"; then exit 0; else echo \"Found: $OUTPUT\"; exit 1; fi"
       }
     }
   },
   {
     "id": "L4-CLI-002",
-    "description": "Extract unique IPs from log (Windows).",
-    "query": "Wyciągnij wszystkie unikalne adresy IP z pliku access.log i posortuj je.",
+    "description": "Check file size",
+    "query": "Pokaż rozmiar pliku 'data.log' w formacie czytelnym dla człowieka (human-readable). System: Linux.",
     "context_files": [],
     "expected_intent": 3,
     "type": "cli",
     "metrics": {
-      "must_contain": ["Select-String", "Sort-Object", "-Unique"],
+      "must_contain": [],
       "execution": {
-        "verify_cmd": "powershell -Command \"Set-Content -Path access.log -Value '192.168.1.1', '192.168.1.2', '192.168.1.1'; Select-String -Path access.log -Pattern '\\d+\\.\\d+\\.\\d+\\.\\d+' | ForEach-Object { $_.Matches.Value } | Sort-Object -Unique\""
+        "verify_cmd": "head -c 1M </dev/urandom > data.log; {COMMAND} | grep -qE '[0-9](\\.[0-9])?[MKG]'"
       }
     }
   },
   {
     "id": "L4-CLI-003",
-    "description": "Kill process on port 8080 (Windows).",
-    "query": "Find the PID of the process using port 8080 and kill it.",
+    "description": "Create new folder",
+    "query": "Create a new directory named 'backup_project' in the current path. System: Linux.",
     "context_files": [],
     "expected_intent": 3,
     "type": "cli",
     "metrics": {
-      "must_contain": ["Get-NetTCPConnection", "Stop-Process", "8080"],
+      "must_contain": ["mkdir", "backup_project"],
       "execution": {
-        "verify_cmd": "exit 0"
+        "verify_cmd": "{COMMAND}; if [ -d \"backup_project\" ]; then exit 0; else exit 1; fi"
+      }
+    }
+  },
+  {
+    "id": "L4-CLI-004",
+    "description": "Rename files by type",
+    "query": "Rename all .txt files in the current directory to have a .bak extension. System: Linux.",
+    "context_files": [],
+    "expected_intent": 3,
+    "type": "cli",
+    "metrics": {
+      "must_contain": ["mv", ".bak"],
+      "execution": {
+        "verify_cmd": "touch file1.txt file2.txt; {COMMAND}; if [ -f file1.bak ] && [ -f file2.bak ]; then exit 0; else exit 1; fi"
+      }
+    }
+  },
+  {
+    "id": "L4-CLI-005",
+    "description": "Print file content",
+    "query": "Wyświetl zawartość pliku tekstowego o nazwie 'secret.txt'. System: Linux.",
+    "context_files": [],
+    "expected_intent": 3,
+    "type": "cli",
+    "metrics": {
+      "must_contain": ["cat"],
+      "execution": {
+        "verify_cmd": "echo \"success_mark\" > secret.txt; {COMMAND} | grep -q \"success_mark\""
+      }
+    }
+  },
+  {
+    "id": "L4-CLI-006",
+    "description": "Check python version",
+    "query": "Check the installed version of Python in the terminal. System: Linux.",
+    "context_files": [],
+    "expected_intent": 3,
+    "type": "cli",
+    "metrics": {
+      "must_contain": ["python"],
+      "execution": {
+        "verify_cmd": "{COMMAND} 2>&1 | grep -q \"Python 3\""
       }
     }
   },
   {
     "id": "L4-CLI-007",
-    "description": "Check folder sizes (Windows).",
-    "query": "Pokaż rozmiar всіх папок у поточному каталозі, відсортований від найбільшого.",
+    "description": "List installed libraries",
+    "query": "Show the list of installed python packages using pip. System: Linux.",
     "context_files": [],
     "expected_intent": 3,
     "type": "cli",
     "metrics": {
-      "must_contain": ["Get-ChildItem", "Measure-Object", "Length", "Sort-Object"],
+      "must_contain": ["pip", "list"],
       "execution": {
-        "verify_cmd": "exit 0"
-      }
-    }
-  },
-  {
-    "id": "L4-CLI-009",
-    "description": "Rename multiple files with prefix (Windows).",
-    "query": "Rename all .jpg files in the current directory by adding the prefix 'backup_' to their names.",
-    "context_files": [],
-    "expected_intent": 3,
-    "type": "cli",
-    "metrics": {
-      "must_contain": ["Rename-Item", "backup_", "*.jpg"],
-      "execution": {
-        "verify_cmd": "powershell -Command \"New-Item -Path . -Name 'a.jpg' -ItemType 'File'; New-Item -Path . -Name 'b.jpg' -ItemType 'File'; Get-ChildItem *.jpg | Rename-Item -NewName { 'backup_' + $_.Name }; if (Test-Path 'backup_a.jpg') { exit 0 } else { exit 1 }\""
+        "verify_cmd": "{COMMAND} | grep -q \"numpy\""
       }
     }
   }

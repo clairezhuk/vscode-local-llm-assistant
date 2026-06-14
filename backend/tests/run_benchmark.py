@@ -68,6 +68,39 @@ def run_isolated_code(ai_code: str, asserts: list, context_data: list = None) ->
             return False, "Timeout"
         except Exception as e:
             return False, f"Docker Error: {e}"
+        
+def run_isolated_shell(ai_cmd: str, verify_script: str, context_data: list = None) -> tuple[bool, str]:
+    if not ai_cmd: return False, "No command found"
+    ai_cmd = ai_cmd.strip().replace('$', '') 
+    full_script = verify_script.replace("{COMMAND}", ai_cmd)
+    
+    with tempfile.TemporaryDirectory() as tmpdir:
+        if context_data:
+            for file_info in context_data:
+                p = os.path.join(tmpdir, file_info['name'])
+                with open(p, "w", encoding="utf-8") as f: f.write(file_info['content'])
+        
+        script_p = os.path.join(tmpdir, "test.sh")
+        with open(script_p, "w", encoding="utf-8") as f: f.write(full_script)
+        
+        try:
+            res = subprocess.run([
+                "docker", "run", "--rm", 
+                "-v", f"{Path(tmpdir).absolute()}:/app", 
+                "-w", "/app",                           
+                "--network", "none",                    
+                "ai-benchmark-runner",                     
+                "sh", "test.sh"                     
+            ], capture_output=True, text=True, timeout=15)
+            
+            if res.returncode == 0:
+                return True, "Passed"
+            else:
+                return False, res.stderr or res.stdout or f"Exit code {res.returncode}"
+        except subprocess.TimeoutExpired:
+            return False, "Timeout"
+        except Exception as e:
+            return False, f"Docker Error: {e}"
 
 def run_benchmarks(target_suites: list = None, limit: int = None, mode_filter: str = None):
     test_files = [Path(f"{SUITES_DIR}/{n}.json") for n in target_suites] if target_suites else list(Path(SUITES_DIR).glob("*.json"))
@@ -125,9 +158,12 @@ def run_benchmarks(target_suites: list = None, limit: int = None, mode_filter: s
                     format_ok = all(w.lower() in ai_text.lower() for w in metrics.get("must_contain", []))
                     
                     exec_ok, exec_msg = (None, "N/A")
-                    if test['type'] == "code" and "execution" in metrics:
+                    if  "execution" in metrics:
                         code = extract_code(ai_text)
-                        exec_ok, exec_msg = run_isolated_code(code, metrics["execution"].get("run_tests", []), ctx_data)
+                        if test['type'] == "code":      
+                            exec_ok, exec_msg = run_isolated_code(code, metrics["execution"].get("run_tests", []), ctx_data)
+                        elif test['type'] == "cli":
+                            exec_ok, exec_msg = run_isolated_shell(code, metrics["execution"].get("verify_cmd", ""), ctx_data)
                     
                     result_row = {
                         "id": test['id'],

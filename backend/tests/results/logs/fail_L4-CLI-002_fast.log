@@ -1,5 +1,5 @@
-ERROR: N/A
+ERROR: No command found
 RESPONSE:
-```sh
-findstr -r "^\s+([0-9]+\.[0-9]+\.[0-9]+\.[0-9]+)" C:\Users\user\AppData\Local\Temp\tmpzucaj8lj | sort -u
+```bash
+du -h data.log
 ```

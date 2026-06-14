@@ -1,5 +1,0 @@
-ERROR: N/A
-RESPONSE:
-```sh
-taskkill /PID $(netstat -ano | findstr :8080 | findstr PID | findstr /v "LISTENING" | findstr /r "[0-9]+") /F
-```

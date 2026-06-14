@@ -1,7 +1,7 @@
-ERROR: N/A
+ERROR: Passed
 RESPONSE:
 
 
 ---
 ### Attempt 1
-Proposed command: `cat access.log | awk '{print $1}' | sort -u`
+Proposed command: `ls -lh data.log`

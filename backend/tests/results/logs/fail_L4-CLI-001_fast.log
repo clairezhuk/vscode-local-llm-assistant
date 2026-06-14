@@ -1,4 +1,4 @@
-ERROR: N/A
+ERROR: No command found
 RESPONSE:
 ```bash
 find . -name "*.py"

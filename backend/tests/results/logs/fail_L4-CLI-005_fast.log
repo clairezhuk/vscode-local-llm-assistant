@@ -1,5 +1,5 @@
 ERROR: No command found
 RESPONSE:
 ```bash
-pip list
+cat secret.txt
 ```

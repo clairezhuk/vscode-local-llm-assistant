@@ -10,7 +10,8 @@ To activate .venv
 To run tests:
 1) cd backend/tests
 2) run backend in another terminal window
-3) choose
+3) run Docker
+4) choose
 python run_benchmark.py
 python run_benchmark.py L1_basic_algorithms
 python run_benchmark.py -n 3 -t "thinking"

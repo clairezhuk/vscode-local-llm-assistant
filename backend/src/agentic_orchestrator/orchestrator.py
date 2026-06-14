@@ -202,8 +202,7 @@ class Orchestrator:
             elif intent == 3: # TERMINAL
                 cmd_prompt = f"Goal: {goal_info}. {critique} Generate ONLY terminal command."\
                     r"NEVER hardcode absolute paths like 'C:\Users\...' in the code. Always use relative " \
-                    "paths or function parameters. IMPORTANT: Use relative paths for file operations. " \
-                    r"The environment is Linux-based Docker."
+                    "paths or function parameters. IMPORTANT: Use relative paths for file operations. " 
                 cmd_raw = await self._ask_llm("Terminal expert", cmd_prompt)
                 cmd = self._extract_code(cmd_raw)
                 
@@ -244,7 +243,7 @@ class Orchestrator:
                         f"import torch.nn as nn, import matplotlib.pyplot as plt. "
                         f"Your function MUST be named exactly as requested. Check the task description again before finalizing. "
                         f"{func_hint}\n\n"
-                        "IMPORTANT: Use relative paths for file operations. The environment is Linux-based Docker."
+                        "IMPORTANT: Use relative paths for file operations."
                         f"Draft fragments:\n{fragments}\n\n"
                         f"Final code only (no explanations):"
                     )

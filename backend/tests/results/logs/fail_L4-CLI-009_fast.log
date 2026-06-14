@@ -1,5 +1,0 @@
-ERROR: N/A
-RESPONSE:
-```sh
-for f in *.jpg; do mv "$f" "backup_$f"; done
-```
