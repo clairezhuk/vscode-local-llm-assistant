@@ -1,4 +1,4 @@
-ERROR: NotImplementedError: Module [SimpleNet] is missing the required "forward" function
+ERROR: NameError: name 'torch' is not defined
 RESPONSE:
 
 
@@ -11,7 +11,11 @@ import torch.nn as nn
 class SimpleNet(nn.Module):
     def __init__(self):
         super(SimpleNet, self).__init__()
-        self.fc1 = nn.Linear(10, 20)
-        self.relu = nn.ReLU()
-        self.fc2 = nn.Linear(20, 1)  # Assuming the final layer has 1 unit for simplicity
+        self.fc1 = nn.Linear(784, 20)
+        self.fc1.weight.data = torch.randn(self.fc1.in_features, self.fc1.out_features)
+        self.fc1.bias.data = torch.zeros(self.fc1.out_features)
+
+    def forward(self, x):
+        x = self.fc1(x)
+        return x
 ```

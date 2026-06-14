@@ -1,0 +1,29 @@
+ERROR: FAIL: Function calculate_avg not found
+RESPONSE:
+
+
+---
+### Attempt 1
+
+```python
+import csv
+
+def calculate_avg(file_path):
+    total_amount = 0
+    count = 0
+    with open(file_path, 'r') as file:
+        reader = csv.reader(file)
+        next(reader)  # Skip the header row
+        for row in reader:
+            try:
+                amount = float(row[1])  # Assuming the second column is the amount to be averaged
+                total_amount += amount
+                count += 1
+            except ValueError:
+                print(f"Skipping invalid value: {row}")
+    if count > 0:
+        average = total_amount / count
+        return average
+    else:
+        return None
+```

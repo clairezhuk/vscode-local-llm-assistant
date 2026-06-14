@@ -1,0 +1,33 @@
+ERROR: TypeError: can only concatenate list (not "int") to list
+RESPONSE:
+
+
+---
+### Attempt 1
+
+```python
+def knapsack(capacity, weights, values):
+    n = len(weights)
+    
+    # Initialize the DP table with zeros
+    dp = [[0 for _ in range(capacity + 1)] for _ in range(n + 1)]
+    
+    # Fill the DP table
+    for i in range(1, n + 1):
+        weight = weights[i - 1]
+        value = values[i - 1]
+        for w in range(1, capacity + 1):
+            if weight <= w:
+                dp[i][w] = max(value + dp[i - 1][w - weight], dp[i - 1][w])
+            else:
+                dp[i][w] = dp[i - 1][w]
+    
+    # The maximum value that can fit in the capacity
+    return dp[n][capacity]
+
+# Example usage
+weights = [3, 4, 5]
+values = [20, 30, 40]
+capacity = 7
+print(knapsack(capacity, weights, values))  # Output: 60
+```

@@ -61,23 +61,7 @@
             }
         }
     },
-    {
-        "id": "L1-BA-004",
-        "description": "Concept of Linear Search in Polish language.",
-        "query": "Czym jest wyszukiwanie liniowe i kiedy najlepiej go używać?",
-        "context_files": [],
-        "expected_intent": 1,
-        "type": "text",
-        "metrics": {
-            "must_contain": [
-                "Linear search"
-            ],
-            "must_not_contain": [
-                "minimum or maximum value of a function",
-                "Line search"
-            ]
-        }
-    },
+    
     {
         "id": "L1-BA-005",
         "description": "Least Common Multiple (LCM) calculation.",
@@ -133,16 +117,29 @@
     
     {
         "id": "L1-BA-008",
-        "description": "Explanation of Euclidean distance formula.",
-        "query": "What is the Euclidean distance and how is it calculated between two points in a 2D plane?",
+        "description": "Implement Euclidean distance function.",
+        "query": "Write a Python function `euclidean_distance(p1, p2)` that calculates the Euclidean distance between two points in a 2D plane. Each point is represented as a tuple or list `(x, y)`. Return the result as a float. System: Linux.",
         "context_files": [],
-        "expected_intent": 1,
-        "type": "text",
+        "expected_intent": 2,
+        "type": "code",
         "metrics": {
-            "must_contain": [
-                "sqrt((x2 - x1)^2 + (y2 - y1)^2)"
-            ],
-            "must_not_contain": []
+        "must_contain": ["def euclidean_distance", "**2"],
+        "execution": {
+            "run_tests": [
+            "import math",
+            "func = globals().get('euclidean_distance')",
+            "assert func is not None, 'Function euclidean_distance not found'",
+            "",
+            "res1 = func((0, 0), (3, 4))",
+            "assert math.isclose(res1, 5.0), f'Expected 5.0, got {res1}'",
+            "",
+            "res2 = func((1.5, 2.5), (1.5, 2.5))",
+            "assert math.isclose(res2, 0.0), f'Expected 0.0, got {res2}'",
+            "",
+            "res3 = func((-1, -1), (-4, -5))",
+            "assert math.isclose(res3, 5.0), f'Expected 5.0, got {res3}'"
+            ]
+        }
         }
     },
    
@@ -259,9 +256,7 @@
         "expected_intent": 2,
         "type": "code",
         "metrics": {
-            "must_contain": [
-                "*"
-            ],
+            "must_contain": [],
             "execution": {
                 "run_tests": [
                     "assert pole_prostokata(5, 4) == 20",

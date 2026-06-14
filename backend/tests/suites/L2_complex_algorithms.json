@@ -98,7 +98,7 @@
     {
         "id": "L2-CA-006",
         "description": "Complex email validation using Regex.",
-        "query": "Create a function get_valid_emails(text) that uses a regular expression to extract all valid email addresses. It must support subdomains and '+' aliases.",
+        "query": "Create a function get_valid_emails(text) that uses a regular expression to extract all valid email addresses. It must support subdomains and '+' aliases. Ensure the regex handles the '+' symbol in the local part",
         "context_files": [],
         "expected_intent": 2,
         "type": "code",
@@ -257,7 +257,7 @@
     {
         "id": "L2-CA-014",
         "description": "Signal windowing transformation (Hamming-like).",
-        "query": "Write a function apply_window(signal) that multiplies each element s[i] in a list by a weight w = 0.5 * (1 - cos(2*pi*i / (N-1))) where N is signal length. Return the new signal.",
+        "query": "Write a function apply_window(signal) that multiplies each element s[i] in a list by a weight w = 0.5 * (1 - cos(2*pi*i / (N-1))) where N is signal length. Assume N > 1. Return the new signal.",
         "context_files": [],
         "expected_intent": 2,
         "type": "code",

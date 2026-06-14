@@ -1,21 +1,20 @@
-ERROR: File "/app/exec.py", line 18
+ERROR: File "/app/exec.py", line 17
     logs = 'Module[Auth]: Status[OK]
            ^
-SyntaxError: unterminated string literal (detected at line 18)
+SyntaxError: unterminated string literal (detected at line 17)
 RESPONSE:
 ```python
 import re
 
 def parse_nested_logs(lines):
-    log_pattern = r'Module\[(.*?)\]: Status\[(.*?)\]'
-    matches = {}
-    
+    log_dict = {}
     for line in lines:
-        match = re.search(log_pattern, line)
+        match = re.search(r'Module\[(.*?)\]: Status\[(.*?)\]', line)
         if match:
-            name = match.group(1)
-            value = match.group(2)
-            matches[name] = value
-    
-    return matches
+            module_name = match.group(1)
+            status_value = match.group(2)
+            if module_name not in log_dict:
+                log_dict[module_name] = []
+            log_dict[module_name].append(status_value)
+    return log_dict
 ```

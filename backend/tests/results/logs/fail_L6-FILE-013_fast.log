@@ -1,32 +1,23 @@
-ERROR: Formatted date: 2023-10-15
-Traceback (most recent call last):
-  File "/app/exec.py", line 19, in <module>
-    is_valid = validate_timestamp(valid_timestamp)
-NameError: name 'validate_timestamp' is not defined. Did you mean: 'valid_timestamp'?
+ERROR: FAIL: Function merge_txt_files not found
 RESPONSE:
 ```python
-from datetime import datetime
+import os
 
-def format_date(date_raw):
-    """
-    Takes a raw date string (YYYY-MM-DD) and returns a 
-    standardized formatted string for the reporting system.
-    """
-    if not date_raw:
-        return "Formatted: N/A"
-    return f"Formatted date: {date_raw}"
-
-# Example usage
-timestamp = "2023-10-15"
-formatted_date = format_date(timestamp)
-print(formatted_date)  # Output: Formatted date: 2023-10-15
-
-# Validate a timestamp
-valid_timestamp = "2023-10-16"
-is_valid = validate_timestamp(valid_timestamp)
-print(is_valid)  # Output: True
-
-invalid_timestamp = "2023-10-31"
-is_invalid = validate_timestamp(invalid_timestamp)
-print(is_invalid)  # Output: False
+def merge_txt_files():
+    combined_content = ""
+    
+    # Get all .txt files in the current workspace
+    for filename in os.listdir("."):
+        if filename.endswith(".txt"):
+            file_path = os.path.join(".", filename)
+            
+            # Read content of each file and append to combined_content
+            with open(file_path, 'r') as file:
+                combined_content += file.read() + "\n"
+    
+    # Write combined content to a new file named 'combined.log'
+    with open("combined.log", 'w') as file:
+        file.write(combined_content)
+    
+    return "Files merged successfully."
 ```

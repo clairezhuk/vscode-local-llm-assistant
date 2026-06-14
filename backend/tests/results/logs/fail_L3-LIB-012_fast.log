@@ -1,4 +1,4 @@
-ERROR: AttributeError: 'float' object has no attribute 'item'
+ERROR: AttributeError: 'NoneType' object has no attribute 'item'
 RESPONSE:
 ```python
 import torch
@@ -7,17 +7,25 @@ def train_step(model, optimizer, criterion, x, y):
     # Zero the gradients of the model parameters
     optimizer.zero_grad()
     
-    # Forward pass: compute predicted outputs from the model
-    output = model(x)
+    # Forward pass: compute predicted outputs by passing input through the model
+    outputs = model(x)
     
     # Calculate the loss between predicted and actual values
-    loss = criterion(output, y)
+    loss = criterion(outputs, y)
     
-    # Backward pass: compute gradients for all model parameters
+    # Backward pass: compute gradients of the loss with respect to the model parameters
     loss.backward()
     
-    # Perform a step of optimization using the computed gradients
+    # Perform a single optimization step
     optimizer.step()
 
-    return loss.item()  # Return the scalar value of the loss
+# Example usage:
+model = torch.nn.Linear(10, 2)  # Simple linear model for demonstration
+optimizer = torch.optim.SGD(model.parameters(), lr=0.01)
+criterion = torch.nn.MSELoss()  # Mean Squared Error loss function
+
+x = torch.randn(10, 10)  # Input data
+y = torch.randn(10, 2)   # Target data
+
+train_step(model, optimizer, criterion, x, y)
 ```

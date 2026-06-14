@@ -1,4 +1,4 @@
-ERROR: Passed
+ERROR: AttributeError: 'bool' object has no attribute 'startswith'
 RESPONSE:
 
 
@@ -6,22 +6,48 @@ RESPONSE:
 ### Attempt 1
 
 ```python
-import sqlite3
+import os
 
-def execute(query, params):
-    conn = sqlite3.connect('example.db')
-    cursor = conn.cursor()
+def get_safe_path(base_dir, user_file):
+    # Join base_dir and user_file to create a path string
+    full_path = os.path.join(base_dir, user_file)
     
-    try:
-        cursor.execute(query, params)
-        conn.commit()
-        return "Query executed successfully"
-    except Exception as e:
-        print(f"Error executing query: {e}")
-        return f"Failed to execute query: {e}"
-    finally:
-        conn.close()
-
-# Example usage
-print(execute("SELECT * FROM users WHERE username = ? AND password = ?", ('admin', 'securepassword')))
+    # Check if the path exists
+    if os.path.exists(full_path) and not full_path.startswith('../'):
+        return full_path
+    else:
+        raise FileNotFoundError(f"The file {user_file} does not exist in the directory {base_dir}.")
 ```
+
+
+---
+### Attempt 2
+
+```python
+import os
+
+def get_safe_path(base_dir, user_file):
+    # Join base_dir and user_file to create a path string
+    full_path = os.path.join(base_dir, user_file)
+    
+    # Check if the full path is within the base directory
+    return os.path.exists(full_path) and not full_path.startswith('../')
+```
+
+
+---
+### Attempt 3
+
+```python
+import os
+
+def get_safe_path(base_dir, user_file):
+    # Join base_dir and user_file to create a path string
+    full_path = os.path.join(base_dir, user_file)
+    
+    # Check if the absolute path is within the base directory
+    return os.path.abspath(full_path).startswith(os.path.abspath(base_dir))
+```
+
+
+> ⚠️ **AI Warning:** Verification failed after max retries.

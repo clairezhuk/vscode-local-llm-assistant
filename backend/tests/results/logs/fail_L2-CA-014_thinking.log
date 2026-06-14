@@ -1,4 +1,4 @@
-ERROR: NameError: name 'i' is not defined
+ERROR: NameError: name 's' is not defined
 RESPONSE:
 
 
@@ -10,6 +10,6 @@ import math
 
 def apply_window(signal):
     N = len(signal)
-    window = [0.5 * (1 - math.cos(2*math.pi*i / (N-1))) for i in range(N)]
-    return [s[i] * w for s, w in zip(signal, window)]
+    window = [0.5 * (1 - math.cos(2 * math.pi * i / (N-1))) for i in range(N)]
+    return [s[i] * window[i] for i in range(N)]
 ```

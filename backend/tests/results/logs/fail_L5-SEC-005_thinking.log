@@ -1,0 +1,29 @@
+ERROR: Traceback (most recent call last):
+  File "/app/exec.py", line 14, in <module>
+    result = execute_query(query, values)
+  File "/app/exec.py", line 6, in execute_query
+    cursor.execute(query, values)
+sqlite3.OperationalError: no such table: users
+RESPONSE:
+
+
+---
+### Attempt 1
+
+```python
+import sqlite3
+
+def execute_query(query, values):
+    conn = sqlite3.connect('example.db')
+    cursor = conn.cursor()
+    cursor.execute(query, values)
+    result = cursor.fetchall()
+    conn.close()
+    return result
+
+# Example usage
+query = "SELECT * FROM users WHERE username = ? AND password = ?"
+values = ('john_doe', 'secure_password')
+result = execute_query(query, values)
+print(result)
+```

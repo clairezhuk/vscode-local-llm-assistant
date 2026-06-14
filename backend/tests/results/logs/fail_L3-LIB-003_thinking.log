@@ -1,0 +1,21 @@
+ERROR: FAIL:
+RESPONSE:
+
+
+---
+### Attempt 1
+
+```python
+import numpy as np
+
+def cosine_distance(u, v):
+    # Calculate the dot product of u and v using np.dot()
+    dot_product = np.dot(u, v)
+    
+    # Calculate the magnitudes of u and v
+    magnitude_u = np.linalg.norm(u)
+    magnitude_v = np.linalg.norm(v)
+    
+    # Compute the cosine distance by dividing the dot product by the product of magnitudes
+    return dot_product / (magnitude_u * magnitude_v)
+```

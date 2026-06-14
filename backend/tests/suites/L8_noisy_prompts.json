@@ -1,373 +1,225 @@
 [
   {
     "id": "L8-ROB-001",
-    "description": "Long garbage context before a simple math task.",
-    "query": "I had a really long day. First, my coffee machine broke, then I missed the bus, and when I finally got to the office, the elevator was out of order. I've been thinking about my commute and how many steps I take. Anyway, long story short, write a function that divides two numbers and handles division by zero.",
+    "description": "Division with zero handling (Garbage context).",
+    "query": "I had a really long day. First, my coffee machine broke, then I missed the bus, and when I finally got to the office, the elevator was out of order. I've been thinking about my commute and how many steps I take. Anyway, long story short, can you please make a python function named `divide_numbers(a, b)` that divides two numbers? It's really important that it handles division by zero by returning None, because my day can't get any worse.",
     "context_files": [],
     "expected_intent": 2,
     "type": "code",
     "metrics": {
-      "must_contain": ["def", "zero", "return"],
+      "must_contain": ["def divide_numbers", "None"],
       "execution": {
         "run_tests": [
-          "assert divide(10, 2) == 5",
-          "try:\n    divide(10, 0)\nexcept ZeroDivisionError:\n    pass"
+          "func = globals().get('divide_numbers')",
+          "assert func(10, 2) == 5",
+          "assert func(5, 0) is None"
         ]
       }
     }
   },
   {
     "id": "L8-ROB-002",
-    "description": "Multilingual mix (UA, PL, EN) for API fetch.",
-    "query": "Napisz mi код який буде робити fetch з API і зберігати результат у pliku json. Proszę, use the requests library.",
+    "description": "Simple division (Technical jargon noise).",
+    "query": "Arithmetic operations in distributed systems often require idempotent results. Considering the IEEE 754 floating-point standard and the necessity of mantissa alignment during execution, please implement a function `simple_div(x, y)` to perform basic division. The underlying architecture expects a floating-point return. Disregard the overflow complexity for now.",
     "context_files": [],
     "expected_intent": 2,
     "type": "code",
     "metrics": {
-      "must_contain": ["requests", "json.dump"],
+      "must_contain": ["def simple_div"],
       "execution": {
         "run_tests": [
-          "import requests, json",
-          "assert 'requests' in globals() or 'requests' in locals()"
+          "func = globals().get('simple_div')",
+          "assert func(8, 4) == 2.0"
         ]
       }
     }
   },
   {
     "id": "L8-ROB-003",
-    "description": "Severe typos in terminal command (pip).",
-    "query": "істаллюй матплотліб",
+    "description": "Primes in range (Multilingual mix UA/PL/EN).",
+    "query": "Zrób to dla мене, to jest дуже важливо. Napisz funkcję `get_primes(start, end)` яка повертає list of prime numbers in range from start to end. Proszę, make it quick, бо я śpieszę się na spotkanie.",
     "context_files": [],
-    "expected_intent": 3,
-    "type": "cli",
+    "expected_intent": 2,
+    "type": "code",
     "metrics": {
-      "must_contain": ["pip install matplotlib"],
+      "must_contain": ["def get_primes", "range"],
       "execution": {
-        "verify_cmd": "exit 0"
+        "run_tests": [
+          "func = globals().get('get_primes')",
+          "res = func(1, 10)",
+          "assert set(res) == {2, 3, 5, 7}"
+        ]
       }
     }
   },
   {
     "id": "L8-ROB-004",
-    "description": "Ambiguous server start request (Explanation/Theory).",
-    "query": "Як мені запустити сервер?",
-    "context_files": [],
-    "expected_intent": 1,
-    "type": "text",
-    "metrics": {
-      "must_contain": ["python", "server", "run"],
-      "must_not_contain": ["```python"]
-    }
-  },
-  {
-    "id": "L8-ROB-005",
-    "description": "Long story about weather followed by binary search request.",
-    "query": "It's so rainy outside in Warsaw today, it makes me want to just sit and code all day. I was reading this book about algorithms and I got stuck. Could you please write a binary search function for a sorted list?",
+    "description": "Factorial (Typos and grammar stress).",
+    "query": "Hay! can u mke a fctorial functon? need name `fact(n)`. it shud use rcurion or loop, i dnt care. sory for bad englesh, my keybord is brokn and i am slepy. it shud work for fact(5) is 120.",
     "context_files": [],
     "expected_intent": 2,
     "type": "code",
     "metrics": {
-      "must_contain": ["mid", "low", "high"],
+      "must_contain": ["def fact"],
       "execution": {
         "run_tests": [
-          "assert binary_search([1, 2, 3], 2) == 1",
-          "assert binary_search([1, 2, 3], 5) == -1"
+          "func = globals().get('fact')",
+          "assert func(5) == 120",
+          "assert func(0) == 1"
+        ]
+      }
+    }
+  },
+  {
+    "id": "L8-ROB-005",
+    "description": "Fibonacci (University report meta-noise).",
+    "query": "Zadanie 3. Proszę przygotować implementację ciągu. Uwaga: raport z wyników musi zawierać analizę złożoności O(n) i być oddany do poniedziałku. Brak sprawozdania skutkuje obniżeniem oceny o 2 stopnie. Kod powinien być czytelny. Write only the code for the function `fibonacci(n)` which returns the n-th Fibonacci number.",
+    "context_files": [],
+    "expected_intent": 2,
+    "type": "code",
+    "metrics": {
+      "must_contain": ["def fibonacci"],
+      "execution": {
+        "run_tests": [
+          "func = globals().get('fibonacci')",
+          "assert func(7) == 13"
         ]
       }
     }
   },
   {
     "id": "L8-ROB-006",
-    "description": "Mix of Polish and Ukrainian in a code prompt.",
-    "query": "Zrób funkcję яка знаходить найдовше слово w liście.",
+    "description": "Linear search (Story-telling noise).",
+    "query": "Three little pigs are driving down the road. They see a list of house numbers: [10, 22, 35, 40, 52]. The first pig wants to find house number 35. Write a function `find_house(numbers, target)` that returns the index of the target number in the list. If the wolf is there (number not found), return -1.",
     "context_files": [],
     "expected_intent": 2,
     "type": "code",
     "metrics": {
-      "must_contain": ["max", "key=len"],
+      "must_contain": ["def find_house", "-1"],
       "execution": {
         "run_tests": [
-          "assert find_longest(['a', 'abc', 'ab']) == 'abc'"
+          "func = globals().get('find_house')",
+          "assert func([10, 22, 35], 35) == 2",
+          "assert func([10, 20], 99) == -1"
         ]
       }
     }
   },
   {
     "id": "L8-ROB-007",
-    "description": "Intent 3 stress test: Typos in npm command.",
-    "query": "nmp strat",
-    "context_files": [],
-    "expected_intent": 3,
-    "type": "cli",
+    "description": "Palindrome (Repetition and junk files).",
+    "query": "Check if string is palindrome. Check if string is palindrome. I really need to check if string is palindrome. Use function name `is_pal(s)`. Is it a palindrome? Please check it. Is it a palindrome?",
+    "context_files": ["tests/assets/project_y/note.txt", "tests/assets/sales.csv"],
+    "expected_intent": 2,
+    "type": "code",
     "metrics": {
-      "must_contain": ["npm start"],
+      "must_contain": ["def is_pal"],
       "execution": {
-        "verify_cmd": "exit 0"
+        "run_tests": [
+          "func = globals().get('is_pal')",
+          "assert func('radar') is True",
+          "assert func('hello') is False"
+        ]
       }
     }
   },
   {
     "id": "L8-ROB-008",
-    "description": "Ambiguous 'Write a code in terminal' (Should be CLI).",
-    "query": "write a code in termilan to check disk space in humans format",
+    "description": "GCD (Childish explanation/typos).",
+    "query": "so like, i need to find the biggest number that can divide two other numbers. my teacher calls it the GDC or something. like if i have 12 and 8, the bigest is 4. can u write `calculate_gcd(a, b)`? i am only 10 years old and i dont know how to do it. help me pwease, i have many errors in my homework.",
     "context_files": [],
-    "expected_intent": 3,
-    "type": "cli",
+    "expected_intent": 2,
+    "type": "code",
     "metrics": {
-      "must_contain": ["df -h"],
+      "must_contain": ["def calculate_gcd"],
       "execution": {
-        "verify_cmd": "exit 0"
+        "run_tests": [
+          "import math",
+          "func = globals().get('calculate_gcd')",
+          "assert func(12, 8) == 4",
+          "assert func(48, 18) == 6"
+        ]
       }
     }
   },
   {
     "id": "L8-ROB-009",
-    "description": "Noise with personal complaints and file reading task.",
-    "query": "My cat just jumped on my keyboard and deleted half of my work. I am so stressed. I need to get back on track. Can you write a Python script to read a file and count how many lines are in it?",
-    "context_files": [],
+    "description": "Average vs Median (Drama and stats noise).",
+    "query": "My business failed, I lost everything. My shop is empty. I need to look at my old `sales.csv` one last time. People say I should use the median because it's more robust to outliers, but I don't care about robustness anymore. I want the simple average (mean) of the 'Amount' column. Write function `get_average(file_path)`. Median is for winners, I just want the average.",
+    "context_files": ["tests/assets/sales.csv"],
     "expected_intent": 2,
     "type": "code",
     "metrics": {
-      "must_contain": ["open", "readlines", "len"],
+      "must_contain": ["def get_average", "Amount"],
       "execution": {
         "run_tests": [
-          "with open('test.txt', 'w') as f: f.write('1\\n2\\n3')\nassert count_lines('test.txt') == 3"
+          "func = globals().get('get_average')",
+          "avg = func('sales.csv')",
+          "assert float(avg) == 200.0"
         ]
       }
     }
   },
   {
     "id": "L8-ROB-010",
-    "description": "Code prompt with heavy slang and mix of 3 languages.",
-    "query": "Bro, write me a function, що чекає list of numbers i zwraca ich sumę. Quick!",
-    "context_files": [],
+    "description": "Longest word (Instructions in file noise).",
+    "query": "Wszystkie instrukcje dotyczące projektu znajdują się w załączonych dokumentach. Ocena zależy od terminowości. Termin oddania: wczoraj. W pliku Zadanie.txt jest opis funkcji. Proszę napisać funkcję `find_longest(text)`, która zwraca najdłuższe słowo.",
+    "context_files": ["tests/assets/project_x/Zadanie.txt"],
     "expected_intent": 2,
     "type": "code",
     "metrics": {
-      "must_contain": ["sum"],
+      "must_contain": ["def find_longest"],
       "execution": {
         "run_tests": [
-          "assert sum_list([1, 2, 3]) == 6"
+          "func = globals().get('find_longest')",
+          "assert func('the quick brown fox') == 'quick'"
         ]
       }
     }
   },
   {
     "id": "L8-ROB-011",
-    "description": "Typo in folder creation command.",
-    "query": "creae foder 'my_data_results'",
+    "description": "Debug NumPy (Emotional outburst).",
+    "query": "ZNOWU NIC NIE WYCHODZI! No ile można?! Ta funkція `calculate(arr)` ma liczyć średnią przez numpy, ale wywala błąd 'mean is not defined'. Przecież zaimportowałem numpy as np! Co jest nie tak z tym kodem?! Napraw to: \n\nimport numpy as np\ndef calculate(arr):\n    return mean(arr)",
     "context_files": [],
-    "expected_intent": 3,
-    "type": "cli",
+    "expected_intent": 2,
+    "type": "code",
     "metrics": {
-      "must_contain": ["mkdir", "my_data_results"],
+      "must_contain": ["np.mean"],
       "execution": {
-        "verify_cmd": "mkdir my_data_results && [ -d my_data_results ]"
+        "run_tests": [
+          "import numpy as np",
+          "func = globals().get('calculate')",
+          "assert func([10, 20]) == 15.0"
+        ]
       }
     }
   },
   {
     "id": "L8-ROB-012",
-    "description": "Ambiguous 'Check my git' (Theory/Explanation).",
-    "query": "Як перевірити статус гіта?",
+    "description": "Terminal Version (Multilingual mix).",
+    "query": "Ej, bro, help me. Яку версію pythona mam zainstalowaną? Write command to check python version in terminal. Shvydko!",
     "context_files": [],
-    "expected_intent": 1,
-    "type": "text",
+    "expected_intent": 3,
+    "type": "cli",
     "metrics": {
-      "must_contain": ["git status"]
+      "must_contain": ["python", "--version"],
+      "execution": {
+        "verify_cmd": "exit 0"
+      }
     }
   },
   {
     "id": "L8-ROB-013",
-    "description": "Noise with movie plot leading to a random prime check function.",
-    "query": "I was watching Matrix today and it got me thinking about numbers and simulations. It's crazy how everything is just 1s and 0s. Speaking of numbers, write a function to check if a number is prime.",
-    "context_files": [],
-    "expected_intent": 2,
-    "type": "code",
-    "metrics": {
-      "must_contain": ["prime", "range", "2"],
-      "execution": {
-        "run_tests": [
-          "assert is_prime(7) is True",
-          "assert is_prime(4) is False"
-        ]
-      }
-    }
-  },
-  {
-    "id": "L8-ROB-014",
-    "description": "Mix of English and Ukrainian for list reversal.",
-    "query": "Write a list comprehension, яка розвертає рядок text.",
-    "context_files": [],
-    "expected_intent": 2,
-    "type": "code",
-    "metrics": {
-      "must_contain": ["::-1"],
-      "execution": {
-        "run_tests": [
-          "text = 'hello'\nassert reverse_logic(text) == 'olleh'"
-        ]
-      }
-    }
-  },
-  {
-    "id": "L8-ROB-015",
-    "description": "Severe typo in Git commit command.",
-    "query": "git comit -m 'fix bugs'",
+    "description": "Folder creation (Laptop crash story).",
+    "query": "My laptop literally exploded. I lost all my projects. I am starting from scratch on this new Linux machine. I need to set up my workspace. Can you give me a single command to create three folders named `src`, `docs`, and `tests` in the current directory?",
     "context_files": [],
     "expected_intent": 3,
     "type": "cli",
     "metrics": {
-      "must_contain": ["git commit", "-m"],
+      "must_contain": ["mkdir", "src", "docs", "tests"],
       "execution": {
-        "verify_cmd": "exit 0"
-      }
-    }
-  },
-  {
-    "id": "L8-ROB-016",
-    "description": "Ambiguous 'How to kill process' (Intent 1 or 3?). Expecting 1.",
-    "query": "How can I kill a process on linux?",
-    "context_files": [],
-    "expected_intent": 1,
-    "type": "text",
-    "metrics": {
-      "must_contain": ["kill", "ps", "pid"]
-    }
-  },
-  {
-    "id": "L8-ROB-017",
-    "description": "Story about cooking leading to a dictionary sort function.",
-    "query": "I am making dinner and I need to organize my ingredients by weight. My kitchen is a mess. I have a dictionary where keys are names and values are weights. Write a function to sort it by values.",
-    "context_files": [],
-    "expected_intent": 2,
-    "type": "code",
-    "metrics": {
-      "must_contain": ["sorted", "lambda"],
-      "execution": {
-        "run_tests": [
-          "d = {'a': 10, 'b': 5}\nres = sort_dict(d)\nassert list(res.values())[0] == 5"
-        ]
-      }
-    }
-  },
-  {
-    "id": "L8-ROB-018",
-    "description": "Mix of 3 languages for a random number function.",
-    "query": "Napisz mi function що дає random number od 1 do 100. Please.",
-    "context_files": [],
-    "expected_intent": 2,
-    "type": "code",
-    "metrics": {
-      "must_contain": ["random", "randint"],
-      "execution": {
-        "run_tests": [
-          "n = get_rand()\nassert 1 <= n <= 100"
-        ]
-      }
-    }
-  },
-  {
-    "id": "L8-ROB-019",
-    "description": "Typo in conda install.",
-    "query": "conga instl pandas",
-    "context_files": [],
-    "expected_intent": 3,
-    "type": "cli",
-    "metrics": {
-      "must_contain": ["conda install pandas"],
-      "execution": {
-        "verify_cmd": "exit 0"
-      }
-    }
-  },
-  {
-    "id": "L8-ROB-020",
-    "description": "Ambiguous 'Run python script' (CLI command expected).",
-    "query": "запусти скрипт main.py",
-    "context_files": [],
-    "expected_intent": 3,
-    "type": "cli",
-    "metrics": {
-      "must_contain": ["python main.py"],
-      "execution": {
-        "verify_cmd": "exit 0"
-      }
-    }
-  },
-  {
-    "id": "L8-ROB-021",
-    "description": "Short query with heavy typos for a specific command.",
-    "query": "ls -la hiddn",
-    "context_files": [],
-    "expected_intent": 3,
-    "type": "cli",
-    "metrics": {
-      "must_contain": ["ls -la"],
-      "execution": {
-        "verify_cmd": "exit 0"
-      }
-    }
-  },
-  {
-    "id": "L8-ROB-022",
-    "description": "Ukrainian query for a regular expression task.",
-    "query": "Напиши регулярку яка шукає всі дати у форматі DD-MM-YYYY.",
-    "context_files": [],
-    "expected_intent": 2,
-    "type": "code",
-    "metrics": {
-      "must_contain": ["re", "\\d{2}-\\d{2}-\\d{4}"],
-      "execution": {
-        "run_tests": [
-          "import re\nassert re.search(r'\\d{2}-\\d{2}-\\d{4}', '12-10-2024') is not None"
-        ]
-      }
-    }
-  },
-  {
-    "id": "L8-ROB-023",
-    "description": "Noise about a slow computer and a cleanup command.",
-    "query": "My laptop is so slow today, I think I have too many temporary files. Can you show me the command to delete everything in the /tmp folder?",
-    "context_files": [],
-    "expected_intent": 3,
-    "type": "cli",
-    "metrics": {
-      "must_contain": ["rm", "/tmp"],
-      "execution": {
-        "verify_cmd": "exit 0"
-      }
-    }
-  },
-  {
-    "id": "L8-ROB-024",
-    "description": "Polish/English mix for a class definition.",
-    "query": "Stwórz class User z polami name i email w Pythonie.",
-    "context_files": [],
-    "expected_intent": 2,
-    "type": "code",
-    "metrics": {
-      "must_contain": ["class User", "__init__"],
-      "execution": {
-        "run_tests": [
-          "u = User('A', 'b@c.com')\nassert u.name == 'A'"
-        ]
-      }
-    }
-  },
-  {
-    "id": "L8-ROB-025",
-    "description": "Final stress test: Multiple intents hidden in a long story.",
-    "query": "I was thinking about the history of Linux. It's fascinating. I want to learn more. But first, can you show me how to list files and then write a python function to print 'Hello'? Actually, just give me the python function.",
-    "context_files": [],
-    "expected_intent": 2,
-    "type": "code",
-    "metrics": {
-      "must_contain": ["print", "Hello"],
-      "execution": {
-        "run_tests": [
-          "import io\nfrom contextlib import redirect_stdout\nf = io.StringIO()\nwith redirect_stdout(f): hello_func()\nassert 'Hello' in f.getvalue()"
-        ]
+        "verify_cmd": "mkdir src docs tests && [ -d src ] && [ -d docs ] && [ -d tests ]"
       }
     }
   }

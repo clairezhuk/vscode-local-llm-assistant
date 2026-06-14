@@ -1,0 +1,23 @@
+INSTYTUT INFORMATYKI STOSOWANEJ
+Przedmiot: Algorytmy i Struktury Danych (Laboratorium)
+Temat: Przetwarzanie ciągów znaków i analiza tekstowa.
+
+OPIS ZADANIA:
+Celem zadania jest zaimplementowanie modułu analizującego tekst wejściowy. Należy stworzyć funkcję, która pozwoli na identyfikację najdłuższego elementu (słowa) w podanym zdaniu.
+
+WYMAGANIA TECHNICZNE:
+1. Nazwa funkcji: find_longest
+2. Parametry wejściowe: 
+   - text (string): ciąg znaków składający się ze słów oddzielonych spacjami.
+3. Wynik (return):
+   - Funkcja musi zwrócić najdłuższe słowo jako ciąg znaków (string).
+4. Logika dodatkowa:
+   - W przypadku wystąpienia kilku słów o tej samej maksymalnej długości, funkcja powinna zwrócić pierwsze z nich (licząc od lewej strony tekstu).
+   - Załóż, że tekst nie zawiera znaków interpunkcyjnych, a jedynie litery i spacje.
+
+KRYTERIA OCENY:
+- Poprawność algorytmiczna: 60%
+- Czytelność kodu i nazewnictwo: 20%
+- Zgodność z sygnaturą: 20%
+
+UWAGA: Rozwiązania bez poprawnej nazwy funkcji 'find_longest' nie będą procesowane przez system automatycznej oceny.

@@ -1,16 +1,22 @@
-ERROR: FAIL: Expected [1, 2, 3], got ['Task 1 completed', 'Task 2 completed', 'Task 3 completed']
+ERROR: FAIL: Expected [1, 2, 3], got [10, 20, 30]
 RESPONSE:
 ```python
 import asyncio
 
 async def f1():
-    return "Task 1 completed"
+    # Simulate some asynchronous operation
+    await asyncio.sleep(2)
+    return 10
 
 async def f2():
-    return "Task 2 completed"
+    # Simulate another asynchronous operation
+    await asyncio.sleep(3)
+    return 20
 
 async def f3():
-    return "Task 3 completed"
+    # Simulate yet another asynchronous operation
+    await asyncio.sleep(4)
+    return 30
 
 async def run_tasks():
     tasks = [f1(), f2(), f3()]

@@ -4,16 +4,15 @@ RESPONSE:
 import math
 
 def rotate_z(point, angle_rad):
-    x, y, z = point
-    cos_angle = math.cos(angle_rad)
-    sin_angle = math.sin(angle_rad)
-    
-    # Rotation matrix around the Z-axis
+    # Define the rotation matrix around the Z-axis
     rotation_matrix = [
-        [cos_angle, -sin_angle, 0],
-        [sin_angle, cos_angle, 0],
+        [math.cos(angle_rad), -math.sin(angle_rad), 0],
+        [math.sin(angle_rad), math.cos(angle_rad), 0],
         [0, 0, 1]
     ]
+    
+    # Extract x, y, z coordinates from the input point
+    x, y, z = point
     
     # Apply the rotation matrix to the point
     new_x = sum(rotation_matrix[0][i] * x + rotation_matrix[1][i] * y + rotation_matrix[2][i] * z for i in range(3))

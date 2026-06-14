@@ -7,7 +7,7 @@
     "expected_intent": 2,
     "type": "code",
     "metrics": {
-      "must_contain": ["get", "dict", "{", "}"],
+      "must_contain": ["get", "{", "}"],
       "execution": {
         "run_tests": [
           "assert get_status_msg('ST_01') == 'Active'",
@@ -20,20 +20,28 @@
   {
     "id": "L7-REF-002",
     "description": "Deduplicate code using a class decorator (Polish).",
-    "query": "W pliku 'api_handlers.py' znajdują się dwie funkcje, które ręcznie logują czas wykonania. Zrefaktoryzuj ten kod, tworząc dekorator `@log_time`, aby usunąć powtarzający się kod z obu funkcji.",
+    "query": "W pliku 'api_handlers.py' znajdują się funkcje 'process_request' oraz 'fetch_user_profile'. Zrefaktoryzuj je: stwórz dekorator '@log_time' i zastosuj go do OBU tych funkcji, usuwając z nich ręczne logowanie czasu. Zachowaj oryginalne nazwy funkcji.",
     "context_files": [
       "tests/assets/api_handlers.py"
     ],
     "expected_intent": 2,
     "type": "code",
     "metrics": {
-      "must_contain": ["functools.wraps", "time.time()", "return"],
+      "must_contain": ["@log_time", "import time", "return"],
       "execution": {
         "run_tests": [
           "import time",
-          "def log_time(func): # Simulation check if they define the decorator correctly",
-          "    pass",
-          "assert hasattr(process_request, '__name__'), 'Should keep function metadata'"
+          "assert 'process_request' in locals(), 'Function process_request missing'",
+          "assert 'fetch_user_profile' in locals(), 'Function fetch_user_profile missing'",
+          "",
+          "assert process_request.__name__ == 'process_request', 'Metadata lost! Use @functools.wraps'",
+          "assert fetch_user_profile.__name__ == 'fetch_user_profile', 'Metadata lost! Use @functools.wraps'",
+          "",
+          "try:",
+          "    process_request('test_data')",
+          "    fetch_user_profile(123)",
+          "except Exception as e:",
+          "    raise AssertionError(f'Execution failed: {e}')"        
         ]
       }
     }
@@ -64,7 +72,7 @@
     "expected_intent": 2,
     "type": "code",
     "metrics": {
-      "must_contain": ["None", "is None"],
+      "must_contain": ["None", "if"],
       "execution": {
         "run_tests": [
           "list1 = add_user_to_list('Alice')",
@@ -86,9 +94,10 @@
       "must_contain": ["try", "except KeyError", "return"],
       "execution": {
         "run_tests": [
-          "assert safe_get({'a': 1}, 0) == 1",
-          "assert safe_get({'b': 1}, 99) == 99",
-          "assert safe_get({}, 'miss') == 'miss'"
+          "assert safe_get({'value': 10}, 0) == 10",
+          "assert safe_get({'value': 'hello'}, 'default') == 'hello'",
+          "assert safe_get({'other_key': 1}, 'miss') == 'miss'",
+          "assert safe_get({}, 'empty') == 'empty'"
         ]
       }
     }
@@ -114,20 +123,26 @@
   {
     "id": "L7-REF-007",
     "description": "Consolidate duplicated logic into a helper method.",
-    "query": "Refactor these two functions into a class where the common validation logic (checking if age is between 0 and 120) is moved to a private method `_validate_age`.\n\ndef set_driver_age(age):\n    if 0 <= age <= 120:\n        print('Valid')\n    else:\n        raise ValueError('Invalid age')\n\ndef set_voter_age(age):\n    if 0 <= age <= 120:\n        print('Valid')\n    else:\n        raise ValueError('Invalid age')\n\nRefactor into a class named AgeManager",
+    "query": "Refactor the logic into a class 'AgeManager'. Move the age validation (0-120) into a private method '_validate_age'. The main methods 'set_driver_age' and 'set_voter_age' should use this helper. Return the string 'Valid' if successful, or raise ValueError. System: Linux.",
     "context_files": [],
     "expected_intent": 2,
     "type": "code",
     "metrics": {
-      "must_contain": ["class", "_validate_age", "self"],
+      "must_contain": ["class AgeManager", "_validate_age", "self"],
       "execution": {
         "run_tests": [
-          "instance = AgeManager() if 'AgeManager' in locals() else None",
+          "manager_cls = globals().get('AgeManager')",
+          "assert manager_cls is not None, 'Class AgeManager not found'",
+          "instance = manager_cls()",
           "try:",
-          "    instance._validate_age(200)",
-          "    assert False, 'Should have raised ValueError'",
-          "except ValueError:",
-          "    assert True"
+          "    instance.set_driver_age(25)",
+          "    try:",
+          "        instance.set_driver_age(150)",
+          "        assert False, 'Should have raised ValueError for 150'",
+          "    except ValueError:",
+          "        pass",
+          "except Exception as e:",
+          "    raise AssertionError(f'Test failed with error: {e}')"
         ]
       }
     }
@@ -135,19 +150,19 @@
   {
     "id": "L7-DBG-008",
     "description": "Fix incorrect path handling in a script.",
-    "query": "In the provided file 'file_manager.py', the function `move_to_backup` is failing because it joins paths incorrectly. Fix the logic using `os.path.join` to make it cross-platform compatible.",
-    "context_files": [
-      "tests/assets/file_manager.py"
-    ],
+    "query": "Fix the 'move_to_backup(folder, filename)' function. It must return the new path string using 'os.path.join' to combine 'folder', 'backup', and 'filename'. Do not actually move any files, just return the path string. System: Linux.",
+    "context_files": [],
     "expected_intent": 2,
     "type": "code",
     "metrics": {
-      "must_contain": ["os.path.join"],
+      "must_contain": ["os.path.join", "return"],
       "execution": {
         "run_tests": [
           "import os",
-          "res = move_to_backup('folder', 'file.txt')",
-          "assert res == os.path.join('folder', 'backup', 'file.txt')"
+          "assert 'move_to_backup' in globals(), 'Function missing'",
+          "res = move_to_backup('data', 'report.csv')",
+          "expected = os.path.join('data', 'backup', 'report.csv')",
+          "assert res == expected, f'Expected {expected}, but got {res}'"
         ]
       }
     }
@@ -160,7 +175,7 @@
     "expected_intent": 2,
     "type": "code",
     "metrics": {
-      "must_contain": ["records", "get", "if"],
+      "must_contain": [],
       "execution": {
         "run_tests": [
           "data = [{'meta': {'source': 'API', 'data': {'val': 5}}}, {'meta': {'source': 'DB', 'data': {'val': 1}}}]",

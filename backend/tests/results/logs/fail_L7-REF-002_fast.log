@@ -1,4 +1,4 @@
-ERROR: Passed
+ERROR: FAIL: Function process_request missing
 RESPONSE:
 ```python
 import time
@@ -8,17 +8,15 @@ def log_time(func):
         start = time.time()
         result = func(*args, **kwargs)
         end = time.time()
-        print(f"Execution time for {func.__name__}: {end - start}s")
+        print(f"{func.__name__} executed in {end - start}s")
         return result
     return wrapper
 
 @log_time
 def process_request(data):
-    time.sleep(0.1)
     print(f"Request processed: {data}")
 
 @log_time
 def fetch_user_profile(user_id):
-    time.sleep(0.05)
     print(f"User {user_id} fetched")
 ```

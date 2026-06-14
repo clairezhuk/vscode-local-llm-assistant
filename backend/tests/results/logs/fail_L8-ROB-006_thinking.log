@@ -1,4 +1,4 @@
-ERROR: NameError: name 'find_longest' is not defined
+ERROR: Passed
 RESPONSE:
 
 
@@ -6,10 +6,36 @@ RESPONSE:
 ### Attempt 1
 
 ```python
-def find_longest_word(words):
-    longest = words[0]
-    for word in words:
-        if len(word) > len(longest):
-            longest = word
-    return longest
+def find_house(numbers, target):
+    for i in range(len(numbers)):
+        if numbers[i] == target:
+            return i
+    return -1
 ```
+
+
+---
+### Attempt 2
+
+```python
+def find_house(numbers, target):
+    for i in range(len(numbers)):
+        if numbers[i] == target:
+            return i
+    return -1
+```
+
+
+---
+### Attempt 3
+
+```python
+def find_house(numbers, target):
+    for i in range(len(numbers)):
+        if numbers[i] == target:
+            return i
+    return -1
+```
+
+
+> ⚠️ **AI Warning:** Verification failed after max retries.

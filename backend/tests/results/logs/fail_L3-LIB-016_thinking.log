@@ -1,0 +1,64 @@
+ERROR: Traceback (most recent call last):
+  File "/app/exec.py", line 6, in <module>
+    df = pd.read_csv(dataset_path)
+  File "/usr/local/lib/python3.10/site-packages/pandas/io/parsers/readers.py", line 1026, in read_csv
+    return _read(filepath_or_buffer, kwds)
+  File "/usr/local/lib/python3.10/site-packages/pandas/io/parsers/readers.py", line 620, in _read
+    parser = TextFileReader(filepath_or_buffer, **kwds)
+  File "/usr/local/lib/python3.10/site-packages/pandas/io/parsers/readers.py", line 1620, in __init__
+    self._engine = self._make_engine(f, self.engine)
+  File "/usr/local/lib/python3.10/site-packages/pandas/io/parsers/readers.py", line 1880, in _make_engine
+    self.handles = get_handle(
+  File "/usr/local/lib/python3.10/site-packages/pandas/io/common.py", line 873, in get_handle
+    handle = open(
+FileNotFoundError: [Errno 2] No such file or directory: 'path_to_your_dataset.csv'
+RESPONSE:
+
+
+---
+### Attempt 1
+
+```python
+from sklearn.metrics import mean_squared_error, r2_score
+
+# Assuming 'X' is the feature matrix and 'y' is the target vector
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
+
+# Training a linear regression model
+model = LinearRegression()
+model.fit(X_train, y_train)
+
+# Predicting on the test set
+y_pred = model.predict(X_test)
+
+# Calculating MSE and R2 score
+mse = mean_squared_error(y_test, y_pred)
+r2 = r2_score(y_test, y_pred)
+
+print(f"Mean Squared Error: {mse}")
+print(f"R-squared Score: {r2}")
+```
+
+
+---
+### Attempt 2
+
+```python
+from sklearn.metrics import mean_squared_error, r2_score
+import pandas as pd
+
+# Load the dataset from the specified path
+dataset_path = 'path_to_your_dataset.csv'
+df = pd.read_csv(dataset_path)
+
+# Assuming the target variable is named 'target' and features are in columns other than 'target'
+X = df.drop('target', axis=1)
+y = df['target']
+
+# Compute MSE and R2 score
+mse = mean_squared_error(y, y_pred)  # Replace y_pred with your predicted values
+r2 = r2_score(y, y_pred)
+
+print(f'Mean Squared Error: {mse}')
+print(f'R-squared Score: {r2}')
+```

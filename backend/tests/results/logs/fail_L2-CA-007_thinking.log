@@ -1,7 +1,7 @@
-ERROR: File "/app/exec.py", line 11
+ERROR: File "/app/exec.py", line 13
     data = '[2023-10-01 10:00:00] [INFO] Start
            ^
-SyntaxError: unterminated string literal (detected at line 11)
+SyntaxError: unterminated string literal (detected at line 13)
 RESPONSE:
 
 
@@ -9,11 +9,13 @@ RESPONSE:
 ### Attempt 1
 
 ```python
+import re
+
 def parse_log_errors(logs):
-    log_entries = []
-    for line in logs.split('\n'):
+    entries = []
+    for line in logs.split('\\n'):
         if 'ERROR' in line:
-            date, level, message = line.strip().split(' ')
-            log_entries.append({'date': date, 'level': level, 'message': message})
-    return log_entries
+            date, level, message = re.match(r'\d{4}-\d{2}-\d{2} \w+ \w+', line).groups()
+            entries.append({'date': date, 'level': level, 'message': message})
+    return entries
 ```

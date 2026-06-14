@@ -1,7 +1,27 @@
-ERROR: FAIL:
+ERROR: NameError: name 'math' is not defined
 RESPONSE:
 ```python
 def ucb1(node_win_rate, node_visits, total_parent_visits, exploration_weight=1.41):
-    # Calculate the UCB1 score using the formula: UCB1 = win_rate + exploration_weight * sqrt(log(total_parent_visits) / node_visits)
-    return node_win_rate + exploration_weight * (0.5 * (1 + 2 * node_visits / total_parent_visits)**0.5)
+    """
+    Calculate the UCB1 score for MCTS node selection.
+
+    Parameters:
+        node_win_rate (float): The win rate of the current node.
+        node_visits (int): The number of times the current node has been visited.
+        total_parent_visits (int): The total number of visits to all nodes in the tree.
+        exploration_weight (float): The exploration weight, default is 1.41.
+
+    Returns:
+        float: The UCB1 score for the current node.
+    """
+    # Calculate the win rate ratio
+    win_rate_ratio = node_win_rate / node_visits
+    
+    # Calculate the total visits to all nodes in the tree
+    total_visits = total_parent_visits + node_visits
+    
+    # Calculate the UCB1 score
+    ucb_score = win_rate_ratio + exploration_weight * (math.sqrt(math.log(total_visits) / node_visits))
+    
+    return ucb_score
 ```

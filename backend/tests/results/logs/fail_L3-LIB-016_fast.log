@@ -9,8 +9,7 @@ def compute_metrics(y_true, y_pred):
     return (mse, r2)
 
 # Example usage:
-true_labels = [1, 2, 3, 4, 5]
-predicted_values = [1.1, 2.2, 3.3, 4.4, 5.5]
-metrics = compute_metrics(true_labels, predicted_values)
-print(metrics)  # Output: (0.0, 1.0)
+y_true = [1, 2, 3, 4, 5]
+y_pred = [1.1, 2.2, 3.3, 4.4, 5.5]
+print(compute_metrics(y_true, y_pred))
 ```

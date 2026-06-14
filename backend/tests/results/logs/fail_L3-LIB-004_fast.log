@@ -1,0 +1,20 @@
+ERROR: KeyError: 'A'
+RESPONSE:
+```python
+import pandas as pd
+
+def get_category_prices(df):
+    """
+    Group the DataFrame by 'Category' and calculate the average of 'Price'.
+    
+    Parameters:
+    - df (pd.DataFrame): The input DataFrame with columns 'Category' and 'Price'.
+    
+    Returns:
+    - pd.DataFrame: A new DataFrame with two columns: 'Category' and 'Average_Price', where 'Average_Price' is the mean of 'Price' for each category.
+    """
+    # Group by 'Category' and calculate the average of 'Price'
+    grouped = df.groupby('Category')['Price'].mean().reset_index()
+    
+    return grouped
+```

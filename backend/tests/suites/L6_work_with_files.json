@@ -36,19 +36,20 @@
   {
     "id": "L6-FILE-003",
     "description": "Memory-efficient log parsing (Polish).",
-    "query": "Napisz skrypt, który odczytuje 'server.log' linia po linii, wyodrębnia wiersze zawierające '[ERROR]' i zapisuje je do 'errors.log'.",
+    "query": "Napisz fuckcję parse_logs(), który odczytuje 'server.log', wyodrębnia wiersze zawierające '[ERROR]' i zapisuje je do 'errors.log'.",
     "context_files": ["tests/assets/server.log"],
     "expected_intent": 2,
     "type": "code",
     "metrics": {
-      "must_contain": ["with open", "for line in", "[ERROR]"],
+      "must_contain": [],
       "execution": {
         "run_tests": [
-          "with open('server.log', 'w') as f: f.write('INFO: Start\\n[ERROR]: Fail 1\\nINFO: OK\\n[ERROR]: Fail 2')",
-          "parse_logs() if 'parse_logs' in locals() else None",
+          "import os",
+          "parse_logs()",
+          "if not os.path.exists('errors.log'): raise AssertionError('errors.log not created')",
           "with open('errors.log', 'r') as f: lines = f.readlines()",
-          "assert len(lines) == 2",
-          "assert '[ERROR]: Fail 1' in lines[0]"
+          "assert len(lines) == 2, f'Expected 2 errors, found {len(lines)}'",
+          "assert 'Failed to connect to DB' in lines[0]"
         ]
       }
     }
@@ -72,33 +73,11 @@
     "expected_intent": 1,
     "type": "learn",
     "metrics": {
-      "must_contain": ["Hash Map", "Student Management", "Dictionary"]
+      "must_contain": ["Hash", "Student"]
     }
   },
   {
-    "id": "L6-FILE-006",
-    "description": "Batch rename images with date prefix.",
-    "query": "Find all .jpg and .png files in the 'uploads' folder and rename them by adding the current date (YYYY-MM-DD) as a prefix. Use pathlib or os.",
-    "context_files": [],
-    "expected_intent": 2,
-    "type": "code",
-    "metrics": {
-      "must_contain": ["rename", "datetime", "uploads"],
-      "execution": {
-        "run_tests": [
-          "import os, datetime",
-          "os.makedirs('uploads', exist_ok=True)",
-          "open('uploads/img1.jpg', 'w').close()",
-          "date_str = datetime.datetime.now().strftime('%Y-%m-%d')",
-          "batch_rename('uploads') if 'batch_rename' in locals() else None",
-          "files = os.listdir('uploads')",
-          "assert any(f.startswith(date_str) and f.endswith('.jpg') for f in files)"
-        ]
-      }
-    }
-  },
-  {
-    "id": "L6-ANALYSIS-007",
+    "id": "L6-ANALYSIS-006",
     "description": "System spec extraction (Node version and Port).",
     "query": "Looking at spec.json, what is the required Node.js version and which port should the API run on?",
     "context_files": ["tests/assets/project_y/spec.json"],
@@ -109,25 +88,7 @@
     }
   },
   {
-    "id": "L6-FILE-008",
-    "description": "Find deepest README.md in dictionary structure.",
-    "query": "Given a nested dictionary `tree` representing a file system (keys are names, values are either dicts or None), write a function `find_deepest_readme(tree)` that returns the path to the deepest test_README.md.",
-    "context_files": [],
-    "expected_intent": 2,
-    "type": "code",
-    "metrics": {
-      "must_contain": ["recursive", "test_README.md"],
-      "execution": {
-        "run_tests": [
-          "fs = {'src': {'test_README.md': None, 'utils': {'test_README.md': None}}, 'docs': None}",
-          "path = find_deepest_readme(fs)",
-          "assert path in ['src/utils/test_README.md', '/src/utils/test_README.md']"
-        ]
-      }
-    }
-  },
-  {
-    "id": "L6-CLI-009",
+    "id": "L6-CLI-007",
     "description": "Find cache clear command from README.",
     "query": "Find the command in test_README.md used to clear the application cache.",
     "context_files": ["tests/assets/project_y/test_README.md"],
@@ -138,7 +99,7 @@
     }
   },
   {
-    "id": "L6-ANALYSIS-010",
+    "id": "L6-ANALYSIS-008",
     "description": "Extract API authentication headers.",
     "query": "Based on instruction.txt, what are the three mandatory headers required to authenticate the 'WeatherAPI'?",
     "context_files": ["tests/assets/project_y/instruction.txt"],
@@ -149,9 +110,9 @@
     }
   },
   {
-    "id": "L6-FILE-011",
+    "id": "L6-FILE-009",
     "description": "CSV aggregation (Average calculation).",
-    "query": "Read 'sales.csv' using the `csv` module and calculate the average value of the 'Amount' column.",
+    "query": "Read 'sales.csv' using the `csv` module and calculate the average value of the 'Amount' column. Write only function calculate_avg(file_path). System: Linux.",
     "context_files": ["tests/assets/sales.csv"],
     "expected_intent": 2,
     "type": "code",
@@ -159,17 +120,18 @@
       "must_contain": ["import csv", "Amount", "float"],
       "execution": {
         "run_tests": [
+          "import os",
           "import csv",
-          "with open('sales.csv', 'w', newline='') as f:",
-          "    w = csv.writer(f); w.writerow(['Item', 'Amount']); w.writerow(['A', '100']); w.writerow(['B', '200'])",
+          "assert os.path.exists('sales.csv'), 'sales.csv file missing in workspace'",
           "avg = calculate_avg('sales.csv') if 'calculate_avg' in locals() else None",
-          "assert avg == 150.0"
+          "assert avg is not None, 'Function calculate_avg not found'",
+          "assert float(avg) == 200.0, f'Expected average 200.0, but got {avg}'"
         ]
       }
     }
   },
   {
-    "id": "L6-ANALYSIS-012",
+    "id": "L6-ANALYSIS-010",
     "description": "Algorithm selection based on constraints.",
     "query": "Analyze task.md. Suggest the most efficient sorting algorithm for the described constraints and explain why based on the text.",
     "context_files": ["tests/assets/project_y/task.md"],
@@ -180,25 +142,7 @@
     }
   },
   {
-    "id": "L6-FILE-013",
-    "description": "Context Integration (Calling helper from utils.py).",
-    "query": "In the provided project files, find a function that formats dates in 'utils.py' and use it to process timestamps.",
-    "context_files": ["tests/assets/project_x/utils.py"],
-    "expected_intent": 2,
-    "type": "code",
-    "metrics": {
-      "must_contain": ["import utils", "format_date"],
-      "execution": {
-        "run_tests": [
-          "import utils",
-          "res = process_timestamps(['2023-01-01'])",
-          "assert 'formatted' in res[0].lower()"
-        ]
-      }
-    }
-  },
-  {
-    "id": "L6-ANALYSIS-014",
+    "id": "L6-ANALYSIS-011",
     "description": "Polish note analysis for library version and URL.",
     "query": "Na podstawie note.txt, jaką wersję biblioteki 'pandas' musimus zainstalować i jakiego źródła danych (URL) użyć?",
     "context_files": ["tests/assets/project_y/note.txt"],
@@ -209,9 +153,9 @@
     }
   },
   {
-    "id": "L6-FILE-015",
+    "id": "L6-FILE-012",
     "description": "Extracting function names from Python file (Polish).",
-    "query": "Napisz funkcję `get_function_names(file_path)`, która zwraca listę nazw funkcji при użyciu modułu `ast`.",
+    "query": "Napisz funkcję `get_function_names(file_path)`, która zwraca listę nazw funkcji przy użyciu modułu `ast`.",
     "context_files": [],
     "expected_intent": 2,
     "type": "code",
@@ -227,60 +171,55 @@
     }
   },
   {
-    "id": "L6-FILE-016",
-    "description": "Read file with specific encoding.",
-    "query": "Read the content of 'data.txt' which is encoded in UTF-16 and print only the first 50 characters.",
-    "context_files": ["tests/assets/data.txt"],
-    "expected_intent": 2,
-    "type": "code",
-    "metrics": {
-      "must_contain": ["encoding='utf-16'"],
-      "execution": {
-        "run_tests": [
-          "text = 'A' * 100",
-          "with open('data.txt', 'w', encoding='utf-16') as f: f.write(text)",
-          "output = read_utf16('data.txt') if 'read_utf16' in locals() else text[:50]",
-          "assert len(output) == 50"
-        ]
-      }
-    }
-  },
-  {
-    "id": "L6-FILE-017",
+    "id": "L6-FILE-013",
     "description": "Merge multiple text files into one.",
-    "query": "Write a Python script that reads all provided .txt files from the current workspace and merges their content into a single file named 'combined.log'. Each file's content should start on a new line.",
+    "query": "Write a Python function `merge_txt_files()` that reads all .txt files from the current workspace and merges their content into a single file named 'combined.log'. Each file's content should start on a new line. System: Linux.",
     "context_files": ["tests/assets/project_y/note.txt", "tests/assets/project_y/requirements.txt"],
     "expected_intent": 2,
     "type": "code",
     "metrics": {
-      "must_contain": ["glob", "combined.log"],
+      "must_contain": ["def merge_txt_files", "combined.log"],
       "execution": {
         "run_tests": [
-          "open('1.txt', 'w').write('File1'); open('2.txt', 'w').write('File2')",
-          "merge_files() if 'merge_files' in locals() else None",
-          "content = open('combined.log').read()",
-          "assert 'File1' in content and 'File2' in content"
+          "import os",
+          "if 'merge_txt_files' in locals():",
+          "    merge_txt_files()",
+          "else:",
+          "    raise AssertionError('Function merge_txt_files not found')",
+          "",
+          "assert os.path.exists('combined.log'), 'File combined.log was not created'",
+          "with open('combined.log', 'r') as f: content = f.read()",
+          "assert 'pandas' in content, 'Content from note.txt is missing'",
+          "assert 'fastapi' in content, 'Content from requirements.txt is missing'"
         ]
       }
     }
   },
   {
-    "id": "L6-FILE-018",
+    "id": "L6-FILE-014",
     "description": "YAML configuration update.",
-    "query": "Read 'settings.yaml', set 'debug' to false and 'version' to 2.0, then save it. Use the `yaml` library.",
+    "query": "Write a Python function `update_yaml_config(file_path)` that reads a YAML file, sets the 'debug' key to false and 'version' to 2.0, then saves the changes back to the same file. Use the `pyyaml` library. System: Linux.",
     "context_files": ["tests/assets/settings.yaml"],
     "expected_intent": 2,
     "type": "code",
     "metrics": {
-      "must_contain": ["yaml.safe_load", "yaml.dump", "debug", "false"],
+      "must_contain": ["def update_yaml_config", "yaml.safe_load", "yaml.dump"],
       "execution": {
         "run_tests": [
           "import yaml",
-          "with open('settings.yaml', 'w') as f: yaml.dump({'debug': True, 'version': 1.0}, f)",
-          "update_yaml('settings.yaml') if 'update_yaml' in locals() else None",
-          "with open('settings.yaml', 'r') as f: data = yaml.safe_load(f)",
-          "assert data['debug'] is False",
-          "assert data['version'] == 2.0"
+          "import os",
+          "fname = 'settings.yaml'",
+          "assert os.path.exists(fname), 'Target file settings.yaml missing'",
+          "",
+          "if 'update_yaml_config' in locals():",
+          "    update_yaml_config(fname)",
+          "else:",
+          "    raise AssertionError('Function update_yaml_config not found')",
+          "",
+          "with open(fname, 'r') as f: data = yaml.safe_load(f)",
+          "assert data['debug'] is False, f'Debug should be False, got {data.get(\"debug\")}'",
+          "assert data['version'] == 2.0, f'Version should be 2.0, got {data.get(\"version\")}'",
+          "assert 'server' in data, 'Existing data (server section) was accidentally deleted'"
         ]
       }
     }

@@ -1,21 +1,21 @@
 id,processing_type,time_s,intent,format_ok,exec_ok,exec_msg,warning
-L7-REF-001,fast,12.98,2,False,True,Passed,False
-L7-REF-001,thinking,52.14,2,False,True,Passed,False
-L7-REF-002,fast,12.98,2,False,True,Passed,False
-L7-REF-002,thinking,128.46,2,False,False,NameError: name 'process_request' is not defined,True
-L7-DBG-003,fast,20.43,2,True,True,Passed,False
-L7-DBG-003,thinking,161.12,2,True,True,Passed,True
-L7-DBG-004,fast,7.17,2,False,False,FAIL: List 1 should only contain Alice,False
-L7-DBG-004,thinking,146.84,2,False,False,FAIL: List 1 should only contain Alice,False
-L7-FIM-005,fast,5.6,2,True,False,FAIL:,False
-L7-FIM-005,thinking,20.79,2,True,False,FAIL:,False
-L7-FIM-006,fast,4.44,2,True,True,Passed,False
-L7-FIM-006,thinking,11.68,2,True,True,Passed,False
-L7-REF-007,fast,13.51,2,True,False,AttributeError: 'NoneType' object has no attribute '_validate_age',False
-L7-REF-007,thinking,78.63,2,True,False,AttributeError: 'NoneType' object has no attribute '_validate_age',True
-L7-DBG-008,fast,6.32,2,True,True,Passed,False
-L7-DBG-008,thinking,72.07,2,True,False,FileNotFoundError: [Errno 2] No such file or directory: 'folder/file.txt' -> 'folder/backup/file.txt',True
-L7-FIM-009,fast,9.36,2,False,True,Passed,False
-L7-FIM-009,thinking,31.48,2,False,True,Passed,False
-L7-REF-010,fast,10.76,2,True,True,Passed,False
-L7-REF-010,thinking,34.09,2,True,True,Passed,False
+L7-REF-001,fast,8.77,2,True,True,Passed,False
+L7-REF-001,thinking,38.22,2,True,True,Passed,False
+L7-REF-002,fast,10.32,2,True,False,FAIL: Function process_request missing,False
+L7-REF-002,thinking,144.54,2,True,False,FAIL: Function process_request missing,True
+L7-DBG-003,fast,17.26,2,True,True,Passed,False
+L7-DBG-003,thinking,136.29,2,True,True,Passed,True
+L7-DBG-004,fast,6.11,2,False,True,Passed,False
+L7-DBG-004,thinking,46.13,2,False,False,FAIL: List 1 should only contain Alice,False
+L7-FIM-005,fast,5.11,2,True,True,Passed,False
+L7-FIM-005,thinking,24.04,2,True,True,Passed,False
+L7-FIM-006,fast,4.39,2,True,True,Passed,False
+L7-FIM-006,thinking,18.25,2,True,False,NameError: name 'get_active_ids' is not defined,False
+L7-REF-007,fast,14.55,2,True,False,FAIL: Test failed with error: Should have raised ValueError for 150,False
+L7-REF-007,thinking,128.39,2,True,True,Passed,True
+L7-DBG-008,fast,6.25,2,True,True,Passed,False
+L7-DBG-008,thinking,19.07,2,True,True,Passed,False
+L7-FIM-009,fast,7.52,2,True,True,Passed,False
+L7-FIM-009,thinking,35.23,2,True,False,KeyError: 'data',False
+L7-REF-010,fast,8.37,2,True,True,Passed,False
+L7-REF-010,thinking,32.36,2,True,True,Passed,False

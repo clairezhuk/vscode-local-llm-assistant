@@ -1,4 +1,4 @@
-ERROR: NameError: name 'process_request' is not defined
+ERROR: FAIL: Function process_request missing
 RESPONSE:
 
 
@@ -6,28 +6,30 @@ RESPONSE:
 ### Attempt 1
 
 ```python
+from functools import wraps
 import time
 
 def log_time(func):
+    @wraps(func)
     def wrapper(*args, **kwargs):
-        start_time = time.time()
+        start = time.time()
         result = func(*args, **kwargs)
-        end_time = time.time()
-        print(f"Function {func.__name__} executed in {end_time - start_time:.4f} seconds")
+        end = time.time()
+        print(f"Function {func.__name__} took {end - start:.4f} seconds to execute.")
         return result
     return wrapper
 
 @log_time
-def get_user_info(user_id):
-    # Simulate fetching user information from a database
-    time.sleep(1)  # Simulating delay for demonstration
-    return f"User with ID {user_id} has been retrieved."
+def process_request(request):
+    # Simulate processing request
+    time.sleep(1)  # Simulate delay for demonstration
+    return "Request processed"
 
 @log_time
-def update_user_info(user_id, new_info):
-    # Simulate updating user information in the database
-    time.sleep(2)  # Simulating delay for demonstration
-    return f"User with ID {user_id}\'s information has been updated to {new_info}."
+def fetch_user_profile(user_id):
+    # Simulate fetching user profile
+    time.sleep(2)  # Simulate delay for demonstration
+    return f"User profile for {user_id} fetched"
 ```
 
 
@@ -49,16 +51,16 @@ def log_time(func):
     return wrapper
 
 @log_time
-def get_user_info(user_id):
-    # Simulate fetching user information from a database
-    time.sleep(1)  # Simulating delay for demonstration
-    return f"User ID: {user_id}, Name: John Doe"
+def process_request(request):
+    # Simulate processing request
+    time.sleep(1)  # Simulate processing time
+    return "Request processed"
 
 @log_time
-def update_user_info(user_id, new_name):
-    # Simulate updating user information in a database
-    time.sleep(2)  # Simulating delay for demonstration
-    return f"User ID: {user_id}, New Name: {new_name}"
+def fetch_user_profile(user_id):
+    # Simulate fetching user profile
+    time.sleep(2)  # Simulate fetching time
+    return f"User profile for {user_id} fetched"
 ```
 
 
@@ -80,16 +82,16 @@ def log_time(func):
     return wrapper
 
 @log_time
-def get_user_info(user_id):
-    # Simulate fetching user information from a database
-    time.sleep(1)  # Simulating delay for demonstration
-    return f"User with ID {user_id} has been fetched."
+def process_request(request):
+    # Simulate processing request
+    time.sleep(1)  # Simulate processing time
+    return "Request processed"
 
 @log_time
-def update_user_status(user_id, status):
-    # Simulate updating user status in the database
-    time.sleep(2)  # Simulating delay for demonstration
-    return f"Status of user with ID {user_id} has been updated to {status}."
+def fetch_user_profile(user_id):
+    # Simulate fetching user profile
+    time.sleep(2)  # Simulate fetching time
+    return f"User profile for {user_id} fetched"
 ```
 
 

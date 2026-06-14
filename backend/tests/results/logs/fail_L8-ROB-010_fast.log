@@ -1,6 +1,0 @@
-ERROR: NameError: name 'sum_list' is not defined
-RESPONSE:
-```python
-def sum_numbers(numbers):
-    return sum(numbers)
-```

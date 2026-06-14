@@ -1,0 +1,16 @@
+ERROR: NameError: name 'get_active_ids' is not defined
+RESPONSE:
+
+
+---
+### Attempt 1
+
+```python
+users = [
+    {'id': 1, 'is_active': True},
+    {'id': 2, 'is_active': False},
+    {'id': 3, 'is_active': True}
+]
+
+active_user_ids = [user['id'] for user in users if user['is_active']]
+```

@@ -1,14 +1,5 @@
-ERROR: N/A
+ERROR: No command found
 RESPONSE:
-To check the status of a guitar, you can follow these steps:
-
-1. **Check the Power Supply**: Ensure that the power supply is turned on and connected properly to the guitar.
-2. **Inspect the Guitar Body**: Look for any signs of damage or wear on the body. This includes cracks, dents, or loose screws.
-3. **Check the Strings**: Make sure all strings are securely tied and not loose. If any string is loose, it can cause the guitar to vibrate or sound out of tune.
-4. **Inspect the Tuners**: Ensure that the tuners are properly adjusted and functioning. Loose tuners can cause the guitar to play out of tune.
-5. **Check the Bridge**: The bridge should be level and not damaged. If it is not level, it can affect the tone and sustain of the guitar.
-6. **Check the Neck**: Make sure that the neck is straight and not warped. Warped necks can cause the guitar to play out of tune.
-7. **Check the Tuner Screws**: Ensure that all tuning screws are tightened properly. Loose screws can cause the guitar to vibrate or sound out of tune.
-8. **Check the Volume Controls**: Make sure that the volume controls on the guitar are set correctly. If they are not, it can affect the tone and sustain of the guitar.
-
-If you find any issues with your guitar, it may be necessary to take it to a professional musician for further inspection and repair.
+```bash
+python --version
+```

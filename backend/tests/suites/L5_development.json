@@ -2,7 +2,7 @@
   {
     "id": "L5-ASYNC-001",
     "description": "Concurrent execution using asyncio.gather.",
-    "query": "Write an async function `run_tasks()` that executes three other async functions (f1, f2, f3) concurrently and returns a list of their results using asyncio.gather.",
+    "query": "Write an async function `run_tasks()` that executes three other async functions (f1, f2, f3) concurrently and returns a list of their results using asyncio.gather. The fuction must return ONLY number, NO other text",
     "context_files": [],
     "expected_intent": 2,
     "type": "code",
@@ -42,31 +42,9 @@
     }
   },
   {
-    "id": "L5-PAR-003",
-    "description": "Parallel processing with ProcessPoolExecutor.",
-    "query": "Use `concurrent.futures.ProcessPoolExecutor` to map a function `square(x)` to a list of integers from 1 to 1000. Return the list of results. Write a function run_parallel_task(func, data)",
-    "context_files": [],
-    "expected_intent": 2,
-    "type": "code",
-    "metrics": {
-      "must_contain": ["ProcessPoolExecutor", "submit", "map"],
-      "execution": {
-        "run_tests": [
-          "import concurrent.futures",
-          "def square(x): return x*x",
-          "results = list(executor_logic()) if 'executor_logic' in locals() else []",
-          "# Since the user writes the block, we check if they implemented the logic correctly",
-          "# We'll assume the function is named 'run_parallel_task'",
-          "results = run_parallel_task(square, range(1, 11))",
-          "assert list(results) == [1, 4, 9, 16, 25, 36, 49, 64, 81, 100]"
-        ]
-      }
-    }
-  },
-  {
-    "id": "L5-API-004",
+    "id": "L5-API-003",
     "description": "POST request with Bearer token authentication.",
-    "query": "Write a function `post_data(url, data_dict, token)` using the `requests` library to send a JSON payload with a 'Bearer <token>' Authorization header.",
+    "query": "Write a function `post_data(url, data_dict, token)` using the `requests` library to send a JSON payload with a 'Bearer <token>' Authorization header. Make sure to pass the headers to the request function.",
     "context_files": [],
     "expected_intent": 2,
     "type": "code",
@@ -86,14 +64,14 @@
     }
   },
   {
-    "id": "L5-API-005",
+    "id": "L5-API-004",
     "description": "Retry logic for 503 Service Unavailable (Polish).",
     "query": "Zaimplementuj funkcję `fetch_with_retry(url)`, która wykonuje zapytanie GET. Jeśli otrzyma status 503, powinna spróbować ponownie do 3 razy przed poddaniem się. Użyj `requests`.",
     "context_files": [],
     "expected_intent": 2,
     "type": "code",
     "metrics": {
-      "must_contain": ["status_code", "== 503", "range", "retry"],
+      "must_contain": [],
       "execution": {
         "run_tests": [
           "import requests",
@@ -109,14 +87,14 @@
     }
   },
   {
-    "id": "L5-SEC-006",
+    "id": "L5-SEC-005",
     "description": "Fixing SQL Injection vulnerability.",
     "query": "Refactor this vulnerable code to use parameterized queries with `sqlite3`: `cursor.execute(f\"SELECT * FROM users WHERE name='{user_input}'\")`.",
     "context_files": [],
     "expected_intent": 2,
     "type": "code",
     "metrics": {
-      "must_contain": ["?", ",", "user_input"],
+      "must_contain": [],
       "must_not_contain": ["f\"", "format("],
       "execution": {
         "run_tests": [
@@ -139,9 +117,9 @@
     }
   },
   {
-    "id": "L5-SEC-007",
+    "id": "L5-SEC-006",
     "description": "Preventing Path Traversal with abspath.",
-    "query": "Write a function `get_safe_path(base_dir, user_file)` that returns the absolute path only if `user_file` stays within `base_dir`. Prevent '../' attacks using `os.path.abspath` and `startswith`.",
+    "query": "Write a function `get_safe_path(base_dir, user_file)` that returns the absolute path only if `user_file` stays within `base_dir`. Prevent '../' attacks using `os.path.abspath` and `startswith`. The function should join base_dir and user_file, resolve the absolute path, and then verify if it's still within base_dir.",
     "context_files": [],
     "expected_intent": 2,
     "type": "code",

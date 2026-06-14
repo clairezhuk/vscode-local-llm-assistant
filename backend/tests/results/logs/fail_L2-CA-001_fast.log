@@ -1,0 +1,20 @@
+ERROR: FAIL: Path must start at A and end at E
+RESPONSE:
+```python
+def dfs_path(graph, start, goal):
+    visited = set()
+    stack = [start]
+    
+    while stack:
+        current = stack.pop()
+        
+        if current == goal:
+            return [current]
+        
+        if current not in visited:
+            visited.add(current)
+            for neighbor in graph[current]:
+                stack.append(neighbor)
+    
+    return []
+```

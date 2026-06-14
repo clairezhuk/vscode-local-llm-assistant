@@ -6,39 +6,7 @@ RESPONSE:
 ### Attempt 1
 
 ```python
-def add_user_to_list(user, items=[]):
-    if not items or user in items:
-        return "Błąd: Lista jest pusta lub zawiera duplikat użytkownika."
-    else:
-        items.append(user)
-        return "Użytkownik został dodany do listy."
-```
-
-
----
-### Attempt 2
-
-```python
-import json
-
-def add_user_to_list(user, items=[]):
-    try:
-        with open('user_list.txt', 'r') as file:
-            existing_items = file.readlines()
-        
-        for item in existing_items:
-            if user == item.strip():
-                return "User already exists in the list."
-        
-        items.append(user)
-        with open('user_list.txt', 'w') as file:
-            file.writelines(items)
-    except FileNotFoundError:
-        items = [user]
-        with open('user_list.txt', 'w') as file:
-            file.writelines(items)
-
-# Example usage
-add_user_to_list("Alice")
-add_user_to_list("Bob")
+def add_user_to_list(user, user_list=[]):
+    user_list.append(user)
+    return user_list
 ```
