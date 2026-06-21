@@ -1,0 +1,16 @@
+ERROR: NameError: name 'gcd' is not defined
+RESPONSE:
+
+
+---
+### Attempt 1
+
+```python
+def lcm(a, b):
+    # Calculate the greatest common divisor (GCD) using Euclid's algorithm
+    while b != 0:
+        a, b = b, a % b
+    
+    # The LCM is given by the product of the two numbers divided by their GCD
+    return abs(a * b) // gcd
+```

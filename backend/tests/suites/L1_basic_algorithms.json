@@ -63,7 +63,7 @@
     },
     
     {
-        "id": "L1-BA-005",
+        "id": "L1-BA-004",
         "description": "Least Common Multiple (LCM) calculation.",
         "query": "Implement `lcm(a, b)` which calculates the least common multiple of two integers.",
         "context_files": [],
@@ -83,7 +83,7 @@
         }
     },
     {
-        "id": "L1-BA-006",
+        "id": "L1-BA-005",
         "description": "Theoretical complexity of Binary Search.",
         "query": "What is the time complexity of Binary Search in the worst-case scenario and why?",
         "context_files": [],
@@ -100,7 +100,7 @@
         }
     },
     {
-        "id": "L1-BA-007",
+        "id": "L1-BA-006",
         "description": "Definition of a Factorial in mathematics.",
         "query": "Can you define what a factorial of a non-negative integer is and provide the formula?",
         "context_files": [],
@@ -116,7 +116,7 @@
     },
     
     {
-        "id": "L1-BA-008",
+        "id": "L1-BA-007",
         "description": "Implement Euclidean distance function.",
         "query": "Write a Python function `euclidean_distance(p1, p2)` that calculates the Euclidean distance between two points in a 2D plane. Each point is represented as a tuple or list `(x, y)`. Return the result as a float. System: Linux.",
         "context_files": [],
@@ -144,7 +144,7 @@
     },
    
     {
-        "id": "L1-BA-009",
+        "id": "L1-BA-008",
         "description": "Efficient Binary Search implementation.",
         "query": "Implement an optimized `binary_search(arr, target)` function. Assume the input list is sorted.",
         "context_files": [],
@@ -162,7 +162,7 @@
         }
     },
     {
-        "id": "L1-BA-010",
+        "id": "L1-BA-009",
         "description": "Recursive or iterative Factorial calculation.",
         "query": "Write a function `factorial(n)` that returns the factorial of a given number n.",
         "context_files": [],
@@ -183,7 +183,7 @@
         }
     },
     {
-        "id": "L1-BA-011",
+        "id": "L1-BA-010",
         "description": "Fibonacci sequence number in Polish.",
         "query": "Napisz funkcję `fibonacci(n)`, która zwraca n-tą liczbę ciągu Fibonacciego (gdzie fib(0)=0, fib(1)=1).",
         "context_files": [],
@@ -204,7 +204,7 @@
         }
     },
     {
-        "id": "L1-BA-012",
+        "id": "L1-BA-011",
         "description": "Check if a number is prime.",
         "query": "Create a function `is_prime(n)` that returns True if the number is prime, and False otherwise.",
         "context_files": [],
@@ -227,7 +227,7 @@
         }
     },
     {
-        "id": "L1-BA-013",
+        "id": "L1-BA-012",
         "description": "Greatest Common Divisor (GCD) using Euclidean algorithm.",
         "query": "Write a function `gcd(a, b)` to find the greatest common divisor of two integers.",
         "context_files": [],
@@ -249,7 +249,7 @@
     },
     
     {
-        "id": "L1-BA-014",
+        "id": "L1-BA-013",
         "description": "Area of a rectangle in Polish.",
         "query": "Napisz funkcję `pole_prostokata(a, b)`, która oblicza pole prostokąta o bokach a i b.",
         "context_files": [],
@@ -267,7 +267,7 @@
         }
     },
     {
-        "id": "L1-BA-015",
+        "id": "L1-BA-014",
         "description": "Basic string reversal.",
         "query": "Write a function `reverse_string(s)` that reverses the input string.",
         "context_files": [],
@@ -285,7 +285,7 @@
         }
     },
     {
-        "id": "L1-BA-016",
+        "id": "L1-BA-015",
         "description": "Palindrome check for strings.",
         "query": "Create a function `is_palindrome(s)` that returns True if the string is a palindrome.",
         "context_files": [],
@@ -305,7 +305,7 @@
         }
     },
     {
-        "id": "L1-BA-017",
+        "id": "L1-BA-016",
         "description": "Find duplicates in a list in Polish.",
         "query": "Napisz funkcję `znajdz_duplikaty(lista)`, która zwraca listę elementów, które powtarzają się w podanej liście.",
         "context_files": [],
@@ -323,7 +323,7 @@
         }
     },
     {
-        "id": "L1-BA-018",
+        "id": "L1-BA-017",
         "description": "Filter list based on even condition.",
         "query": "Write a function `filter_even(numbers)` that returns only the even numbers from a list.",
         "context_files": [],
@@ -343,7 +343,7 @@
         }
     },
     {
-        "id": "L1-BA-019",
+        "id": "L1-BA-018",
         "description": "Counting vowels in a string.",
         "query": "Implement a function `count_vowels(s)` that counts the number of vowels (a, e, i, o, u) in a string.",
         "context_files": [],
@@ -363,7 +363,7 @@
         }
     },
     {
-        "id": "L1-BA-020",
+        "id": "L1-BA-019",
         "description": "Matrix transpose operation.",
         "query": "Write a function `transpose(matrix)` that takes a 2D list and returns its transpose.",
         "context_files": [],
@@ -383,7 +383,7 @@
         }
     },
     {
-        "id": "L1-BA-021",
+        "id": "L1-BA-020",
         "description": "Calculate Euclidean distance between two points.",
         "query": "Write a function `distance(p1, p2)` where p1 and p2 are tuples (x, y).",
         "context_files": [],
@@ -401,7 +401,7 @@
         }
     },
     {
-        "id": "L1-BA-022",
+        "id": "L1-BA-021",
         "description": "Regex to find numbers in text.",
         "query": "Napisz funkcję `find_numbers(text)`, która używa wyrażeń regularnych, aby znaleźć wszystkie liczby w tekście.",
         "context_files": [],
@@ -422,7 +422,7 @@
         }
     },
     {
-        "id": "L1-BA-023",
+        "id": "L1-BA-022",
         "description": "Find maximum element in a list.",
         "query": "Write a function `find_max(arr)` that returns the largest element in a list without using the built-in max() function.",
         "context_files": [],
@@ -442,7 +442,7 @@
         }
     },
     {
-        "id": "L1-BA-024",
+        "id": "L1-BA-023",
         "description": "Sum of all elements in a list.",
         "query": "Implement a function `sum_list(arr)` that returns the sum of all numerical elements in a list.",
         "context_files": [],
@@ -460,7 +460,7 @@
         }
     },
     {
-        "id": "L1-BA-025",
+        "id": "L1-BA-024",
         "description": "Check if string consists of unique characters.",
         "query": "Create a function `all_unique(s)` that returns True if all characters in the string are unique.",
         "context_files": [],

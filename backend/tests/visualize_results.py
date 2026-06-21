@@ -167,20 +167,36 @@ def create_dashboard():
 
     # --- BOTTOM: Global Summary ---
     ax_summary.axis('off')
-    f_tot = sum(s['fast_total'] for s in stats.values())
-    f_pass = sum(s['fast_pass'] for s in stats.values())
-    t_tot = sum(s['think_total'] for s in stats.values())
-    t_pass = sum(s['think_pass'] for s in stats.values())
     
-    f_rate = (f_pass/f_tot*100) if f_tot > 0 else 0
-    t_rate = (t_pass/t_tot*100) if t_tot > 0 else 0
-    
-    summary = f"FAST: {f_pass}/{f_tot} ({f_rate:.1f}%) | THINKING: {t_pass}/{t_tot} ({t_rate:.1f}%)"
-    ax_summary.text(0.5, 0.5, summary, fontsize=20, fontweight='bold', ha='center', va='center',
-                    bbox=dict(facecolor='#000', edgecolor='#3498db', boxstyle='round,pad=0.5'))
+    # Calculate totals from matrices (excluding background 0)
+    f_total = np.count_nonzero(fast_mtx)
+    t_total = np.count_nonzero(think_mtx)
+
+    # Ideal Pass: only Green (value 1)
+    f_ideal = np.sum(fast_mtx == 1)
+    t_ideal = np.sum(think_mtx == 1)
+
+    # Technical Pass: Everything except Red (value 2 for Fast, value 3 for Thinking)
+    # Fast: Pass(1) + Logic OK(3)
+    f_tech = np.sum((fast_mtx == 1) | (fast_mtx == 3))
+    # Thinking: Pass(1) + Fail+Warn(2) + Logic OK(4)
+    t_tech = np.sum((think_mtx == 1) | (think_mtx == 2) | (think_mtx == 4))
+
+    def get_rate(p, t): return (p / t * 100) if t > 0 else 0
+
+    summary_text = (
+        f"IDEAL PASS | Fast: {f_ideal}/{f_total} ({get_rate(f_ideal, f_total):.1f}%) | "
+        f"Thinking: {t_ideal}/{t_total} ({get_rate(t_ideal, t_total):.1f}%)\n"
+        f"TECH PASS  | Fast: {f_tech}/{f_total} ({get_rate(f_tech, f_total):.1f}%) | "
+        f"Thinking: {t_tech}/{t_total} ({get_rate(t_tech, t_total):.1f}%)"
+    )
+
+    ax_summary.text(0.5, 0.5, summary_text, fontsize=16, fontweight='bold', ha='center', va='center',
+                    family='monospace',
+                    bbox=dict(facecolor='#000', edgecolor='#3498db', boxstyle='round,pad=0.8'))
 
     plt.tight_layout()
-    plt.savefig('results/dashboard_v4.png', dpi=150)
+    plt.savefig('results/dashboard_v5.png', dpi=150)
     plt.show()
 
 if __name__ == "__main__":
