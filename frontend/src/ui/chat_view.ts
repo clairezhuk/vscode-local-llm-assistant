@@ -68,7 +68,43 @@ export class ChatViewProvider implements vscode.WebviewViewProvider {
                 
                 .badge { background: var(--vscode-badge-background); color: var(--vscode-badge-foreground); padding: 2px 8px; border-radius: 10px; font-size: 0.8em; margin-right: 4px; display: inline-block; }
                 .command-box { border: 1px solid var(--vscode-button-background); padding: 10px; margin-top: 8px; background: var(--vscode-editor-background); }
-                pre { background: var(--vscode-editor-background); padding: 8px; border-radius: 4px; overflow-x: auto; border: 1px solid var(--vscode-widget-border); }
+                pre { 
+                    background: var(--vscode-editor-background); 
+                    padding: 10px; 
+                    border-radius: 4px; 
+                    overflow-x: auto; 
+                    border: 1px solid var(--vscode-widget-border); 
+                    position: relative; 
+                    cursor: pointer; 
+                    transition: background 0.1s;
+                }
+                pre code {
+                    background: transparent !important;
+                    padding: 0 !important;
+                    color: inherit;
+                }
+                pre:hover {
+                    background: var(--vscode-editor-hoverHighlightBackground);
+                }
+                pre::after {
+                    content: '🗐'; 
+                    position: absolute;
+                    top: 5px;
+                    right: 8px;
+                    opacity: 0;
+                    transition: opacity 0.2s;
+                    font-size: 14px;
+                    pointer-events: none; 
+                }
+                pre:hover::after {
+                    opacity: 0.7;
+                }
+                pre:active {
+                    background: var(--vscode-editor-selectionHighlightBackground);
+                }
+                pre:active::after {
+                    content: '🗸';
+                }
             </style>
         </head>
         <body>
@@ -99,6 +135,19 @@ export class ChatViewProvider implements vscode.WebviewViewProvider {
             <script>
                 const vscode = acquireVsCodeApi();
                 const chat = document.getElementById('chat');
+                chat.addEventListener('click', (e) => {
+                    const pre = e.target.closest('pre');
+                    if (pre) {
+                        const codeElement = pre.querySelector('code') || pre;
+                        const text = codeElement.innerText;
+                        
+                        navigator.clipboard.writeText(text).then(() => {
+                            console.log('Code copied to clipboard');
+                        }).catch(err => {
+                            console.error('Failed to copy: ', err);
+                        });
+                    }
+                });
                 const promptInput = document.getElementById('prompt');
                 const status = document.getElementById('status');
                 const attachmentsDiv = document.getElementById('attachments');
