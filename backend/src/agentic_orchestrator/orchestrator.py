@@ -10,7 +10,7 @@ from src.agentic_orchestrator.planner import TaskPlanner
 import asyncio
 
 class Orchestrator:
-    def __init__(self, max_retries: int = 1): #SET 1 TEMP
+    def __init__(self, max_retries: int = 3): 
         self.engine = LLMEngine()
         self.context_manager = ContextManager()
         self.executor = ToolExecutor()
@@ -214,43 +214,17 @@ class Orchestrator:
                     success = True
                 else: critique = f"Rejected: {verify}"
 
-            elif intent == 2: # CODE
-                plan = self.planner.generate_plan(f"Goal: {goal_info}", context)
+            elif intent == 2: # CODE    
+                # strategy = self._planning_logic
+                # strategy = self._chain_of_draft
+                strategy = self._reflection_refine
                 final_code = ""
-                target_func = re.search(r'([a-zA-Z0-9_]+)\(', query)
-                func_hint = f"Use exactly the name '{target_func.group(1)}' and argument order from the Task." if target_func else ""
-                if len(plan) <= 1:
-                    yield json.dumps({"type": "status", "content": "Generating solution..."}) + "\n"
-                    res = await self._ask_llm("Senior Python Developer", 
-                        f"Task: {query}. {func_hint}\nWrite ONLY the implementation. {critique}", 
-                        temp=0.1)
-                    final_code = self._extract_code(res)
-                else:
-                    yield json.dumps({"type": "plan", "content": plan}) + "\n"
-                    fragments = []
-                    for step in plan:
-                        res = await self._ask_llm("Coder", f"Goal: {goal_info}. Step: {step}. Code only." \
-                            "Your output must be PURE code. DO NOT include comments like 'Step 1' or 'Final implementation'. " \
-                            "If I see the word 'Step' inside the code, it's a failure.",
-                            max_tokens=400, temp=0.1)
-                        fragments.append(self._extract_code(res))
-                    yield json.dumps({"type": "status", "content": "Assembling..."}) + "\n"
-                    assembly_prompt = (
-                        f"Task: {query}. Below is a rough draft consisting of code fragments. "
-                        f"Your job is to refine these fragments into a single, clean, and fully functional Python file. "
-                        f"Fix any missing imports, logical inconsistencies, or syntax errors. "
-                        f"When using libraries, always use standard aliases: import numpy as np, import pandas as pd, "
-                        f"import torch.nn as nn, import matplotlib.pyplot as plt. "
-                        f"Your function MUST be named exactly as requested. Check the task description again before finalizing. "
-                        f"{func_hint}\n\n"
-                        "IMPORTANT: Use relative paths for file operations."
-                        f"Draft fragments:\n{fragments}\n\n"
-                        f"Final code only (no explanations):"
-                    )
-                    final_code_raw = await self._ask_llm("Python Architect", assembly_prompt, max_tokens=1024, temp=0.1)
-                    final_code = self._extract_code(final_code_raw)
-                
-                yield json.dumps({"type": "chunk", "content": f"\n```python\n{final_code}\n```\n"}) + "\n"
+                async for part in strategy(goal_info, context, query, critique):
+                    if isinstance(part, dict): 
+                        yield json.dumps(part) + "\n"
+                    else: 
+                        final_code = part
+                        yield json.dumps({"type": "chunk", "content": f"\n```python\n{final_code}\n```\n"}) + "\n"
                 err = self._static_code_check(final_code)
                 if err:
                     critique = f"Fix this: {err}"
@@ -262,6 +236,79 @@ class Orchestrator:
         if not success:
             yield json.dumps({"type": "chunk", "content": "\n\n> ⚠️ **AI Warning:** Verification failed after max retries."}) + "\n"
         yield json.dumps({"type": "end"}) + "\n"
+
+    async def _planning_logic(self, goal_info: str, context:str, query:str, critique:str):
+        plan = self.planner.generate_plan(f"Goal: {goal_info}", context)
+        final_code = ""
+        target_func = re.search(r'([a-zA-Z0-9_]+)\(', query)
+        func_hint = f"Use exactly the name '{target_func.group(1)}' and argument order from the Task." if target_func else ""
+        if len(plan) <= 1:
+            yield {"type": "status", "content": "Generating single-stage solution..."}
+            res = await self._ask_llm("Python Developer", 
+                f"Task: {query}. {func_hint}\nWrite ONLY the implementation. {critique}", 
+                temp=0.1)
+            final_code = self._extract_code(res)
+        else:
+            yield {"type": "plan", "content": plan}
+            fragments = []
+            for step in plan:
+                yield {"type": "status", "content": f"Coding: {step}..."}
+                res = await self._ask_llm("Coder", f"Goal: {goal_info}. Step: {step}. Code only." \
+                    "Your output must be PURE code. DO NOT include comments like 'Step 1' or 'Final implementation'. " \
+                    "If I see the word 'Step' inside the code, it's a failure.",
+                    max_tokens=400, temp=0.1)
+                fragments.append(self._extract_code(res))
+            yield {"type": "status", "content": "Assembling..."}
+            assembly_prompt = (
+                f"Task: {query}. Below is a rough draft consisting of code fragments. "
+                f"Your job is to refine these fragments into a single, clean, and fully functional Python file. "
+                f"Fix any missing imports, logical inconsistencies, or syntax errors. "
+                f"When using libraries, always use standard aliases: import numpy as np, import pandas as pd, "
+                f"import torch.nn as nn, import matplotlib.pyplot as plt. "
+                f"Your function MUST be named exactly as requested. Check the task description again before finalizing. "
+                f"{func_hint}\n\n"
+                "IMPORTANT: Use relative paths for file operations."
+                f"Draft fragments:\n{fragments}\n\n"
+                f"Final code only (no explanations):"
+            )
+            final_code_raw = await self._ask_llm("Python Architect", assembly_prompt, max_tokens=1024, temp=0.1)
+            final_code = self._extract_code(final_code_raw)
+        yield final_code
+        
+    async def _chain_of_draft(self, goal_info: str, context:str, query:str, critique:str):
+        yield {"type": "status", "content": "Drafting technical logic..."}
+        draft_prompt = (
+            f"Goal: {goal_info}. {critique}\n"
+            "Provide a concise technical draft (pseudo-code or logic steps) for the solution. "
+            "Focus on the algorithm and data structures. No actual code implementation yet."
+        )
+        draft = await self._ask_llm("Technical Architect", draft_prompt, max_tokens=300, temp=0.2)
+        
+        yield {"type": "status", "content": "Implementing draft in Python..."}
+        implement_prompt = (
+            f"Task: {query}\nTechnical Draft: {draft}\n"
+            "Convert this draft into a clean, functional Python implementation. "
+            "Return ONLY the code block. Use relative paths for files if needed."
+        )
+        res = await self._ask_llm("Python Developer", implement_prompt, max_tokens=1024, temp=0.1)
+        final_code = self._extract_code(res)
+        
+        yield final_code
+    
+    async def _reflection_refine(self, goal_info: str, context:str, query:str, critique:str):
+        yield {"type": "status", "content": "Generating optimized implementation..."}
+        
+        prompt = (
+            f"Goal: {goal_info}\nContext: {context}\n"
+            f"Task: {query}\n{critique}\n"
+            "Write a production-ready Python solution. Include all necessary imports. "
+            "Ensure the code is self-contained and efficient. Return ONLY code."
+        )
+        
+        res = await self._ask_llm("Python Developer", prompt, max_tokens=1024, temp=0.1)
+        final_code = self._extract_code(res)
+        
+        yield final_code
 
 
     async def process_completion(self, prompt_text: str) -> dict:
