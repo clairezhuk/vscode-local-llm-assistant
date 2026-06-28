@@ -1,20 +1,51 @@
-ERROR: FAIL: Path must start at A and end at E
-RESPONSE:
+
+--- ATTEMPT 2/3 FAILED ---
+REASON: Format=True, Exec=False
+AI RESPONSE:
 ```python
 def dfs_path(graph, start, goal):
     visited = set()
-    stack = [start]
-    
-    while stack:
-        current = stack.pop()
-        
-        if current == goal:
-            return [current]
-        
-        if current not in visited:
-            visited.add(current)
-            for neighbor in graph[current]:
-                stack.append(neighbor)
-    
-    return []
+    path = []
+
+    def dfs(node):
+        if node == goal:
+            return True
+        if node in visited:
+            return False
+        visited.add(node)
+        for neighbor in graph[node]:
+            if dfs(neighbor):
+                path.append(node)
+                return True
+        path.pop()
+        return False
+
+    dfs(start)
+    return path[::-1]  # Reverse the path to get the correct order
 ```
+------------------------------
+--- ATTEMPT 3/3 FAILED ---
+REASON: Format=True, Exec=False
+AI RESPONSE:
+```python
+def dfs_path(graph, start, goal):
+    visited = set()
+    path = []
+
+    def dfs(node):
+        if node == goal:
+            return True
+
+        if node not in visited:
+            visited.add(node)
+            path.append(node)
+
+            for neighbor in graph[node]:
+                if dfs(neighbor):
+                    return True
+            path.pop()
+
+    dfs(start)
+    return path
+```
+------------------------------

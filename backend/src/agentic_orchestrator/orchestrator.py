@@ -10,7 +10,7 @@ from src.agentic_orchestrator.planner import TaskPlanner
 import asyncio
 
 class Orchestrator:
-    def __init__(self, max_retries: int = 3):
+    def __init__(self, max_retries: int = 1): #SET 1 TEMP
         self.engine = LLMEngine()
         self.context_manager = ContextManager()
         self.executor = ToolExecutor()
