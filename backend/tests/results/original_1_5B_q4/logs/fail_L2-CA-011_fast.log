@@ -1,0 +1,77 @@
+
+--- ATTEMPT 1/3 FAILED ---
+REASON: Format=True, Exec=False
+AI RESPONSE:
+```python
+import math
+
+def rotate_z(point, angle_rad):
+    # Define the rotation matrix around the Z axis
+    rotation_matrix = [
+        [math.cos(angle_rad), -math.sin(angle_rad), 0],
+        [math.sin(angle_rad), math.cos(angle_rad), 0],
+        [0, 0, 1]
+    ]
+    
+    # Extract x, y, z coordinates from the input point
+    x, y, z = point
+    
+    # Apply the rotation matrix to the point
+    new_x = sum(rotation_matrix[0][i] * x + rotation_matrix[1][i] * y + rotation_matrix[2][i] * z for i in range(3))
+    new_y = sum(rotation_matrix[0][i] * x + rotation_matrix[1][i] * y + rotation_matrix[2][i] * z for i in range(3))
+    new_z = sum(rotation_matrix[0][i] * x + rotation_matrix[1][i] * y + rotation_matrix[2][i] * z for i in range(3))
+    
+    return (new_x, new_y, new_z)
+```
+------------------------------
+--- ATTEMPT 2/3 FAILED ---
+REASON: Format=True, Exec=False
+AI RESPONSE:
+```python
+import math
+
+def rotate_z(point, angle_rad):
+    x, y, z = point
+    cos_angle = math.cos(angle_rad)
+    sin_angle = math.sin(angle_rad)
+    
+    # Rotation matrix around the Z-axis
+    rotation_matrix = [
+        [cos_angle, -sin_angle, 0],
+        [sin_angle, cos_angle, 0],
+        [0, 0, 1]
+    ]
+    
+    # Apply the rotation matrix to the point
+    new_x = sum(rotation_matrix[0][i] * x + rotation_matrix[1][i] * y + rotation_matrix[2][i] * z for i in range(3))
+    new_y = sum(rotation_matrix[0][i] * x + rotation_matrix[1][i] * y + rotation_matrix[2][i] * z for i in range(3))
+    new_z = sum(rotation_matrix[0][i] * x + rotation_matrix[1][i] * y + rotation_matrix[2][i] * z for i in range(3))
+    
+    return (new_x, new_y, new_z)
+```
+------------------------------
+--- ATTEMPT 3/3 FAILED ---
+REASON: Format=True, Exec=False
+AI RESPONSE:
+```python
+import math
+
+def rotate_z(point, angle_rad):
+    # Define the rotation matrix around the Z-axis
+    rotation_matrix = [
+        [math.cos(angle_rad), -math.sin(angle_rad), 0],
+        [math.sin(angle_rad), math.cos(angle_rad), 0],
+        [0, 0, 1]
+    ]
+    
+    # Extract the coordinates of the point
+    x, y, z = point
+    
+    # Apply the rotation matrix to the point
+    new_x = sum(rotation_matrix[0][i] * x + rotation_matrix[1][i] * y + rotation_matrix[2][i] * z for i in range(3))
+    new_y = sum(rotation_matrix[0][i] * x + rotation_matrix[1][i] * y + rotation_matrix[2][i] * z for i in range(3))
+    new_z = sum(rotation_matrix[0][i] * x + rotation_matrix[1][i] * y + rotation_matrix[2][i] * z for i in range(3))
+    
+    return (new_x, new_y, new_z)
+```
+------------------------------

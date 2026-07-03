@@ -1,0 +1,29 @@
+
+--- ATTEMPT 2/3 FAILED ---
+REASON: Format=True, Exec=False
+AI RESPONSE:
+```python
+import re
+
+def parse_logs():
+    # Otwieranie pliku 'server.log' i zapisywanie do 'errors.log'
+    with open('C:\\Users\\user\AppData\\Local\\Temp\\tmposxa5mkt\\server.log', 'r') as file:
+        errors = []
+        
+        for line in file:
+            if '[ERROR]' in line:
+                errors.append(line.strip())
+        
+        # Zapiszanie do 'errors.log'
+        with open('C:\\Users\\user\AppData\\Local\\Temp\\tmposxa5mkt\\errors.log', 'w') as error_file:
+            for error in errors:
+                error_file.write(error + '\n')
+    
+    return "Parsed logs and saved to errors.log"
+
+# Test
+print(parse_logs())
+```
+
+This function reads the `server.log` file, extracts lines containing `[ERROR]`, and writes them to a new file named `errors.log`. The function returns a success message.
+------------------------------

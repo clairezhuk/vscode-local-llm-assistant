@@ -1,0 +1,64 @@
+
+--- ATTEMPT 2/3 FAILED ---
+REASON: Format=False, Exec=True
+AI RESPONSE:
+```python
+def is_prime(n):
+    """Determine if a number is prime.
+
+    Args:
+    n (int): The number to check.
+
+    Returns:
+    bool: True if the number is prime, False otherwise.
+    """
+    if n <= 1:
+        return False
+    if n <= 3:
+        return True
+    if n % 2 == 0 or n % 3 == 0:
+        return False
+    i = 5
+    while i * i <= n:
+        if n % i == 0 or n % (i + 2) == 0:
+            return False
+        i += 6
+    return True
+
+# Example usage:
+print(is_prime(29))  # Output: True
+```
+------------------------------
+--- ATTEMPT 3/3 FAILED ---
+REASON: Format=False, Exec=True
+AI RESPONSE:
+```python
+def is_prime(n):
+    """Determine if a number is prime.
+
+    Args:
+    n (int): The number to check.
+
+    Returns:
+    bool: True if the number is prime, False otherwise.
+    """
+    if n <= 1:
+        return False
+    if n <= 3:
+        return True
+    if n % 2 == 0 or n % 3 == 0:
+        return False
+    i = 5
+    while i * i <= n:
+        if n % i == 0 or n % (i + 2) == 0:
+            return False
+        i += 6
+    return True
+
+# Example usage:
+print(is_prime(29))  # Output: True
+print(is_prime(15))  # Output: False
+```
+
+This function checks if a number is prime by first handling small cases and then using a loop to check divisibility from 5 upwards. It uses the fact that all primes greater than 3 are of the form 6k ± 1, which helps reduce the number of checks needed.
+------------------------------

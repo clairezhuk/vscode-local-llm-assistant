@@ -1,0 +1,125 @@
+
+--- ATTEMPT 1/3 FAILED ---
+REASON: Format=True, Exec=False
+AI RESPONSE:
+```python
+import time
+
+def log_time(func):
+    def wrapper(*args, **kwargs):
+        start = time.time()
+        result = func(*args, **kwargs)
+        end = time.time()
+        print(f"Execution time: {end - start}s")
+        return result
+    return wrapper
+
+@log_time
+def process_request(data):
+    print(f"Request processed: {data}")
+
+@log_time
+def fetch_user_profile(user_id):
+    print(f"User {user_id} fetched")
+
+# Example usage:
+# process_request("request_data")
+# fetch_user_profile(123)
+```
+------------------------------
+--- ATTEMPT 2/3 FAILED ---
+REASON: Format=True, Exec=False
+AI RESPONSE:
+To refactor the functions in 'api_handlers.py' by adding a decorator `@log_time` that logs the execution time of each function, we can follow these steps:
+
+1. Define the `@log_time` decorator.
+2. Apply this decorator to both `process_request` and `fetch_user_profile`.
+
+Here's how you can implement this:
+
+```python
+import time
+
+# Step 1: Define the log_time decorator
+def log_time(func):
+    def wrapper(*args, **kwargs):
+        start = time.time()
+        result = func(*args, **kwargs)
+        end = time.time()
+        print(f"Execution time for {func.__name__}: {end - start}s")
+        return result
+    return wrapper
+
+# Step 2: Apply the log_time decorator to both functions
+@log_time
+def process_request(data):
+    # Simulate some work
+    time.sleep(0.1)
+    print(f"Request processed: {data}")
+
+@log_time
+def fetch_user_profile(user_id):
+    # Simulate some work
+    time.sleep(0.05)
+    print(f"User {user_id} fetched")
+
+# Example usage
+process_request("example_data")
+fetch_user_profile("user123")
+```
+
+### Explanation:
+- **Decorator `@log_time`:** This decorator takes a function as an argument and returns a new function that logs the execution time of the original function.
+- **Applying the decorator:** The `@log_time` decorator is applied to both `process_request` and `fetch_user_profile`, which automatically logs their execution times when they are called.
+
+This refactoring ensures that the manual logging in each function is removed, and the execution time is logged using a decorator.
+------------------------------
+--- ATTEMPT 3/3 FAILED ---
+REASON: Format=True, Exec=False
+AI RESPONSE:
+To refactor the functions in 'api_handlers.py' by applying a decorator `@log_time` that logs the execution time of each function, we can follow these steps:
+
+1. Define the `log_time` decorator.
+2. Apply the `log_time` decorator to the `process_request` and `fetch_user_profile` functions.
+
+Here's the refactored code:
+
+```python
+# api_handlers.py
+
+import time
+
+def log_time(func):
+    def wrapper(*args, **kwargs):
+        start = time.time()
+        result = func(*args, **kwargs)
+        end = time.time()
+        print(f"Function {func.__name__} executed in {end - start}s")
+        return result
+    return wrapper
+
+@log_time
+def process_request(data):
+    # Simulate some work
+    time.sleep(0.1)
+    print(f"Request processed: {data}")
+
+@log_time
+def fetch_user_profile(user_id):
+    # Simulate some work
+    time.sleep(0.05)
+    print(f"User {user_id} fetched")
+
+# Example usage:
+process_request("request_data")
+fetch_user_profile("user123")
+```
+
+### Explanation:
+
+- **Decorator `@log_time`:** This decorator takes a function as an argument and returns a new function that logs the execution time of the original function.
+- **`wrapper` function:** This is the inner function that wraps the original function. It measures the time taken to execute the function and prints it.
+- **Applying the decorator:** The `@log_time` decorator is applied to both `process_request` and `fetch_user_profile`, automatically logging their execution times.
+
+This refactoring ensures that the manual time logging is removed, and the functions are still accessible with the original names.
+------------------------------

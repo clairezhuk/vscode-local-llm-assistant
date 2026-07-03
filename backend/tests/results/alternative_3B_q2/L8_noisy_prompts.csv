@@ -1,0 +1,14 @@
+id,processing_type,time_s,intent,format_ok,exec_ok,warning,wrong_warnings,repeats
+L8-ROB-001,fast,98.58,2,3,3,0,0,3
+L8-ROB-002,fast,113.4,2,3,0,0,0,3
+L8-ROB-003,fast,124.54,2,3,3,0,0,3
+L8-ROB-004,fast,87.29,2,3,3,0,0,3
+L8-ROB-005,fast,114.32,2,3,3,0,0,3
+L8-ROB-006,fast,90.79,2,3,3,0,0,3
+L8-ROB-007,fast,72.85,2,3,3,0,0,3
+L8-ROB-008,fast,112.55,2,3,3,0,0,3
+L8-ROB-009,fast,101.75,2,3,1,0,0,3
+L8-ROB-010,fast,104.46,2,3,3,0,0,3
+L8-ROB-011,fast,74.76,2,3,3,0,0,3
+L8-ROB-012,fast,35.67,3,3,3,0,0,3
+L8-ROB-013,fast,27.77,3,2,2,0,0,3

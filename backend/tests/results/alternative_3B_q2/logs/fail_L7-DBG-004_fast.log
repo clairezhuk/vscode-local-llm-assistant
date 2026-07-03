@@ -1,0 +1,17 @@
+
+--- ATTEMPT 2/3 FAILED ---
+REASON: Format=False, Exec=True
+AI RESPONSE:
+W poniższym kodzie, błąd jest w tym, że lista `user_list` jest przekazywana jako argument domyślnie. To spowoduje, że lista jest tworzy tylko raz i jest używana przez wszystkie wywołania funkcji.
+
+Aby poprawić ten kod, należy usunąć argument domyślny i zmiędź listę wewnątrz funkcji:
+
+```python
+def add_user_to_list(user):
+    user_list = []
+    user_list.append(user)
+    return user_list
+```
+
+Teraz, po każdym wywołaniu `add_user_to_list`, lista będzie być czysta i nie będzie zawierać wartości z poprzednich wywołań.
+------------------------------

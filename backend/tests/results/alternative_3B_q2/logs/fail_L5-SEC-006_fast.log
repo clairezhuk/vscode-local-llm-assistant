@@ -1,0 +1,68 @@
+
+--- ATTEMPT 2/3 FAILED ---
+REASON: Format=True, Exec=False
+AI RESPONSE:
+```python
+import os
+
+def get_safe_path(base_dir, user_file):
+    # Ensure base_dir ends with a slash for consistent path joining
+    if not base_dir.endswith('/'):
+        base_dir += '/'
+    
+    # Construct the full path to the file
+    full_path = os.path.join(base_dir, user_file)
+    
+    # Resolve the absolute path of the file
+    abs_path = os.path.abspath(full_path)
+    
+    # Check if the absolute path is within the base directory
+    if abs_path.startswith(base_dir):
+        return abs_path
+    else:
+        raise ValueError("File path is outside the specified base directory.")
+
+# Example usage:
+base_dir = "C:/Users/user/AppData/Local/Temp"
+user_file = "tmpygjs9w1r"
+safe_path = get_safe_path(base_dir, user_file)
+print(safe_path)
+```
+
+This function checks if `user_file` is within the specified `base_dir` by comparing the absolute path of the file to the base directory. If it's outside, a ValueError is raised.
+------------------------------
+--- ATTEMPT 3/3 FAILED ---
+REASON: Format=True, Exec=False
+AI RESPONSE:
+```python
+import os
+
+def get_safe_path(base_dir, user_file):
+    # Ensure the base directory is absolute and ends with a slash
+    if not os.path.isabs(base_dir) or not base_dir.endswith(os.sep):
+        raise ValueError("Base directory must be an absolute path ending with '/'")
+    
+    # Join base directory and user file to form the full path
+    full_path = os.path.join(base_dir, user_file)
+    
+    # Resolve the absolute path of the full path
+    abs_path = os.path.abspath(full_path)
+    
+    # Check if the absolute path is within the base directory
+    if not abs_path.startswith(base_dir):
+        raise ValueError("Path is outside the base directory")
+    
+    return abs_path
+
+# Example usage:
+base_dir = "C:\\Users\\user\\AppData\\Local\\Temp"
+user_file = "\\tmpw9zc7e37"
+try:
+    safe_path = get_safe_path(base_dir, user_file)
+    print(f"Safe path: {safe_path}")
+except ValueError as e:
+    print(e)
+```
+
+This function checks if the `user_file` is within the specified `base_dir` by ensuring the absolute path of the full path starts with the base directory. It raises a `ValueError` if the path is outside the base directory or not valid.
+------------------------------

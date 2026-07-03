@@ -215,9 +215,9 @@ class Orchestrator:
                 else: critique = f"Rejected: {verify}"
 
             elif intent == 2: # CODE    
-                # strategy = self._planning_logic
+                strategy = self._planning_logic
                 # strategy = self._chain_of_draft
-                strategy = self._reflection_refine
+                # strategy = self._reflection_refine
                 final_code = ""
                 async for part in strategy(goal_info, context, query, critique):
                     if isinstance(part, dict): 

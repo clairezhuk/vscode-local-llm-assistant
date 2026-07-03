@@ -1,0 +1,7 @@
+id,processing_type,time_s,intent,format_ok,exec_ok,warning,wrong_warnings,repeats
+L5-ASYNC-001,fast,67.27,2,3,0,0,0,3
+L5-ASYNC-002,fast,67.37,2,3,3,0,0,3
+L5-API-003,fast,104.05,2,1,1,0,0,3
+L5-API-004,fast,99.16,2,3,0,0,0,3
+L5-SEC-005,fast,85.09,2,3,1,0,0,3
+L5-SEC-006,fast,149.61,2,3,1,0,0,3

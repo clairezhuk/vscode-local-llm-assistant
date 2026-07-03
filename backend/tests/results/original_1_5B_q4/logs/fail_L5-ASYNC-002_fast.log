@@ -1,0 +1,28 @@
+
+--- ATTEMPT 3/3 FAILED ---
+REASON: Format=True, Exec=False
+AI RESPONSE:
+```python
+import asyncio
+
+async def bounded_fetch(sem, task_id):
+    async with sem:
+        await asyncio.sleep(0.1)
+        return task_id
+```
+
+To test the function, you can use the following code:
+
+```python
+async def main():
+    semaphore = asyncio.Semaphore(2)  # Limit to 2 concurrent fetches
+    tasks = [bounded_fetch(semaphore, i) for i in range(5)]
+    
+    await asyncio.gather(*tasks)
+
+# Run the event loop
+asyncio.run(main())
+```
+
+This code will run five asynchronous tasks, each calling `bounded_fetch` with a unique task ID. The semaphore ensures that only two tasks can be running at any given time, simulating the behavior of a bounded buffer in a multi-threaded environment.
+------------------------------

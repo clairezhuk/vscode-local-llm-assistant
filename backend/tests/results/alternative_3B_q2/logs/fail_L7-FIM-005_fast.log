@@ -1,0 +1,29 @@
+
+--- ATTEMPT 2/3 FAILED ---
+REASON: Format=True, Exec=False
+AI RESPONSE:
+```python
+def safe_get(data_dict, default):
+    try:
+        return data_dict[key]
+    except KeyError:
+        return default
+
+# Example usage:
+data = {'a': 1, 'b': 2}
+value = safe_get(data, 'c')  # Returns 3 because 'c' is not in the dictionary
+```
+------------------------------
+--- ATTEMPT 3/3 FAILED ---
+REASON: Format=True, Exec=False
+AI RESPONSE:
+```python
+def safe_get(data_dict, default):
+    try:
+        return data_dict[value]
+    except KeyError:
+        return default
+```
+
+This function uses a `try-except` block to attempt to retrieve the value from the dictionary. If the key does not exist (`KeyError`), it returns the `default` value provided.
+------------------------------

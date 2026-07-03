@@ -1,0 +1,73 @@
+
+--- ATTEMPT 1/3 FAILED ---
+REASON: Format=True, Exec=False
+AI RESPONSE:
+```python
+class AgeManager:
+    def __init__(self):
+        self.driver_age = None
+        self.voter_age = None
+
+    def _validate_age(self, age):
+        if not (0 <= age <= 120):
+            raise ValueError("Age must be between 0 and 120.")
+
+    def set_driver_age(self, age):
+        try:
+            self._validate_age(age)
+            self.driver_age = age
+            return "Valid"
+        except ValueError as e:
+            return str(e)
+
+    def set_voter_age(self, age):
+        try:
+            self._validate_age(age)
+            self.voter_age = age
+            return "Valid"
+        except ValueError as e:
+            return str(e)
+
+# Example usage:
+age_manager = AgeManager()
+print(age_manager.set_driver_age(30))  # Output: Valid
+print(age_manager.set_voter_age(125))  # Output: Age must be between 0 and 120.
+```
+------------------------------
+--- ATTEMPT 2/3 FAILED ---
+REASON: Format=True, Exec=False
+AI RESPONSE:
+```python
+class AgeManager:
+    def __init__(self):
+        self.driver_age = None
+        self.voter_age = None
+
+    def _validate_age(self, age):
+        if not 0 <= age <= 120:
+            raise ValueError("Age must be between 0 and 120.")
+
+    def set_driver_age(self, driver_age):
+        try:
+            self._validate_age(driver_age)
+            self.driver_age = driver_age
+            return "Valid"
+        except ValueError as e:
+            return str(e)
+
+    def set_voter_age(self, voter_age):
+        try:
+            self._validate_age(voter_age)
+            self.voter_age = voter_age
+            return "Valid"
+        except ValueError as e:
+            return str(e)
+
+# Example usage:
+age_manager = AgeManager()
+print(age_manager.set_driver_age(30))  # Output: Valid
+print(age_manager.set_voter_age(121))  # Output: Age must be between 0 and 120.
+```
+
+This class encapsulates the logic for managing age settings, with a private method `_validate_age` to ensure the age is within the valid range. The public methods `set_driver_age` and `set_voter_age` use this helper method to validate and set the ages, returning "Valid" if successful or raising an exception with an appropriate message if not.
+------------------------------

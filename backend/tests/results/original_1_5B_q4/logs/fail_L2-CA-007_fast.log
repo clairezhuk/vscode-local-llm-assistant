@@ -1,0 +1,75 @@
+
+--- ATTEMPT 1/3 FAILED ---
+REASON: Format=False, Exec=False
+AI RESPONSE:
+```python
+import re
+
+def parse_log_errors(logs):
+    # Regular expression to match the log format
+    pattern = r'\[(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2})\] \[ERROR\] (.+)'
+    
+    # Find all matches in the logs
+    matches = re.findall(pattern, logs)
+    
+    # Convert matches to a list of dictionaries
+    log_entries = [{'date': date, 'message': message} for date, message in matches]
+    
+    return log_entries
+```
+------------------------------
+--- ATTEMPT 2/3 FAILED ---
+REASON: Format=False, Exec=False
+AI RESPONSE:
+```python
+import re
+
+def parse_log_errors(logs):
+    pattern = r'\[(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2})\] (\w+) (.*)'
+    errors = []
+    for line in logs.split('\n'):
+        match = re.match(pattern, line)
+        if match and match.group(2) == 'ERROR':
+            date = match.group(1)
+            message = match.group(3)
+            errors.append({'date': date, 'message': message})
+    return errors
+```
+------------------------------
+--- ATTEMPT 3/3 FAILED ---
+REASON: Format=False, Exec=False
+AI RESPONSE:
+```python
+import re
+
+def parse_log_errors(logs):
+    # Regular expression to match the log entry format
+    pattern = r'\[(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2})\] \[ERROR\] (.+)'
+    
+    # Split the logs into individual entries
+    entries = logs.split('\n')
+    
+    # Initialize an empty list to store dictionaries for each 'ERROR' level entry
+    error_entries = []
+    
+    # Iterate over each log entry
+    for entry in entries:
+        # Use regular expression to match the pattern and extract date and message
+        match = re.match(pattern, entry)
+        if match:
+            # Extract the date and message from the match object
+            date = match.group(1)
+            message = match.group(2)
+            
+            # Create a dictionary for the 'ERROR' level entry
+            error_entry = {
+                'date': date,
+                'message': message
+            }
+            
+            # Append the dictionary to the list of error entries
+            error_entries.append(error_entry)
+    
+    return error_entries
+```
+------------------------------

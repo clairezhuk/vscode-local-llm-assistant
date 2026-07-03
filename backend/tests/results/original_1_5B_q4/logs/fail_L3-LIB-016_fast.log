@@ -1,0 +1,14 @@
+
+--- ATTEMPT 1/3 FAILED ---
+REASON: Format=True, Exec=False
+AI RESPONSE:
+```python
+from sklearn.metrics import mean_squared_error, r2_score
+
+# Assuming 'y_true' and 'y_pred' are your actual and predicted values respectively
+mse = mean_squared_error(y_true, y_pred)
+r2 = r2_score(y_true, y_pred)
+
+return (mse, r2)
+```
+------------------------------

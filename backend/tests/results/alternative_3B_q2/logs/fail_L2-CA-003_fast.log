@@ -1,0 +1,111 @@
+
+--- ATTEMPT 1/3 FAILED ---
+REASON: Format=False, Exec=False
+AI RESPONSE:
+```python
+from typing import Dict, List
+
+def dijkstra(graph: Dict[str, Dict[str, int]], start: str) -> Dict[str, int]:
+    """
+    Calculate the shortest distance from the start node to all other nodes in a weighted graph.
+    
+    :param graph: A dictionary of dictionaries representing the graph where graph[u][v] is the weight of edge u->v
+    :param start: The starting node for the Dijkstra's algorithm
+    :return: A dictionary where keys are nodes and values are their shortest distance from the start node
+    """
+    # Initialize distances to infinity
+    distances = {node: float('inf') for node in graph}
+    distances[start] = 0
+    
+    # Priority queue to keep track of nodes with current shortest distance
+    import heapq
+    priority_queue = [(0, start)]
+    
+    while priority_queue:
+        current_distance, current_node = heapq.heappop(priority_queue)
+        
+        if current_distance > distances[current_node]:
+            continue
+        
+        for neighbor, weight in graph[current_node].items():
+            new_distance = current_distance + weight
+            
+            if new_distance < distances[neighbor]:
+                distances[neighbor] = new_distance
+                priority_queue.append((new_distance, neighbor))
+    
+    return distances
+
+# Example usage:
+graph = {
+    'A': {'B': 1, 'C': 4},
+    'B': {'C': 1, 'D': 3},
+    'C': {'D': 2},
+    'D': {}
+}
+start_node = 'A'
+print(dijkstra(graph, start_node))
+```
+
+This function implements Dijkstra's algorithm to find the shortest path from a given starting node in a weighted graph. It uses a priority queue (min-heap) to efficiently explore nodes and update their shortest distances. The `graph` parameter is a dictionary where each key is a node and its value is another dictionary representing its neighbors and their weights. The function returns a dictionary of the shortest distance from the start node to all other nodes.
+------------------------------
+--- ATTEMPT 2/3 FAILED ---
+REASON: Format=False, Exec=False
+AI RESPONSE:
+```python
+def dijkstra(graph, start):
+    # Initialize the distances dictionary with infinity for all nodes except the start node
+    distances = {node: float('inf') for node in graph}
+    distances[start] = 0
+    
+    # Create a set of unvisited nodes
+    unvisited = set(graph)
+    
+    while unvisited:
+        # Find the node with the smallest distance value
+        current_node = min(unvisited, key=distances.get)
+        
+        # Remove the current node from the unvisited set
+        unvisited.remove(current_node)
+        
+        # Update distances for all neighbors of the current node
+        for neighbor in graph[current_node]:
+            new_distance = distances[current_node] + graph[current_node][neighbor]
+            if new_distance < distances[neighbor]:
+                distances[neighbor] = new_distance
+    
+    return distances
+```
+
+This function implements Dijkstra's algorithm to find the shortest paths from a start node in a weighted graph. It initializes a dictionary of distances, updates them as it explores the graph, and returns the final distances for all nodes.
+------------------------------
+--- ATTEMPT 3/3 FAILED ---
+REASON: Format=False, Exec=False
+AI RESPONSE:
+```python
+def dijkstra(graph, start):
+    # Initialize distances to infinity for all nodes except the start node
+    distances = {node: float('inf') for node in graph}
+    distances[start] = 0
+    
+    # Create a set of unvisited nodes
+    unvisited = set(graph)
+    
+    while unvisited:
+        # Find the node with the smallest distance value
+        current_node = min(unvisited, key=distances.get)
+        
+        # Remove the current node from the unvisited set
+        unvisited.remove(current_node)
+        
+        # Update distances for all neighbors of the current node
+        for neighbor in graph[current_node]:
+            new_distance = distances[current_node] + graph[current_node][neighbor]
+            if new_distance < distances[neighbor]:
+                distances[neighbor] = new_distance
+    
+    return distances
+```
+
+This function implements Dijkstra's algorithm to find the shortest paths from a given start node in a weighted graph. It initializes a dictionary of distances, updates them as it traverses the graph, and returns the final distances for all nodes.
+------------------------------

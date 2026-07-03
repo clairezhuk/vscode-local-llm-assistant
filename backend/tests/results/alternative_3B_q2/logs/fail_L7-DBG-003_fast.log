@@ -1,0 +1,21 @@
+
+--- ATTEMPT 3/3 FAILED ---
+REASON: Format=False, Exec=False
+AI RESPONSE:
+The bug in the binary search implementation is that when `arr[mid]` is equal to `x`, it does not return the index of `x`. Instead, it continues searching by setting `l = mid`, which can lead to an infinite loop if `x` is at the end of the array.
+
+To fix this, we should only set `l = mid` when `arr[mid] < x`. This ensures that we continue searching for `x` in the correct half of the array. Here's the corrected code:
+
+```python
+def binary_search(arr, x):
+    l, r = 0, len(arr) - 1
+    while l <= r:
+        mid = (l + r) // 2
+        if arr[mid] == x: return mid
+        elif arr[mid] < x: l = mid
+        else: r = mid - 1
+    return -1
+```
+
+This should now correctly find the index of `x` in the array.
+------------------------------

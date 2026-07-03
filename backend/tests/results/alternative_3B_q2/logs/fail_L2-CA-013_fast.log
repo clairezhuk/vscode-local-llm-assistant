@@ -1,0 +1,79 @@
+
+--- ATTEMPT 1/3 FAILED ---
+REASON: Format=False, Exec=False
+AI RESPONSE:
+```python
+import re
+
+def parse_nested_logs(lines):
+    result = {}
+    
+    for line in lines:
+        # Use a regular expression to find the pattern Module[Name]: Status[Value]
+        match = re.search(r'Module\[(.*?)\]: Status\[(.*?)\]', line)
+        
+        if match:
+            name, value = match.groups()
+            result[name] = value
+    
+    return result
+```
+
+This function iterates through each line of the input `lines`, searching for a pattern that matches `Module[Name]: Status[Value]`. If a match is found, it extracts the `Name` and `Value` from the matched groups and adds them to the `result` dictionary. The function returns this dictionary.
+------------------------------
+--- ATTEMPT 2/3 FAILED ---
+REASON: Format=False, Exec=False
+AI RESPONSE:
+```python
+def parse_nested_logs(lines):
+    result = {}
+    for line in lines:
+        # Split the line into parts based on ':'
+        parts = line.split(':')
+        
+        # Check if there are at least two parts
+        if len(parts) >= 2:
+            name, value = parts[0].strip(), parts[1].strip()
+            
+            # If the Name is already in the result dictionary, append Value to its list
+            if name in result:
+                result[name].append(value)
+            else:
+                result[name] = [value]
+    
+    return result
+
+# Example usage:
+lines = [
+    "Module[Name]: Status[Value1]",
+    "Module[Name]: Status[Value2]",
+    "Module[AnotherName]: Status[Value3]"
+]
+
+print(parse_nested_logs(lines))
+```
+
+This function iterates over each line in the input list, splits it into parts based on the ':', and checks if there are at least two parts. If so, it extracts the Name and Value, and updates the result dictionary accordingly. If the Name is already a key in the dictionary, it appends the new Value to its list; otherwise, it creates a new entry with the Name as the key and the Value as the first element of the list.
+------------------------------
+--- ATTEMPT 3/3 FAILED ---
+REASON: Format=False, Exec=False
+AI RESPONSE:
+```python
+import re
+
+def parse_nested_logs(lines):
+    result = {}
+    
+    for line in lines:
+        # Use a regular expression to find the pattern Module[Name]: Status[Value]
+        match = re.search(r'Module\[(.*?)\]\s+Status\[(.*?)\]', line)
+        
+        if match:
+            name, value = match.groups()
+            result[name] = value
+    
+    return result
+```
+
+This function iterates over each line in the input list of strings. It uses a regular expression to search for lines that match the pattern `Module[Name]: Status[Value]`. If a match is found, it extracts the name and value from the matched groups and adds them to the result dictionary. The function returns the dictionary mapping names to values.
+------------------------------

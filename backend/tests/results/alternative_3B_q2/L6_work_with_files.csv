@@ -1,0 +1,15 @@
+id,processing_type,time_s,intent,format_ok,exec_ok,warning,wrong_warnings,repeats
+L6-FILE-001,fast,77.5,2,3,3,0,0,3
+L6-ANALYSIS-002,fast,41.67,1,3,,0,0,3
+L6-FILE-003,fast,104.94,2,3,2,0,0,3
+L6-CLI-004,fast,24.77,3,3,,0,0,3
+L6-ANALYSIS-005,fast,53.21,1,3,,0,0,3
+L6-ANALYSIS-006,fast,35.35,1,3,,0,0,3
+L6-CLI-007,fast,19.66,3,3,,0,0,3
+L6-ANALYSIS-008,fast,47.27,1,3,,0,0,3
+L6-FILE-009,fast,114.12,2,3,0,0,0,3
+L6-ANALYSIS-010,fast,71.1,1,3,,0,0,3
+L6-ANALYSIS-011,fast,38.36,1,2,,0,0,3
+L6-FILE-012,fast,72.54,2,3,3,0,0,3
+L6-FILE-013,fast,146.23,2,3,0,0,0,3
+L6-FILE-014,fast,122.44,2,2,0,0,0,3

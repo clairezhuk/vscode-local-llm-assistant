@@ -1,0 +1,92 @@
+
+--- ATTEMPT 1/3 FAILED ---
+REASON: Format=False, Exec=False
+AI RESPONSE:
+```python
+import re
+
+def parse_log_errors(logs):
+    # Regular expression to match the log format
+    pattern = r'(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}) (\w+) (.+?)'
+    
+    # Find all matches in the logs string
+    matches = re.findall(pattern, logs)
+    
+    # Convert each match into a dictionary with 'date' and 'message'
+    errors = [{'date': match[0], 'message': match[3]} for match in matches if match[2] == 'ERROR']
+    
+    return errors
+
+# Example usage:
+logs = """
+2023-10-05 14:30:00 ERROR Something went wrong!
+2023-10-05 14:30:01 INFO Everything is okay.
+2023-10-05 14:30:02 ERROR Another error occurred.
+"""
+
+errors = parse_log_errors(logs)
+print(errors)
+```
+
+This code defines a function `parse_log_errors` that takes a string of log entries and returns a list of dictionaries, each representing an 'ERROR' level entry with the date and message. The function uses a regular expression to extract the required information from each line.
+------------------------------
+--- ATTEMPT 2/3 FAILED ---
+REASON: Format=False, Exec=False
+AI RESPONSE:
+```python
+import re
+
+def parse_log_errors(logs):
+    # Regular expression to match the log format
+    log_pattern = r'(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}) (\w+) (.+?)'
+    
+    # Initialize a list to store the parsed logs
+    parsed_logs = []
+    
+    # Use re.findall to extract all matches in one go
+    for match in re.findall(log_pattern, logs):
+        date, level, message = match
+        if level == 'ERROR':
+            parsed_logs.append({'date': date, 'message': message})
+    
+    return parsed_logs
+
+# Example usage:
+logs = """
+2023-10-05 14:30:00 ERROR Something went wrong!
+2023-10-05 14:30:01 INFO Everything is okay.
+2023-10-05 14:30:02 ERROR Another error occurred.
+"""
+parsed_logs = parse_log_errors(logs)
+print(parsed_logs)
+```
+
+This function uses a regular expression to parse the logs and extracts the date, level, and message. It then filters out only the 'ERROR' level entries and returns them as a list of dictionaries.
+------------------------------
+--- ATTEMPT 3/3 FAILED ---
+REASON: Format=False, Exec=False
+AI RESPONSE:
+```python
+import re
+
+def parse_log_errors(logs):
+    errors = []
+    for line in logs.splitlines():
+        match = re.match(r'(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}) (\w+) (.+)', line)
+        if match:
+            date, level, message = match.groups()
+            if level == 'ERROR':
+                errors.append({'date': date, 'message': message})
+    return errors
+
+# Example usage
+logs = """
+2023-10-05 14:30:01 ERROR Something went wrong!
+2023-10-05 14:30:02 INFO Everything is okay.
+2023-10-05 14:30:03 ERROR Another error occurred.
+"""
+print(parse_log_errors(logs))
+```
+
+This function uses regular expressions to parse each line of the input string, extracting the date, level, and message. It filters out lines that are not 'ERROR' level and returns a list of dictionaries containing the date and message for each error entry.
+------------------------------

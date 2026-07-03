@@ -1,0 +1,79 @@
+
+--- ATTEMPT 1/3 FAILED ---
+REASON: Format=True, Exec=False
+AI RESPONSE:
+```python
+import requests
+
+def fetch_with_retry(url):
+    max_retries = 3
+    for _ in range(max_retries):
+        try:
+            response = requests.get(url)
+            if response.status_code == 503:
+                continue
+            return response
+        except requests.exceptions.RequestException as e:
+            print(f"Error: {e}")
+    raise Exception("Failed to fetch URL after all retries")
+
+# Example usage:
+url = "http://example.com"
+response = fetch_with_retry(url)
+print(response.text)
+```
+
+This function uses the `requests` library to make a GET request. If the status code is 503 (Service Unavailable), it continues to retry up to three times. If all retries fail, it raises an exception. The function returns the response object if successful.
+------------------------------
+--- ATTEMPT 2/3 FAILED ---
+REASON: Format=True, Exec=False
+AI RESPONSE:
+```python
+import requests
+
+def fetch_with_retry(url):
+    max_retries = 3
+    for _ in range(max_retries):
+        try:
+            response = requests.get(url)
+            if response.status_code == 503:
+                continue
+            return response.text
+        except requests.exceptions.RequestException as e:
+            print(f"Error: {e}")
+    raise Exception("Failed to fetch URL after all retries")
+
+# Example usage:
+url = "http://example.com"
+result = fetch_with_retry(url)
+print(result)
+```
+
+This function uses the `requests` library to make a GET request. If the status code is 503 (Service Unavailable), it continues to retry up to three times. If all retries fail, it raises an exception. The function returns the text of the response if successful.
+------------------------------
+--- ATTEMPT 3/3 FAILED ---
+REASON: Format=True, Exec=False
+AI RESPONSE:
+```python
+import requests
+
+def fetch_with_retry(url):
+    max_retries = 3
+    for _ in range(max_retries):
+        try:
+            response = requests.get(url)
+            if response.status_code == 503:
+                continue
+            return response.text
+        except requests.exceptions.RequestException as e:
+            print(f"Error: {e}")
+    raise Exception("Failed to fetch URL after all retries")
+
+# Example usage:
+url = "http://example.com"
+result = fetch_with_retry(url)
+print(result)
+```
+
+This function `fetch_with_retry` uses the `requests` library to make a GET request. If the status code is 503 (which indicates a temporary server error), it continues to retry up to three times. If all retries fail, it raises an exception. The function returns the text of the response if successful.
+------------------------------

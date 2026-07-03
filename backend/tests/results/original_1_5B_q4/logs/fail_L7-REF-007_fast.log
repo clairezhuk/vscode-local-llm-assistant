@@ -1,0 +1,95 @@
+
+--- ATTEMPT 1/3 FAILED ---
+REASON: Format=True, Exec=False
+AI RESPONSE:
+```python
+class AgeManager:
+    def __init__(self):
+        self.driver_age = None
+        self.voter_age = None
+
+    def _validate_age(self, age):
+        if not (0 <= age <= 120):
+            raise ValueError("Age must be between 0 and 120.")
+        return True
+
+    def set_driver_age(self, age):
+        try:
+            if self._validate_age(age):
+                self.driver_age = age
+                return "Valid"
+        except ValueError as e:
+            print(e)
+            return None
+
+    def set_voter_age(self, age):
+        try:
+            if self._validate_age(age):
+                self.voter_age = age
+                return "Valid"
+        except ValueError as e:
+            print(e)
+            return None
+```
+------------------------------
+--- ATTEMPT 2/3 FAILED ---
+REASON: Format=True, Exec=False
+AI RESPONSE:
+```python
+class AgeManager:
+    def __init__(self):
+        self.driver_age = None
+        self.voter_age = None
+
+    def _validate_age(self, age):
+        if not 0 <= age <= 120:
+            raise ValueError("Age must be between 0 and 120.")
+        return True
+
+    def set_driver_age(self, age):
+        try:
+            self.driver_age = int(age)
+            self._validate_age(self.driver_age)
+            return "Valid"
+        except ValueError as e:
+            return str(e)
+
+    def set_voter_age(self, age):
+        try:
+            self.voter_age = int(age)
+            self._validate_age(self.voter_age)
+            return "Valid"
+        except ValueError as e:
+            return str(e)
+```
+------------------------------
+--- ATTEMPT 3/3 FAILED ---
+REASON: Format=True, Exec=False
+AI RESPONSE:
+```python
+class AgeManager:
+    def __init__(self):
+        self.driver_age = None
+        self.voter_age = None
+
+    def _validate_age(self, age):
+        if not (0 <= age <= 120):
+            raise ValueError("Age must be between 0 and 120.")
+
+    def set_driver_age(self, age):
+        try:
+            self._validate_age(age)
+            self.driver_age = age
+            return "Valid"
+        except ValueError as e:
+            return str(e)
+
+    def set_voter_age(self, age):
+        try:
+            self._validate_age(age)
+            self.voter_age = age
+            return "Valid"
+        except ValueError as e:
+            return str(e)
+```
+------------------------------

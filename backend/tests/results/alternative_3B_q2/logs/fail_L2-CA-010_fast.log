@@ -1,0 +1,91 @@
+
+--- ATTEMPT 1/3 FAILED ---
+REASON: Format=False, Exec=False
+AI RESPONSE:
+```python
+import math
+
+def assign_clusters(points, centroids):
+    def euclidean_distance(point1, point2):
+        return math.sqrt((point1[0] - point2[0]) ** 2 + (point1[1] - point2[1]) ** 2)
+
+    clusters = []
+    for point in points:
+        min_distance = float('inf')
+        closest_centroid_index = None
+        for i, centroid in enumerate(centroids):
+            distance = euclidean_distance(point, centroid)
+            if distance < min_distance:
+                min_distance = distance
+                closest_centroid_index = i
+        clusters.append(closest_centroid_index)
+    return clusters
+
+# Example usage:
+points = [(1, 2), (3, 4), (5, 6), (7, 8)]
+centroids = [(0, 0), (10, 10)]
+clusters = assign_clusters(points, centroids)
+print(clusters)  # Output: [0, 0, 1, 1]
+```
+
+This function calculates the Euclidean distance from each point to each centroid and assigns the point to the closest centroid. The result is a list of cluster indices for each point.
+------------------------------
+--- ATTEMPT 2/3 FAILED ---
+REASON: Format=False, Exec=False
+AI RESPONSE:
+```python
+import math
+
+def assign_clusters(points, centroids):
+    def euclidean_distance(point1, point2):
+        return math.sqrt((point1[0] - point2[0])**2 + (point1[1] - point2[1])**2)
+
+    def find_closest_centroid(point, centroids):
+        min_distance = float('inf')
+        closest_centroid = None
+        for centroid in centroids:
+            distance = euclidean_distance(point, centroid)
+            if distance < min_distance:
+                min_distance = distance
+                closest_centroid = centroid
+        return closest_centroid
+
+    cluster_indices = []
+    for point in points:
+        closest_centroid = find_closest_centroid(point, centroids)
+        cluster_indices.append(centroids.index(closest_centroid))
+    return cluster_indices
+```
+
+This function calculates the Euclidean distance between each point and each centroid, determines which centroid is closest to each point, and assigns the index of that centroid as the cluster index for that point.
+------------------------------
+--- ATTEMPT 3/3 FAILED ---
+REASON: Format=False, Exec=False
+AI RESPONSE:
+```python
+import math
+
+def assign_clusters(points, centroids):
+    def euclidean_distance(point1, point2):
+        return math.sqrt((point1[0] - point2[0]) ** 2 + (point1[1] - point2[1]) ** 2)
+
+    clusters = []
+    for point in points:
+        min_distance = float('inf')
+        closest_centroid_index = None
+        for i, centroid in enumerate(centroids):
+            distance = euclidean_distance(point, centroid)
+            if distance < min_distance:
+                min_distance = distance
+                closest_centroid_index = i
+        clusters.append(closest_centroid_index)
+    return clusters
+
+# Example usage:
+points = [(1, 2), (3, 4), (5, 6), (7, 8)]
+centroids = [(0, 0), (10, 10)]
+print(assign_clusters(points, centroids))
+```
+
+This function calculates the Euclidean distance from each point to each centroid and assigns the point to the closest centroid. The result is a list of cluster indices for each point.
+------------------------------

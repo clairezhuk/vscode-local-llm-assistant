@@ -1,0 +1,67 @@
+
+--- ATTEMPT 1/3 FAILED ---
+REASON: Format=True, Exec=False
+AI RESPONSE:
+```python
+import asyncio
+
+async def f1():
+    return 10
+
+async def f2():
+    return 20
+
+async def f3():
+    return 30
+
+async def run_tasks():
+    results = await asyncio.gather(f1(), f2(), f3())
+    return results[0] + results[1] + results[2]
+
+# Example usage:
+# result = run_tasks()
+# print(result)  # Output: 60
+```
+------------------------------
+--- ATTEMPT 2/3 FAILED ---
+REASON: Format=True, Exec=False
+AI RESPONSE:
+```python
+import asyncio
+
+async def f1():
+    return 10
+
+async def f2():
+    return 20
+
+async def f3():
+    return 30
+
+async def run_tasks():
+    results = await asyncio.gather(f1(), f2(), f3())
+    return results[0] + results[1] + results[2]
+```
+
+This function `run_tasks` will execute the three functions concurrently and return their results as a list, which is then summed up to produce the final result.
+------------------------------
+--- ATTEMPT 3/3 FAILED ---
+REASON: Format=True, Exec=False
+AI RESPONSE:
+```python
+import asyncio
+
+async def f1():
+    return 10
+
+async def f2():
+    return 20
+
+async def f3():
+    return 30
+
+async def run_tasks():
+    results = await asyncio.gather(f1(), f2(), f3())
+    return results[0] + results[1] + results[2]
+```
+------------------------------

@@ -1,0 +1,21 @@
+
+--- ATTEMPT 2/3 FAILED ---
+REASON: Format=False, Exec=True
+AI RESPONSE:
+```python
+def transpose(matrix):
+    return list(map(list, zip(*matrix)))
+
+# Example usage:
+original_matrix = [
+    [1, 2, 3],
+    [4, 5, 6],
+    [7, 8, 9]
+]
+
+transposed_matrix = transpose(original_matrix)
+print(transposed_matrix)
+```
+
+This function uses Python's built-in `zip` function to transpose the matrix. The `map(list, ...)` part converts each tuple returned by `zip` into a list, which is what we need for a 2D list in Python.
+------------------------------

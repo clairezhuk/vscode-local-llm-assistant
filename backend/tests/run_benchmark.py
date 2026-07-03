@@ -12,7 +12,7 @@ from pathlib import Path
 API_URL = "http://127.0.0.1:8000/chat"
 PROJECT_ROOT = Path(__file__).parent.parent.absolute()
 SUITES_DIR = "suites"
-RESULTS_DIR = "results"
+RESULTS_DIR = "results/alternative_3B_q2"
 LOGS_DIR = os.path.join(RESULTS_DIR, "logs")
 REPEATS = 3
 

@@ -1,0 +1,136 @@
+
+--- ATTEMPT 1/3 FAILED ---
+REASON: Format=True, Exec=False
+AI RESPONSE:
+```python
+import numpy as np
+
+def normalize_columns(matrix):
+    """
+    Normalize each column of a 2D NumPy array.
+    
+    Parameters:
+    matrix (numpy.ndarray): The input 2D array to be normalized.
+    
+    Returns:
+    numpy.ndarray: A new 2D array with normalized columns.
+    """
+    # Calculate the mean and standard deviation for each column
+    means = np.mean(matrix, axis=0)
+    stds = np.std(matrix, axis=0, ddof=1)  # Use ddof=1 for sample standard deviation
+    
+    # Create a mask to identify constant columns (std is zero)
+    constant_columns_mask = (stds == 0)
+    
+    # Normalize each column, handling constant columns by returning zeros
+    normalized_matrix = np.where(constant_columns_mask, np.zeros_like(matrix), (matrix - means) / stds)
+    
+    return normalized_matrix
+
+# Example usage:
+data = np.array([[1, 2], [3, 4], [5, 6]])
+normalized_data = normalize_columns(data)
+print(normalized_data)
+```
+
+This function normalizes each column of a given 2D NumPy array. It calculates the mean and standard deviation for each column, then normalizes the columns by subtracting the mean and dividing by the standard deviation. If any column has a standard deviation of zero (indicating constant values), it returns zeros for that column to avoid division by zero errors.
+------------------------------
+--- ATTEMPT 2/3 FAILED ---
+REASON: Format=True, Exec=False
+AI RESPONSE:
+```python
+import numpy as np
+
+def normalize_columns(matrix):
+    """
+    Normalize each column of a 2D NumPy array.
+    
+    Parameters:
+    matrix (numpy.ndarray): The input 2D array to be normalized.
+    
+    Returns:
+    numpy.ndarray: A new 2D array with normalized columns.
+    """
+    # Calculate the mean and standard deviation for each column
+    means = np.mean(matrix, axis=0)
+    stds = np.std(matrix, axis=0, ddof=1)  # ddof=1 for sample standard deviation
+    
+    # Create a mask to identify constant columns (std is zero)
+    mask = (stds == 0)
+    
+    # Normalize each column
+    normalized_matrix = matrix.copy()
+    for i in range(matrix.shape[1]):
+        if not mask[i]:
+            normalized_matrix[:, i] = (matrix[:, i] - means[i]) / stds[i]
+    
+    return normalized_matrix
+
+# Example usage:
+data = np.array([[2, 3], [4, 5], [6, 7]])
+normalized_data = normalize_columns(data)
+print(normalized_data)
+
+# Check function to verify the correctness of the generated function
+def check_function():
+    test_data = np.array([[1, 2, 3], [4, 5, 6], [7, 8, 9]])
+    expected_output = np.array([[0.0, 0.0, 0.0], [0.0, 0.0, 0.0], [0.0, 0.0, 0.0]])
+    assert np.allclose(normalize_columns(test_data), expected_output), "Test case failed"
+    print("Test case passed!")
+
+check_function()
+```
+
+This code defines a function `normalize_columns` that normalizes each column of a given 2D NumPy array. It handles cases where the standard deviation is zero by returning zeros for those columns. The example usage demonstrates how to use the function, and a check function is provided to verify its correctness.
+------------------------------
+--- ATTEMPT 3/3 FAILED ---
+REASON: Format=True, Exec=False
+AI RESPONSE:
+```python
+import numpy as np
+
+def normalize_columns(matrix):
+    """
+    Normalize each column of a 2D NumPy array.
+    
+    Parameters:
+    matrix (numpy.ndarray): The input 2D array to be normalized.
+    
+    Returns:
+    numpy.ndarray: A new 2D array with normalized columns.
+    """
+    # Calculate the mean and standard deviation for each column
+    means = np.mean(matrix, axis=0)
+    stds = np.std(matrix, axis=0)
+    
+    # Create a mask to identify constant columns (std is zero)
+    constant_columns_mask = (stds == 0)
+    
+    # Normalize each column, handling constant columns by returning zeros
+    normalized_matrix = np.divide(matrix - means, stds, out=np.zeros_like(matrix), where=~constant_columns_mask)
+    
+    return normalized_matrix
+
+# Example usage:
+# Assuming 'data' is a numpy array of shape (n_samples, n_features)
+normalized_data = normalize_columns(data)
+
+# Check function to verify the correctness
+def check_normalization():
+    # Sample data
+    sample_data = np.array([[1, 2], [3, 4], [5, 6]])
+    
+    # Expected output after normalization
+    expected_output = np.array([[0.5, -0.5], [1.5, -0.5], [2.5, -0.5]])
+    
+    # Perform the normalization
+    normalized_sample_data = normalize_columns(sample_data)
+    
+    # Check if the result matches the expected output
+    assert np.allclose(normalized_sample_data, expected_output), "The normalization did not work as expected."
+    
+check_normalization()
+```
+
+This code snippet defines a function `normalize_columns` that normalizes each column of a 2D NumPy array. It handles cases where the standard deviation is zero by returning zeros for those columns. The example usage demonstrates how to use this function and includes a check function to ensure its correctness.
+------------------------------

@@ -1,0 +1,80 @@
+
+--- ATTEMPT 1/3 FAILED ---
+REASON: Format=True, Exec=False
+AI RESPONSE:
+```python
+import numpy as np
+
+def get_row_max_indices(matrix):
+    """
+    Returns the indices of the maximum values in each row of a 2D NumPy array.
+
+    Parameters:
+    matrix (numpy.ndarray): A 2D NumPy array.
+
+    Returns:
+    list: A list of tuples, where each tuple contains the index of the maximum value in each row.
+    """
+    return np.argmax(matrix, axis=1).tolist()
+
+# Example usage
+matrix = np.array([[3, 1, 4], [5, 9, 2], [7, 6, 8]])
+result = get_row_max_indices(matrix)
+print(result)  # Output: [(2,), (1,), (2)]
+```
+
+This function uses NumPy's `argmax` function to find the indices of the maximum values in each row. The `axis=1` parameter specifies that the operation should be performed along the rows. The result is then converted to a list for easier readability.
+------------------------------
+--- ATTEMPT 2/3 FAILED ---
+REASON: Format=False, Exec=False
+AI RESPONSE:
+```python
+import numpy as np
+
+def get_row_max_indices(matrix):
+    """
+    Returns the indices of the maximum values in each row of a 2D NumPy array.
+
+    Parameters:
+    matrix (np.ndarray): A 2D NumPy array.
+
+    Returns:
+    list: A list of tuples, where each tuple contains the index and value of the maximum element in each row.
+    """
+    return [(i, np.max(matrix[i])) for i in range(len(matrix))]
+
+# Example usage
+matrix = np.array([[3, 1, 4], [2, 5, 6], [7, 8, 9]])
+result = get_row_max_indices(matrix)
+print(result)  # Output: [(0, 4), (1, 5), (2, 9)]
+```
+
+This code defines a function `get_row_max_indices` that takes a 2D NumPy array as input and returns the indices of the maximum values in each row. The function uses list comprehension to iterate over each row, calculates the maximum value using `np.max`, and constructs a tuple with the index and the maximum value for each row. The example usage demonstrates how to call the function and print the result.
+------------------------------
+--- ATTEMPT 3/3 FAILED ---
+REASON: Format=False, Exec=False
+AI RESPONSE:
+```python
+import numpy as np
+
+def get_row_max_indices(matrix):
+    """
+    Returns the indices of the maximum values in each row of a 2D NumPy array.
+
+    Parameters:
+    matrix (np.array): A 2D NumPy array.
+
+    Returns:
+    list: A list of tuples, where each tuple contains the index of the maximum value
+          and the value itself for each row.
+    """
+    return [(i, np.max(matrix[i])) for i in range(len(matrix))]
+
+# Example usage:
+matrix = np.array([[10, 20], [30, 40], [50, 60]])
+result = get_row_max_indices(matrix)
+print(result)  # Output: [(0, 20), (1, 40), (2, 60)]
+```
+
+This function iterates over each row of the input matrix, calculates the maximum value in that row using `np.max`, and returns a list of tuples containing the index of the maximum value and the value itself.
+------------------------------

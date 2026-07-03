@@ -1,0 +1,21 @@
+
+--- ATTEMPT 2/3 FAILED ---
+REASON: Format=False, Exec=True
+AI RESPONSE:
+```python
+def count_vowels(s):
+    # Define a set of vowels for quick lookup
+    vowels = {'a', 'e', 'i', 'o', 'u'}
+    # Initialize a counter for vowels
+    vowel_count = 0
+    # Iterate over each character in the string
+    for char in s:
+        # Check if the character is a vowel and increment the counter if it is
+        if char.lower() in vowels:
+            vowel_count += 1
+    return vowel_count
+
+# Example usage:
+print(count_vowels("Hello, World!"))  # Output: 5
+```
+------------------------------

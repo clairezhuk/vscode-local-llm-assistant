@@ -1,0 +1,36 @@
+
+--- ATTEMPT 1/3 FAILED ---
+REASON: Format=False, Exec=True
+AI RESPONSE:
+```python
+import matplotlib.pyplot as plt
+
+def create_plot(x, y):
+    """
+    Generates a line plot with specified x and y data.
+    
+    Parameters:
+    - x: A list of x values for the plot.
+    - y: A list of y values for the plot.
+    
+    Returns:
+    None
+    """
+    # Create a new figure and axis
+    fig, ax = plt.subplots()
+    
+    # Plot the data
+    ax.plot(x, y)
+    
+    # Set title and labels
+    ax.set_title('Data Plot')
+    ax.set_xlabel('X Axis Label')
+    ax.set_ylabel('Y Axis Label')
+    
+    # Add a legend
+    ax.legend(['Line'])
+    
+    # Display the plot
+    plt.show()
+```
+------------------------------

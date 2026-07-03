@@ -1,0 +1,14 @@
+
+--- ATTEMPT 2/3 FAILED ---
+REASON: Format=True, Exec=False
+AI RESPONSE:
+```python
+def pole_prostokata(a, b):
+    return a * b
+```
+
+To use this function, you can call it with the lengths of the sides as arguments. For example:
+```python
+print(pole_prostokata(5, 10))  # Output: 50
+```
+------------------------------

@@ -6,10 +6,10 @@ import glob
 import os
 import re
 
-INDEX = 6
+INDEX = "7"#_base_planning_logic
 
 def parse_results():
-    csv_files = glob.glob('results/*.csv')
+    csv_files = glob.glob('results/alternative_3B_q2/*.csv')
     if not csv_files:
         print("No CSV files found in results/")
         return None, None, None
@@ -188,8 +188,8 @@ def create_dashboard():
                     family='monospace', bbox=dict(facecolor='#000', edgecolor='#3498db', boxstyle='round,pad=1'))
 
     plt.tight_layout()
-    plt.savefig(f'results/dashboard_v{INDEX}.png', dpi=150)
-    print(f"Dashboard saved to results/dashboard_v{INDEX}.png")
+    plt.savefig(f'results/dashboards/dashboard_v{INDEX}.png', dpi=150)
+    print(f"Dashboard saved to results/dashboards/dashboard_v{INDEX}.png")
 
 if __name__ == "__main__":
     create_dashboard()
