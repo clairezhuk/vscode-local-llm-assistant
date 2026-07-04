@@ -6,10 +6,12 @@ import glob
 import os
 import re
 
-INDEX = "7"#_base_planning_logic
+INDEX = "6"#_base_planning_logic
+CVV_PATH = "results/original_1_5B_q4/*.csv"
+SAVE_PATH = f"results/dashboards/dashboard_v{INDEX}.png"
 
-def parse_results():
-    csv_files = glob.glob('results/alternative_3B_q2/*.csv')
+def parse_results(path = CVV_PATH, process_fast = True, process_think = True):
+    csv_files = glob.glob(path)
     if not csv_files:
         print("No CSV files found in results/")
         return None, None, None
@@ -39,8 +41,14 @@ def parse_results():
         
         all_data.append(df)
         
+        # Set which modes process
+        mode_list = []
+        if process_fast:
+            mode_list.append('fast')
+        if process_think:
+            mode_list.append('thinking')
         # Suite Performance Stats
-        for mode in ['fast', 'thinking']:
+        for mode in mode_list:
             m_df = df[df['processing_type'] == mode]
             if m_df.empty: continue
             
@@ -72,52 +80,55 @@ def parse_results():
     
     return full_df, suite_stats, latency
 
-def create_dashboard():
-    df, stats, latency_stats = parse_results()
-    if df is None: return
-
+def create_dashboard(df, stats, latency_stats, categories = ["Fast", "Thinking"], save_path = SAVE_PATH):
     plt.style.use('dark_background')
-    fig = plt.figure(figsize=(22, 12))
-    gs = fig.add_gridspec(2, 3, width_ratios=[0.8, 1, 1], height_ratios=[1, 0.15])
     
-    ax_text = fig.add_subplot(gs[0, 0])
-    ax_fast = fig.add_subplot(gs[0, 1])
-    ax_think = fig.add_subplot(gs[0, 2])
-    ax_summary = fig.add_subplot(gs[1, :])
+    fig_width = 5 + (6 * len(categories))
+    fig = plt.figure(figsize=(fig_width, 12))
+    
+    text_col_weight = 1.0 if len(categories) > 2 else 0.8
+    gs_main = fig.add_gridspec(2, 2, width_ratios=[1.2, len(categories)], height_ratios=[1, 0.3])
+    gs_tables = gs_main[0, 1].subgridspec(1, len(categories), wspace=0.08)
+
+    ax_text = fig.add_subplot(gs_main[0, 0]) 
+    ax_list = [fig.add_subplot(gs_tables[0, i]) for i in range(len(categories))]
+    ax_summary = fig.add_subplot(gs_main[1, :])
 
     # --- LEFT: Text Stats ---
     ax_text.axis('off')
     y = 0.98
     ax_text.text(0, y, "SUITE PERFORMANCE (100% / Partial / Total)", fontsize=14, fontweight='bold', color='#3498db')
-    y -= 0.04
+    y -= 0.05
     
     suites = sorted(df['suite'].unique())
+    y_step = 0.05 + (0.025 * len(categories))
+    
     for s_name in suites:
-        f_s = stats.get(f"{s_name}_fast", {'display': 'N/A', 'warn_info': ''})
-        t_s = stats.get(f"{s_name}_thinking", {'display': 'N/A', 'warn_info': ''})
-        
-        txt = (f"● {s_name}\n"
-               f"  Fast:     {f_s['display']}  ({f_s['warn_info']})\n"
-               f"  Thinking: {t_s['display']}  ({t_s['warn_info']})")
+        txt = f"● {s_name}\n"
+        for category in categories:
+            c_s = stats.get(f"{s_name}_{category.lower()}", {'display': 'N/A', 'warn_info': ''})
+            txt += f"  {category}: {c_s['display']} ({c_s['warn_info']})\n"
         ax_text.text(0.02, y, txt, fontsize=9, verticalalignment='top', family='monospace')
-        y -= 0.12
+        y -= y_step
 
     y -= 0.02
     ax_text.text(0, y, "AVG LATENCY (seconds per attempt)", fontsize=13, fontweight='bold', color='#9b59b6')
     y -= 0.04
     intent_map = {1: 'Theory', 2: 'Coding', 3: 'CLI'}
     for idx, name in intent_map.items():
-        try:
-            f_l = latency_stats.loc['fast', idx]
-            t_l = latency_stats.loc['thinking', idx]
-            ax_text.text(0.02, y, f"➤ {name}: {f_l:.2f}s (F) / {t_l:.2f}s (T)", fontsize=10, family='monospace')
-            y -= 0.04
-        except: pass
+        txt = f"➤ {name}: "
+        for category in categories:
+            try:
+                c_l = latency_stats.loc[category.lower(), idx]
+                txt += f"{c_l:.2f}s ({category}) | "
+            except: pass
+        ax_text.text(0.02, y, txt, fontsize=10, family='monospace')
+        y -= 0.04
 
     # --- CENTER & RIGHT: Heatmaps ---
     max_tests = df['test_idx'].max()
-    fast_mtx = np.zeros((max_tests, len(suites)))
-    think_mtx = np.zeros((max_tests, len(suites)))
+    catg_matx = [np.zeros((max_tests, len(suites))) for _ in categories]
+    cat_to_idx = {cat.lower(): i for i, cat in enumerate(categories)}
 
     for i, suite in enumerate(suites):
         suite_data = df[df['suite'] == suite]
@@ -126,34 +137,26 @@ def create_dashboard():
             reps = row['repeats']
             success = row['success_count']
             
-            # Value Mapping:
-            # 1: Dark Green (100%), 2: Green (>50%), 3: Pale Lime (>0%)
-            # 4: Yellow (Fail + Warn), 5: Red (Total Fail), 6: Orange (Logic OK)
-            if success == reps:
-                val = 1
-            elif success > reps / 2:
-                val = 2
-            elif success > 0:
-                val = 3
-            else: # success == 0
-                if row['warning'] > reps / 2:
-                    val = 4
-                elif pd.notna(row['exec_ok']) and row['exec_ok'] > reps / 2:
-                    val = 6 # Exec (Logic) passed, but Format failed
-                else:
-                    val = 5 # Execution failed or no logic passed
+            if success == reps: val = 1
+            elif success > reps / 2: val = 2
+            elif success > 0: val = 3
+            else:
+                if row['warning'] > reps / 2: val = 4
+                elif pd.notna(row['exec_ok']) and row['exec_ok'] > reps / 2: val = 6
+                else: val = 5
             
-            if row['processing_type'] == 'fast': fast_mtx[idx, i] = val
-            else: think_mtx[idx, i] = val
+            target_cat_idx = cat_to_idx.get(row['processing_type'].lower())
+            if target_cat_idx is not None:
+                catg_matx[target_cat_idx][idx, i] = val
 
-    # Colormap: 0:Empty, 1:DarkG, 2:Green, 3:Lime, 4:Yellow, 5:Red, 6:Orange
     colors = ['#1e1e1e', '#1b5e20', '#2ecc71', '#c0ca33', '#f1c40f', '#e74c3c', '#e67e22']
     cmap = plt.matplotlib.colors.ListedColormap(colors)
-
-    for ax, mtx, title, clr in [(ax_fast, fast_mtx, "FAST MODE", '#2ecc71'), 
-                                (ax_think, think_mtx, "THINKING MODE", '#f1c40f')]:
+    
+    title_colors = ['#2ecc71', '#f1c40f', '#3498db', '#9b59b6', '#e67e22']
+    for i, (ax, mtx, cat_name) in enumerate(zip(ax_list, catg_matx, categories)):
+        clr = title_colors[i % len(title_colors)]
         ax.imshow(mtx, cmap=cmap, aspect='auto', vmin=0, vmax=6)
-        ax.set_title(title, fontsize=14, color=clr, fontweight='bold')
+        ax.set_title(f"{cat_name.upper()}", fontsize=14, color=clr, fontweight='bold')
         ax.set_xticks(np.arange(len(suites)))
         ax.set_xticklabels([s.split(' ')[0] for s in suites], fontsize=9)
         ax.set_yticks(np.arange(max_tests))
@@ -169,27 +172,122 @@ def create_dashboard():
         mpatches.Patch(color='#e67e22', label='Logic OK'),
         mpatches.Patch(color='#f1c40f', label='Fail+Warn')
     ]
-    ax_think.legend(handles=patches, loc='upper center', bbox_to_anchor=(-0.1, -0.05), ncol=3, fontsize=9)
+    fig.legend(handles=patches, loc='lower center', bbox_to_anchor=(0.5, 0.18), ncol=6, fontsize=10)
 
     # --- BOTTOM: Global Summary ---
     ax_summary.axis('off')
     
-    def get_summary(mode):
-        m_df = df[df['processing_type'] == mode]
+    def get_summary(mode_name):
+        m_df = df[df['processing_type'].str.lower() == mode_name.lower()]
+        if m_df.empty: return "0 / 0 / 0"
         t_100 = (m_df['success_count'] == m_df['repeats']).sum()
         t_part = ((m_df['success_count'] > 0) & (m_df['success_count'] < m_df['repeats'])).sum()
         return f"{t_100} / {t_part} / {len(m_df)}"
 
-    summary_text = (
-        f"GLOBAL (100% / Partial / Total)\n"
-        f"FAST: {get_summary('fast')}   |   THINKING: {get_summary('thinking')}"
-    )
-    ax_summary.text(0.5, 0.4, summary_text, fontsize=18, fontweight='bold', ha='center', 
+    summary_parts = [f"{cat.upper()}: {get_summary(cat)}" for cat in categories]
+    summary_text = "GLOBAL (100% / Partial / Total)\n" + "   |   ".join(summary_parts)
+    
+    ax_summary.text(0.5, 0.2, summary_text, fontsize=18, fontweight='bold', ha='center', 
                     family='monospace', bbox=dict(facecolor='#000', edgecolor='#3498db', boxstyle='round,pad=1'))
 
-    plt.tight_layout()
-    plt.savefig(f'results/dashboards/dashboard_v{INDEX}.png', dpi=150)
-    print(f"Dashboard saved to results/dashboards/dashboard_v{INDEX}.png")
+    plt.tight_layout(rect=[0, 0.05, 1, 0.95]) 
+    plt.savefig(f'{save_path}', dpi=150)
+    print(f"Dashboard saved to {save_path}")
+
+def create_default_dashboard():
+        df, stats, latency_stats = parse_results()
+        create_dashboard(df, stats, latency_stats)
+
+def recalculate_stats(full_df, categories):
+    suite_stats = {}
+    suites = full_df['suite'].unique()
+    for suite in suites:
+        s_df = full_df[full_df['suite'] == suite]
+        for cat in categories:
+            m_df = s_df[s_df['processing_type'].str.lower() == cat.lower()]
+            
+            if m_df.empty: continue
+            reps = m_df['repeats'].max() 
+            
+            total_tests = len(m_df)
+            pass_100 = (m_df['success_count'] == reps).sum()
+            pass_partial = ((m_df['success_count'] > 0) & (m_df['success_count'] < reps)).sum()
+            
+            total_attempts = m_df['repeats'].sum()
+            total_success_attempts = m_df['success_count'].sum()
+            total_failed_attempts = total_attempts - total_success_attempts
+            
+            warn_rate = (m_df['warning'].sum() / total_failed_attempts * 100) if total_failed_attempts > 0 else 0
+            total_success = m_df['success_count'].sum()
+            wrong_warn_rate = (m_df['wrong_warnings'].sum() / total_success * 100) if total_success > 0 else 0
+            
+            key = f"{suite}_{cat.lower()}"
+            suite_stats[key] = {
+                'display': f"{pass_100}/{pass_partial}/{total_tests}",
+                'warn_info': f"W: {warn_rate:.0f}% | WW: {wrong_warn_rate:.0f}%"
+            }
+    # Latency calculation
+    latency_stats = full_df.groupby(['processing_type', 'intent']).apply(
+        lambda x: x['time_s'].sum() / x['repeats'].sum()
+    ).unstack() 
+    latency_stats.index = latency_stats.index.str.lower()
+    return suite_stats, latency_stats
+
+def apply_data_2_models(path1, path2, names):
+    # Load first model 
+    df1, _, _ = parse_results(path1, process_fast=True, process_think=False)
+    df1['processing_type'] = names[0]
+    
+    # Load second model
+    df2, _, _ = parse_results(path2, process_fast=True, process_think=False)
+    df2['processing_type'] = names[1]
+    
+    full_df = pd.concat([df1, df2], ignore_index=True)
+    stats, latency = recalculate_stats(full_df, names)
+    return full_df, stats, latency
+
+def create_2_models_dashboard():
+    orig_path = "results/original_1_5B_q4/*.csv"
+    alter_path = "results/alternative_3B_q2/*.csv"
+    names = ["1.5B_q4", "3B_q2"]
+    df, stats, latency_stats = apply_data_2_models(orig_path, alter_path, names)
+    # Fixed save_path logic
+    create_dashboard(df, stats, latency_stats, categories=names, save_path=SAVE_PATH.replace(".png", "_two_models.png"))
+
+def apply_data_thinking_mods(fast_path, thinking_paths, thinking_names):
+    # Load base Fast mode
+    df_fast, _, _ = parse_results(fast_path, process_fast=True, process_think=False)
+    df_fast['processing_type'] = "Fast"
+    
+    dfs = [df_fast]
+    # Load each thinking strategy
+    for path, name in zip(thinking_paths, thinking_names):
+        df_t, _, _ = parse_results(path, process_fast=False, process_think=True)
+        df_t['processing_type'] = name
+        dfs.append(df_t)
+    
+    full_df = pd.concat(dfs, ignore_index=True)
+    all_names = ["Fast"] + thinking_names
+    stats, latency = recalculate_stats(full_df, all_names)
+    return full_df, stats, latency
+
+def create_3_thinking_mods_dashboard(): # Fixed typo in function name
+    fast_path = "results/original_1_5B_q4/*.csv"
+    thinking_paths = [
+        "results/original_1_5B_q4/1_planning_logic/*.csv",
+        "results/original_1_5B_q4/2_chain_of_draft/*.csv",
+        "results/original_1_5B_q4/3_reflection_refine/*.csv"
+    ]
+    thinking_names = ["Planning", "Chain_of_draft", "Reflection_refine"]
+    
+    df, stats, latency_stats = apply_data_thinking_mods(fast_path, thinking_paths, thinking_names)
+    
+    # Fixed: use extend or list addition instead of append to keep list flat
+    names = ["Fast"] + thinking_names
+    
+    create_dashboard(df, stats, latency_stats, categories=names, save_path=SAVE_PATH.replace(".png", "_thinking_logic.png"))
+
 
 if __name__ == "__main__":
-    create_dashboard()
+    create_2_models_dashboard()
+    create_3_thinking_mods_dashboard()
