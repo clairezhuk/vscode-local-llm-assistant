@@ -1,0 +1,53 @@
+
+--- ATTEMPT 1/3 FAILED ---
+REASON: Format=False, Exec=False
+AI RESPONSE:
+
+
+---
+### Attempt 1
+
+```python
+def process_signal(data, threshold):
+    # Normalize the signal
+    normalized = [x / max(data) for x in data]
+    
+    # Apply Noise Gate
+    noise_gated = [0 if x < threshold else x for x in normalized]
+    
+    return noise_gated
+```
+
+
+---
+### Attempt 2
+
+```python
+def process_signal(data, threshold):
+    # Normalize the signal
+    normalized = [x / max(data) for x in data]
+    
+    # Apply Noise Gate
+    noise_gated = [0 if x < threshold else x for x in normalized]
+    
+    return noise_gated
+```
+
+
+---
+### Attempt 3
+
+```python
+def process_signal(data, threshold):
+    # Normalize the signal
+    normalized = [x / max(data) for x in data]
+    
+    # Apply Noise Gate
+    noise_gated = [0 if x < threshold else x for x in normalized]
+    
+    return noise_gated
+```
+
+
+> ⚠️ **AI Warning:** Verification failed after max retries.
+------------------------------

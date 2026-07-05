@@ -1,0 +1,67 @@
+
+--- ATTEMPT 1/3 FAILED ---
+REASON: Format=True, Exec=False
+AI RESPONSE:
+
+
+---
+### Attempt 1
+
+```python
+import json
+
+with open('config/config.json', 'r') as file:
+    config_data = json.load(file)
+
+config_data['database']['port'] = 5432
+
+with open('config/config.json', 'w') as file:
+    json.dump(config_data, file, indent=4)
+```
+
+------------------------------
+--- ATTEMPT 2/3 FAILED ---
+REASON: Format=True, Exec=False
+AI RESPONSE:
+
+
+---
+### Attempt 1
+
+```python
+import json
+
+def read_config_file(file_path, data):
+    with open(file_path, 'r') as file:
+        data = json.load(file)
+    return data
+
+def write_json_to_file(data, output_file):
+    with open(output_file, 'w') as file:
+        json.dump(data, file, indent=4)
+
+# Example usage
+config_data = read_config_file('config.json', {})
+config_data['database']['port'] = 5432
+write_json_to_file(config_data, 'modified_config.json')
+```
+
+
+---
+### Attempt 2
+
+```python
+import json
+
+def update_database_port(file_path):
+    with open(file_path, 'r') as file:
+        config_data = json.load(file)
+
+    config_data['database']['port'] = 5432
+
+    updated_config_string = json.dumps(config_data, indent=4)
+
+    return updated_config_string
+```
+
+------------------------------

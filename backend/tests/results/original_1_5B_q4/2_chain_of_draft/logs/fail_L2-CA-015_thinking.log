@@ -1,0 +1,25 @@
+
+--- ATTEMPT 3/3 FAILED ---
+REASON: Format=True, Exec=False
+AI RESPONSE:
+
+
+---
+### Attempt 1
+
+```python
+def scale_3d(points, factors):
+    # Validate input
+    if not isinstance(points, list) or not all(isinstance(point, tuple) or isinstance(point, list) for point in points):
+        raise ValueError("Input must be a list of tuples or lists representing 3D coordinates.")
+    
+    if not isinstance(factors, list) or len(factors) != 3:
+        raise ValueError("Factors must be a list with three elements (one for each dimension).")
+    
+    # Scale the points
+    scaled_points = [(x * factors[0], y * factors[1], z * factors[2]) for x, y, z in points]
+    
+    return scaled_points
+```
+
+------------------------------

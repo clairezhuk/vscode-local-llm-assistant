@@ -1,0 +1,22 @@
+
+--- ATTEMPT 1/3 FAILED ---
+REASON: Format=True, Exec=False
+AI RESPONSE:
+
+
+---
+### Attempt 1
+
+```python
+import os
+
+def move_to_backup(folder, filename):
+    original_path = os.path.join(folder, filename)
+    
+    backup_folder = 'backup'
+    backup_path = os.path.join(original_path, backup_folder, filename)
+    
+    return backup_path
+```
+
+------------------------------

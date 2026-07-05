@@ -1,0 +1,178 @@
+
+--- ATTEMPT 2/3 FAILED ---
+REASON: Format=True, Exec=False
+AI RESPONSE:
+
+
+---
+### Attempt 1
+
+```python
+class AgeManager:
+    def __init__(self):
+        # Initialize attributes to store driver and voter ages
+        self._driver_age = None
+        self._voter_age = None
+
+    def set_driver_age(self, age):
+        # Validate the driver's age using the private method _validate_age
+        if not self._validate_age(age):
+            raise ValueError("Invalid driver's age")
+        else:
+            self._driver_age = age
+
+    def set_voter_age(self, age):
+        # Validate the voter's age using the private method _validate_age
+        if not self._validate_age(age):
+            raise ValueError("Invalid voter's age")
+        else:
+            self._voter_age = age
+
+    def _validate_age(self, age):
+        # Private method to validate the age against common standards (e.g., 18 for driver and 21 for voter)
+        if age < 18 or age > 65:
+            return False
+        else:
+            return True
+```
+
+
+---
+### Attempt 2
+
+```python
+class AgeManager:
+    def __init__(self):
+        # Initialize driver and voter age attributes as private variables
+        self._driver_age = None
+        self._voter_age = None
+
+    def set_driver_age(self, age):
+        # Validate the driver age using the private method _validate_age
+        if not self._validate_age(age):
+            raise ValueError("Invalid driver age")
+        
+        # Set the driver age attribute
+        self._driver_age = age
+
+    def set_voter_age(self, age):
+        # Validate the voter age using the private method _validate_age
+        if not self._validate_age(age):
+            raise ValueError("Invalid voter age")
+        
+        # Set the voter age attribute
+        self._voter_age = age
+
+    def _validate_age(self, age):
+        # Private method to validate the age
+        return 18 <= age <= 65
+```
+
+
+---
+### Attempt 3
+
+```python
+class AgeManager:
+    def __init__(self):
+        # Initialize any necessary attributes here
+
+    def _validate_age(self, age):
+        if 18 <= age <= 65:
+            return 'Valid'
+        else:
+            raise ValueError("Age must be between 18 and 65.")
+
+    def set_driver_age(self, age):
+        try:
+            self._validate_age(age)
+            # Set driver age here
+            print(f"Driver age set to {age}")
+        except ValueError as e:
+            print(e)
+
+    def set_voter_age(self, age):
+        try:
+            self._validate_age(age)
+            # Set voter age here
+            print(f"Voter age set to {age}")
+        except ValueError as e:
+            print(e)
+```
+
+
+> ⚠️ **AI Warning:** Verification failed after max retries.
+------------------------------
+--- ATTEMPT 3/3 FAILED ---
+REASON: Format=True, Exec=False
+AI RESPONSE:
+
+
+---
+### Attempt 1
+
+```python
+class AgeManager:
+    def _validate_age(self, age):
+        if age < 18 or age > 65:
+            raise ValueError("Age must be between 18 and 65 for drivers.")
+        elif age < 18 or age > 70:
+            raise ValueError("Age must be between 18 and 70 for voters.")
+        else:
+            return 'Valid'
+
+    def set_driver_age(self, age):
+        result = self._validate_age(age)
+        if result == 'Valid':
+            print(f"Driver age set to {age}")
+        else:
+            raise ValueError(result)
+
+    def set_voter_age(self, age):
+        result = self._validate_age(age)
+        if result == 'Valid':
+            print(f"Voter age set to {age}")
+        else:
+            raise ValueError(result)
+```
+
+
+---
+### Attempt 2
+
+```python
+class AgeManager:
+    def __init__(self):
+        pass
+
+    def _validate_age(self, age):
+        if 18 <= age <= 65:
+            return 'Valid'
+        else:
+            raise ValueError("Age must be between 18 and 65.")
+
+    def set_driver_age(self, age):
+        try:
+            result = self._validate_age(age)
+            if result == 'Valid':
+                print(f"Driver's age set to {age}.")
+                return 'Valid'
+            else:
+                raise ValueError(result)
+        except ValueError as e:
+            print(e)
+
+# Example usage
+manager = AgeManager()
+try:
+    manager.set_driver_age(25)
+except ValueError as e:
+    print(e)  # Output: Valid
+
+try:
+    manager.set_voter_age(66)
+except ValueError as e:
+    print(e)  # Output: ValueError: Age must be between 18 and 65.
+```
+
+------------------------------

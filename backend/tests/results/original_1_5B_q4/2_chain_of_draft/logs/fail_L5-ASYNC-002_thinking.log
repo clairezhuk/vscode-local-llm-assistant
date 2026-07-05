@@ -1,0 +1,57 @@
+
+--- ATTEMPT 2/3 FAILED ---
+REASON: Format=False, Exec=True
+AI RESPONSE:
+
+
+---
+### Attempt 1
+
+```python
+import asyncio
+
+class TaskID:
+    def __init__(self, id):
+        self.id = id
+
+async def bounded_fetch(sem, task_id):
+    # Acquire a permit from the semaphore
+    await sem.acquire()
+    
+    try:
+        # Simulate fetching by sleeping for 0.1 seconds
+        await asyncio.sleep(0.1)
+        
+        # Return the task ID
+        return task_id
+    finally:
+        # Release the semaphore to allow other tasks to acquire it
+        sem.release()
+```
+
+------------------------------
+--- ATTEMPT 3/3 FAILED ---
+REASON: Format=False, Exec=False
+AI RESPONSE:
+
+
+---
+### Attempt 1
+
+```python
+import asyncio
+
+async def bounded_fetch(sem, task_id):
+    sem = asyncio.Semaphore(max_concurrent_tasks)
+    
+    await sem.acquire()
+    
+    await asyncio.sleep(0.1)
+    result = task_id
+    
+    sem.release()
+    
+    return result
+```
+
+------------------------------

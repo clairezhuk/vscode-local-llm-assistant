@@ -1,0 +1,99 @@
+
+--- ATTEMPT 1/3 FAILED ---
+REASON: Format=True, Exec=False
+AI RESPONSE:
+
+
+---
+### Attempt 1
+
+```python
+import math
+
+def ucb1(node_win_rate, node_visits, total_parent_visits, exploration_weight=1.41):
+    # Calculate the average win rate per visit
+    avg_win_rate = node_win_rate / node_visits
+    
+    # Calculate the square root of the logarithm of the total parent visits
+    sqrt_log_total_parent_visits = math.sqrt(math.log(total_parent_visits))
+    
+    # Return the UCB1 value
+    return avg_win_rate + exploration_weight * sqrt_log_total_parent_visits
+```
+
+------------------------------
+--- ATTEMPT 2/3 FAILED ---
+REASON: Format=True, Exec=False
+AI RESPONSE:
+
+
+---
+### Attempt 1
+
+```python
+import math
+
+def ucb1(node_win_rate, node_visits, total_parent_visits, exploration_weight=1.41):
+    # Calculate the upper confidence bound (UCB) for each node
+    ucb = (node_win_rate / node_visits) + exploration_weight * math.sqrt(math.log(total_parent_visits) / node_visits)
+    
+    return ucb
+```
+
+------------------------------
+--- ATTEMPT 3/3 FAILED ---
+REASON: Format=True, Exec=False
+AI RESPONSE:
+
+
+---
+### Attempt 1
+
+```python
+def ucb1(node_win_rate, node_visits, total_parent_visits, exploration_weight=1.41):
+    if node_visits == 0:
+        return float('inf')
+    
+    win_rate = node_win_rate / node_visits
+    
+    return win_rate * exploration_weight
+```
+
+
+---
+### Attempt 2
+
+```python
+import math
+
+def ucb1(node_win_rate, node_visits, total_parent_visits, exploration_weight=1.41):
+    # Check if node visits is zero
+    if node_visits == 0:
+        return float('inf')
+    
+    # Calculate UCB value
+    ucb_value = (node_win_rate / node_visits) + math.sqrt(
+        math.log(total_parent_visits) / node_visits
+    )
+    
+    return ucb_value
+```
+
+
+---
+### Attempt 3
+
+```python
+import math
+
+def ucb1(node_win_rate, node_visits, total_parent_visits, exploration_weight=1.41):
+    if node_visits == 0:
+        return float('inf')
+    
+    ucb_value = node_win_rate / node_visits + math.sqrt(math.log(total_parent_visits) / node_visits)
+    return ucb_value
+```
+
+
+> ⚠️ **AI Warning:** Verification failed after max retries.
+------------------------------

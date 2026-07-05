@@ -1,0 +1,85 @@
+
+--- ATTEMPT 1/3 FAILED ---
+REASON: Format=True, Exec=False
+AI RESPONSE:
+
+
+---
+### Attempt 1
+
+```python
+def calculate_tax(country, amount):
+    # Define a dictionary with tax rates
+    tax_rates = {
+        'USA': 0.1,
+        'UK': 0.2,
+        'PL': 0.23
+    }
+    
+    # Retrieve the tax rate for the given country
+    tax_rate = tax_rates.get(country, None)
+    
+    # Check if the tax rate is found
+    if tax_rate is not None:
+        # Calculate total tax by multiplying amount with tax rate
+        total_tax = amount * tax_rate
+        return total_tax
+    else:
+        # Return an error message if country is not found in tax rates
+        return "Country not found"
+```
+
+------------------------------
+--- ATTEMPT 2/3 FAILED ---
+REASON: Format=True, Exec=False
+AI RESPONSE:
+
+
+---
+### Attempt 1
+
+```python
+def calculate_tax(country, amount):
+    tax_rates = {
+        'USA': 0.1,
+        'UK': 0.2,
+        'PL': 0.23
+    }
+    
+    tax_rate = tax_rates.get(country, None)
+    
+    if tax_rate is not None:
+        total_tax = amount * tax_rate
+        return total_tax
+    else:
+        # If the country is not found in the dictionary, return an error message or handle it as needed
+        return "Invalid country"
+```
+
+------------------------------
+--- ATTEMPT 3/3 FAILED ---
+REASON: Format=True, Exec=False
+AI RESPONSE:
+
+
+---
+### Attempt 1
+
+```python
+tax_rates = {
+    'USA': 0.1,
+    'UK': 0.2,
+    'PL': 0.23
+}
+
+def calculate_tax(country, amount):
+    if country not in tax_rates:
+        return "Error: Unsupported country"
+    
+    tax_rate = tax_rates[country]
+    tax_amount = amount * tax_rate
+    
+    return tax_amount
+```
+
+------------------------------

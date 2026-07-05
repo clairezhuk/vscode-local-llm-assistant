@@ -1,0 +1,183 @@
+
+--- ATTEMPT 1/3 FAILED ---
+REASON: Format=True, Exec=False
+AI RESPONSE:
+
+
+---
+### Attempt 1
+
+```python
+def get_status_msg(code):
+    if not isinstance(code, str):
+        raise ValueError("Code must be a string")
+    
+    status_map = {
+        'ST_01': 'Active',
+        'ST_02': 'Inactive',
+        'ST_03': 'Pending'
+    }
+    message = status_map.get(code, "Unknown Status")
+
+    return message
+```
+
+
+---
+### Attempt 2
+
+```python
+def get_status_msg(code):
+    # Define the dictionary mapping status codes to their corresponding messages
+    status_map = {
+        'ST_01': 'Active',
+        'ST_02': 'Pending',
+        'ST_03': 'Suspended',
+        'ST_04': 'Deleted',
+        'ST_05': 'Archived'
+    }
+    
+    # Retrieve the corresponding status message from the dictionary
+    status_message = status_map.get(code, "Unknown")
+    
+    # Return the status message
+    return status_message
+```
+
+
+---
+### Attempt 3
+
+```python
+# Define the status map
+status_map = {
+    'ST_01': 'Active',
+    'ST_02': 'Pending',
+    'ST_03': 'Suspended',
+    'ST_04': 'Deleted',
+    'ST_05': 'Archived'
+}
+
+def get_status_msg(code):
+    # Check if the code exists in the status map
+    if code in status_map:
+        return status_map[code]
+    
+    # Check for special cases
+    elif code == 'ST_01':
+        return "Logic fix: The code is missing the import for `sys` and the condition in the `if/elif` statements is incorrect. Here's a corrected version:"
+    elif code == 'ST_02':
+        return "Logic fix: The code is missing the import for `sys` and the condition in the `if/elif` statements is incorrect. Here's a corrected version:"
+```
+
+
+> ⚠️ **AI Warning:** Verification failed after max retries.
+------------------------------
+--- ATTEMPT 2/3 FAILED ---
+REASON: Format=True, Exec=False
+AI RESPONSE:
+
+
+---
+### Attempt 1
+
+```python
+# Define the dictionary mapping status codes to messages
+status_map = {
+    'ST_01': 'Active',
+    'ST_02': 'Inactive',
+    'ST_03': 'Pending'
+}
+
+def get_status_msg(code):
+    # Check if the input code exists in the dictionary
+    return status_map.get(code, "Invalid status code")
+```
+
+
+---
+### Attempt 2
+
+```python
+# Define the dictionary mapping status codes to their corresponding status messages
+status_map = {
+    'ST_01': 'Active',
+    'ST_02': 'Inactive',
+    'ST_03': 'Pending'
+}
+
+def get_status_msg(code):
+    # Check if the input code is valid
+    if code in status_map:
+        # Return the corresponding status message
+        return status_map[code]
+    else:
+        # Return an error message
+        return "Invalid code"
+```
+
+------------------------------
+--- ATTEMPT 3/3 FAILED ---
+REASON: Format=True, Exec=False
+AI RESPONSE:
+
+
+---
+### Attempt 1
+
+```python
+def get_status_msg(code):
+    # Initialize the dictionary mapping
+    status_map = {
+        'ST_01': 'Active',
+        'ST_02': 'Pending',
+        'ST_03': 'Suspended'
+    }
+    
+    # Check for existence of code in dictionary
+    if code in status_map:
+        return status_map[code]
+    else:
+        return "Unknown Status"
+```
+
+
+---
+### Attempt 2
+
+```python
+def get_status_msg(code):
+    # Dictionary mapping status codes to messages
+    status_messages = {
+        'ST_01': 'Active',
+        'ST_02': 'Pending',
+        'ST_03': 'Suspended'
+    }
+    
+    # Retrieve the message from the dictionary
+    return status_messages.get(code, "Unknown Status")
+```
+
+
+---
+### Attempt 3
+
+```python
+def get_status_msg(code):
+    # Define a dictionary that maps status codes to their corresponding messages
+    status_map = {
+        'ST_01': 'Active',
+        'ST_02': 'Pending',
+        'ST_03': 'Suspended'
+    }
+    
+    # Check if the input code exists in the dictionary
+    if code not in status_map:
+        raise ValueError(f"Invalid status code: {code}")
+    
+    return status_map[code]
+```
+
+
+> ⚠️ **AI Warning:** Verification failed after max retries.
+------------------------------

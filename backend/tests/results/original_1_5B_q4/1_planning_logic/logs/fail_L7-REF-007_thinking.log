@@ -1,0 +1,86 @@
+
+--- ATTEMPT 3/3 FAILED ---
+REASON: Format=True, Exec=False
+AI RESPONSE:
+
+
+---
+### Attempt 1
+
+```python
+class AgeManager:
+    def __init__(self):
+        self._driver_age = None
+        self._voter_age = None
+
+    def set_driver_age(self, age):
+        if not self._validate_age(age):
+            raise ValueError("Invalid driver age")
+        self._driver_age = age
+
+    def set_voter_age(self, age):
+        if not self._validate_age(age):
+            raise ValueError("Invalid voter age")
+        self._voter_age = age
+
+    def _validate_age(self, age):
+        return 18 <= age <= 65
+```
+
+
+---
+### Attempt 2
+
+```python
+class AgeManager:
+    def __init__(self):
+        self.driver_age = None
+        self.voter_age = None
+
+    def set_driver_age(self, age):
+        if not self._validate_age(age):
+            raise ValueError("Invalid driver age")
+        self.driver_age = age
+
+    def set_voter_age(self, age):
+        if not self._validate_age(age):
+            raise ValueError("Invalid voter age")
+        self.voter_age = age
+
+    def _validate_age(self, age):
+        return 18 <= age <= 65
+```
+
+
+---
+### Attempt 3
+
+```python
+class AgeManager:
+    def __init__(self):
+        self.driver_age = None
+        self.voter_age = None
+
+    def _validate_age(self, age):
+        if not isinstance(age, int) or age < 0:
+            raise ValueError("Age must be a non-negative integer")
+        return True
+
+    def set_driver_age(self, age):
+        result = self._validate_age(age)
+        if result == "Valid":
+            self.driver_age = age
+            return "Valid"
+        else:
+            raise ValueError(result)
+
+    def set_voter_age(self, age):
+        result = self._validate_age(age)
+        if result == "Valid":
+            self.voter_age = age
+            return "Valid"
+        else:
+            raise ValueError(result)
+```
+
+------------------------------

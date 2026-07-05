@@ -1,0 +1,33 @@
+
+--- ATTEMPT 1/3 FAILED ---
+REASON: Format=True, Exec=False
+AI RESPONSE:
+
+
+---
+### Attempt 1
+
+```python
+import sqlite3
+
+# Establish Database Connection
+conn = sqlite3.connect('example.db')
+
+# Create Cursor Object
+cursor = conn.cursor()
+
+# Prepare SQL Query with Parameters
+query = "INSERT INTO users (name) VALUES (?)"
+
+# Execute Prepared Statement
+user_input = 'John Doe'
+cursor.execute(query, (user_input,))
+
+# Commit Changes
+conn.commit()
+
+# Close Connection
+conn.close()
+```
+
+------------------------------

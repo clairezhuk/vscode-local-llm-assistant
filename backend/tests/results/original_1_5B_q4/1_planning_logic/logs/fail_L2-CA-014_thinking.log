@@ -1,0 +1,37 @@
+
+--- ATTEMPT 2/3 FAILED ---
+REASON: Format=True, Exec=False
+AI RESPONSE:
+
+
+---
+### Attempt 1
+
+```python
+import math
+
+def apply_window(signal):
+    N = len(signal)
+    window = [0.5 * (1 - math.cos(2*math.pi*i / (N-1))) for i in range(N)]
+    return [s[i] * window[i] for s, w in zip(signal, window)]
+```
+
+------------------------------
+--- ATTEMPT 3/3 FAILED ---
+REASON: Format=True, Exec=False
+AI RESPONSE:
+
+
+---
+### Attempt 1
+
+```python
+import math
+
+def apply_window(signal):
+    N = len(signal)
+    window = [0.5 * (1 - math.cos(2 * math.pi * i / (N-1))) for i in range(N)]
+    return [s[i] * window[i] for s, w in zip(signal, window)]
+```
+
+------------------------------

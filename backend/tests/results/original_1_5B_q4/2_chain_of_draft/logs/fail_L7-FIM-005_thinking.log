@@ -1,0 +1,39 @@
+
+--- ATTEMPT 2/3 FAILED ---
+REASON: Format=True, Exec=False
+AI RESPONSE:
+
+
+---
+### Attempt 1
+
+```python
+def safe_get(data_dict, default):
+    if data_dict is None or not data_dict:
+        return None
+    
+    try:
+        value = data_dict['value']
+        return value
+    except KeyError:
+        return default
+```
+
+------------------------------
+--- ATTEMPT 3/3 FAILED ---
+REASON: Format=False, Exec=True
+AI RESPONSE:
+
+
+---
+### Attempt 1
+
+```python
+def safe_get(data_dict, default):
+    if 'value' in data_dict:
+        return data_dict['value']
+    else:
+        return default
+```
+
+------------------------------

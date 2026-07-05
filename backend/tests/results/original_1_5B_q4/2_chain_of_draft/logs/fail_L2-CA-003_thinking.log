@@ -1,0 +1,134 @@
+
+--- ATTEMPT 1/3 FAILED ---
+REASON: Format=True, Exec=False
+AI RESPONSE:
+
+
+---
+### Attempt 1
+
+```python
+from heapq import heappush, heappop
+
+def dijkstra(graph, start):
+    # Initialize distances to infinity and set the distance of the starting node to 0
+    distances = {node: float('inf') for node in graph}
+    distances[start] = 0
+    
+    # Create a priority queue (min-heap) with tuples (distance, node)
+    queue = [(0, start)]
+    
+    while queue:
+        current_distance, current_node = heappop(queue)
+        
+        if current_distance > distances[current_node]:
+            continue
+        
+        for neighbor, weight in graph[current_node].items():
+            new_distance = current_distance + weight
+            
+            if new_distance < distances[neighbor]:
+                distances[neighbor] = new_distance
+                heappush(queue, (new_distance, neighbor))
+                
+    return distances
+```
+
+------------------------------
+--- ATTEMPT 2/3 FAILED ---
+REASON: Format=True, Exec=False
+AI RESPONSE:
+
+
+---
+### Attempt 1
+
+```python
+import heapq
+
+def dijkstra(graph, start):
+    distances = {node: float('inf') for node in graph}
+    distances[start] = 0
+    
+    queue = [(0, start)]
+    
+    while queue:
+        current_distance, current_node = heapq.heappop(queue)
+        
+        if current_distance > distances[current_node]:
+            continue
+        
+        for neighbor, weight in graph[current_node].items():
+            new_distance = current_distance + weight
+            
+            if new_distance < distances[neighbor]:
+                distances[neighbor] = new_distance
+                heapq.heappush(queue, (new_distance, neighbor))
+```
+
+
+---
+### Attempt 2
+
+```python
+from heapq import heappush, heappop
+
+def dijkstra(graph, start):
+    # Initialize distances to infinity for all nodes except the start node
+    distances = {node: float('inf') for node in graph}
+    distances[start] = 0
+    
+    # Create a priority queue (min-heap) with the start node as the root
+    queue = [(0, start)]
+    
+    while queue:
+        current_distance, current_node = heappop(queue)
+        
+        if current_distance > distances[current_node]:
+            continue
+        
+        # Explore all neighbors of the current node
+        for neighbor, weight in graph[current_node].items():
+            new_distance = current_distance + weight
+            
+            if new_distance < distances[neighbor]:
+                distances[neighbor] = new_distance
+                heappush(queue, (new_distance, neighbor))
+    
+    return distances
+```
+
+------------------------------
+--- ATTEMPT 3/3 FAILED ---
+REASON: Format=True, Exec=False
+AI RESPONSE:
+
+
+---
+### Attempt 1
+
+```python
+import heapq
+
+def dijkstra(graph, start):
+    distances = {node: float('inf') for node in graph}
+    distances[start] = 0
+    priority_queue = [(0, start)]
+    
+    while priority_queue:
+        current_distance, current_node = heapq.heappop(priority_queue)
+        
+        if current_distance > distances[current_node]:
+            continue
+        
+        for neighbor, weight in graph[current_node].items():
+            new_distance = current_distance + weight
+            
+            if new_distance < distances[neighbor]:
+                distances[neighbor] = new_distance
+                heapq.heappush(priority_queue, (new_distance, neighbor))
+    
+    return distances
+```
+
+------------------------------

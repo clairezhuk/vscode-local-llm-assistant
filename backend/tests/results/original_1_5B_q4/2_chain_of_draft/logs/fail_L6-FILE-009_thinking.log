@@ -1,0 +1,103 @@
+
+--- ATTEMPT 1/3 FAILED ---
+REASON: Format=True, Exec=False
+AI RESPONSE:
+
+
+---
+### Attempt 1
+
+```python
+import csv
+
+def calculate_avg(file_path):
+    total_amount = 0
+    count = 0
+    
+    with open(file_path, mode='r') as file:
+        reader = csv.reader(file)
+        
+        next(reader)  # Skip the header row
+        
+        for row in reader:
+            amount = float(row[0])
+            
+            total_amount += amount
+            count += 1
+
+    average = total_amount / count if count > 0 else None
+    
+    return average
+```
+
+------------------------------
+--- ATTEMPT 2/3 FAILED ---
+REASON: Format=True, Exec=False
+AI RESPONSE:
+
+
+---
+### Attempt 1
+
+```python
+import csv
+
+def calculate_avg(file_path):
+    with open(file_path, mode='r', newline='') as file:
+        reader = csv.reader(file)
+        
+        # Skip the header row
+        next(reader)
+        
+        # Initialize variables
+        total_amount = 0
+        count = 0
+        
+        # Step 3-7: Iterate and calculate average
+        for row in reader:
+            amount = float(row[0])  # Assuming 'Amount' is the first column
+            total_amount += amount
+            count += 1
+        
+        if count > 0:
+            avg = total_amount / count
+        else:
+            avg = None
+        
+        return avg
+```
+
+------------------------------
+--- ATTEMPT 3/3 FAILED ---
+REASON: Format=True, Exec=False
+AI RESPONSE:
+
+
+---
+### Attempt 1
+
+```python
+import csv
+
+def calculate_avg(file_path):
+    total_amount = 0
+    count = 0
+    
+    with open(file_path, 'r') as file:
+        reader = csv.DictReader(file)
+        
+        for row in reader:
+            amount = float(row['Amount']) if row['Amount'].isdigit() else 0
+            
+            total_amount += amount
+            count += 1
+    
+    if count > 0:
+        avg = total_amount / count
+    else:
+        avg = 0
+    
+    return avg
+```
+
+------------------------------

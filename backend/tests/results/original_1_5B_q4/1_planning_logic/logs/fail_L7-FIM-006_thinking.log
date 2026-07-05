@@ -1,0 +1,40 @@
+
+--- ATTEMPT 1/3 FAILED ---
+REASON: Format=True, Exec=False
+AI RESPONSE:
+
+
+---
+### Attempt 1
+
+```python
+users = [
+    {'id': 1, 'is_active': True},
+    {'id': 2, 'is_active': False},
+    {'id': 3, 'is_active': True}
+]
+
+active_user_ids = [user['id'] for user in users if user['is_active']]
+print(active_user_ids)
+```
+
+------------------------------
+--- ATTEMPT 2/3 FAILED ---
+REASON: Format=True, Exec=False
+AI RESPONSE:
+
+
+---
+### Attempt 1
+
+```python
+users = [
+    {'id': 1, 'is_active': True},
+    {'id': 2, 'is_active': False},
+    {'id': 3, 'is_active': True}
+]
+
+active_user_ids = [user['id'] for user in users if user['is_active']]
+```
+
+------------------------------

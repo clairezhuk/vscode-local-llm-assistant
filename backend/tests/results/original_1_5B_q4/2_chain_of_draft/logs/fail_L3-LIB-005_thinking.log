@@ -1,0 +1,32 @@
+
+--- ATTEMPT 3/3 FAILED ---
+REASON: Format=False, Exec=False
+AI RESPONSE:
+
+
+---
+### Attempt 1
+
+```python
+import pandas as pd
+
+def fill_nan_with_median(df):
+    """
+    Fills all NaN values in a DataFrame using the median of their respective columns.
+
+    Parameters:
+    - df: A pandas DataFrame with potential missing values.
+
+    Returns:
+    - A pandas DataFrame with NaNs filled with the median of each column.
+    """
+    missing_values = df.isnull()
+    
+    medians = df.median()
+    
+    df_filled = df.where(~missing_values, medians)
+    
+    return df_filled
+```
+
+------------------------------

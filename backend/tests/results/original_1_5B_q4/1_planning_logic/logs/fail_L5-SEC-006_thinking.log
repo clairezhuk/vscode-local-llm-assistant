@@ -1,0 +1,140 @@
+
+--- ATTEMPT 1/3 FAILED ---
+REASON: Format=True, Exec=False
+AI RESPONSE:
+
+
+---
+### Attempt 1
+
+```python
+import os
+
+def get_safe_path(base_dir, user_file):
+    # Join base_dir and user_file to form the full path
+    full_path = os.path.join(base_dir, user_file)
+    
+    # Check if the full path starts with the base directory
+    if not full_path.startswith(base_dir):
+        return None
+    
+    # Return the absolute path of the safe file
+    return os.path.abspath(full_path)
+```
+
+
+---
+### Attempt 2
+
+```python
+import os
+
+def get_safe_path(base_dir, user_file):
+    # Ensure the base directory is absolute
+    if not os.path.isabs(base_dir):
+        raise ValueError("Base directory must be absolute")
+    
+    # Join the base directory and user file to form a full path
+    full_path = os.path.join(base_dir, user_file)
+    
+    # Resolve the absolute path
+    resolved_path = os.path.abspath(full_path)
+    
+    # Verify if the resolved path is within the base directory
+    if not resolved_path.startswith(os.path.abspath(base_dir)):
+        raise ValueError("The file is outside the base directory")
+    
+    return resolved_path
+```
+
+
+---
+### Attempt 3
+
+```python
+import os
+
+def get_safe_path(base_dir, user_file):
+    # Ensure base_dir is an absolute path
+    if not os.path.isabs(base_dir):
+        raise ValueError("base_dir must be an absolute path")
+    
+    # Join base_dir and user_file to form the full path
+    full_path = os.path.join(base_dir, user_file)
+    
+    # Resolve the absolute path
+    resolved_path = os.path.abspath(full_path)
+    
+    # Verify if the resolved path is still within base_dir
+    return resolved_path.startswith(os.path.abspath(base_dir))
+```
+
+
+> ⚠️ **AI Warning:** Verification failed after max retries.
+------------------------------
+--- ATTEMPT 2/3 FAILED ---
+REASON: Format=True, Exec=False
+AI RESPONSE:
+
+
+---
+### Attempt 1
+
+```python
+import os
+
+def get_safe_path(base_dir, user_file):
+    # Check if the user file starts with base_dir and does not contain '..'
+    if user_file.startswith(base_dir) and not user_file.find('..') >= 0:
+        return os.path.abspath(os.path.join(base_dir, user_file))
+    else:
+        return None
+```
+
+
+---
+### Attempt 2
+
+```python
+import os
+
+def get_safe_path(base_dir, user_file):
+    # Join base_dir and user_file to form the full path
+    full_path = os.path.join(base_dir, user_file)
+    
+    # Check if the full path starts with the base directory
+    if not full_path.startswith(base_dir):
+        return None
+    
+    # Return the absolute path of the safe file
+    return os.path.abspath(full_path)
+```
+
+
+---
+### Attempt 3
+
+```python
+import os
+
+def get_safe_path(base_dir, user_file):
+    # Check if the base directory is a valid path
+    if not os.path.isdir(base_dir):
+        raise ValueError("Base directory does not exist")
+    
+    # Join the base directory and user file to form the full path
+    full_path = os.path.join(base_dir, user_file)
+    
+    # Resolve the absolute path of the full path
+    abs_path = os.path.abspath(full_path)
+    
+    # Verify if the absolute path is within the base directory
+    if not abs_path.startswith(os.path.abspath(base_dir)):
+        raise ValueError("Path outside base directory")
+    
+    return abs_path
+```
+
+
+> ⚠️ **AI Warning:** Verification failed after max retries.
+------------------------------

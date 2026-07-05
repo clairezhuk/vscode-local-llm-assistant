@@ -1,0 +1,68 @@
+
+--- ATTEMPT 2/3 FAILED ---
+REASON: Format=True, Exec=False
+AI RESPONSE:
+
+
+---
+### Attempt 1
+
+```python
+from collections import deque
+
+def bfs_shortest_path(graph, start):
+    queue = deque([start])
+    visited = set()
+    
+    while queue:
+        current_node = queue.popleft()
+        
+        if current_node not in visited:
+            visited.add(current_node)
+            
+            for neighbor in graph[current_node]:
+                if neighbor not in visited:
+                    queue.append(neighbor)
+                    
+    return visited
+```
+
+------------------------------
+--- ATTEMPT 3/3 FAILED ---
+REASON: Format=True, Exec=False
+AI RESPONSE:
+
+
+---
+### Attempt 1
+
+```python
+from collections import deque
+
+def bfs_shortest_path(graph, start, goal):
+    if start not in graph or goal not in graph:
+        raise ValueError("Start and end nodes must be in the graph.")
+    
+    queue = deque([(0, start)])
+    visited = set()
+    distances = {start: 0}
+    
+    while queue:
+        current_distance, current_node = queue.popleft()
+        
+        if current_node == goal:
+            return distances[goal]
+        
+        if current_node not in visited:
+            visited.add(current_node)
+            
+            for neighbor in graph[current_node]:
+                new_distance = current_distance + 1
+                if neighbor not in distances or new_distance < distances[neighbor]:
+                    distances[neighbor] = new_distance
+                    queue.append((new_distance, neighbor))
+    
+    return None
+```
+
+------------------------------

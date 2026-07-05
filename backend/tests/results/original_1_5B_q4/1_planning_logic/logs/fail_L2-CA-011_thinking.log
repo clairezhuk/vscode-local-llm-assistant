@@ -1,0 +1,89 @@
+
+--- ATTEMPT 1/3 FAILED ---
+REASON: Format=True, Exec=False
+AI RESPONSE:
+
+
+---
+### Attempt 1
+
+```python
+import math
+
+def rotate_z(point, angle_rad):
+    # Macierz rotacji wokół osi Z
+    rotation_matrix = [
+        [math.cos(angle_rad), -math.sin(angle_rad), 0],
+        [math.sin(angle_rad), math.cos(angle_rad), 0]
+    ]
+    
+    # Transponowanie macierzy rotacji
+    transposed_rotation_matrix = [[rotation_matrix[j][i] for j in range(3)] for i in range(3)]
+    
+    # Mnożenie wektora przez macierz rotacji
+    rotated_point_vector = [
+        transposed_rotation_matrix[0][0] * point[0] + transposed_rotation_matrix[0][1] * point[1] + transposed_rotation_matrix[0][2] * point[2],
+        transposed_rotation_matrix[1][0] * point[0] + transposed_rotation_matrix[1][1] * point[1] + transposed_rotation_matrix[1][2] * point[2],
+        transposed_rotation_matrix[2][0] * point[0] + transposed_rotation_matrix[2][1] * point[1] + transposed_rotation_matrix[2][2] * point[2]
+    ]
+    
+    # Otrzymanie wektora przesuniętego
+    rotated_point = [rotated_point_vector[0], rotated_point_vector[1]]
+    
+    return rotated_point
+```
+
+------------------------------
+--- ATTEMPT 2/3 FAILED ---
+REASON: Format=True, Exec=False
+AI RESPONSE:
+
+
+---
+### Attempt 1
+
+```python
+import math
+
+def rotate_z(point, angle_rad):
+    # Define the rotation matrix around the Z-axis
+    rotation_matrix = [[math.cos(angle_rad), -math.sin(angle_rad), 0],
+                      [math.sin(angle_rad), math.cos(angle_rad), 0]]
+    
+    # Apply the rotation matrix to each point in the list
+    rotated_point = [sum([rotation_matrix[i][j] * point[j] for j in range(3)]) for i in range(3)]
+    
+    return rotated_point
+```
+
+------------------------------
+--- ATTEMPT 3/3 FAILED ---
+REASON: Format=True, Exec=False
+AI RESPONSE:
+
+
+---
+### Attempt 1
+
+```python
+import math
+
+def rotate_z(point, angle_rad):
+    # Macierz rotacji wokół osi Z
+    rotation_matrix = [
+        [math.cos(angle_rad), -math.sin(angle_rad), 0],
+        [math.sin(angle_rad), math.cos(angle_rad), 0]
+    ]
+    
+    # Transponowanie macierzy
+    transposed_rotation_matrix = [[rotation_matrix[j][i] for j in range(3)] for i in range(3)]
+    
+    # Mnożenie wektora przez macierz rotacji
+    rotated_point = [
+        sum(transposed_rotation_matrix[i][j] * point[j] for j in range(3)) for i in range(3)
+    ]
+    
+    return rotated_point
+```
+
+------------------------------

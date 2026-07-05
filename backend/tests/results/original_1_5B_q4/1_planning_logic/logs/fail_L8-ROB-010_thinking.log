@@ -1,0 +1,18 @@
+
+--- ATTEMPT 2/3 FAILED ---
+REASON: Format=True, Exec=False
+AI RESPONSE:
+
+
+---
+### Attempt 1
+
+```python
+words = text.split()
+def find_longest(text):
+    words = text.split()
+    longest_word = max(words, key=len)
+    return longest_word
+```
+
+------------------------------

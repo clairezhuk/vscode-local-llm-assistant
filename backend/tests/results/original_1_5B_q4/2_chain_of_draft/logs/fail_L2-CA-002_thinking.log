@@ -1,0 +1,97 @@
+
+--- ATTEMPT 1/3 FAILED ---
+REASON: Format=True, Exec=False
+AI RESPONSE:
+
+
+---
+### Attempt 1
+
+```python
+from collections import deque
+
+def bfs_shortest_path(graph, start, goal):
+    # Initialize the queue with the starting node and set it as visited
+    queue = deque([(start, 0)])
+    visited = {start}
+    
+    while queue:
+        current_node, distance = queue.popleft()
+        
+        if current_node == goal:
+            return [current_node]  # Return the shortest path
+        
+        for neighbor in graph[current_node]:
+            if neighbor not in visited:
+                visited.add(neighbor)
+                queue.append((neighbor, distance + 1))
+    
+    return []  # Return an empty list if no path is found
+```
+
+------------------------------
+--- ATTEMPT 2/3 FAILED ---
+REASON: Format=True, Exec=False
+AI RESPONSE:
+
+
+---
+### Attempt 1
+
+```python
+from collections import deque
+
+def bfs_shortest_path(graph, start, goal):
+    # Initialize the queue and distance dictionary
+    Q = deque([start])
+    dist = {node: float('inf') for node in graph}
+    dist[start] = 0
+    
+    # Mark the starting node as visited
+    visited = set()
+    
+    while Q:
+        u = Q.popleft()  # Dequeue a node from the front of the queue
+        
+        if u == goal:
+            return [u]  # Return the shortest path
+        
+        for v in graph[u]:
+            if v not in visited:
+                dist[v] = dist[u] + 1
+                Q.append(v)  # Add the neighbor to the queue
+                visited.add(v)  # Mark the neighbor as visited
+    
+    return None  # Return None if no path is found
+```
+
+------------------------------
+--- ATTEMPT 3/3 FAILED ---
+REASON: Format=True, Exec=False
+AI RESPONSE:
+
+
+---
+### Attempt 1
+
+```python
+from collections import deque
+
+def bfs_shortest_path(graph, start, goal):
+    # Initialize the queue with the start node and set its distance to 0
+    queue = deque([start])
+    distances = {start: 0}
+    
+    while queue:
+        current_node = queue.popleft()
+        
+        for neighbor in graph[current_node]:
+            if neighbor not in distances or distances[neighbor] > distances[current_node] + 1:
+                distances[neighbor] = distances[current_node] + 1
+                queue.append(neighbor)
+    
+    # Return the shortest path from start to goal, or None if no path exists
+    return distances.get(goal, None)
+```
+
+------------------------------

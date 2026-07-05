@@ -1,0 +1,65 @@
+
+--- ATTEMPT 1/3 FAILED ---
+REASON: Format=False, Exec=True
+AI RESPONSE:
+
+
+---
+### Attempt 1
+
+```python
+import math
+
+def euclidean_distance(p1, p2):
+    # Validate input
+    if not isinstance(p1, tuple) or len(p1) != 2:
+        raise ValueError("p1 must be a tuple of length 2")
+    if not isinstance(p2, tuple) or len(p2) != 2:
+        raise ValueError("p2 must be a tuple of length 2")
+
+    # Extract coordinates
+    x1, y1 = p1
+    x2, y2 = p2
+
+    # Calculate differences and square them
+    x_diff = x2 - x1
+    y_diff = y2 - y1
+    x_squared_diff = x_diff ** 2
+    y_squared_diff = y_diff ** 2
+
+    # Sum squared differences
+    sum_squared_diff = x_squared_diff + y_squared_diff
+
+    # Take square root to get the Euclidean distance
+    return math.sqrt(sum_squared_diff)
+```
+
+------------------------------
+--- ATTEMPT 3/3 FAILED ---
+REASON: Format=False, Exec=True
+AI RESPONSE:
+
+
+---
+### Attempt 1
+
+```python
+import math
+
+def euclidean_distance(p1, p2):
+    x1, y1 = p1
+    x2, y2 = p2
+    
+    dx = x2 - x1
+    dy = y2 - y1
+    
+    dx_squared = dx * dx
+    dy_squared = dy * dy
+    
+    sum_of_squares = dx_squared + dy_squared
+    
+    distance = math.sqrt(sum_of_squares)
+    return distance
+```
+
+------------------------------

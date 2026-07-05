@@ -1,0 +1,48 @@
+
+--- ATTEMPT 1/3 FAILED ---
+REASON: Format=True, Exec=False
+AI RESPONSE:
+
+
+---
+### Attempt 1
+
+```python
+import pandas as pd
+
+def filter_data(df):
+    # Filter by Age > 25
+    filtered_by_age = df[df['Age'] > 25]
+    
+    # Filter by City == 'Warsaw'
+    filtered_by_city = filtered_by_age[filtered_by_age['City'] == 'Warsaw']
+    
+    # Combine filters using logical AND
+    result = filtered_by_age & filtered_by_city
+    
+    return result
+```
+
+------------------------------
+--- ATTEMPT 3/3 FAILED ---
+REASON: Format=False, Exec=True
+AI RESPONSE:
+
+
+---
+### Attempt 1
+
+```python
+import pandas as pd
+
+def filter_data(df):
+    # Filter rows where Age > 25
+    filtered_df = df[df['Age'] > 25]
+    
+    # Further filter by City == 'Warsaw'
+    final_df = filtered_df[filtered_df['City'] == 'Warsaw']
+    
+    return final_df
+```
+
+------------------------------

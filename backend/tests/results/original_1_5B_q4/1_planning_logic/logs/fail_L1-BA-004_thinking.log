@@ -1,0 +1,96 @@
+
+--- ATTEMPT 1/3 FAILED ---
+REASON: Format=True, Exec=False
+AI RESPONSE:
+
+
+---
+### Attempt 1
+
+```python
+def lcm(a, b):
+    # Calculate the greatest common divisor (GCD) using Euclid's algorithm
+    while b != 0:
+        a, b = b, a % b
+    
+    # The LCM is given by the product of the two numbers divided by their GCD
+    return abs(a * b) // gcd
+
+# Example usage:
+a = int(input("Enter the first integer: "))
+b = int(input("Enter the second integer: "))
+print(f"The least common multiple of {a} and {b} is {lcm(a, b)}")
+```
+
+------------------------------
+--- ATTEMPT 2/3 FAILED ---
+REASON: Format=True, Exec=False
+AI RESPONSE:
+
+
+---
+### Attempt 1
+
+```python
+def lcm(a, b):
+    while b != 0:
+        a, b = b, a % b
+    return abs(a * b) // gcd
+
+# Example usage:
+print(least_common_multiple(12, 18))  # Output: 36
+```
+
+
+---
+### Attempt 2
+
+```python
+def lcm(a, b):
+    # Calculate the greatest common divisor (GCD) using Euclid's algorithm
+    while b != 0:
+        a, b = b, a % b
+    
+    # The LCM is given by the product of the two numbers divided by their GCD
+    return abs(a * b) // gcd
+
+# Example usage:
+print(least_common_multiple(4, 6))  # Output: 12
+```
+
+
+---
+### Attempt 3
+
+```python
+def lcm(a, b):
+    # Calculate the greatest common divisor (GCD) using Euclid's algorithm
+    while b != 0:
+        a, b = b, a % b
+    
+    # The LCM is given by the product of the two numbers divided by their GCD
+    return abs(a * b) // gcd
+```
+
+------------------------------
+--- ATTEMPT 3/3 FAILED ---
+REASON: Format=True, Exec=False
+AI RESPONSE:
+
+
+---
+### Attempt 1
+
+```python
+def lcm(a, b):
+    gcd = a if a < b else b
+    while gcd > 0:
+        if a % gcd == 0 and b % gcd == 0:
+            return gcd
+        gcd -= 1
+
+# Example usage:
+print(lcm(4, 6))  # Output: 12
+```
+
+------------------------------

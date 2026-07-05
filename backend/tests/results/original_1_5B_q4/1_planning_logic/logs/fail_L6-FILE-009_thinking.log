@@ -1,0 +1,86 @@
+
+--- ATTEMPT 1/3 FAILED ---
+REASON: Format=True, Exec=False
+AI RESPONSE:
+
+
+---
+### Attempt 1
+
+```python
+import csv
+
+def calculate_avg(file_path):
+    total_amount = 0
+    count = 0
+    with open(file_path, mode='r', newline='') as file:
+        reader = csv.reader(file)
+        for row in reader:
+            if len(row) > 1:  # Assuming the first column is the transaction amount
+                try:
+                    amount = float(row[0])
+                    total_amount += amount
+                    count += 1
+                except ValueError:
+                    print(f"Invalid amount format in row {row}")
+    if count > 0:
+        average = total_amount / count
+        return average
+    else:
+        return None
+```
+
+------------------------------
+--- ATTEMPT 2/3 FAILED ---
+REASON: Format=True, Exec=False
+AI RESPONSE:
+
+
+---
+### Attempt 1
+
+```python
+import csv
+
+def calculate_avg(file_path):
+    total_amount = 0
+    count = 0
+    with open(file_path, mode='r', newline='') as file:
+        reader = csv.reader(file)
+        next(reader)  # Skip header row if present
+        for row in reader:
+            try:
+                amount = float(row[1])  # Assuming 'Amount' is the second column
+                total_amount += amount
+                count += 1
+            except ValueError:
+                print(f"Invalid value found in row: {row}")
+    return total_amount / count if count > 0 else None
+```
+
+------------------------------
+--- ATTEMPT 3/3 FAILED ---
+REASON: Format=True, Exec=False
+AI RESPONSE:
+
+
+---
+### Attempt 1
+
+```python
+import csv
+
+def calculate_avg(file_path):
+    total_amount = 0
+    count = 0
+    with open(file_path, mode='r', newline='') as file:
+        reader = csv.reader(file)
+        for row in reader:
+            if len(row) > 1:  # Assuming the CSV has at least two columns
+                amount = float(row[1])  # Convert the second column to a float
+                total_amount += amount
+                count += 1
+    return total_amount / count if count else None
+```
+
+------------------------------

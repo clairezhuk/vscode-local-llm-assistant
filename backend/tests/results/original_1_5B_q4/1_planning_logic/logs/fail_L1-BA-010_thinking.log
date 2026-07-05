@@ -1,0 +1,23 @@
+
+--- ATTEMPT 2/3 FAILED ---
+REASON: Format=True, Exec=False
+AI RESPONSE:
+
+
+---
+### Attempt 1
+
+```python
+def fibonacci(n):
+    if n == 0:
+        return 0
+    elif n == 1:
+        return 1
+    else:
+        a, b = 0, 1
+        for _ in range(2, n):  # Changed the loop condition to avoid infinite loop
+            a, b = b, a + b
+        return b
+```
+
+------------------------------

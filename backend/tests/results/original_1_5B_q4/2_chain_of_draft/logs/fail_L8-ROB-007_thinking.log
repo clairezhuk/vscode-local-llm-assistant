@@ -1,0 +1,24 @@
+
+--- ATTEMPT 2/3 FAILED ---
+REASON: Format=True, Exec=False
+AI RESPONSE:
+
+
+---
+### Attempt 1
+
+```python
+def is_pal(s):
+    left = 0
+    right = len(s) - 1
+    
+    while left < right:
+        if s[left] != s[right]:
+            return "No"
+        left += 1
+        right -= 1
+    
+    return "Yes"
+```
+
+------------------------------

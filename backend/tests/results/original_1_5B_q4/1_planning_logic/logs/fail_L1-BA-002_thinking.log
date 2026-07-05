@@ -1,0 +1,156 @@
+
+--- ATTEMPT 1/3 FAILED ---
+REASON: Format=True, Exec=False
+AI RESPONSE:
+
+
+---
+### Attempt 1
+
+```python
+def bubble_sort(arr):
+    n = len(arr)
+    for i in range(n):
+        # Last i elements are already in place
+        for j in range(0, n-i-1):
+            if arr[j] > arr[j+1]:
+                # Swap arr[j] and arr[j+1]
+                arr[j], arr[j+1] = arr[j+1], arr[j]
+```
+
+
+---
+### Attempt 2
+
+```python
+def bubble_sort(arr):
+    n = len(arr)
+    for i in range(n):
+        # Last i elements are already in place
+        for j in range(0, n-i-1):
+            if arr[j] > arr[j+1]:
+                # Swap arr[j] and arr[j+1]
+                arr[j], arr[j+1] = arr[j+1], arr[j]
+```
+
+
+---
+### Attempt 3
+
+```python
+def bubble_sort(arr):
+    n = len(arr)
+    for i in range(n):
+        # Last i elements are already in place
+        for j in range(0, n-i-1):
+            if arr[j] > arr[j+1]:
+                # Swap arr[j] and arr[j+1]
+                arr[j], arr[j+1] = arr[j+1], arr[j]
+```
+
+
+> ⚠️ **AI Warning:** Verification failed after max retries.
+------------------------------
+--- ATTEMPT 2/3 FAILED ---
+REASON: Format=True, Exec=False
+AI RESPONSE:
+
+
+---
+### Attempt 1
+
+```python
+def bubble_sort(arr):
+    n = len(arr)
+    for i in range(n):
+        # Last i elements are already in place
+        for j in range(0, n-i-1):
+            if arr[j] > arr[j+1]:
+                # Swap arr[j] and arr[j+1]
+                arr[j], arr[j+1] = arr[j+1], arr[j]
+```
+
+
+---
+### Attempt 2
+
+```python
+def bubble_sort(arr):
+    n = len(arr)
+    for i in range(n):
+        # Last i elements are already in place
+        for j in range(0, n-i-1):
+            if arr[j] > arr[j+1]:  # If the element found is greater than the next element, swap them
+                arr[j], arr[j+1] = arr[j+1], arr[j]
+```
+
+
+---
+### Attempt 3
+
+```python
+def bubble_sort(arr):
+    n = len(arr)
+    for i in range(n):
+        # Last i elements are already in place
+        for j in range(0, n-i-1):
+            if arr[j] > arr[j+1]:
+                # Swap arr[j] and arr[j+1]
+                arr[j], arr[j+1] = arr[j+1], arr[j]
+```
+
+
+> ⚠️ **AI Warning:** Verification failed after max retries.
+------------------------------
+--- ATTEMPT 3/3 FAILED ---
+REASON: Format=True, Exec=False
+AI RESPONSE:
+
+
+---
+### Attempt 1
+
+```python
+def bubble_sort(arr):
+    n = len(arr)
+    for i in range(n):
+        # Last i elements are already in place
+        for j in range(0, n-i-1):
+            if arr[j] > arr[j+1]:
+                # Swap arr[j] and arr[j+1]
+                arr[j], arr[j+1] = arr[j+1], arr[j]
+```
+
+
+---
+### Attempt 2
+
+```python
+def bubble_sort(arr):
+    n = len(arr)
+    for i in range(n):
+        # Last i elements are already in place
+        for j in range(0, n-i-1):
+            if arr[j] > arr[j+1]:
+                # Swap arr[j] and arr[j+1]
+                arr[j], arr[j+1] = arr[j+1], arr[j]
+```
+
+
+---
+### Attempt 3
+
+```python
+def bubble_sort(arr):
+    n = len(arr)
+    for i in range(n):
+        # Last i elements are already in place
+        for j in range(0, n-i-1):
+            if arr[j] > arr[j+1]:
+                # Swap arr[j] and arr[j+1]
+                arr[j], arr[j+1] = arr[j+1], arr[j]
+```
+
+
+> ⚠️ **AI Warning:** Verification failed after max retries.
+------------------------------

@@ -1,0 +1,66 @@
+
+--- ATTEMPT 1/3 FAILED ---
+REASON: Format=True, Exec=False
+AI RESPONSE:
+
+
+---
+### Attempt 1
+
+```python
+import math
+
+def euclidean_distance(point1, point2):
+    # Extract coordinates from points
+    x1, y1 = point1
+    x2, y2 = point2
+    
+    # Calculate differences in each dimension
+    delta_x = x2 - x1
+    delta_y = y2 - y1
+    
+    # Square the differences
+    delta_x_squared = delta_x ** 2
+    delta_y_squared = delta_y ** 2
+    
+    # Sum the squared differences
+    sum_of_squares = delta_x_squared + delta_y_squared
+    
+    # Take the square root of the sum
+    euclidean_distance = math.sqrt(sum_of_squares)
+    
+    return euclidean_distance
+```
+
+------------------------------
+--- ATTEMPT 2/3 FAILED ---
+REASON: Format=True, Exec=False
+AI RESPONSE:
+
+
+---
+### Attempt 1
+
+```python
+import math
+
+def euclidean_distance(point1, point2):
+    # Calculate the differences for each dimension
+    x_diff = point1[0] - point2[0]
+    y_diff = point1[1] - point2[1]
+    z_diff = point1[2] - point2[2]
+    
+    # Square the differences
+    x_squared = x_diff ** 2
+    y_squared = y_diff ** 2
+    z_squared = z_diff ** 2
+    
+    # Sum the squared differences
+    sum_of_squares = x_squared + y_squared + z_squared
+    
+    # Take the square root of the sum of squared differences
+    distance = math.sqrt(sum_of_squares)
+    return distance
+```
+
+------------------------------

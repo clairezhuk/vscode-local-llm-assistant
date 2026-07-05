@@ -1,0 +1,24 @@
+
+--- ATTEMPT 2/3 FAILED ---
+REASON: Format=True, Exec=False
+AI RESPONSE:
+
+
+---
+### Attempt 1
+
+```python
+import requests
+
+def post_data(url, data_dict, token):
+    headers = {
+        'Authorization': f'Bearer {token}',
+        'Content-Type': 'application/json'
+    }
+    
+    response = requests.post(url, json=data_dict)
+    
+    return response
+```
+
+------------------------------

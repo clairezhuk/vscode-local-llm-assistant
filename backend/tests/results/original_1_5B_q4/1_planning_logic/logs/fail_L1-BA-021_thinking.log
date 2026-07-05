@@ -1,0 +1,17 @@
+
+--- ATTEMPT 3/3 FAILED ---
+REASON: Format=True, Exec=False
+AI RESPONSE:
+
+
+---
+### Attempt 1
+
+```python
+import re
+
+def find_numbers(text):
+    return re.findall(r'\\d+', text)
+```
+
+------------------------------

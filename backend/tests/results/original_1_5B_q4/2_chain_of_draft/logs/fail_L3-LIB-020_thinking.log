@@ -1,0 +1,89 @@
+
+--- ATTEMPT 1/3 FAILED ---
+REASON: Format=False, Exec=False
+AI RESPONSE:
+
+
+---
+### Attempt 1
+
+```python
+import torch
+
+def get_probabilities(logits):
+    """
+    Applies the Softmax function to a 1D PyTorch tensor of logits along the correct dimension.
+    
+    Parameters:
+    - logits: A 2D PyTorch tensor representing unnormalized scores for each class in a multi-class classification task. Each row corresponds to an instance, and each column represents a class.
+    
+    Returns:
+    - A 2D PyTorch tensor where each row contains the probabilities corresponding to the classes for the respective instance.
+    """
+    # Apply softmax function along dimension 1 (classes)
+    probabilities = torch.softmax(logits, dim=1)
+    
+    return probabilities
+```
+
+------------------------------
+--- ATTEMPT 2/3 FAILED ---
+REASON: Format=False, Exec=False
+AI RESPONSE:
+
+
+---
+### Attempt 1
+
+```python
+import numpy as np
+
+def get_probabilities(logits):
+    """
+    Applies the Softmax function to a 1D PyTorch tensor of logits along the correct dimension.
+
+    Args:
+        logits (np.ndarray or list): A 1D array or list of numbers representing logits.
+
+    Returns:
+        np.ndarray: The calculated probabilities as a numpy array.
+    """
+    # Ensure the input is a numpy array
+    if not isinstance(logits, np.ndarray):
+        raise ValueError("Input must be a numpy array.")
+    
+    # Normalize the logits to ensure they sum up to 1
+    normalized_logits = logits / np.sum(logits)
+    
+    # Return the calculated probabilities as a numpy array
+    return normalized_logits
+```
+
+------------------------------
+--- ATTEMPT 3/3 FAILED ---
+REASON: Format=False, Exec=True
+AI RESPONSE:
+
+
+---
+### Attempt 1
+
+```python
+import torch
+
+def get_probabilities(logits):
+    """
+    Applies the Softmax function to a 1D PyTorch tensor of logits along the correct dimension.
+    
+    Parameters:
+    - logits: A 1D PyT. 
+    
+    Returns:
+    - probabilities: A 1D PyTorch tensor containing the softmax probabilities.
+    """
+    probabilities = torch.nn.functional.softmax(logits, dim=-1)
+    
+    return probabilities
+```
+
+------------------------------

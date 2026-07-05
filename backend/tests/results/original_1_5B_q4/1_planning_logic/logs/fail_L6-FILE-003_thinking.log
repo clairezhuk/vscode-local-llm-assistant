@@ -1,0 +1,50 @@
+
+--- ATTEMPT 3/3 FAILED ---
+REASON: Format=True, Exec=False
+AI RESPONSE:
+
+
+---
+### Attempt 1
+
+```python
+def parse_logs():
+    with open('server.log', 'r') as log_file:
+        lines = log_file.readlines()
+
+    errors = [line for line in lines if '[ERROR]' in line]
+
+    with open('errors.log', 'w') as error_log:
+        error_log.writelines(errors)
+```
+
+
+---
+### Attempt 2
+
+```python
+def parse_logs():
+    with open('server.log', 'r') as log_file:
+        lines = log_file.readlines()
+
+    errors = [line for line in lines if '[ERROR]' in line]
+
+    with open('errors.log', 'w') as error_log:
+        error_log.writelines(errors)
+```
+
+
+---
+### Attempt 3
+
+```python
+with open('server.log', 'r') as log_file:
+    lines = log_file.readlines()
+
+errors = [line for line in lines if '[ERROR]' in line]
+
+with open('errors.log', 'w') as error_log:
+    error_log.writelines(errors)
+```
+
+------------------------------

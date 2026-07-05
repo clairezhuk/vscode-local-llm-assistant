@@ -1,0 +1,109 @@
+
+--- ATTEMPT 1/3 FAILED ---
+REASON: Format=False, Exec=False
+AI RESPONSE:
+
+
+---
+### Attempt 1
+
+```python
+import re
+
+def parse_nested_logs(lines):
+    data = {}
+    for line in lines:
+        match = re.search(r'Module\[([^\]]+)\]: Status\[(.*?)\]', line)
+        if match:
+            name, value = match.groups()
+            if name not in data:
+                data[name] = value
+            else:
+                data[name] += f", {value}"
+    return data
+```
+
+------------------------------
+--- ATTEMPT 2/3 FAILED ---
+REASON: Format=False, Exec=False
+AI RESPONSE:
+
+
+---
+### Attempt 1
+
+```python
+def parse_nested_logs(lines):
+    log_dict = {}
+    
+    for line in lines:
+        if "Module[" in line and "]" in line:
+            name, status = line.split("Module[", 1)[1].split("]: ", 1)
+            if name in log_dict:
+                log_dict[name].append(status)
+            else:
+                log_dict[name] = [status]
+    
+    return log_dict
+```
+
+
+---
+### Attempt 2
+
+```python
+def parse_nested_logs(lines):
+    log_dict = {}
+    for line in lines:
+        if "Module[" in line and "]" in line:
+            module_name, status = line.split(": ")
+            status_value = status.split("] ")[1]
+            log_dict[module_name] = status_value
+    return log_dict
+```
+
+
+---
+### Attempt 3
+
+```python
+def parse_nested_logs(lines):
+    log_dict = {}
+    
+    for line in lines:
+        if "Module[" in line and "]" in line:
+            name, status = line.split(": ")[1].split("]: ")
+            log_dict[name] = status
+    
+    return log_dict
+```
+
+
+> ⚠️ **AI Warning:** Verification failed after max retries.
+------------------------------
+--- ATTEMPT 3/3 FAILED ---
+REASON: Format=False, Exec=False
+AI RESPONSE:
+
+
+---
+### Attempt 1
+
+```python
+def parse_logs(log):
+    if log is None or not log:
+        return []
+    
+    modules = []
+    
+    for child in log:
+        if isinstance(child, dict):
+            modules.append(child['name'])
+        else:
+            child_modules = parse_logs(child)
+            modules.extend(child_modules)
+    
+    return modules
+```
+
+------------------------------

@@ -1,0 +1,31 @@
+
+--- ATTEMPT 2/3 FAILED ---
+REASON: Format=True, Exec=False
+AI RESPONSE:
+
+
+---
+### Attempt 1
+
+```python
+import ast
+
+def get_function_names(file_path):
+    with open(file_path, 'r') as file:
+        file_content = file.read()
+
+    tree = ast.parse(file_content)
+
+    function_nodes = []
+    for node in ast.walk(tree):
+        if isinstance(node, ast.FunctionDef):
+            function_names.append(node.name)
+
+    return function_names
+
+# Example usage:
+file_path = 'example.py'
+print(get_function_names(file_path))
+```
+
+------------------------------

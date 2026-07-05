@@ -1,0 +1,25 @@
+
+--- ATTEMPT 2/3 FAILED ---
+REASON: Format=True, Exec=False
+AI RESPONSE:
+
+
+---
+### Attempt 1
+
+```python
+def transpose(matrix):
+    m = len(matrix)
+    n = len(matrix[0])
+    
+    transposed_matrix = [[None] * n for _ in range(m)]
+    
+    for i in range(m):
+        for j in range(n):
+            # Swap elements at position (i, j) and (j, i)
+            transposed_matrix[j][i] = matrix[i][j]
+    
+    return transposed_matrix
+```
+
+------------------------------

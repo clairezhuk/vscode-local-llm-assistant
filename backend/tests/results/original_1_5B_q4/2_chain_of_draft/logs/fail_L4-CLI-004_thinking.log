@@ -1,0 +1,28 @@
+
+--- ATTEMPT 1/3 FAILED ---
+REASON: Format=True, Exec=False
+AI RESPONSE:
+
+
+---
+### Attempt 1
+Proposed command: `for f in *.txt; do mv "$f" "${f}.bak"; done`
+------------------------------
+--- ATTEMPT 2/3 FAILED ---
+REASON: Format=True, Exec=False
+AI RESPONSE:
+
+
+---
+### Attempt 1
+Proposed command: `for f in *.txt; do mv "$f" "${f}.bak"; done`
+------------------------------
+--- ATTEMPT 3/3 FAILED ---
+REASON: Format=True, Exec=False
+AI RESPONSE:
+
+
+---
+### Attempt 1
+Proposed command: `for f in *.txt; do mv "$f" "${f}.bak"; done`
+------------------------------
