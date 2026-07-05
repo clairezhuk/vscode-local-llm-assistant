@@ -1,0 +1,15 @@
+
+--- ATTEMPT 3/3 FAILED ---
+REASON: Format=False, Exec=True
+AI RESPONSE:
+
+
+---
+### Attempt 1
+
+```python
+def transpose(matrix):
+    return list(map(list, zip(*matrix)))
+```
+
+------------------------------

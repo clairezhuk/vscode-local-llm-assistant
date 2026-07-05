@@ -1,0 +1,114 @@
+
+--- ATTEMPT 1/3 FAILED ---
+REASON: Format=False, Exec=False
+AI RESPONSE:
+
+
+---
+### Attempt 1
+
+```python
+def add_user_to_list(user, user_list=[]):
+    user_list.append(user)
+    return user_list
+```
+
+
+---
+### Attempt 2
+
+```python
+def add_user_to_list(user, user_list=[]):
+    if user not in user_list:
+        user_list.append(user)
+    return user_list
+```
+
+------------------------------
+--- ATTEMPT 2/3 FAILED ---
+REASON: Format=False, Exec=False
+AI RESPONSE:
+
+
+---
+### Attempt 1
+
+```python
+def add_user_to_list(user, user_list=[]):
+    user_list.append(user)
+    return user_list
+```
+
+
+---
+### Attempt 2
+
+```python
+import sys
+
+def add_user_to_list(user, user_list=[]):
+    if user in user_list:
+        user_list.remove(user)
+    else:
+        user_list.append(user)
+    return user_list
+```
+
+
+---
+### Attempt 3
+
+```python
+items = []
+
+def add_user_to_list(user):
+    # Check if the user is already in the list
+    if user not in items:
+        items.append(user)
+    return items
+```
+
+------------------------------
+--- ATTEMPT 3/3 FAILED ---
+REASON: Format=False, Exec=False
+AI RESPONSE:
+
+
+---
+### Attempt 1
+
+```python
+def add_user_to_list(user, user_list=[]):
+    user_list.append(user)
+    return user_list
+```
+
+
+---
+### Attempt 2
+
+```python
+# Importing necessary libraries
+import sys
+
+def add_user_to_list(user, user?):
+    # Check if the list is empty
+    if items:
+        print("User already exists in the list.")
+    else:
+        # Add
+        items.append(user)
+        return items
+```
+
+
+---
+### Attempt 3
+
+```python
+def add_user_to_list(user, user_list=[]):
+    user_list.append(user)
+    return user_list
+```
+
+------------------------------

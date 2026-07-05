@@ -1,0 +1,46 @@
+
+--- ATTEMPT 3/3 FAILED ---
+REASON: Format=False, Exec=None
+AI RESPONSE:
+
+
+---
+### Attempt 1
+To calculate the factorial of a non-negative integer n, you can use either a recursive function or an iterative loop. Here's how each method works:
+
+1. **Recursive Function**:
+   - The base case is when n equals 0 or 1, in which case the factorial is 1.
+   - For other values of n, the factorial is calculated as n * factorial(n-1).
+   - This approach is straightforward but can be inefficient for large numbers due to repeated calculations.
+
+2. **Iterative Loop**:
+   - Initialize a variable `factorial` to 1.
+   - Use a loop that iterates from 2 to n (inclusive).
+   - In each iteration, multiply the current value of `factorial` by the loop counter.
+   - After the loop completes, `factorial` will hold the factorial of n.
+
+Here is an example of how you might implement these methods in Python:
+
+```python
+# Recursive function to calculate factorial
+def factorial_recursive(n):
+    if n == 0 or n == 1:
+        return 1
+    else:
+        return n * factorial_recursive(n-1)
+
+# Iterative loop to calculate factorial
+def factorial_iterative(n):
+    factorial = 1
+    for i in range(2, n+1):
+        factorial *= i
+    return factorial
+
+# Example usage
+n = 5
+print(f"Factorial of {n} (recursive):", factorial_recursive(n))
+print(f"Factorial of {n} (iterative):", factorial_iterative(n))
+```
+
+Both methods will correctly compute the factorial of a given non-negative integer. The recursive method is more elegant but less efficient for large numbers, while the iterative method is simpler and more straightforward for all cases.
+------------------------------

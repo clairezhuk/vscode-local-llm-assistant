@@ -1,0 +1,22 @@
+
+--- ATTEMPT 3/3 FAILED ---
+REASON: Format=True, Exec=False
+AI RESPONSE:
+
+
+---
+### Attempt 1
+
+```python
+def find_duplicates(list):
+    duplicates = []
+    seen = set()
+    for item in list:
+        if item in seen:
+            duplicates.append(item)
+        else:
+            seen.add(item)
+    return duplicates
+```
+
+------------------------------

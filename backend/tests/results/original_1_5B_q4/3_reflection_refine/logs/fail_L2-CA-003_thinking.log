@@ -1,0 +1,94 @@
+
+--- ATTEMPT 1/3 FAILED ---
+REASON: Format=True, Exec=False
+AI RESPONSE:
+
+
+---
+### Attempt 1
+
+```python
+def dijkstra(graph, start):
+    distances = {node: float('inf') for node in graph}
+    distances[start] = 0
+    queue = [(0, start)]
+    
+    while queue:
+        current_distance, current_node = heapq.heappop(queue)
+        
+        if current_distance > distances[current_node]:
+            continue
+        
+        for neighbor, weight in graph[current_node].items():
+            distance_through_current = current_distance + weight
+            
+            if distance_through_current < distances[neighbor]:
+                distances[neighbor] = distance_through_current
+                heapq.heappush(queue, (distance_through_current, neighbor))
+    
+    return distances
+```
+
+------------------------------
+--- ATTEMPT 2/3 FAILED ---
+REASON: Format=True, Exec=False
+AI RESPONSE:
+
+
+---
+### Attempt 1
+
+```python
+def dijkstra(graph, start):
+    distances = {node: float('inf') for node in graph}
+    distances[start] = 0
+    queue = [(0, start)]
+    
+    while queue:
+        current_distance, current_node = heapq.heappop(queue)
+        
+        if current_distance > distances[current_node]:
+            continue
+        
+        for neighbor, weight in graph[current_node].items():
+            distance_through_current = current_distance + weight
+            
+            if distance_through_current < distances[neighbor]:
+                distances[neighbor] = distance_through_current
+                heapq.heappush(queue, (distance_through_current, neighbor))
+    
+    return distances
+```
+
+------------------------------
+--- ATTEMPT 3/3 FAILED ---
+REASON: Format=True, Exec=False
+AI RESPONSE:
+
+
+---
+### Attempt 1
+
+```python
+def dijkstra(graph, start):
+    distances = {node: float('inf') for node in graph}
+    distances[start] = 0
+    queue = [(0, start)]
+    
+    while queue:
+        current_distance, current_node = heapq.heappop(queue)
+        
+        if current_distance > distances[current_node]:
+            continue
+        
+        for neighbor, weight in graph[current_node].items():
+            distance = current_distance + weight
+            
+            if distance < distances[neighbor]:
+                distances[neighbor] = distance
+                heapq.heappush(queue, (distance, neighbor))
+    
+    return distances
+```
+
+------------------------------

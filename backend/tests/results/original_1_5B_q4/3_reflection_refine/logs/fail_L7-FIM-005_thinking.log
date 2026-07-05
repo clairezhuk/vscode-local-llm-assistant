@@ -1,0 +1,15 @@
+
+--- ATTEMPT 1/3 FAILED ---
+REASON: Format=False, Exec=True
+AI RESPONSE:
+
+
+---
+### Attempt 1
+
+```python
+def safe_get(data_dict, default):
+    return data_dict.get('value', default)
+```
+
+------------------------------

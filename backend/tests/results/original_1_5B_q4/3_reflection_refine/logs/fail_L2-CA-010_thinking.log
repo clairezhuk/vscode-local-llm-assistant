@@ -1,0 +1,113 @@
+
+--- ATTEMPT 1/3 FAILED ---
+REASON: Format=False, Exec=False
+AI RESPONSE:
+
+
+---
+### Attempt 1
+
+```python
+import math
+
+def euclidean_distance(point1, point2):
+    return math.sqrt((point1[0] - point2[0])**2 + (point1[1] - point2[1])**2)
+
+def assign_clusters(points, centroids):
+    clusters = []
+    for point in points:
+        distances = [euclidean_distance(point, centroid) for centroid in centroids]
+        closest_index = distances.index(min(distances))
+        clusters.append(closest_index)
+    return clusters
+```
+
+------------------------------
+--- ATTEMPT 2/3 FAILED ---
+REASON: Format=False, Exec=False
+AI RESPONSE:
+
+
+---
+### Attempt 1
+
+```python
+import math
+
+def euclidean_distance(point1, point2):
+    return math.sqrt((point1[0] - point2[0])**2 + (point1[1] - point2[1])**2)
+
+def assign_clusters(points, centroids):
+    clusters = []
+    for point in points:
+        distances = [euclidean_distance(point, centroid) for centroid in centroids]
+        closest_centroid_index = distances.index(min(distances))
+        clusters.append(closest_centroid_index)
+    return clusters
+```
+
+
+---
+### Attempt 2
+
+```python
+import math
+
+def euclidean_distance(point1, point2):
+    return math.sqrt((point1[0] - point2[0])**2 + (point1[1] - point2[1])**2)
+
+def assign_clusters(points, centroids):
+    clusters = []
+    for point in points:
+        distances = [euclidean_distance(point, centroid) for centroid in centroids]
+        closest_centroid_index = distances.index(min(distances))
+        clusters.append(closest_centroid_index)
+    return clusters
+```
+
+
+---
+### Attempt 3
+
+```python
+import math
+
+def euclidean_distance(point1, point2):
+    return math.sqrt((point1[0] - point2[0])**2 + (point1[1] - point2[1])**2)
+
+def assign_clusters(points, centroids):
+    clusters = []
+    for point in points:
+        distances = [euclidean_distance(point, centroid) for centroid in centroids]
+        closest_centroid_index = distances.index(min(distances))
+        clusters.append(closest_centroid_index)
+    return clusters
+```
+
+
+> ⚠️ **AI Warning:** Verification failed after max retries.
+------------------------------
+--- ATTEMPT 3/3 FAILED ---
+REASON: Format=False, Exec=False
+AI RESPONSE:
+
+
+---
+### Attempt 1
+
+```python
+import math
+
+def euclidean_distance(point1, point2):
+    return math.sqrt((point1[0] - point2[0])**2 + (point1[1] - point2[1])**2)
+
+def assign_clusters(points, centroids):
+    clusters = []
+    for point in points:
+        distances = [euclidean_distance(point, centroid) for centroid in centroids]
+        closest_index = distances.index(min(distances))
+        clusters.append(closest_index)
+    return clusters
+```
+
+------------------------------

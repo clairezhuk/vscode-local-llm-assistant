@@ -1,0 +1,65 @@
+
+--- ATTEMPT 1/3 FAILED ---
+REASON: Format=True, Exec=False
+AI RESPONSE:
+
+
+---
+### Attempt 1
+
+```python
+def knapsack(capacity, weights, values):
+    # Initialize a 2D array to store the maximum value that can be achieved with different capacities and items
+    dp = [[0 for _ in range(capacity + 1)] for _ in range(len(weights) + 1)]
+    
+    # Fill the DP table
+    for i in range(1, len(weights) + 1):
+        for j in range(1, capacity + 1):
+            if weights[i - 1] <= j:
+                dp[i][j] = max(values[i - 1] + dp[i - 1][j - weights[i - 1]], dp[i - 1][j])
+            else:
+                dp[i][j] = dp[i - 1][j]
+    
+    # The maximum value that can be achieved with the given capacity is in dp[len(weights)][capacity]
+    return dp[len(weights)][capacity]
+
+# Example usage
+weights = [2, 3, 4, 5]
+values = [3, 4, 5, 6]
+capacity = 7
+print(knapsack(capacity, weights, values))  # Output: 10
+```
+
+------------------------------
+--- ATTEMPT 3/3 FAILED ---
+REASON: Format=True, Exec=False
+AI RESPONSE:
+
+
+---
+### Attempt 1
+
+```python
+def knapsack(capacity, weights, values):
+    # Initialize a 2D array to store the maximum value that can be achieved with different capacities and items
+    dp = [[0 for _ in range(capacity + 1)] for _ in range(len(weights) + 1)]
+    
+    # Fill the DP table
+    for i in range(1, len(weights) + 1):
+        for w in range(1, capacity + 1):
+            if weights[i - 1] <= w:
+                dp[i][w] = max(values[i - 1] + dp[i - 1][w - weights[i - 1]], dp[i - 1][w])
+            else:
+                dp[i][w] = dp[i - 1][w]
+    
+    # The maximum value that can be achieved with the given capacity is stored in dp[len(weights)][capacity]
+    return dp[len(weights)][capacity]
+
+# Example usage
+weights = [3, 4, 5]
+values = [20, 30, 40]
+capacity = 7
+print(knapsack(capacity, weights, values))  # Output: 60
+```
+
+------------------------------

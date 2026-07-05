@@ -1,0 +1,84 @@
+
+--- ATTEMPT 1/3 FAILED ---
+REASON: Format=True, Exec=False
+AI RESPONSE:
+
+
+---
+### Attempt 1
+
+```python
+import csv
+
+def calculate_avg(file_path):
+    total_amount = 0
+    count = 0
+    with open(file_path, mode='r', newline='') as file:
+        reader = csv.reader(file)
+        next(reader)  # Skip the header row
+        for row in reader:
+            amount = float(row[2])  # Convert 'Amount' to float
+            total_amount += amount
+            count += 1
+    if count == 0:
+        return None  # Return None if no data is found
+    average = total_amount / count
+    return average
+```
+
+------------------------------
+--- ATTEMPT 2/3 FAILED ---
+REASON: Format=True, Exec=False
+AI RESPONSE:
+
+
+---
+### Attempt 1
+
+```python
+import csv
+
+def calculate_avg(file_path):
+    total_amount = 0
+    count = 0
+    with open(file_path, mode='r') as file:
+        reader = csv.reader(file)
+        next(reader)  # Skip the header row
+        for row in reader:
+            amount = float(row[2])  # Convert 'Amount' to float
+            total_amount += amount
+            count += 1
+    if count == 0:
+        return 0  # Avoid division by zero if no data is present
+    return total_amount / count
+```
+
+------------------------------
+--- ATTEMPT 3/3 FAILED ---
+REASON: Format=True, Exec=False
+AI RESPONSE:
+
+
+---
+### Attempt 1
+
+```python
+import csv
+
+def calculate_avg(file_path):
+    total_amount = 0
+    count = 0
+    with open(file_path, mode='r') as file:
+        reader = csv.reader(file)
+        next(reader)  # Skip the header row
+        for row in reader:
+            amount = float(row[2])  # Convert 'Amount' to float
+            total_amount += amount
+            count += 1
+    if count == 0:
+        return 0  # Return 0 if no rows are read
+    average = total_amount / count
+    return average
+```
+
+------------------------------

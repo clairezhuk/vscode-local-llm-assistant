@@ -1,0 +1,59 @@
+
+--- ATTEMPT 1/3 FAILED ---
+REASON: Format=True, Exec=False
+AI RESPONSE:
+
+
+---
+### Attempt 1
+
+```python
+def ucb1(node_win_rate, node_visits, total_parent_visits, exploration_weight=1.41):
+    """
+    Calculate the UCB1 score for MCTS node selection.
+
+    Args:
+        node_win_rate (float): The win rate of the current node.
+        node_visits (int): The number of times the current node has been visited.
+        total_parent_visits (int): The total number of visits to the parent node.
+        exploration_weight (float): The exploration weight for UCB1. Default is 1.41.
+
+    Returns:
+        float: The calculated UCB1 score.
+    """
+    return node_win_rate / node_visits + exploration_weight * (math.sqrt(math.log(total_parent_visits) / node_visits))
+```
+
+------------------------------
+--- ATTEMPT 2/3 FAILED ---
+REASON: Format=True, Exec=False
+AI RESPONSE:
+
+
+---
+### Attempt 1
+
+```python
+import math
+
+def ucb1(node_win_rate, node_visits, total_parent_visits, exploration_weight=1.41):
+    return (node_win_rate / node_visits) + exploration_weight * math.sqrt(math.log(total_parent_visits))
+```
+
+------------------------------
+--- ATTEMPT 3/3 FAILED ---
+REASON: Format=True, Exec=False
+AI RESPONSE:
+
+
+---
+### Attempt 1
+
+```python
+import math
+
+def ucb1(node_win_rate, node_visits, total_parent_visits, exploration_weight=1.41):
+    return (node_win_rate / node_visits) + exploration_weight * math.sqrt(math.log(total_parent_visits))
+```
+
+------------------------------

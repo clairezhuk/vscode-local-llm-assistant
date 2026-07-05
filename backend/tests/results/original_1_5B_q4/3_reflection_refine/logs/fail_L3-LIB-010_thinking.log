@@ -1,0 +1,43 @@
+
+--- ATTEMPT 2/3 FAILED ---
+REASON: Format=False, Exec=False
+AI RESPONSE:
+
+
+---
+### Attempt 1
+
+```python
+import torch.nn as nn
+
+class SimpleNet(nn.Module):
+    def __init__(self):
+        super(SimpleNet, self).__init__()
+        self.fc1 = nn.Linear(10, 20)
+        self.relu = nn.ReLU()
+```
+
+------------------------------
+--- ATTEMPT 3/3 FAILED ---
+REASON: Format=False, Exec=False
+AI RESPONSE:
+
+
+---
+### Attempt 1
+
+```python
+import torch.nn as nn
+
+class SimpleNet(nn.Module):
+    def __init__(self):
+        super(SimpleNet, self).__init__()
+        self.fc1 = nn.Linear(10, 20)
+        self.relu = nn.ReLU()
+        self.fc2 = nn.Linear(20, 1)
+
+# Example usage:
+model = SimpleNet()
+```
+
+------------------------------
