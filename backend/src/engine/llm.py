@@ -15,7 +15,7 @@ class LLMEngine:
         #     verbose=False
         # )
 
-    def generate(self, prompt: str, max_tokens: int = 1024, stop: list = None, temp: float = 0.2) -> dict:
+    def generate(self, prompt: str, max_tokens: int = 2048, stop: list = None, temp: float = 0.2) -> dict:
         response = self.llm(prompt, 
                             max_tokens=max_tokens, 
                             stop=stop or ["<|im_end|>"],
@@ -28,7 +28,7 @@ class LLMEngine:
             "usage": response.get("usage", {})
         }
     
-    def generate_stream(self, prompt: str, max_tokens: int = 1024, stop: list = None, temp: float = 0.2):
+    def generate_stream(self, prompt: str, max_tokens: int = 2048, stop: list = None, temp: float = 0.2):
         stream = self.llm(
             prompt, 
             max_tokens=max_tokens, 

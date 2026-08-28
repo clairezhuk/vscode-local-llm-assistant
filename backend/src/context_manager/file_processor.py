@@ -1,69 +1,50 @@
 import ast
 import json
-import re
+from ..agentic_orchestrator.prompts import PromptLibrary as PrLib
 
 class FileProcessor:
-    def __init__(self):
-        self.storage = {}
-
     def process_files(self, files: list, engine) -> str:
         file_blocks = []
         for f in files:
             name = f.get("name", "unknown")
             content = f.get("content", "")
-            self.storage[name] = content 
-            
-            if len(content) < 1500: 
-                display_content = content
-            else:
-                ext = name.split('.')[-1].lower() if '.' in name else ''
-                if ext == "py":
-                    summary = self._parse_py(content)
-                elif ext == "json":
-                    summary = self._parse_json(content)
-                else:
-                    summary = self._summarize_text(content, engine)
-                display_content = f"[File is too large. Summary: {summary}]"
+            ext = name.split('.')[-1].lower() if '.' in name else ''
 
-            block = (
-                f"--- START OF FILE: {name} ---\n"
-                f"{display_content}\n"
-                f"--- END OF FILE: {name} ---"
-            )
-            file_blocks.append(block)
-        
+            if ext in ["py", "ts", "js", "cpp"]:
+                processed = self._extract_structure(content, ext)
+            elif ext == "json":
+                processed = self._summarize_json(content)
+            else:
+                processed = self._summarize_text(content, engine)
+
+            file_blocks.append(f"--- FILE: {name} ---\n{processed}\n--- END ---")
         return "\n\n".join(file_blocks)
 
-    def _parse_py(self, content: str) -> str:
-        try:
-            tree = ast.parse(content)
-            res = []
-            for node in ast.iter_child_nodes(tree):
-                if isinstance(node, ast.FunctionDef):
-                    res.append(f"def {node.name}(...)")
-                elif isinstance(node, ast.ClassDef):
-                    res.append(f"class {node.name}:")
-            return "\n".join(res) if res else "Scripts/Variables only."
-        except Exception:
-            return "Syntax Error in Python file."
+    def _extract_structure(self, content: str, ext: str) -> str:
+        if len(content) < 1000: return content 
+        
+        if ext == "py":
+            try:
+                tree = ast.parse(content)
+                defs = []
+                for node in ast.iter_child_nodes(tree):
+                    if isinstance(node, (ast.FunctionDef, ast.ClassDef)):
+                        line = content.splitlines()[node.lineno-1].strip()
+                        defs.append(line + " ...")
+                return "\n".join(defs) if defs else "Content: [Code Logic]"
+            except: return content[:800] + "\n[Syntax Error in Summary]"
+        
+        return content[:800] + "\n[Truncated for context]"
 
-    def _parse_json(self, content: str) -> str:
+    def _summarize_json(self, content: str) -> str:
         try:
-            d = json.loads(content)
-            if isinstance(d, dict):
-                return "Keys: " + ", ".join(d.keys())
-            elif isinstance(d, list) and len(d) > 0:
-                return f"List of {type(d[0]).__name__}"
-            return "Valid JSON."
-        except Exception:
-            return "Invalid JSON."
-
-    def _regex_code_parse(self, content: str) -> str:
-        funcs = re.findall(r'(?:function\s+|const\s+|let\s+|var\s+)?([a-zA-Z0-9_]+)\s*(?:=|:)?\s*(?:function)?\s*\(', content)
-        return "Detected signatures: " + ", ".join(set(funcs[:10]))
+            data = json.loads(content)
+            if isinstance(data, dict): return f"Keys: {list(data.keys())}"
+            return "Valid JSON structure"
+        except: return "Invalid JSON"
 
     def _summarize_text(self, content: str, engine) -> str:
-        if len(content) < 500: 
-            return content
-        prompt = f"<|im_start|>system\nSummarize the core purpose of this text in 1 short sentence.<|im_end|>\n<|im_start|>user\n{content[:2000]}<|im_end|>\n<|im_start|>assistant\n"
-        return engine.generate(prompt, max_tokens=32)["text"].strip()
+        if len(content) < 500: return content
+        prompt = f"<|im_start|>system\n{PrLib.SUMMARIZE_TEXT}<|im_end|>\n" \
+             f"<|im_start|>user\n{content[:1500]}<|im_end|>\n<|im_start|>assistant\n"
+        return engine.generate(prompt, max_tokens=20)["text"].strip()
