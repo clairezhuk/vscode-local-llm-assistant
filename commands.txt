@@ -19,3 +19,9 @@ python run_benchmark.py L1_basic_algorithms -n 5 -t "fast"
 
 Project structure:
 git ls-tree -r --name-only HEAD
+
+Dashboard:
+cd backend/tests
+python visualize_results.py
+
+or python .\analysis.py

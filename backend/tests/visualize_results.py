@@ -6,7 +6,7 @@ import glob
 import os
 import re
 
-INDEX = "6"#_base_planning_logic
+INDEX = "7"
 CVV_PATH = "results/original_1_5B_q4/*.csv"
 SAVE_PATH = f"results/dashboards/dashboard_v{INDEX}.png"
 
@@ -67,7 +67,7 @@ def parse_results(path = CVV_PATH, process_fast = True, process_think = True):
             
             key = f"{suite_display}_{mode}"
             suite_stats[key] = {
-                'display': f"{pass_100}/{pass_partial}/{total_tests}",
+                'display': f"{pass_100}/{pass_partial+pass_100}/{total_tests}",
                 'warn_info': f"Warn on Fail: {warn_rate:.1f}% | Wrong Warn: {wrong_warn_rate:.1f}%"
             }
 
@@ -140,16 +140,15 @@ def create_dashboard(df, stats, latency_stats, categories = ["Fast", "Thinking"]
             if success == reps: val = 1
             elif success > reps / 2: val = 2
             elif success > 0: val = 3
-            else:
-                if row['warning'] > reps / 2: val = 4
-                elif pd.notna(row['exec_ok']) and row['exec_ok'] > reps / 2: val = 6
-                else: val = 5
+            elif row['wrong_warnings']>0: val = 6
+            elif row['warning'] > 0: val = 4
+            else: val = 5
             
             target_cat_idx = cat_to_idx.get(row['processing_type'].lower())
             if target_cat_idx is not None:
                 catg_matx[target_cat_idx][idx, i] = val
 
-    colors = ['#1e1e1e', '#1b5e20', '#2ecc71', '#c0ca33', '#f1c40f', '#e74c3c', '#e67e22']
+    colors = ['#1e1e1e', '#1b5e20', "#36a162", "#30cb1e", '#f1c40f', '#e74c3c', '#e67e22']
     cmap = plt.matplotlib.colors.ListedColormap(colors)
     
     title_colors = ['#2ecc71', '#f1c40f', '#3498db', '#9b59b6', '#e67e22']
@@ -166,11 +165,12 @@ def create_dashboard(df, stats, latency_stats, categories = ["Fast", "Thinking"]
     # Legends
     patches = [
         mpatches.Patch(color='#1b5e20', label='100% Pass'),
-        mpatches.Patch(color='#2ecc71', label='>50% Pass'),
-        mpatches.Patch(color='#c0ca33', label='Part. Pass'),
+        mpatches.Patch(color='#36a162', label='>50% Pass'),
+        mpatches.Patch(color='#30cb1e', label='Part. Pass'),
         mpatches.Patch(color='#e74c3c', label='Fail'),
-        mpatches.Patch(color='#e67e22', label='Logic OK'),
-        mpatches.Patch(color='#f1c40f', label='Fail+Warn')
+        mpatches.Patch(color='#f1c40f', label='Fail+Warn'),
+        mpatches.Patch(color='#e67e22', label='Wrong Warn')
+        
     ]
     fig.legend(handles=patches, loc='lower center', bbox_to_anchor=(0.5, 0.18), ncol=6, fontsize=10)
 
@@ -182,7 +182,7 @@ def create_dashboard(df, stats, latency_stats, categories = ["Fast", "Thinking"]
         if m_df.empty: return "0 / 0 / 0"
         t_100 = (m_df['success_count'] == m_df['repeats']).sum()
         t_part = ((m_df['success_count'] > 0) & (m_df['success_count'] < m_df['repeats'])).sum()
-        return f"{t_100} / {t_part} / {len(m_df)}"
+        return f"{t_100} / {t_part+t_100} / {len(m_df)}"
 
     summary_parts = [f"{cat.upper()}: {get_summary(cat)}" for cat in categories]
     summary_text = "GLOBAL (100% / Partial / Total)\n" + "   |   ".join(summary_parts)
@@ -223,7 +223,7 @@ def recalculate_stats(full_df, categories):
             
             key = f"{suite}_{cat.lower()}"
             suite_stats[key] = {
-                'display': f"{pass_100}/{pass_partial}/{total_tests}",
+                'display': f"{pass_100}/{pass_partial+pass_100}/{total_tests}",
                 'warn_info': f"W: {warn_rate:.0f}% | WW: {wrong_warn_rate:.0f}%"
             }
     # Latency calculation

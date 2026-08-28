@@ -209,6 +209,7 @@ def run_benchmarks(target_suites: list = None, limit: int = None, mode_filter: s
                     "intent": test['expected_intent'],
                     "format_ok": agg_format_ok,
                     "exec_ok": agg_exec_ok if agg_exec_ok is not None else "",
+                    "success_count": agg_success_attempts,
                     "warning": agg_warnings,
                     "wrong_warnings": agg_wrong_warnings,
                     "repeats": REPEATS
