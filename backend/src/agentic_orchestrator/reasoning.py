@@ -5,14 +5,39 @@ from .prompts import PromptLibrary as PrLib
 from ..context_manager.kv_cache import KVCacheManager
 
 class ReasoningEngine:
-    def __init__(self, engine, validator):
+    def __init__(self, engine, validator, lock: asyncio.Lock):
         self.engine = engine
         self.validator = validator
+        self.lock = lock
         self.strategies = {
             "fast": self._fast_mode,
             "thinking": self._thinking_mode
         }
         self.kv_cache = KVCacheManager(self.engine)
+
+    # Safe async execution for static generation
+    async def _generate_safe(self, prompt: str, max_tokens: int = 2048) -> str:
+        async with self.lock:
+            res = await asyncio.to_thread(self.engine.generate, prompt, max_tokens=max_tokens)
+        return res["text"].strip()
+
+    # Non-blocking async wrapper for synchronous stream
+    async def _stream_safe(self, prompt: str):
+        loop = asyncio.get_running_loop()
+        async with self.lock:
+            stream = self.engine.generate_stream(prompt)
+            
+            def safe_next():
+                try:
+                    return next(stream)
+                except StopIteration:
+                    return None
+                    
+            while True:
+                token = await loop.run_in_executor(None, safe_next)
+                if token is None:
+                    break
+                yield token
 
     def _extract_code(self, text: str) -> str:
         blocks = re.findall(r'```(?:\w+)?\s*(.*?)\s*```', text, re.DOTALL)
@@ -42,7 +67,7 @@ class ReasoningEngine:
         
         yield json.dumps({"type": "start_content"}) + "\n"
         full_text = ""
-        for token in self.engine.generate_stream(prompt):
+        async for token in self._stream_safe(prompt):
             full_text += token
             yield json.dumps({"type": "chunk", "content": token}) + "\n"
         
@@ -61,31 +86,31 @@ class ReasoningEngine:
                 yield json.dumps({"type": "status", "content": "Extracting facts..."}) + "\n"
                 self.kv_cache.load_state(state_id)
                 ext_prompt = f"{base_prefix}<|im_start|>user\n{PrLib.TEXT_EXTRACT}\nQuery: {query}<|im_end|>\n<|im_start|>assistant\n"
-                facts = self.engine.generate(ext_prompt, max_tokens=150)["text"].strip()
+                facts = await self._generate_safe(ext_prompt, max_tokens=150)
 
                 yield json.dumps({"type": "status", "content": "Drafting response..."}) + "\n"
                 self.kv_cache.load_state(state_id)
                 draft_prompt = f"{base_prefix}<|im_start|>user\n{PrLib.TEXT_DRAFT}\nFacts:\n{facts}\nQuery: {query}<|im_end|>\n<|im_start|>assistant\n"
-                draft = self.engine.generate(draft_prompt, max_tokens=500)["text"].strip()
+                draft = await self._generate_safe(draft_prompt, max_tokens=500)
 
                 yield json.dumps({"type": "status", "content": "Finalizing..."}) + "\n"
                 self.kv_cache.load_state(state_id)
                 final_prompt = f"{base_prefix}<|im_start|>user\n{PrLib.TEXT_FINAL}\nDraft:\n{draft}<|im_end|>\n<|im_start|>assistant\n"
                 
                 yield json.dumps({"type": "start_content"}) + "\n"
-                for token in self.engine.generate_stream(final_prompt):
+                async for token in self._stream_safe(final_prompt):
                     yield json.dumps({"type": "chunk", "content": token}) + "\n"
 
             elif intent == 2:
                 yield json.dumps({"type": "status", "content": "Analyzing signature..."}) + "\n"
                 self.kv_cache.load_state(state_id)
                 sig_prompt = f"{base_prefix}<|im_start|>user\n{PrLib.CODE_INTERFACE}\nTask: {query}<|im_end|>\n<|im_start|>assistant\n"
-                signature = self.engine.generate(sig_prompt, max_tokens=50)["text"].strip()
+                signature = await self._generate_safe(sig_prompt, max_tokens=50)
 
                 yield json.dumps({"type": "status", "content": "Planning algorithm..."}) + "\n"
                 self.kv_cache.load_state(state_id)
                 plan_prompt = f"{base_prefix}<|im_start|>user\n{PrLib.CODE_PLAN}\nSignature: {signature}\nTask: {query}<|im_end|>\n<|im_start|>assistant\n"
-                plan = self.engine.generate(plan_prompt, max_tokens=150)["text"].strip()
+                plan = await self._generate_safe(plan_prompt, max_tokens=150)
 
                 yield json.dumps({"type": "status", "content": "Writing code..."}) + "\n"
                 self.kv_cache.load_state(state_id)
@@ -93,7 +118,7 @@ class ReasoningEngine:
                 
                 yield json.dumps({"type": "start_content"}) + "\n"
                 full_text = ""
-                for token in self.engine.generate_stream(code_prompt):
+                async for token in self._stream_safe(code_prompt):
                     full_text += token
                     yield json.dumps({"type": "chunk", "content": token}) + "\n"
 
@@ -101,7 +126,7 @@ class ReasoningEngine:
                 yield json.dumps({"type": "status", "content": "Analyzing environment..."}) + "\n"
                 self.kv_cache.load_state(state_id)
                 env_prompt = f"{base_prefix}<|im_start|>user\n{PrLib.CLI_ANALYSIS}\nTask: {query}<|im_end|>\n<|im_start|>assistant\n"
-                analysis = self.engine.generate(env_prompt, max_tokens=50)["text"].strip()
+                analysis = await self._generate_safe(env_prompt, max_tokens=50)
 
                 yield json.dumps({"type": "status", "content": "Generating command..."}) + "\n"
                 self.kv_cache.load_state(state_id)
@@ -109,7 +134,7 @@ class ReasoningEngine:
                 
                 yield json.dumps({"type": "start_content"}) + "\n"
                 full_text = ""
-                for token in self.engine.generate_stream(cmd_prompt):
+                async for token in self._stream_safe(cmd_prompt):
                     full_text += token
                     yield json.dumps({"type": "chunk", "content": token}) + "\n"
 

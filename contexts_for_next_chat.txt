@@ -1,65 +1,50 @@
-Project Essence
+**Project Essence**
 
-A local AI programming assistant built as a VS Code
-extension.
+A local AI programming assistant built as a VS Code extension.
 
-  - Resources: Optimized for entry-level hardware (2GB VRAM, 8GB RAM). Utilizes
-    quantized Qwen 2.5 Coder 1.5B via llama.cpp with a restricted context window
-    (2048 n_ctx) and reduced batch size (128 n_batch) for CUDA stability.
-  - Key Features: Real-time streaming chat, Agentic Thinking workflows,
-    concurrency management for shared GPU access, and human-in-the-loop terminal
-    execution.
-  - VRAM & Context Management: Solved the 2048 token bottleneck by implementing a prioritized context stack: (1) System Instructions, (2) Current User Query + File Context, (3) Sliding History Window.
+* **Resources:** Optimized for entry-level hardware (2GB VRAM, 8GB RAM). Utilizes quantized Qwen 2.5 Coder 1.5B via llama.cpp with a restricted context window (2048 `n_ctx`) and reduced batch size (128 `n_batch`) for CUDA stability.
+* **Key Features:** Real-time streaming chat, structured multi-step Thinking workflows using KV Cache state saving, non-blocking concurrency management for shared GPU access, and human-in-the-loop terminal execution.
+* **VRAM & Context Management:** Solved the 2048 token bottleneck by implementing a prioritized context stack and utilizing native `llama.cpp` KV Cache state saving. This allows for complex, multi-step reasoning without evicting the original file context or query from memory.
 
-Class Responsibilities
+---
 
-Frontend (VS Code Extension - TypeScript):
-  - chat_view.ts (ChatViewProvider): Manages the Webview UI. Implements
-    JSON-stream buffering (protection against fragmented chunks), passes the
-    workspace directory path to the backend, and handles the AbortController for
-    safe generation interruption.
-  - ghost_text.ts (GhostTextProvider): Provides inline code completions.
-    Operates via the backend's request queue, functioning alongside the chat.
-  - Webview Script: Handles real-time markdown rendering and interactive UI
-    elements like Accept/Reject buttons for terminal commands.
+**Class Responsibilities**
 
-Backend (FastAPI - Python):
-- engine/llm.py (LLMEngine): The core engine. A wrapper for llama.cpp optimized for low-resource environments (2GB VRAM). Configured with a 2048 context window (n_ctx) and reduced batch size (n_batch=128) for CUDA stability.
-- agentic_orchestrator/orchestrator.py (Orchestrator): The "Managing Director." Handles the request lifecycle: query preprocessing (cleaning/translation), file context aggregation, technical Goal Analysis, and high-level routing between modules.
-- agentic_orchestrator/reasoning.py (ReasoningEngine): The "Thinker." Implements various reasoning strategies (Fast Mode, Recursive Thinking, Planning, Reflection-Refine). Manages iterative attempt cycles and intent-specific logic (Learn, Code, Terminal).
-- agentic_orchestrator/validator.py (Validator): The "Critic." Provides dual-stage verification: static code analysis (via ast.parse) and LLM-based logical verification to ensure the output meets the defined Goal.
-- agentic_orchestrator/prompts.py (PromptLibrary): A centralized repository for all system instructions. Ensures persona consistency and allows for rapid tuning of AI behavior without modifying core logic.
-- context_manager/manager.py (ContextManager): The "Memory Manager." Implements an intelligent sliding window for dialogue history. Strictly enforces character limits (~8000 chars) to prevent context overflow and maintain 2048 n_ctx stability.
-- context_manager/file_processor.py (FileProcessor): Smart contextualization system. Instead of loading raw files, it performs "Structural Extraction" (code signatures/function names) or "Semantic Summarization" for large files to preserve context within token limits.
-- executor/tools.py (ToolExecutor): Executes terminal commands within the user's specific workspace context, supporting human-in-the-loop verification (Accept/Reject).
+**Frontend (VS Code Extension - TypeScript):**
 
-Current State
+* **`chat_view.ts` (ChatViewProvider):** Manages the Webview UI. Implements JSON-stream buffering (protection against fragmented chunks), passes the workspace directory path to the backend, and handles the `AbortController` for safe generation interruption.
+* **`ghost_text.ts` (GhostTextProvider):** Provides inline code completions. Operates via the backend's request queue, functioning alongside the chat.
+* **`Webview Script`:** Handles real-time markdown rendering and interactive UI elements like Accept/Reject buttons for terminal commands.
 
-An Agentic Reasoning Pipeline is implemented, allowing the 1.5B model to solve
-complex tasks through self-critique:
+**Backend (FastAPI - Python):**
 
-1.  Concurrency Safety (GPU Locking): Implemented a locking mechanism
-    (asyncio.Lock). Requests from Ghost Text and Chat are queued, preventing
-    CUDA crashes during simultaneous VRAM access.
-2.  Fast Mode: Direct response generation for simple questions and quick
-    instructions.
-3.  Thinking Mode (Recursive Chain-of-Thought):
-      - Goal Analysis: The model first formulates a concise goal to maintain
-        "focus" throughout the entire cycle.
-      - Iterative Critique: Every response is verified (logically or via
-        ast.parse). If the result fails to meet the goal, the error reason is
-        fed back into the next iteration (up to 3 attempts).
-      - Code Assembly: For coding tasks, the system generates fragments based on
-        a plan. A final "Architect" stage assembles these fragments into a
-        single file, removing duplicate imports and functions.
-      - Attempt Transparency: The UI displays all reasoning cycles and attempts
-        separated by headers, allowing the user to compare different versions.
-4.  Robust Streaming: The frontend utilizes a text buffer to collect fragmented
-    JSON packets, ensuring smooth text rendering even during unstable generation
-    speeds.
-5.  Safe Terminal: Commands are generated based on environment constraints,
-    displayed for user verification, and executed strictly within the project's
-    working directory.
+* **`engine/llm.py` (LLMEngine):** The core engine wrapper for `llama.cpp`. Manages the 2048 context window, exposes C-API methods for KV state saving/loading (`save_state`/`load_state`), and utilizes an internal `asyncio.Lock` with thread delegation to prevent FastAPI event loop blocking during concurrent VRAM access.
+* **`agentic_orchestrator/orchestrator.py` (Orchestrator):** The "Managing Director." Handles the request lifecycle: query preprocessing, file context aggregation, and high-level routing.
+* **`agentic_orchestrator/reasoning.py` (ReasoningEngine):** The "Thinker." Implements Fast Mode and Thinking Mode. Orchestrates deterministic, multi-step pipelines (e.g., Extract -> Draft -> Finalize) while manipulating the KV Cache to maintain context. Uses safe asynchronous generators for streaming.
+* **`agentic_orchestrator/prompts.py` (PromptLibrary):** A centralized repository for all system instructions. Ensures persona consistency and precise JSON templates for reasoning steps.
+* **`context_manager/kv_cache.py` (KVCacheManager):** Manages saving and loading of the model's KV Cache state in RAM. Reuses prefilled context (files, base instructions) across multiple independent reasoning steps to save tokens and execution time.
+* **`context_manager/manager.py` (ContextManager):** Implements an intelligent sliding window for dialogue history to strictly enforce character limits and maintain stability.
+* **`context_manager/file_processor.py` (FileProcessor):** Smart contextualization system. Performs "Structural Extraction" or "Semantic Summarization" for large files to preserve context within token limits.
+* **`executor/tools.py` (ToolExecutor):** Executes terminal commands within the user's specific workspace context, supporting human-in-the-loop verification (Accept/Reject).
+
+---
+
+**Current State**
+
+A highly optimized deterministic Reasoning Pipeline is implemented, replacing heavy self-critique loops to stay within the strict 2048 token limit:
+
+1. **Concurrency & Streaming Safety:** GPU access is protected by an `asyncio.Lock` embedded directly in `LLMEngine`. Streaming utilizes `run_in_executor` with safe generator iteration (catching `StopIteration`) to ensure the FastAPI event loop remains responsive to UI and Ghost Text requests while generating tokens.
+2. **Fast Mode:** Direct, single-pass response generation for simple questions and immediate instructions.
+3. **Thinking Mode (KV Cache Pipeline):**
+* **State Saving:** The base context (system prompts, attached files, workspace) is evaluated once. Its KV Cache is saved to RAM, preventing truncation during complex task resolution.
+* **Deterministic Text Pipeline:** Extract Facts -> Draft Solution -> Finalize concise response.
+* **Deterministic Code Pipeline:** Define Interface/Signature -> Plan Algorithm -> Write Code.
+* **Deterministic Terminal Pipeline:** Analyze Environment -> Generate specific command.
+* **Token Efficiency:** Intermediate reasoning steps use tiny, strictly focused prompts layered on top of the saved KV Cache, drastically improving logical accuracy without overloading VRAM.
+
+
+4. **Robust Streaming:** The frontend utilizes a text buffer to collect fragmented JSON packets, ensuring smooth text rendering even during fluctuating generation speeds.
+5. **Safe Terminal:** Commands are generated based on environment constraints, displayed for user verification, and executed strictly within the project's working directory.
 
 Testing System (Benchmarks)
 

@@ -14,10 +14,10 @@ class Orchestrator:
         self.context_mgr = ContextManager()
         self.file_proc = FileProcessor()
         self.validator = Validator()
-        self.reasoner = ReasoningEngine(self.engine, self.validator)
         self.pending_command = None
         self.workspace_path = None
         self.lock = asyncio.Lock()
+        self.reasoner = ReasoningEngine(self.engine, self.validator, self.lock)
 
     def preprocess_query(self, query: str) -> str:
         prompt = f"<|im_start|>system\n{PrLib.PREPROCESS_QUERY}<|im_end|>\n" \
