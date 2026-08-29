@@ -22,24 +22,24 @@ class PromptLibrary:
                         r" NEVER hardcode absolute paths like 'C:\Users\...' in the code. "
                         "Always use relative paths or function parameters."
                         "Use context of attached files if it provided.")
-    THINKING_LEARN = "Provide a concise, expert answer. Focus on facts."
 
-
-
-    STRATEGY_PLANNING = (
-        "You are a technical architect. Break down the task into 1-4 logical steps. "
-        "Output ONLY a JSON array of strings."
-    )
-    STRATEGY_DRAFT = (
-        "Provide a concise technical draft (pseudo-code or logic steps). "
-        "Focus on algorithms. No actual code yet."
-    )
-    STRATEGY_REFINE = (
-        "Write a production-ready, efficient Python solution. "
-        "Include all imports. Return ONLY code."
-    )
-    REVIEWER_SYSTEM = (
-        "Check for hallucinations and logic errors. "
-        "If perfect, output 'CLEAR'. Otherwise, describe the error briefly."
-    )
     
+
+    BASE_THINKING_SYSTEM = "You are a logical orchestrator. Rely exclusively on the provided context."
+    
+
+    TEXT_EXTRACT = "Extract hard facts, rules, and constraints from the query and context. " \
+                    "Output ONLY a concise bulleted list."
+    TEXT_DRAFT = "Using the provided facts, write a comprehensive draft solution to the query."
+    TEXT_FINAL = "Rewrite the draft into a concise, direct, and final answer. No fluff."
+
+    CODE_INTERFACE = "Identify the required input parameters and return type for the task." \
+                    "Output ONLY the function or script signature."
+    CODE_PLAN = "Write a 3-4 step algorithm in plain text for this signature. DO NOT write code."
+    CODE_WRITE = "Write ONLY the python code implementing the provided Plan and Signature. " \
+                    "Enclose in a markdown block."
+
+    CLI_ANALYSIS = "Identify the specific tool (e.g., git, pip) and target action for the task." \
+                    " Output ONLY a short summary."
+    CLI_GENERATE = "Create the exact terminal command for the target action. " \
+                    "Output ONLY the command in a markdown block. No explanations."

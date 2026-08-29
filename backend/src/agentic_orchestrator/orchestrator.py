@@ -17,6 +17,7 @@ class Orchestrator:
         self.reasoner = ReasoningEngine(self.engine, self.validator)
         self.pending_command = None
         self.workspace_path = None
+        self.lock = asyncio.Lock()
 
     def preprocess_query(self, query: str) -> str:
         prompt = f"<|im_start|>system\n{PrLib.PREPROCESS_QUERY}<|im_end|>\n" \
@@ -77,7 +78,7 @@ class Orchestrator:
         return "Command rejected."
 
     async def process_completion(self, prompt_text: str) -> dict:
-        """Inline completions (Ghost Text)."""
-        prompt = f"<|fim_prefix|>{prompt_text}<|fim_suffix|><|fim_middle|>"
-        result = await asyncio.to_thread(self.engine.generate, prompt, max_tokens=32, stop=["<|im_end|>", "\n\n"])
-        return result
+            prompt = f"<|fim_prefix|>{prompt_text}<|fim_suffix|><|fim_middle|>"
+            async with self.lock:
+                result = await asyncio.to_thread(self.engine.generate, prompt, max_tokens=32, stop=["<|im_end|>", "\n\n"])
+            return result

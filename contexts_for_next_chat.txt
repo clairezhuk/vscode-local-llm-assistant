@@ -9,11 +9,11 @@ extension.
   - Key Features: Real-time streaming chat, Agentic Thinking workflows,
     concurrency management for shared GPU access, and human-in-the-loop terminal
     execution.
+  - VRAM & Context Management: Solved the 2048 token bottleneck by implementing a prioritized context stack: (1) System Instructions, (2) Current User Query + File Context, (3) Sliding History Window.
 
 Class Responsibilities
 
 Frontend (VS Code Extension - TypeScript):
-
   - chat_view.ts (ChatViewProvider): Manages the Webview UI. Implements
     JSON-stream buffering (protection against fragmented chunks), passes the
     workspace directory path to the backend, and handles the AbortController for
@@ -24,17 +24,14 @@ Frontend (VS Code Extension - TypeScript):
     elements like Accept/Reject buttons for terminal commands.
 
 Backend (FastAPI - Python):
-
-  - llm.py (LLMEngine): A wrapper for llama_cpp. Configured for thread-safe
-    operations (atomic/streaming). Optimized for low-memory environments via
-    n_batch and n_gpu_layers parameters.
-  - orchestrator.py (Orchestrator): The central logic controller. Manages GPU
-    access via asyncio.Lock, preventing CUDA Access Violation errors. Implements
-    self-correction cycles and multi-stage planning.
-  - planner.py (TaskPlanner): Deconstructs complex coding tasks into logical
-    steps, minimizing model "hallucinations" through context segmentation.
-  - tools.py (ToolExecutor): Executes terminal commands within the user's
-    specific workspace_path context.
+- engine/llm.py (LLMEngine): The core engine. A wrapper for llama.cpp optimized for low-resource environments (2GB VRAM). Configured with a 2048 context window (n_ctx) and reduced batch size (n_batch=128) for CUDA stability.
+- agentic_orchestrator/orchestrator.py (Orchestrator): The "Managing Director." Handles the request lifecycle: query preprocessing (cleaning/translation), file context aggregation, technical Goal Analysis, and high-level routing between modules.
+- agentic_orchestrator/reasoning.py (ReasoningEngine): The "Thinker." Implements various reasoning strategies (Fast Mode, Recursive Thinking, Planning, Reflection-Refine). Manages iterative attempt cycles and intent-specific logic (Learn, Code, Terminal).
+- agentic_orchestrator/validator.py (Validator): The "Critic." Provides dual-stage verification: static code analysis (via ast.parse) and LLM-based logical verification to ensure the output meets the defined Goal.
+- agentic_orchestrator/prompts.py (PromptLibrary): A centralized repository for all system instructions. Ensures persona consistency and allows for rapid tuning of AI behavior without modifying core logic.
+- context_manager/manager.py (ContextManager): The "Memory Manager." Implements an intelligent sliding window for dialogue history. Strictly enforces character limits (~8000 chars) to prevent context overflow and maintain 2048 n_ctx stability.
+- context_manager/file_processor.py (FileProcessor): Smart contextualization system. Instead of loading raw files, it performs "Structural Extraction" (code signatures/function names) or "Semantic Summarization" for large files to preserve context within token limits.
+- executor/tools.py (ToolExecutor): Executes terminal commands within the user's specific workspace context, supporting human-in-the-loop verification (Accept/Reject).
 
 Current State
 
@@ -90,3 +87,43 @@ Technical Constraints & Solutions
   - Instruction Adherence: Addressed by strictly limiting tokens in planning
     stages and using specialized system prompts to prevent the 1.5B model from
     looping or repeating instructions.
+
+Data Analysis System
+
+A specialized evaluation pipeline (analysis.py) that transforms benchmark 
+CSV logs into a 12-file diagnostic report stored in versioned 
+results/analysis/analysis_vN/ folders.
+
+  - 0_text_stats.txt: Detailed log of per-mode performance. Reports 
+    Full/Partial test counts, attempt-level success %, Warning Efficiency 
+    (Correct Warnings / Total Fails), and Interference (Wrong Warnings / 
+    Total Successes).
+  - 1_general_heatmap.png: Categorical grid showing pass levels (100%, >50%, 
+    Partial, Fail) and self-correction markers. Includes a numeric Y-axis 
+    for all test indices, fine-grained grid lines, and a color-coded legend.
+  - 2_percentage_heatmap.png: Continuous gradient (Red-Yellow-Green) mapping 
+    exact success ratios. Uses NaN-masking to keep cells for non-existent 
+    tests black (background color).
+  - 3_bars_by_suite.png: Success ratio comparison (0.0–1.0) grouped by 
+    test suite blocks (e.g., Algorithms, CLI) using a fixed mode order.
+  - 4_bars_by_intent.png: Success ratio comparison segmented by request 
+    complexity: Theory (1), Coding (2), and CLI (3).
+  - 5_latency_by_mode.png: Boxplots showing processing time (time_s) 
+    distribution per mode to identify median speed and VRAM-related outliers.
+  - 6_latency_by_suite.png: Segmented boxplots evaluating how different 
+    thematic blocks (e.g., Logic vs. Shell) impact generation duration.
+  - 7_latency_by_intent.png: Boxplots comparing processing time specifically 
+    across Theory, Coding, and CLI tasks.
+  - 8_conf_matrix_all.png: Warning Confusion Matrix for all tests. Maps 
+    TP (Warn/Fail), TN (NoWarn/Pass), FP (Warn/Pass), and FN (NoWarn/Fail).
+  - 9_conf_matrix_coding.png: Specialized Confusion Matrix identical to #8 
+    but isolated to Intent 2 (Coding) to measure code-specific critique accuracy.
+  - 10_warning_proportions.png: Bi-directional bar chart. Positive Y-axis 
+    (Blue-Green) shows Correct Warning rates; negative Y-axis (Orange-Red) 
+    shows False Positive (Wrong Warning) rates per suite.
+  - 11_response_effectiveness.png: "Model Honesty" chart. Measures the 
+    rate of attempts that were either correct OR correctly flagged as wrong 
+    by the internal critique logic.
+
+All visualizations strictly follow the hierarchy: 
+Fast -> Planning -> Chain of Draft -> Reflection_refine.

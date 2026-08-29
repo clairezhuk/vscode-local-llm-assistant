@@ -1,5 +1,5 @@
 import os
-from llama_cpp import Llama
+from llama_cpp import Llama, LlamaState
 
 MODEL_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../models/qwen2.5-coder-1.5b-instruct-q4_k_m.gguf"))
 # MODEL_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../models/qwen2.5-coder-3b-instruct-q2_k.gguf"))
@@ -14,6 +14,12 @@ class LLMEngine:
         #     n_batch=128,               
         #     verbose=False
         # )
+
+    def save_state(self) -> LlamaState:
+        return self.llm.save_state()
+
+    def load_state(self, state: LlamaState):
+        self.llm.load_state(state)
 
     def generate(self, prompt: str, max_tokens: int = 2048, stop: list = None, temp: float = 0.2) -> dict:
         response = self.llm(prompt, 

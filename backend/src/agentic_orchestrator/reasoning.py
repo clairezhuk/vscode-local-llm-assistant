@@ -2,16 +2,17 @@ import json
 import re
 import asyncio
 from .prompts import PromptLibrary as PrLib
+from ..context_manager.kv_cache import KVCacheManager
 
 class ReasoningEngine:
     def __init__(self, engine, validator):
         self.engine = engine
         self.validator = validator
-        self.max_retries = 3
         self.strategies = {
             "fast": self._fast_mode,
             "thinking": self._thinking_mode
         }
+        self.kv_cache = KVCacheManager(self.engine)
 
     def _extract_code(self, text: str) -> str:
         blocks = re.findall(r'```(?:\w+)?\s*(.*?)\s*```', text, re.DOTALL)
@@ -50,72 +51,70 @@ class ReasoningEngine:
             yield json.dumps({"type": "command_proposal", "command": cmd}) + "\n"
 
     async def _thinking_mode(self, query: str, context: str, goal: str, intent: int, workspace: str):
-        attempts = 0
-        critique = ""
-        success = False
-
-        yield json.dumps({"type": "status", "content": f"Goal: {goal}"}) + "\n"
-        yield json.dumps({"type": "start_content"}) + "\n"
-
-        while attempts < self.max_retries and not success:
-            attempts += 1
-            yield json.dumps({"type": "status", "content": f"Cycle {attempts}/{self.max_retries}..."}) + "\n"
-            yield json.dumps({"type": "chunk", "content": f"\n\n---\n### Attempt {attempts}\n"}) + "\n"
-
-            if intent == 1: # LEARN (Textual)
-                prompt = f"<|im_start|>system\n{PrLib.THINKING_LEARN}\n{critique}<|im_end|>\n" \
-                         f"<|im_start|>user\nContext:\n{context}\nGoal: {goal}<|im_end|>\n<|im_start|>assistant\n"
-                
-                full_ans = ""
-                for token in self.engine.generate_stream(prompt, temp=0.3):
-                    full_ans += token
-                    yield json.dumps({"type": "chunk", "content": token}) + "\n"
-                
-                success = True # Для тексту зазвичай 1 спроба, або додати LLM верифікацію
-
-            elif intent == 2: # CODE
-                # Вибір внутрішньої стратегії (поки прямий виклик refine)
-                final_code = ""
-                async for res in self._reflection_refine(query, context, goal, critique):
-                    final_code = res
-                
-                yield json.dumps({"type": "chunk", "content": f"\n```python\n{final_code}\n```\n"}) + "\n"
-                
-                err = self.validator.static_check(final_code)
-                if err != "CLEAR":
-                    critique = f"Fix syntax error: {err}"
-                else:
-                    is_ok = await self.validator.llm_verify(self.engine, goal, final_code)
-                    if is_ok: success = True
-                    else: critique = "Code logic is incomplete for the goal."
-
-            elif intent == 3: # TERMINAL
-                prompt = f"<|im_start|>system\n{PrLib.FAST_MODE_SYSTEM}. Generate ONLY terminal command.\n{critique}<|im_end|>\n" \
-                         f"<|im_start|>user\nContext:\n{context}\nTask: {query}<|im_end|>\n<|im_start|>assistant\n"
-                
-                cmd_raw = await asyncio.to_thread(self.engine.generate, prompt)
-                cmd = self._extract_code(cmd_raw["text"])
-                
-                yield json.dumps({"type": "chunk", "content": f"Proposed: `{cmd}`"}) + "\n"
-                yield json.dumps({"type": "command_proposal", "command": cmd}) + "\n"
-                success = True
-
-        if not success:
-            yield json.dumps({"type": "chunk", "content": "\n\n> ⚠️ **Verification failed after max retries.**"}) + "\n"
-        yield json.dumps({"type": "end"}) + "\n"
-
-    # Внутрішні стратегії (Refine, Draft, Planning)
-    async def _reflection_refine(self, query, context, goal, critique):
-        prompt = f"<|im_start|>system\n{PrLib.STRATEGY_REFINE}\n{critique}<|im_end|>\n" \
-                 f"<|im_start|>user\nGoal: {goal}\nContext:\n{context}<|im_end|>\n<|im_start|>assistant\n"
+        yield json.dumps({"type": "status", "content": "Initializing thinking context..."}) + "\n"
         
-        res = await asyncio.to_thread(self.engine.generate, prompt, max_tokens=1024)
-        yield self._extract_code(res["text"])
+        base_prefix = f"<|im_start|>system\n{PrLib.BASE_THINKING_SYSTEM}\nContext:\n{context}<|im_end|>\n"
+        state_id = self.kv_cache.create_state(base_prefix)
 
-    async def _chain_of_draft(self, query, context, goal, critique):
-        # Аналогічна реалізація з використанням PrLib.STRATEGY_DRAFT
-        pass
+        try:
+            if intent == 1:
+                yield json.dumps({"type": "status", "content": "Extracting facts..."}) + "\n"
+                self.kv_cache.load_state(state_id)
+                ext_prompt = f"{base_prefix}<|im_start|>user\n{PrLib.TEXT_EXTRACT}\nQuery: {query}<|im_end|>\n<|im_start|>assistant\n"
+                facts = self.engine.generate(ext_prompt, max_tokens=150)["text"].strip()
 
-    async def _planning_logic(self, query, context, goal, critique):
-        # Аналогічна реалізація з використанням PrLib.STRATEGY_PLANNING
-        pass
+                yield json.dumps({"type": "status", "content": "Drafting response..."}) + "\n"
+                self.kv_cache.load_state(state_id)
+                draft_prompt = f"{base_prefix}<|im_start|>user\n{PrLib.TEXT_DRAFT}\nFacts:\n{facts}\nQuery: {query}<|im_end|>\n<|im_start|>assistant\n"
+                draft = self.engine.generate(draft_prompt, max_tokens=500)["text"].strip()
+
+                yield json.dumps({"type": "status", "content": "Finalizing..."}) + "\n"
+                self.kv_cache.load_state(state_id)
+                final_prompt = f"{base_prefix}<|im_start|>user\n{PrLib.TEXT_FINAL}\nDraft:\n{draft}<|im_end|>\n<|im_start|>assistant\n"
+                
+                yield json.dumps({"type": "start_content"}) + "\n"
+                for token in self.engine.generate_stream(final_prompt):
+                    yield json.dumps({"type": "chunk", "content": token}) + "\n"
+
+            elif intent == 2:
+                yield json.dumps({"type": "status", "content": "Analyzing signature..."}) + "\n"
+                self.kv_cache.load_state(state_id)
+                sig_prompt = f"{base_prefix}<|im_start|>user\n{PrLib.CODE_INTERFACE}\nTask: {query}<|im_end|>\n<|im_start|>assistant\n"
+                signature = self.engine.generate(sig_prompt, max_tokens=50)["text"].strip()
+
+                yield json.dumps({"type": "status", "content": "Planning algorithm..."}) + "\n"
+                self.kv_cache.load_state(state_id)
+                plan_prompt = f"{base_prefix}<|im_start|>user\n{PrLib.CODE_PLAN}\nSignature: {signature}\nTask: {query}<|im_end|>\n<|im_start|>assistant\n"
+                plan = self.engine.generate(plan_prompt, max_tokens=150)["text"].strip()
+
+                yield json.dumps({"type": "status", "content": "Writing code..."}) + "\n"
+                self.kv_cache.load_state(state_id)
+                code_prompt = f"{base_prefix}<|im_start|>user\n{PrLib.CODE_WRITE}\nSignature:\n{signature}\nPlan:\n{plan}<|im_end|>\n<|im_start|>assistant\n"
+                
+                yield json.dumps({"type": "start_content"}) + "\n"
+                full_text = ""
+                for token in self.engine.generate_stream(code_prompt):
+                    full_text += token
+                    yield json.dumps({"type": "chunk", "content": token}) + "\n"
+
+            elif intent == 3:
+                yield json.dumps({"type": "status", "content": "Analyzing environment..."}) + "\n"
+                self.kv_cache.load_state(state_id)
+                env_prompt = f"{base_prefix}<|im_start|>user\n{PrLib.CLI_ANALYSIS}\nTask: {query}<|im_end|>\n<|im_start|>assistant\n"
+                analysis = self.engine.generate(env_prompt, max_tokens=50)["text"].strip()
+
+                yield json.dumps({"type": "status", "content": "Generating command..."}) + "\n"
+                self.kv_cache.load_state(state_id)
+                cmd_prompt = f"{base_prefix}<|im_start|>user\n{PrLib.CLI_GENERATE}\nTarget: {analysis}<|im_end|>\n<|im_start|>assistant\n"
+                
+                yield json.dumps({"type": "start_content"}) + "\n"
+                full_text = ""
+                for token in self.engine.generate_stream(cmd_prompt):
+                    full_text += token
+                    yield json.dumps({"type": "chunk", "content": token}) + "\n"
+
+                cmd = self._extract_code(full_text)
+                yield json.dumps({"type": "command_proposal", "command": cmd}) + "\n"
+
+        finally:
+            self.kv_cache.clear_state(state_id)
