@@ -1,0 +1,99 @@
+
+--- ATTEMPT 1/5 FAILED ---
+REASON: Format=True, Exec=False
+AI RESPONSE:
+```python
+def can_visit_all(graph, start):
+    visited = set()
+    def dfs(node):
+        if node in visited:
+            return False
+        visited.add(node)
+        for neighbor in graph[node]:
+            if not dfs(neighbor):
+                return False
+        return True
+    
+    return dfs(start)
+```
+------------------------------
+--- ATTEMPT 2/5 FAILED ---
+REASON: Format=True, Exec=False
+AI RESPONSE:
+```python
+def can_visit_all(graph, start):
+    visited = set()
+    
+    def dfs(node):
+        if node in visited:
+            return False
+        visited.add(node)
+        for neighbor in graph[node]:
+            if not dfs(neighbor):
+                return False
+        return True
+    
+    return dfs(start)
+```
+------------------------------
+--- ATTEMPT 3/5 FAILED ---
+REASON: Format=True, Exec=False
+AI RESPONSE:
+```python
+def can_visit_all(graph, start):
+    visited = set()
+    
+    def dfs(node):
+        if node in visited:
+            return False
+        
+        visited.add(node)
+        
+        for neighbor in graph[node]:
+            if not dfs(neighbor):
+                return False
+    
+    return dfs(start)
+```
+
+This function uses Depth-First Search (DFS) to traverse the graph starting from the `start` node. It keeps track of visited nodes using a set named `visited`. If it encounters a node that has already been visited, it returns `False`, indicating that not all houses are reachable. Otherwise, it marks the current node as visited and recursively visits its neighbors. If all neighbors are reachable, the function returns `True`.
+------------------------------
+--- ATTEMPT 4/5 FAILED ---
+REASON: Format=True, Exec=False
+AI RESPONSE:
+```python
+def can_visit_all(graph, start):
+    visited = set()
+    
+    def dfs(node):
+        if node in visited:
+            return False
+        visited.add(node)
+        for neighbor in graph[node]:
+            if not dfs(neighbor):
+                return False
+        return True
+    
+    return dfs(start)
+```
+------------------------------
+--- ATTEMPT 5/5 FAILED ---
+REASON: Format=True, Exec=False
+AI RESPONSE:
+```python
+def can_visit_all(graph, start):
+    visited = set()
+    
+    def dfs(node):
+        if node in visited:
+            return False
+        
+        visited.add(node)
+        
+        for neighbor in graph[node]:
+            if not dfs(neighbor):
+                return False
+    
+    return dfs(start)
+```
+------------------------------

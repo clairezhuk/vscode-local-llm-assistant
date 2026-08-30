@@ -1,0 +1,115 @@
+
+--- ATTEMPT 2/5 FAILED ---
+REASON: Format=False, Exec=True
+AI RESPONSE:
+```python
+import heapq
+
+def dijkstra(graph, start):
+    dist = {n: float('inf') for n in graph}
+    dist[start] = 0
+    pq = [(0, start)]
+    
+    while pq:
+        d, u = heapq.heappop(pq)
+        
+        if d > dist[u]:
+            continue
+        
+        for v, weight in graph[u].items():
+            new_dist = d + weight
+            
+            if new_dist < dist[v]:
+                dist[v] = new_dist
+                heapq.heappush(pq, (new_dist, v))
+    
+    return dist
+
+# Example usage:
+graph = {
+    'A': {'B': 1, 'C': 4},
+    'B': {'A': 1, 'D': 2},
+    'C': {'A': 4, 'E': 5},
+    'D': {'B': 2, 'E': 3},
+    'E': {'C': 5, 'D': 3}
+}
+
+start_node = 'A'
+print(dijkstra(graph, start_node))
+```
+
+This code defines a function `dijkstra` that takes a graph represented as an adjacency list and a starting node. It returns the shortest distances from the start node to all other nodes using Dijkstra's algorithm. The example usage demonstrates how to use this function with a sample graph.
+------------------------------
+--- ATTEMPT 3/5 FAILED ---
+REASON: Format=False, Exec=False
+AI RESPONSE:
+```
+
+Please note that the provided code snippet is incomplete and lacks the actual graph representation. You need to define a dictionary `graph` where each key is a node and its value is another dictionary representing the neighbors of that node with their corresponding weights.
+
+Here's an example of how you might define a simple graph:
+
+```python
+graph = {
+    'A': {'B': 1, 'C': 4},
+    'B': {'A': 1, 'D': 2},
+    'C': {'A': 4, 'D': 5},
+    'D': {'B': 2, 'C': 5}
+}
+```
+
+With this graph and the `dijkstra` function defined as above, you can call it with a start node to get the shortest path distances from that node to all other nodes in the graph.
+------------------------------
+--- ATTEMPT 4/5 FAILED ---
+REASON: Format=False, Exec=False
+AI RESPONSE:
+```python
+import heapq
+
+def dijkstra(graph, start):
+    dist = {n: float('inf') for n in graph}
+    dist[start] = 0
+    pq = [(0, start)]
+    while pq:
+        d, u = heapq.heappop(pq)
+        if d > dist[u]:
+            continue
+        for v, weight in graph[u].items():
+            new_dist = d + weight
+            if new_dist < dist[v]:
+                dist[v] = new_dist
+                heapq.heappush(pq, (new_dist, v))
+    return dist
+
+# Example usage:
+graph = {
+    'A': {'B': 1, 'C': 4},
+    'B': {'A': 1, 'D': 2},
+    'C': {'A': 4, 'E': 5},
+    'D': {'B': 2, 'F': 3},
+    'E': {'C': 5, 'F': 6}
+}
+start_node = 'A'
+print(dijkstra(graph, start_node))
+```
+------------------------------
+--- ATTEMPT 5/5 FAILED ---
+REASON: Format=False, Exec=False
+AI RESPONSE:
+```python
+def dijkstra(graph, start):
+    dist = {n: float('inf') for n in graph}
+    dist[start] = 0
+    pq = [(0, start)]
+    while pq:
+        d, u = heapq.heappop(pq)
+        if d > dist[u]:
+            continue
+        for v, weight in graph[u].items():
+            new_dist = d + weight
+            if new_dist < dist[v]:
+                dist[v] = new_dist
+                heapq.heappush(pq, (new_dist, v))
+    return dist
+```
+------------------------------

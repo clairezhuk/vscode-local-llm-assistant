@@ -1,0 +1,77 @@
+
+--- ATTEMPT 1/5 FAILED ---
+REASON: Format=True, Exec=False
+AI RESPONSE:
+```python
+def extract_id(line):
+    # Split the line by spaces to get the parts before and after 'ID:'
+    parts = line.split(' ')
+    
+    # Find the index of 'ID:' in the list
+    id_index = parts.index('ID:')
+    
+    # Return the ID part, which is at index id_index + 1
+    return parts[id_index + 1]
+```
+------------------------------
+--- ATTEMPT 2/5 FAILED ---
+REASON: Format=True, Exec=False
+AI RESPONSE:
+```python
+def extract_id(line):
+    return line.split('ID:')[1].strip()
+```
+------------------------------
+--- ATTEMPT 3/5 FAILED ---
+REASON: Format=True, Exec=False
+AI RESPONSE:
+```python
+def extract_id(line):
+    # Split the line by spaces to get individual words
+    words = line.split()
+    
+    # Find the index of 'ID:'
+    id_index = words.index('ID:')
+    
+    # Extract the ID after 'ID:'
+    id_value = words[id_index + 1]
+    
+    return id_value
+
+# Example usage:
+line = "User logged in ID:44"
+print(extract_id(line))  # Output: 44
+```
+------------------------------
+--- ATTEMPT 4/5 FAILED ---
+REASON: Format=True, Exec=False
+AI RESPONSE:
+```python
+def extract_id(line):
+    # Split the line by spaces to get individual words
+    words = line.split()
+    
+    # Find the index of 'ID:'
+    id_index = words.index('ID:')
+    
+    # Extract the ID after 'ID:'
+    id_value = words[id_index + 1]
+    
+    return id_value
+```
+------------------------------
+--- ATTEMPT 5/5 FAILED ---
+REASON: Format=True, Exec=False
+AI RESPONSE:
+```python
+def extract_id(line):
+    # Split the line by spaces to get individual words
+    words = line.split()
+    
+    # Iterate through the list of words to find 'ID:'
+    for word in words:
+        if word == 'ID:':
+            # Return the next word which should be the ID number
+            return words[words.index(word) + 1]
+```
+------------------------------

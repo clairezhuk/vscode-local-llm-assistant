@@ -1,0 +1,112 @@
+[
+    {
+        "id": "L1-TX-001",
+        "description": "Definition check: Python recursion limit and exception",
+        "query": "In Python, when a recursive function exceeds the maximum allowed depth because it lacks a proper base case, the interpreter raises a specific exception to prevent a crash. What is the exact name of this exception, and what is the name of the function in the 'sys' module used to check the current maximum recursion limit? Provide your answer strictly in the following format: 'Exception: [Name], Function: sys.[name]'",
+        "context_files": [],
+        "expected_intent": 1,
+        "type": "text",
+        "metrics": {
+            "must_contain": ["RecursionError", "getrecursionlimit"]
+        }
+    },
+    {
+        "id": "L1-TX-002",
+        "description": "Algorithm selection: Dijkstra",
+        "query": "I need to find the shortest path between nodes in a graph where edges have different non-negative weights. Which specific algorithm is the standard choice for this?",
+        "context_files": [],
+        "expected_intent": 1,
+        "type": "text",
+        "metrics": {
+            "must_contain": ["Dijkstra"]
+        }
+    },
+    {
+        "id": "L1-TX-003",
+        "description": "Library selection for Data Analysis",
+        "query": "I need to perform high-performance numerical calculations and handle tabular data with missing values. Which two Python libraries are industry standards for this?",
+        "context_files": [],
+        "expected_intent": 1,
+        "type": "text",
+        "metrics": {
+            "must_contain": ["numpy", "pandas"]
+        }
+    },
+    {
+        "id": "L1-TX-004",
+        "description": "Information extraction from file: Security mechanism",
+        "query": "Based on the provided documentation, what is the primary security mechanism used for API authentication?",
+        "context_files": ["tests/assets/L1/readme_auth.md"],
+        "expected_intent": 1,
+        "type": "text",
+        "metrics": {
+            "must_contain": ["JWT", "Bearer"]
+        }
+    },
+    {
+        "id": "L1-TX-005",
+        "description": "Algorithm selection from file constraints",
+        "query": "Read the optimization task in the file. Which pathfinding algorithm should I use given that all edge weights are equal?",
+        "context_files": ["tests/assets/L1/optimization_task.txt"],
+        "expected_intent": 1,
+        "type": "text",
+        "metrics": {
+            "must_contain": ["BFS", "Breadth-First Search"]
+        }
+    },
+    {
+        "id": "L1-TX-006",
+        "description": "Library selection for audio processing from file",
+        "query": "According to the project requirements in the file, which library should be used for audio analysis and MFCC feature extraction?",
+        "context_files": ["tests/assets/L1/audio_reqs.txt"],
+        "expected_intent": 1,
+        "type": "text",
+        "metrics": {
+            "must_contain": ["librosa", "analysis"]
+        }
+    },
+    {
+        "id": "L1-TX-007",
+        "description": "Noisy prompt: External sorting",
+        "query": "siema, mam mega problem <div class='err'> mam mnostwo danych, giga bajty!! </div> i chce je posortowac ale nie mam ramu na kompie (tylko 2GB!!) 0_o... co robic? jaki algorytm do sortowania plików na dysku? pls help fast!!!!11",
+        "context_files": [],
+        "expected_intent": 1,
+        "type": "text",
+        "metrics": {
+            "must_contain": ["External", "Merge Sort"]
+        }
+    },
+    {
+        "id": "L1-TX-008",
+        "description": "Noisy prompt + Noisy file: Concurrency",
+        "query": "Znalazłem ten plik specyfikacji... <br> <br> totalny chaos tam jest. Питання: як ми маємо обробляти одночасний доступ до ресурсів згідно з нотатками в кінці файлу? Що там за термін?",
+        "context_files": ["tests/assets/L1/broken_specs.txt"],
+        "expected_intent": 1,
+        "type": "text",
+        "metrics": {
+            "must_contain": ["Mutex", "Lock"]
+        }
+    },
+    {
+        "id": "L1-TX-009",
+        "description": "Mathematical complexity task",
+        "query": "Calculate the time complexity of a recursive function that calls itself twice for every N, with a depth of N. Provide the final result in Big O notation strictly in the following format: 'Answer: O(...)'",
+        "context_files": [],
+        "expected_intent": 1,
+        "type": "text",
+        "metrics": {
+            "must_contain": ["Answer: O(2^n)"]
+        }
+    },
+    {
+        "id": "L1-TX-010",
+        "description": "Logic problem: Boolean flags",
+        "query": "We have three boolean variables: A is True, B is False, C is True. A logical expression is: (A and B) or (C and not B). What is the final result? Provide the result strictly in the format: 'Answer: True' or 'Answer: False'",
+        "context_files": [],
+        "expected_intent": 1,
+        "type": "text",
+        "metrics": {
+            "must_contain": ["Answer: True"]
+        }
+    }
+]

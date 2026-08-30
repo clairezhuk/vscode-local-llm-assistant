@@ -1,0 +1,67 @@
+
+--- ATTEMPT 1/5 FAILED ---
+REASON: Format=True, Exec=False
+AI RESPONSE:
+```python
+import re
+
+def validate_to_json(email_list):
+    result = []
+    for e in email_list:
+        if re.match(r'^\S+@\S+\.\S+$', e):
+            result.append({'email': e})
+    return result
+```
+------------------------------
+--- ATTEMPT 2/5 FAILED ---
+REASON: Format=True, Exec=False
+AI RESPONSE:
+```python
+def validate_to_json(email_list):
+    import re
+
+    result = []
+    for e in email_list:
+        if re.match(r'^\S+@\S+\.\S+$', e):
+            result.append({'email': e, 'valid': True})
+    return result
+```
+------------------------------
+--- ATTEMPT 3/5 FAILED ---
+REASON: Format=True, Exec=False
+AI RESPONSE:
+```python
+import re
+
+def validate_to_json(email_list):
+    result = []
+    for e in email_list:
+        if re.match(r'^\S+@\S+\.\S+$', e):
+            result.append({'email': e})
+    return result
+```
+------------------------------
+--- ATTEMPT 4/5 FAILED ---
+REASON: Format=True, Exec=False
+AI RESPONSE:
+```python
+import re
+
+def validate_to_json(email_list):
+    result = []
+    for e in email_list:
+        if re.match(r'^\S+@\S+\.\S+$', e):
+            result.append({'email': e, 'valid': True})
+    return result
+```
+
+This Python function `validate_to_json` takes a list of emails as input and returns a list of dictionaries. Each dictionary contains an email address and a boolean indicating whether the email is valid according to the regular expression pattern.
+------------------------------
+--- ATTEMPT 5/5 FAILED ---
+REASON: Format=True, Exec=False
+AI RESPONSE:
+```python
+def validate_to_json(email_list):
+    return [{'email': e, 'valid': result} for e, result in zip(email_list, [re.match(r'^\S+@\S+\.\S+$', e) is not None])]
+```
+------------------------------

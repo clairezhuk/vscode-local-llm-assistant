@@ -1,0 +1,7 @@
+Class: LogWorker
+Method: run()
+Logic: 
+1. Loop forever.
+2. Get item from self.queue (use .get()).
+3. If item is None, break loop.
+4. Else, append item to self.logs list.

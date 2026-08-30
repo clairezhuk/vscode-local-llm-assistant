@@ -12,9 +12,9 @@ from pathlib import Path
 API_URL = "http://127.0.0.1:8000/chat"
 PROJECT_ROOT = Path(__file__).parent.parent.absolute()
 SUITES_DIR = "suites"
-RESULTS_DIR = "results/original_1_5B_q4/3_reflection_refine"
+RESULTS_DIR = "results"
 LOGS_DIR = os.path.join(RESULTS_DIR, "logs")
-REPEATS = 3
+REPEATS = 5
 
 def extract_code(text: str) -> str:
     blocks = re.findall(r'```(?:\w+)?\s*\n?(.*?)\n?```', text, re.DOTALL | re.IGNORECASE)
@@ -106,39 +106,45 @@ def run_isolated_shell(ai_cmd: str, verify_script: str, context_data: list = Non
         except Exception as e:
             return False, f"Docker Error: {e}"
 
-def run_benchmarks(target_suites: list = None, limit: int = None, mode_filter: str = None):
+def run_benchmarks(target_suites: list = None, limit: int = None, mode_filter: str = None, start_from: list = None):
     test_files = [Path(f"{SUITES_DIR}/{n}.json") for n in target_suites] if target_suites else list(Path(SUITES_DIR).glob("*.json"))
     selected_modes = [mode_filter] if mode_filter else ["fast", "thinking"]
     
-    for file_path in test_files:
+    # Logic for start_from alignment
+    indices = start_from if start_from else []
+    if len(indices) > len(test_files):
+        print(f"🛑 EXTRANEOUS indices detected: {len(indices)} provided for {len(test_files)} suites. Truncating list.")
+        indices = indices[:len(test_files)]
+    elif len(indices) < len(test_files):
+        print(f"💡 INCOMPLETE indices list: {len(indices)} provided for {len(test_files)} suites. Padding with 1s.")
+        indices += [1] * (len(test_files) - len(indices))
+    
+    for i, file_path in enumerate(test_files):
         suite_name = file_path.stem
         csv_path = os.path.join(RESULTS_DIR, f"{suite_name}.csv")
+        start_index = indices[i] - 1 # Convert to 0-based index
         
-        # Check existing file status
-        file_existed = os.path.isfile(csv_path)
-        if file_existed:
-            with open(csv_path, 'r', encoding='utf-8') as f:
-                line_count = sum(1 for _ in f)
-            print(f"⚠️ Warning: {csv_path} already exists with {line_count} lines. Appending results.")
+        if os.path.isfile(csv_path):
+            print(f"⚠️ Warning: {csv_path} exists. Appending results.")
 
         with open(file_path, "r", encoding="utf-8") as f:
             suite = json.load(f)
             
-        print(f"\n>>> Running Suite: {suite_name}")
-        for test in (suite[:limit] if limit else suite):
+        print(f"\n>>> Running Suite: {suite_name} (Starting from question {indices[i]})")
+        
+        active_tests = suite[start_index:]
+        if limit:
+            active_tests = active_tests[:limit]
+
+        for test in active_tests:
             for mode in selected_modes:
                 print(f"[{test['id']}] {mode.upper()} mode:", end=" ", flush=True)
 
+                # Clear log for this test-mode combination
                 log_path = os.path.join(LOGS_DIR, f"fail_{test['id']}_{mode}.log")
                 if os.path.exists(log_path):
                     os.remove(log_path)
 
-                agg_format_ok = 0
-                agg_exec_ok = 0 if "execution" in test.get("metrics", {}) else None
-                agg_warnings = 0
-                agg_wrong_warnings = 0
-                total_elapsed = 0 
-                agg_success_attempts = 0
                 ctx_data = load_context_assets(test.get("context_files", []))
 
                 for r_idx in range(REPEATS):
@@ -161,17 +167,14 @@ def run_benchmarks(target_suites: list = None, limit: int = None, mode_filter: s
                                 for line in r.iter_lines():
                                     if line:
                                         data = json.loads(line)
-                                        # Enhanced token & content capture
                                         if data.get("type") == "chunk":
                                             ai_text += data.get("content", "")
                             elapsed = time.time() - start_time
-                            total_elapsed += elapsed
                         except Exception as e:
-                            print(f"Failed: {e}")
+                            print(f"Error: {e}")
                             continue
 
-                        # Detect AI Warnings
-                        has_warning = any(marker in ai_text for marker in ["⚠️", "AI Warning", "Warning:"])
+                        # Evaluation
                         metrics = test.get("metrics", {})
                         format_ok = all(w.lower() in ai_text.lower() for w in metrics.get("must_contain", []))
                         
@@ -182,49 +185,41 @@ def run_benchmarks(target_suites: list = None, limit: int = None, mode_filter: s
                                 current_exec_ok, _ = run_isolated_code(code, metrics["execution"].get("run_tests", []), ctx_data)
                             elif test['type'] == "cli":
                                 current_exec_ok, _ = run_isolated_shell(code, metrics["execution"].get("verify_cmd", ""), ctx_data)
-                        if format_ok: agg_format_ok += 1
-                        if current_exec_ok: agg_exec_ok += 1
-                        if has_warning: agg_warnings += 1
+                        
+                        is_success = format_ok and (current_exec_ok is not False)
 
-                        is_actually_correct = format_ok and (current_exec_ok is not False)
-                        if is_actually_correct:
-                            agg_success_attempts += 1
-                            if has_warning:
-                                agg_wrong_warnings += 1
-
-                        if not is_actually_correct:
+                        # Write logs if failed
+                        if not is_success:
                             with open(log_path, "a", encoding="utf-8") as lf:
                                 lf.write(f"\n--- ATTEMPT {r_idx+1}/{REPEATS} FAILED ---\n")
                                 lf.write(f"REASON: Format={format_ok}, Exec={current_exec_ok}\n")
                                 lf.write(f"AI RESPONSE:\n{ai_text}\n" + "-"*30)    
 
-                        status = "✅" if (is_actually_correct) else "❌"
-                        warn_str = " (with ⚠️)" if has_warning else ""
-                        print(f"{status}{warn_str} {round(elapsed, 1)}s.")               
-                    
-                result_row = {
-                    "id": test['id'],
-                    "processing_type": mode,
-                    "time_s": round(total_elapsed, 2),
-                    "intent": test['expected_intent'],
-                    "format_ok": agg_format_ok,
-                    "exec_ok": agg_exec_ok if agg_exec_ok is not None else "",
-                    "success_count": agg_success_attempts,
-                    "warning": agg_warnings,
-                    "wrong_warnings": agg_wrong_warnings,
-                    "repeats": REPEATS
-                }
-                    
-                # Write to CSV in real-time
-                file_is_empty = not os.path.exists(csv_path) or os.stat(csv_path).st_size == 0
-                with open(csv_path, "a", newline="", encoding="utf-8") as f:
-                    writer = csv.DictWriter(f, fieldnames=result_row.keys())
-                    if file_is_empty:
-                        writer.writeheader()
-                    writer.writerow(result_row)
-                    
-                    
+                        # Prepare CSV row
+                        result_row = {
+                            "id": test['id'],
+                            "processing_type": mode,
+                            "time_s": round(elapsed, 2),
+                            "intent": test['expected_intent'],
+                            "format_ok": format_ok,
+                            "exec_ok": current_exec_ok if current_exec_ok is not None else "",
+                            "success": is_success,
+                            "n_repeat": r_idx + 1,
+                            "repeats": REPEATS
+                        }
 
+                        # Real-time CSV write
+                        file_is_empty = not os.path.exists(csv_path) or os.stat(csv_path).st_size == 0
+                        with open(csv_path, "a", newline="", encoding="utf-8") as f:
+                            writer = csv.DictWriter(f, fieldnames=result_row.keys())
+                            if file_is_empty:
+                                writer.writeheader()
+                            writer.writerow(result_row)
+
+                        status = "✅" if is_success else "❌"
+                        print(f"{status}{round(elapsed, 1)}s", end=" ", flush=True)               
+                print() # New line after all repeats for this mode
+                    
 
 if __name__ == "__main__":
     os.makedirs(LOGS_DIR, exist_ok=True)
@@ -233,5 +228,6 @@ if __name__ == "__main__":
     parser.add_argument("suites", nargs="*")
     parser.add_argument("-n", "--limit", type=int, default=None)
     parser.add_argument("-t", "--type", choices=["fast", "thinking"], default=None)
+    parser.add_argument("-s", "--start", type=int, nargs="*", default=None, help="Start indices for each suite")
     args = parser.parse_args()
-    run_benchmarks(args.suites if args.suites else None, args.limit, args.type)
+    run_benchmarks(args.suites if args.suites else None, args.limit, args.type, args.start)

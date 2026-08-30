@@ -1,0 +1,86 @@
+
+--- ATTEMPT 1/5 FAILED ---
+REASON: Format=True, Exec=False
+AI RESPONSE:
+```
+------------------------------
+--- ATTEMPT 2/5 FAILED ---
+REASON: Format=True, Exec=False
+AI RESPONSE:
+```python
+def can_visit_all(graph, start):
+    visited = set()
+    
+    def dfs(node):
+        if node in visited:
+            return False
+        visited.add(node)
+        
+        for neighbor in graph[node]:
+            if not dfs(neighbor):
+                return False
+    
+    return dfs(start)
+
+# Example usage
+graph = {
+    'A': ['B', 'C'],
+    'B': ['D'],
+    'C': ['E'],
+    'D': [],
+    'E': []
+}
+
+start_node = 'A'
+print(can_visit_all(graph, start_node))  # Output: True
+```
+------------------------------
+--- ATTEMPT 3/5 FAILED ---
+REASON: Format=True, Exec=False
+AI RESPONSE:
+```python
+def can_visit_all(graph, start):
+    visited = set()
+    
+    def dfs(node):
+        if node in visited:
+            return False
+        visited.add(node)
+        
+        for neighbor in graph[node]:
+            if not dfs(neighbor):
+                return False
+    
+    return dfs(start)
+
+# Example usage
+graph = {
+    'A': ['B', 'C'],
+    'B': ['D'],
+    'C': ['E'],
+    'D': [],
+    'E': []
+}
+start_node = 'A'
+print(can_visit_all(graph, start_node))  # Output: True
+```
+------------------------------
+--- ATTEMPT 5/5 FAILED ---
+REASON: Format=True, Exec=False
+AI RESPONSE:
+```python
+def can_visit_all(graph, start):
+    visited = set()
+    
+    def dfs(node):
+        if node in visited:
+            return False
+        visited.add(node)
+        
+        for neighbor in graph[node]:
+            if not dfs(neighbor):
+                return False
+    
+    return dfs(start)
+```
+------------------------------

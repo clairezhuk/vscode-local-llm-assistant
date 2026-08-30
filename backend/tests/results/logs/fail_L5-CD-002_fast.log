@@ -1,0 +1,27 @@
+
+--- ATTEMPT 4/5 FAILED ---
+REASON: Format=True, Exec=False
+AI RESPONSE:
+```python
+import threading
+
+class ThreadSafeBank:
+    def __init__(self):
+        self.balance = 100
+        self.lock = threading.Lock()
+
+    def deposit(self, amount):
+        with self.lock:
+            if self.balance + amount > 0:
+                self.balance += amount
+            else:
+                raise ValueError("Cannot deposit more than available balance")
+
+    def withdraw(self, amount):
+        with self.lock:
+            if self.balance >= amount:
+                self.balance -= amount
+            else:
+                raise ValueError("Insufficient funds for withdrawal")
+```
+------------------------------

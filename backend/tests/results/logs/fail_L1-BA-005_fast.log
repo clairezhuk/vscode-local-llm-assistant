@@ -1,6 +1,0 @@
-ERROR: NameError: name 'gcd' is not defined
-RESPONSE:
-```python
-def lcm(a, b):
-    return abs(a*b) // gcd(a, b)
-```

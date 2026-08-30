@@ -1,0 +1,26 @@
+
+--- ATTEMPT 1/5 FAILED ---
+REASON: Format=True, Exec=False
+AI RESPONSE:
+```python
+import asyncio
+
+async def fetch_all(urls):
+    return await asyncio.gather(*[mock_fetch(url) for url in urls])
+
+# Example usage:
+urls = ["http://example.com", "http://example.org"]
+results = asyncio.run(fetch_all(urls))
+print(results)
+```
+
+Signature:
+```python
+import asyncio
+
+async def mock_fetch(url):
+    # Simulate fetching data from a URL
+    await asyncio.sleep(1)  # Simulate delay
+    return f"Data fetched from {url}"
+```
+------------------------------

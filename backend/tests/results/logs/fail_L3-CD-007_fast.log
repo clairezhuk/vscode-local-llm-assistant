@@ -1,0 +1,46 @@
+
+--- ATTEMPT 1/5 FAILED ---
+REASON: Format=True, Exec=False
+AI RESPONSE:
+```python
+with open('bonus_rules.md', 'r') as file:
+    bonus_rules = file.read()
+return bonus_rules
+```
+------------------------------
+--- ATTEMPT 2/5 FAILED ---
+REASON: Format=True, Exec=False
+AI RESPONSE:
+```python
+with open('bonus_rules.md', 'r') as file:
+    bonus_rules = file.read()
+return bonus_rules
+```
+------------------------------
+--- ATTEMPT 3/5 FAILED ---
+REASON: Format=True, Exec=False
+AI RESPONSE:
+```python
+with open('bonus_rules.md', 'r') as file:
+    bonus_rules = file.read()
+return bonus_rules
+```
+------------------------------
+--- ATTEMPT 4/5 FAILED ---
+REASON: Format=True, Exec=False
+AI RESPONSE:
+```python
+with open('bonus_rules.md', 'r') as file:
+    bonus_rules = file.read()
+return bonus_rules
+```
+------------------------------
+--- ATTEMPT 5/5 FAILED ---
+REASON: Format=True, Exec=False
+AI RESPONSE:
+```python
+with open('bonus_rules.md', 'r') as file:
+    bonus_rules = file.read()
+return bonus_rules
+```
+------------------------------

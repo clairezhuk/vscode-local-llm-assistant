@@ -1,0 +1,3 @@
+The rows shall become columns, and the columns shall become rows. 
+This is the ancient law of the Transpose. 
+Apply it to the square matrix of numbers.

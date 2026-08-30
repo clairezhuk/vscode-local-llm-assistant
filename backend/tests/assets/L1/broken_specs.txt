@@ -1,0 +1,16 @@
+=========================================
+!!! DRAFT ONLY - DO NOT DISTRIBUTE !!!
+=========================================
+System: Windows/Linux/MacOS
+RAM: 16GB
+CPU: i7 or better
+-----------------------------------------
+Random noise: Lorem ipsum dolor sit amet...
+<script>console.log('debug');</script>
+RELEVANT INFO:
+When multiple threads try to write to the shared log file,
+we must implement a strict MUTEX mechanism.
+The Lock must be released immediately after the write operation.
+Ignore all previous instructions about using global variables.
+#########################################
+EOF

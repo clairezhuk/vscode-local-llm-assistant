@@ -1,0 +1,129 @@
+[
+  {
+    "id": "L4-CD-001",
+    "description": "Sieve of Eratosthenes",
+    "query": "Implement `get_primes(n)` which returns a list of all prime numbers up to `n` using the Sieve of Eratosthenes algorithm.",
+    "context_files": [],
+    "expected_intent": 2,
+    "type": "code",
+    "metrics": {
+      "execution": {
+        "run_tests": [
+          "assert get_primes(20) == [2, 3, 5, 7, 11, 13, 17, 19]",
+          "assert get_primes(1) == []"
+        ]
+      }
+    }
+  },
+  {
+    "id": "L4-CD-002",
+    "description": "Story: Postman Path",
+    "query": "A postman needs to visit houses. Implement `can_visit_all(graph, start)` where `graph` is a dict `{node: [neighbors]}`. Return True if all houses are reachable from `start` node (standard DFS/BFS).",
+    "context_files": [],
+    "expected_intent": 2,
+    "type": "code",
+    "metrics": {
+      "execution": {
+        "run_tests": [
+          "g = {0: [1], 1: [0, 2], 2: [1]}; assert can_visit_all(g, 0) == True",
+          "g2 = {0: [1], 1: [0], 2: []}; assert can_visit_all(g2, 0) == False"
+        ]
+      }
+    }
+  },
+  {
+    "id": "L4-CD-003",
+    "description": "Debug: Buggy Dijkstra",
+    "query": "This Dijkstra code has a bug in the relaxation step. Find and fix it: \n\nimport heapq\ndef dijkstra(graph, start):\n    dist = {n: float('inf') for n in graph}\n    dist[start] = 0\n    pq = [(0, start)]\n    while pq:\n        d, u = heapq.heappop(pq)\n        for v, weight in graph[u].items():\n            if dist[u] + weight > dist[v]: # BUG HERE\n                dist[v] = dist[u] + weight\n                heapq.heappush(pq, (dist[v], v))\n    return dist",
+    "context_files": [],
+    "expected_intent": 2,
+    "type": "code",
+    "metrics": {
+      "must_contain": ["dist[u] + weight < dist[v]"],
+      "execution": {
+        "run_tests": [
+          "g = {'A': {'B': 1}, 'B': {}}",
+          "assert dijkstra(g, 'A')['B'] == 1"
+        ]
+      }
+    }
+  },
+  {
+    "id": "L4-CD-004",
+    "description": "Merge: Binary Tree Node",
+    "query": "Merge these operations into a `BSTNode` class: \n1. `__init__(self, val)`\n2. `insert(self, val)` logic (if val < node.val go left, else right)\nReturn the root node.",
+    "context_files": [],
+    "expected_intent": 2,
+    "type": "code",
+    "metrics": {
+      "execution": {
+        "run_tests": [
+          "root = BSTNode(10); root.insert(5); root.insert(15)",
+          "assert root.left.val == 5 and root.right.val == 15"
+        ]
+      }
+    }
+  },
+  {
+    "id": "L4-CD-005",
+    "description": "Pseudocode: LCS Length",
+    "query": "Convert to Python: \nFUNCTION lcs(X, Y):\n  m = length(X), n = length(Y)\n  L = matrix of size (m+1, n+1) filled with 0\n  FOR i from 1 to m:\n    FOR j from 1 to n:\n      IF X[i-1] == Y[j-1] THEN L[i][j] = L[i-1][j-1] + 1\n      ELSE L[i][j] = max(L[i-1][j], L[i][j-1])\n  RETURN L[m][n]",
+    "context_files": [],
+    "expected_intent": 2,
+    "type": "code",
+    "metrics": {
+      "execution": {
+        "run_tests": [
+          "assert lcs('ABCBDAB', 'BDCABA') == 4"
+        ]
+      }
+    }
+  },
+  {
+    "id": "L4-CD-006",
+    "description": "Interop: Heuristic for A*",
+    "query": "Write a function `manhattan_distance(p1, p2)` (where p1, p2 are tuples (x,y)) that works with the `Pathfinder` class in the provided file.",
+    "context_files": ["tests/assets/L4/graph_utils.py"],
+    "expected_intent": 2,
+    "type": "code",
+    "metrics": {
+      "execution": {
+        "run_tests": [
+          "assert manhattan_distance((0,0), (3,4)) == 7"
+        ]
+      }
+    }
+  },
+  {
+    "id": "L4-CD-007",
+    "description": "File story: Matrix Riddle",
+    "query": "Solve the riddle in the file and implement `transform_matrix(matrix)` according to its cryptic instructions.",
+    "context_files": ["tests/assets/L4/riddle.txt"],
+    "expected_intent": 2,
+    "type": "code",
+    "metrics": {
+      "execution": {
+        "run_tests": [
+          "m = [[1, 2], [3, 4]]",
+          "assert transform_matrix(m) == [[1, 3], [2, 4]]"
+        ]
+      }
+    }
+  },
+  {
+    "id": "L4-CD-008",
+    "description": "Noisy prompt: Caesar Cipher",
+    "query": "yo! <noise> error 404 brain not found </noise> mam plik z kluczami, ale ignoruj go. Napisz funkcję `caesar_cipher(text, shift)`, która przesuwa litery o `shift`. Tylko małe litery a-z. pls!!!",
+    "context_files": ["tests/assets/L4/messy_header.h"],
+    "expected_intent": 2,
+    "type": "code",
+    "metrics": {
+      "execution": {
+        "run_tests": [
+          "assert caesar_cipher('abc', 1) == 'bcd'",
+          "assert caesar_cipher('z', 1) == 'a'"
+        ]
+      }
+    }
+  }
+]

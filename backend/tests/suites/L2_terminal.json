@@ -1,0 +1,114 @@
+[
+  {
+    "id": "L2-CLI-001",
+    "description": "Git init and first commit with identity config",
+    "query": "Check if git is installed. If yes, initialize a new repository, add all files, and create the first commit with message 'Initial'. Note: Configure dummy user identity (email/name) first to ensure the commit succeeds. Combine all into one command block.",
+    "context_files": [],
+    "expected_intent": 3,
+    "type": "cli",
+    "metrics": {
+      "must_contain": ["git", "commit", "config"],
+      "execution": {
+        "verify_cmd": "touch README.md; {COMMAND}; if [ -d .git ] && git log | grep -q 'Initial'; then exit 0; else exit 1; fi"
+      }
+    }
+  },
+  {
+    "id": "L2-CLI-002",
+    "description": "Create directory with dynamic date",
+    "query": "Create a directory named 'backup_YYYY-MM-DD_v1' where YYYY-MM-DD is the current date. System: Linux.",
+    "context_files": [],
+    "expected_intent": 3,
+    "type": "cli",
+    "metrics": {
+      "must_contain": ["mkdir"],
+      "execution": {
+        "verify_cmd": "EXPECTED=\"backup_$(date +%Y-%m-%d)_v1\"; {COMMAND}; if [ -d \"$EXPECTED\" ]; then exit 0; else exit 1; fi"
+      }
+    }
+  },
+  {
+    "id": "L2-CLI-003",
+    "description": "Install libraries for math and plotting",
+    "query": "Install the necessary Python libraries to perform matrix calculations and create line plots. System: Linux.",
+    "context_files": [],
+    "expected_intent": 3,
+    "type": "cli",
+    "metrics": {
+      "must_contain": ["pip", "install"],
+      "execution": {
+        "verify_cmd": "{COMMAND}; pip show numpy && pip show matplotlib"
+      }
+    }
+  },
+  {
+    "id": "L2-CLI-004",
+    "description": "Install libraries based on project goals in file",
+    "query": "Read the project_goals.md file and install all required Python libraries mentioned there using pip. System: Linux.",
+    "context_files": ["tests/assets/L2/project_goals.md"],
+    "expected_intent": 3,
+    "type": "cli",
+    "metrics": {
+      "must_contain": ["pip", "install"],
+      "execution": {
+        "verify_cmd": "{COMMAND}; pip show pandas && pip show scikit-learn"
+      }
+    }
+  },
+  {
+    "id": "L2-CLI-005",
+    "description": "Setup lightweight virtual environment",
+    "query": "Create a new Python virtual environment named '.venv' in the current directory, but do NOT install pip (use --without-pip to save time). System: Linux.",
+    "context_files": [],
+    "expected_intent": 3,
+    "type": "cli",
+    "metrics": {
+      "must_contain": ["venv", "--without-pip"],
+      "execution": {
+        "verify_cmd": "{COMMAND}; if [ -d .venv/bin ] || [ -d .venv/Scripts ]; then exit 0; else exit 1; fi"
+      }
+    }
+  },
+  {
+    "id": "L2-CLI-006",
+    "description": "Install from requirements.txt",
+    "query": "Install all dependencies from the existing requirements.txt file in one command. System: Linux.",
+    "context_files": ["tests/assets/L2/requirements.txt"],
+    "expected_intent": 3,
+    "type": "cli",
+    "metrics": {
+      "must_contain": ["pip", "install", "-r"],
+      "execution": {
+        "verify_cmd": "{COMMAND}; pip show requests && pip show flask"
+      }
+    }
+  },
+  {
+    "id": "L2-CLI-007",
+    "description": "Execute specific command from manual",
+    "query": "Find and execute the specific 'Health Check' command described in the manual.txt file. System: Linux.",
+    "context_files": ["tests/assets/L2/manual.txt"],
+    "expected_intent": 3,
+    "type": "cli",
+    "metrics": {
+      "must_contain": ["touch", "health_ok.txt"],
+      "execution": {
+        "verify_cmd": "{COMMAND}; if [ -f health_ok.txt ]; then exit 0; else exit 1; fi"
+      }
+    }
+  },
+  {
+    "id": "L2-CLI-008",
+    "description": "Noisy prompt to write secret to file",
+    "query": "siemano! <div class='noise'> context error 0x001 </div> mam sprawę, weź mi zrób taki plik co się nazyває 'output.log' i wpisz tam tylko to hasło: ORCHESTRA_SUCCESS_2025. Nic więcej nie pisz, bo system się zbuguje!! pls fast 0_o",
+    "context_files": [],
+    "expected_intent": 3,
+    "type": "cli",
+    "metrics": {
+      "must_contain": ["echo", "ORCHESTRA_SUCCESS_2025"],
+      "execution": {
+        "verify_cmd": "{COMMAND}; if [ \"$(cat output.log | xargs)\" = \"ORCHESTRA_SUCCESS_2025\" ]; then exit 0; else exit 1; fi"
+      }
+    }
+  }
+]

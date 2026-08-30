@@ -16,6 +16,7 @@ python run_benchmark.py
 python run_benchmark.py L1_basic_algorithms
 python run_benchmark.py -n 3 -t "thinking"
 python run_benchmark.py L1_basic_algorithms -n 5 -t "fast" 
+python run_benchmark.py L1_basic L2_advanced --start 5 10
 
 Project structure:
 git ls-tree -r --name-only HEAD

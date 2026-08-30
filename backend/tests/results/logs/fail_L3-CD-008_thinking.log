@@ -1,0 +1,69 @@
+
+--- ATTEMPT 1/5 FAILED ---
+REASON: Format=True, Exec=False
+AI RESPONSE:
+```
+------------------------------
+--- ATTEMPT 2/5 FAILED ---
+REASON: Format=True, Exec=False
+AI RESPONSE:
+```python
+def extract_id(line):
+    # Extract the ID after 'ID:'
+    id_start = line.find('ID:')
+    if id_start != -1:
+        id_end = line.find('\n', id_start)
+        return line[id_start+3:]
+```
+------------------------------
+--- ATTEMPT 3/5 FAILED ---
+REASON: Format=True, Exec=False
+AI RESPONSE:
+```python
+def extract_id(line):
+    # Extract the ID after 'ID:' in a string, ignoring the rest of the README file
+    return line.split('ID:')[1].strip()
+
+# Open the file and read its content
+with open('README.txt', 'r') as file:
+    content = file.read()
+
+# Split the content by newline to get individual lines
+lines = content.split('\n')
+
+# Extract IDs from each line using the extract_id function
+ids = [extract_id(line) for line in lines]
+
+# Print or return the extracted IDs
+print(ids)
+```
+------------------------------
+--- ATTEMPT 4/5 FAILED ---
+REASON: Format=True, Exec=False
+AI RESPONSE:
+```python
+def extract_id(line):
+    # Extract the ID after 'ID:' in the string, ignoring the rest of the README file.
+    return line.split('ID:')[1].strip()
+
+# Open the file and read its content
+with open(r'C:\Users\user\AppData\Local\Temp\tmpgzp78j20', 'r') as file:
+    content = file.read()
+
+# Split the content into lines
+lines = content.split('\n')
+
+# Iterate through each line to find the ID
+for line in lines:
+    if 'ID:' in line:
+        return extract_id(line)
+
+# If no ID is found, return None or raise an exception
+return None  # or raise Exception("ID not found")
+```
+------------------------------
+--- ATTEMPT 5/5 FAILED ---
+REASON: Format=True, Exec=False
+AI RESPONSE:
+```
+------------------------------

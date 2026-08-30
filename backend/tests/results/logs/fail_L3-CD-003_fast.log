@@ -1,0 +1,21 @@
+
+--- ATTEMPT 2/5 FAILED ---
+REASON: Format=False, Exec=True
+AI RESPONSE:
+```python
+def add_item(name, catalog=[]):
+    if not catalog:
+        catalog = []
+    catalog.append(name)
+    return catalog
+```
+------------------------------
+--- ATTEMPT 5/5 FAILED ---
+REASON: Format=False, Exec=False
+AI RESPONSE:
+```python
+def add_item(name, catalog=[]):
+    catalog.append(name)
+    return catalog
+```
+------------------------------

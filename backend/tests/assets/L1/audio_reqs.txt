@@ -1,0 +1,6 @@
+PROJECT: SoundClassifier v1.0
+- Task: Digital Signal Processing (DSP)
+- Input: .wav and .mp3 files
+- Features: Mel-frequency cepstral coefficients (MFCC)
+- Requirement: Use 'librosa' for all feature extraction and spectral analysis.
+- Note: Avoid using 'scipy.io.wavfile' as it does not support advanced resampling.

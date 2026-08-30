@@ -1,0 +1,26 @@
+
+--- ATTEMPT 4/5 FAILED ---
+REASON: Format=True, Exec=False
+AI RESPONSE:
+```python
+def lcs(X, Y):
+    m = len(X)
+    n = len(Y)
+    L = [[0 for _ in range(n+1)] for _ in range(m+1)]
+    
+    for i in range(
+        # Iterate over each character in X and Y using two nested loops.
+        for j in range(
+            # If the current characters in X and Y are equal, set L[i][j] to L[i-1][j-1] + 1.
+            if X[i-1] == Y[j-1]:
+                L[i][j] = L[i-1][j-1] + 1
+            else:
+                # Otherwise, set L[i][j] to the maximum of L[i-1][j] and L[i][j-1].
+                L[i][j] = max(L[i-1][j], L[i][j-1])
+        )
+    )
+    
+    # The length of the longest common subsequence is stored in L[m][n].
+    return L[m][n]
+```
+------------------------------

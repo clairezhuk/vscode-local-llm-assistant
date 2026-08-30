@@ -1,0 +1,8 @@
+TASK ID: 8829
+ENVIRONMENT: Unweighted Grid (2D)
+CONSTRAINTS: 
+- Every step from one cell to another has a cost of exactly 1.
+- No diagonal movement allowed.
+- Memory is limited to 512MB.
+Goal: Find the shortest path from A to B.
+Note: Since all edge weights are identical, avoid complex algorithms like Dijkstra.

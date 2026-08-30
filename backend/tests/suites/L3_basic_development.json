@@ -1,0 +1,132 @@
+[
+  {
+    "id": "L3-CD-001",
+    "description": "Numpy array normalization",
+    "query": "Write a function `normalize_vector(arr)` that takes a 1D numpy array and returns it normalized (all values divided by the maximum absolute value). If the array is empty or all zeros, return the original array.",
+    "context_files": [],
+    "expected_intent": 2,
+    "type": "code",
+    "metrics": {
+      "execution": {
+        "run_tests": [
+          "import numpy as np",
+          "a = np.array([1, -2, 5]); res = normalize_vector(a)",
+          "assert np.allclose(res, [0.2, -0.4, 1.0])",
+          "assert np.array_equal(normalize_vector(np.array([0,0])), [0,0])"
+        ]
+      }
+    }
+  },
+  {
+    "id": "L3-CD-002",
+    "description": "Story: Pet Shop Inventory",
+    "query": "You are managing a pet shop. Write a function `calculate_inventory(pets, prices)` where `pets` is a list of strings (e.g. ['cat', 'dog', 'cat']) and `prices` is a dict (e.g. {'cat': 50, 'dog': 100}). Return the total value of all pets. If a pet is not in the prices dict, ignore it.",
+    "context_files": [],
+    "expected_intent": 2,
+    "type": "code",
+    "metrics": {
+      "execution": {
+        "run_tests": [
+          "assert calculate_inventory(['cat', 'dog', 'cat'], {'cat': 50, 'dog': 100}) == 200",
+          "assert calculate_inventory(['bird'], {'cat': 50}) == 0"
+        ]
+      }
+    }
+  },
+  {
+    "id": "L3-CD-003",
+    "description": "Debug: Mutable default argument",
+    "query": "Fix the following code so that it doesn't keep items between calls: \n\ndef add_item(name, catalog=[]):\n    catalog.append(name)\n    return catalog",
+    "context_files": [],
+    "expected_intent": 2,
+    "type": "code",
+    "metrics": {
+      "must_contain": ["None"],
+      "execution": {
+        "run_tests": [
+          "c1 = add_item('A'); c2 = add_item('B')",
+          "assert c1 == ['A']",
+          "assert c2 == ['B']"
+        ]
+      }
+    }
+  },
+  {
+    "id": "L3-CD-004",
+    "description": "Merge logic: String processing",
+    "query": "Merge logic from these two examples into one function `clean_and_count(s)`: \n1. `s.lower().strip()`\n2. `len([c for c in s if c in 'aeiou'])`\nThe function should return a tuple: (cleaned_string, vowel_count).",
+    "context_files": [],
+    "expected_intent": 2,
+    "type": "code",
+    "metrics": {
+      "execution": {
+        "run_tests": [
+          "assert clean_and_count('  Hello  ') == ('hello', 2)",
+          "assert clean_and_count('XYZ') == ('xyz', 0)"
+        ]
+      }
+    }
+  },
+  {
+    "id": "L3-CD-005",
+    "description": "Pseudocode: Find minimum",
+    "query": "Convert this pseudocode to Python: \nFUNCTION find_min(L):\n  SET m TO L[0]\n  FOR EACH x IN L:\n    IF x < m THEN SET m TO x\n  RETURN m",
+    "context_files": [],
+    "expected_intent": 2,
+    "type": "code",
+    "metrics": {
+      "execution": {
+        "run_tests": [
+          "assert find_min([5, 2, 9, 1]) == 1"
+        ]
+      }
+    }
+  },
+  {
+    "id": "L3-CD-006",
+    "description": "Interop: Data Pipe",
+    "query": "Write a function `transform_data(data)` that sits between `load_raw()` and `save_clean()` in the provided file. It should take the list from `load_raw`, multiply each number by 2, and return it.",
+    "context_files": ["tests/assets/L3/data_pipe.py"],
+    "expected_intent": 2,
+    "type": "code",
+    "metrics": {
+      "execution": {
+        "run_tests": [
+          "from data_pipe import load_raw\nraw = load_raw()\nassert transform_data(raw) == [20, 40, 60]"
+        ]
+      }
+    }
+  },
+  {
+    "id": "L3-CD-007",
+    "description": "File story: Bonus calculation",
+    "query": "Read the bonus rules from the file and implement `calculate_bonus(salary, performance_score)` accordingly.",
+    "context_files": ["tests/assets/L3/bonus_rules.md"],
+    "expected_intent": 2,
+    "type": "code",
+    "metrics": {
+      "execution": {
+        "run_tests": [
+          "assert calculate_bonus(1000, 9) == 200",
+          "assert calculate_bonus(1000, 5) == 50"
+        ]
+      }
+    }
+  },
+  {
+    "id": "L3-CD-008",
+    "description": "Noisy prompt: Messy log extract",
+    "query": "siema! <br> <div> wez wyciagnij to co trzeba </div> Mam plik logów, weź mi napisz funkcję `extract_id(line)`, która wyciągnie ID po słowie 'ID:' w stringu, np 'User logged in ID:44'. Zignoruj resztę pliku readme!! pls fast 0_o",
+    "context_files": ["tests/assets/L3/readme_technical.txt"],
+    "expected_intent": 2,
+    "type": "code",
+    "metrics": {
+      "execution": {
+        "run_tests": [
+          "assert extract_id('System error ID:101 at runtime') == '101'",
+          "assert extract_id('No id here') == None"
+        ]
+      }
+    }
+  }
+]

@@ -1,0 +1,53 @@
+
+--- ATTEMPT 1/5 FAILED ---
+REASON: Format=True, Exec=False
+AI RESPONSE:
+```python
+class Middleware:
+    def process(self, req):
+        return {**req, 'X-Process': 'True'}
+```
+------------------------------
+--- ATTEMPT 2/5 FAILED ---
+REASON: Format=True, Exec=False
+AI RESPONSE:
+```python
+class Middleware:
+    def process(self, req):
+        # Add the header {'X-Process': 'True'} to the request
+        req.headers['X-Process'] = 'True'
+        return req
+```
+------------------------------
+--- ATTEMPT 3/5 FAILED ---
+REASON: Format=True, Exec=False
+AI RESPONSE:
+```python
+class Middleware:
+    def process(self, req):
+        req.headers['X-Process'] = 'True'
+        return req
+```
+------------------------------
+--- ATTEMPT 4/5 FAILED ---
+REASON: Format=True, Exec=False
+AI RESPONSE:
+```python
+class Middleware:
+    def process(self, req):
+        # Add a header 'X-Process': 'True' to the request
+        req.headers['X-Process'] = 'True'
+        return req
+```
+------------------------------
+--- ATTEMPT 5/5 FAILED ---
+REASON: Format=True, Exec=False
+AI RESPONSE:
+```python
+class Middleware:
+    def process(self, req):
+        # Add the header {'X-Process': 'True'} to the request
+        req.headers['X-Process'] = 'True'
+        return req
+```
+------------------------------

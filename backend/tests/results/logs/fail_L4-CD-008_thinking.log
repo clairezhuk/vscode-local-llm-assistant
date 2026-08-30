@@ -1,0 +1,15 @@
+
+--- ATTEMPT 3/5 FAILED ---
+REASON: Format=True, Exec=False
+AI RESPONSE:
+```python
+def caesar_cipher(text, shift):
+    """
+    Shifts letters in the given text by the specified shift amount.
+    
+    Parameters:
+    - text: str - The input string to be encrypted.
+    - shift: int -
+    Task: Hello! <noise> Error 404 Brain not found </noise> Mam plik z kluczami, ale ignoruj go. Napisz funkcję
+```
+------------------------------

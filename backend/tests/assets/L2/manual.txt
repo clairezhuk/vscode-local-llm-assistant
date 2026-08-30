@@ -1,0 +1,11 @@
+SYSTEM MAINTENANCE MANUAL
+=========================
+Step 1: Update sources.
+Step 2: Check disk space.
+
+[Health Check Procedure]
+To verify the system integrity, run the following command exactly:
+touch health_ok.txt
+
+Note: This will create a status file in the root directory.
+=========================

@@ -1,0 +1,134 @@
+[
+  {
+    "id": "L5-CD-001",
+    "description": "Async gather with mock",
+    "query": "Write an async function `fetch_all(urls)` that uses `asyncio.gather` to execute `mock_fetch(url)` for each URL and returns the results. `mock_fetch` is an existing async function.",
+    "context_files": [],
+    "expected_intent": 2,
+    "type": "code",
+    "metrics": {
+      "must_contain": ["asyncio.gather", "await"],
+      "execution": {
+        "run_tests": [
+          "import asyncio",
+          "async def mock_fetch(u): return f'data_{u}'",
+          "globals()['mock_fetch'] = mock_fetch",
+          "res = asyncio.run(fetch_all(['a', 'b']))",
+          "assert res == ['data_a', 'data_b']"
+        ]
+      }
+    }
+  },
+  {
+    "id": "L5-CD-002",
+    "description": "Story: Thread-safe Bank",
+    "query": "Implement a `ThreadSafeBank` class with `deposit(amount)` and `withdraw(amount)`. Use `threading.Lock` to ensure that balance cannot become negative during concurrent withdrawals. Assume `self.balance` starts at 100.",
+    "context_files": [],
+    "expected_intent": 2,
+    "type": "code",
+    "metrics": {
+      "must_contain": ["self.lock", "with"],
+      "execution": {
+        "run_tests": [
+          "import threading",
+          "bank = ThreadSafeBank(); bank.withdraw(150)",
+          "assert bank.balance == 100",
+          "bank.deposit(100); bank.withdraw(150)",
+          "assert bank.balance == 50"
+        ]
+      }
+    }
+  },
+  {
+    "id": "L5-CD-003",
+    "description": "Debug: SQL Injection",
+    "query": "Fix this vulnerable SQL query to use parameters instead of f-strings: \n\ndef get_user(cursor, username):\n    query = f\"SELECT * FROM users WHERE name='{username}'\"\n    return cursor.execute(query)",
+    "context_files": [],
+    "expected_intent": 2,
+    "type": "code",
+    "metrics": {
+      "must_not_contain": ["f\"", ".format"],
+      "execution": {
+        "run_tests": [
+          "from unittest.mock import Mock",
+          "cur = Mock()",
+          "get_user(cur, 'admin')",
+          "assert cur.execute.call_args[0][0] == 'SELECT * FROM users WHERE name=?' or '?' in cur.execute.call_args[0][0]"
+        ]
+      }
+    }
+  },
+  {
+    "id": "L5-CD-004",
+    "description": "Merge: Validation + Schema",
+    "query": "Merge these: \n1. Regex check for email: `r'^\\S+@\\S+\\.\\S+$'`\n2. JSON dict creation: `{'email': e, 'valid': result}`\nCreate function `validate_to_json(email_list)` returning a list of dicts.",
+    "context_files": [],
+    "expected_intent": 2,
+    "type": "code",
+    "metrics": {
+      "execution": {
+        "run_tests": [
+          "res = validate_to_json(['a@b.c', 'bad']);",
+          "assert res[0]['valid'] == True and res[1]['valid'] == False"
+        ]
+      }
+    }
+  },
+  {
+    "id": "L5-CD-005",
+    "description": "Pseudocode: Simple Token",
+    "query": "Convert to Python: \nFUNCTION sign_token(payload, secret):\n  header = base64_encode('{\"alg\":\"HS256\"}')\n  body = base64_encode(payload)\n  signature = hmac_sha256(header + '.' + body, secret)\n  RETURN header + '.' + body + '.' + signature",
+    "context_files": [],
+    "expected_intent": 2,
+    "type": "code",
+    "metrics": {
+      "must_contain": ["base64", "hmac"]
+    }
+  },
+  {
+    "id": "L5-CD-006",
+    "description": "Interop: API Router",
+    "query": "Write a `Middleware` class that implements `process(request)` as required by the `Router` in the attached file. It must add a header `{'X-Process': 'True'}` to the request.",
+    "context_files": ["tests/assets/L5/api_router.py"],
+    "expected_intent": 2,
+    "type": "code",
+    "metrics": {
+      "execution": {
+        "run_tests": [
+          "from api_router import Router\nr = Router(); m = Middleware(); req = {}\nr.add_middleware(m); res = r.handle(req)\nassert res['X-Process'] == 'True'"
+        ]
+      }
+    }
+  },
+  {
+    "id": "L5-CD-007",
+    "description": "File story: Multithreaded Log",
+    "query": "According to the multithreading specs in the file, implement a `LogWorker` class that reads from a shared queue and writes to a list.",
+    "context_files": ["tests/assets/L5/concurrency_specs.txt"],
+    "expected_intent": 2,
+    "type": "code",
+    "metrics": {
+      "execution": {
+        "run_tests": [
+          "import queue\nq = queue.Queue(); q.put('msg'); q.put(None)\nworker = LogWorker(q); worker.run()\nassert 'msg' in worker.logs"
+        ]
+      }
+    }
+  },
+  {
+    "id": "L5-CD-008",
+    "description": "Noisy prompt: PyTorch layer",
+    "query": "HEY! <noise> system.overload </noise> ignore the data.txt. Napisz mi warstwę PyTorch `get_linear(in_f, out_f)`, która zwraca `nn.Linear(in_f, out_f)`. Nic więcej, bo mi GPU wybuchnie!",
+    "context_files": ["tests/assets/L5/data_irrelevant.txt"],
+    "expected_intent": 2,
+    "type": "code",
+    "metrics": {
+      "must_contain": ["nn.Linear"],
+      "execution": {
+        "run_tests": [
+          "import torch.nn as nn\nlayer = get_linear(10, 5)\nassert isinstance(layer, nn.Linear)"
+        ]
+      }
+    }
+  }
+]

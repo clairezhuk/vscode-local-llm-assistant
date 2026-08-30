@@ -1,0 +1,31 @@
+
+--- ATTEMPT 1/5 FAILED ---
+REASON: Format=True, Exec=False
+AI RESPONSE:
+```python
+from graph_utils import Pathfinder
+
+def manhattan_distance(p1, p2):
+    return Pathfinder.h(p1) + Pathfinder.h(p2)
+```
+------------------------------
+--- ATTEMPT 4/5 FAILED ---
+REASON: Format=True, Exec=False
+AI RESPONSE:
+```python
+from graph_utils import Pathfinder
+
+def manhattan_distance(p1, p2):
+    return Pathfinder.h(p1) + Pathfinder.h(p2)
+```
+------------------------------
+--- ATTEMPT 5/5 FAILED ---
+REASON: Format=True, Exec=False
+AI RESPONSE:
+```python
+from graph_utils import Pathfinder
+
+def manhattan_distance(p1, p2):
+    return Pathfinder.h(p1) + Pathfinder.h(p2)
+```
+------------------------------

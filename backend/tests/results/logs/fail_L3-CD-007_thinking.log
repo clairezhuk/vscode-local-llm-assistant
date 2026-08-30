@@ -1,0 +1,73 @@
+
+--- ATTEMPT 1/5 FAILED ---
+REASON: Format=True, Exec=False
+AI RESPONSE:
+```python
+def get_bonus_rules():
+    # This function reads the bonus rules from a file and returns them as a string.
+    with open('bonus_rules.md', 'r') as file:
+        return file.read()
+```
+------------------------------
+--- ATTEMPT 2/5 FAILED ---
+REASON: Format=True, Exec=False
+AI RESPONSE:
+```python
+def get_bonus_rules():
+    with open('bonus_rules.md', 'r') as file:
+        content = file.read()
+        bonus_rules = content.split('# Bonus Rules')[1].strip
+    return bonus_rules
+```
+------------------------------
+--- ATTEMPT 3/5 FAILED ---
+REASON: Format=True, Exec=False
+AI RESPONSE:
+```python
+import re
+
+def get_bonus_rules():
+    with open('bonus_rules.md', 'r') as file:
+        content = file.read()
+    
+    # Extract the bonus rules from the content using regular expressions
+    bonus_rules = {}
+    pattern = r'-\s+If\s+performance_score\s+>\s+(\d+),\s+bonus\s+is\s+(\d+)%\.\s*Otherwise,\s+bonus\s+is\s+(\d+)%\.'
+    matches = re.findall(pattern, content)
+    
+    for match in matches:
+        performance_score = int(match[0])
+        bonus_percentage_1 = int(match[1])
+        bonus_percentage_2 = int(match[2])
+        
+        if performance_score > 8:
+            bonus_rules['performance_score'] = performance_score
+            bonus_rules['bonus_percentage_1'] = bonus_percentage_1
+        else:
+            bonus_rules['performance_score'] = performance_score
+            bonus_rules['bonus_percentage_2'] = bonus_percentage_2
+    
+    return bonus_rules
+```
+------------------------------
+--- ATTEMPT 4/5 FAILED ---
+REASON: Format=True, Exec=False
+AI RESPONSE:
+```python
+def get_bonus_rules():
+    # Function to read and return the bonus rules from a file
+    with open('bonus_rules.md', 'r') as file:
+        content = file.read()
+    return content
+```
+------------------------------
+--- ATTEMPT 5/5 FAILED ---
+REASON: Format=True, Exec=False
+AI RESPONSE:
+```python
+def get_bonus_rules():
+    # This function reads the bonus rules from a file and returns them as a string.
+    with open('bonus_rules.md', 'r') as file:
+        return file.read()
+```
+------------------------------

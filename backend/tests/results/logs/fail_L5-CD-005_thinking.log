@@ -1,0 +1,52 @@
+
+--- ATTEMPT 4/5 FAILED ---
+REASON: Format=False, Exec=None
+AI RESPONSE:
+```python
+import base64
+from hashlib import sha256
+
+def sign_token(payload, secret):
+    header = base64.b64encode('{"alg":"HS256"}').decode()
+```
+
+4. **Encode the Body**: Use base64 encoding to encode the payload.
+
+```python
+    body = base64.b64encode(payload).decode()
+```
+
+5. **Concatenate Header and Body**: Concatenate the encoded header and body with a period (`.`) in between.
+
+```python
+    message = header + '.' + body
+```
+
+6. **Hash the Message**: Use SHA-256 hashing to hash the concatenated message.
+
+```python
+    signature = sha256(message.encode()).hexdigest()
+```
+
+7. **Return the Signature**: Return the hashed signature as a string.
+
+```python
+    return signature
+```
+
+8. **Example Usage**: Provide an example of how to use the `sign_token` function with a sample payload and secret key.
+
+```python
+payload = '{"user":"john"}'
+secret = 'my_secret_key'
+signature = sign_token(payload, secret)
+print("Signature:", signature)
+```
+
+This code snippet implements the provided Plan and Signature in Python.
+------------------------------
+--- ATTEMPT 5/5 FAILED ---
+REASON: Format=False, Exec=None
+AI RESPONSE:
+```
+------------------------------
