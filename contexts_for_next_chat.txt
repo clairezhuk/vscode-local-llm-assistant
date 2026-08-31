@@ -46,20 +46,30 @@ A highly optimized deterministic Reasoning Pipeline is implemented, replacing he
 4. **Robust Streaming:** The frontend utilizes a text buffer to collect fragmented JSON packets, ensuring smooth text rendering even during fluctuating generation speeds.
 5. **Safe Terminal:** Commands are generated based on environment constraints, displayed for user verification, and executed strictly within the project's working directory.
 
-Testing System (Benchmarks)
 
-An automated sandbox designed to verify architectural stability and reasoning
-quality.
+**Testing System (Benchmarks)**
 
-  - Structure: Thematic test suites (Algorithms, CLI, Logic).
-  - Runner: Creates isolated temp directories, executes generated code, and
-    verifies results via assert statements. Supports real-time CSV logging and
-    manual mode selection (fast vs. thinking).
-  - Metrics: Focuses on the Self-Correction Success Rate (success after
-    retries), processing time.
-  - Warning Detection: Automatically detects if the AI output contains a
-    "Warning" badge, indicating failed internal verification.
-  - Running from Docker
+An automated sandbox designed to verify architectural stability and reasoning quality across different processing modes.
+
+*   **Structure:** Thematic test suites covering a progressive range of complexity:
+    *   **L1: Textual Questions** (10 questions) – Focused on definitions, logic, and extracting essence from noisy prompts or files.
+    *   **L2: Terminal/CLI Tasks** (8 questions) – Focused on environment setup, shell commands, and git operations in a Linux environment.
+    *   **L3: Basic Development** (8 questions) – Practical Python tasks using standard logic, NumPy, and Pandas.
+    *   **L4: Complex Algorithms** (8 questions) – Advanced data structures, graph theory, and mathematical problem-solving.
+    *   **L5: Technical Complexity** (8 questions) – Focuses on async/await, API security, library interoperability, and multithreading.
+*   **Runner:** Executes in isolated Docker containers (128MB RAM limit) to ensure safety and environment consistency. It creates temporary directories for each request and verifies results via deterministic assert statements or shell verification scripts.
+*   **Logging:** Implements real-time CSV logging, capturing data after every individual attempt (typically 5 repeats per test) to enable detailed statistical analysis of latency and success distributions.
+*   **Data Fields:** Records the following metrics for each attempt:
+    *   `id`: Unique test identifier.
+    *   `processing_type`: The mode used (`fast` or `thinking`).
+    *   `time_s`: Exact latency for the specific attempt.
+    *   `intent`: Expected task category (1: Text, 2: Code, 3: CLI).
+    *   `format_ok`: Boolean indicating if the response met keyword requirements.
+    *   `exec_ok`: Boolean (or null) indicating if the code/command passed functional verification.
+    *   `success`: Final boolean result of the attempt.
+    *   `n_repeat`: The current iteration number.
+    *   `repeats`: Total number of iterations configured for the benchmark.
+*   **Metrics:** Focuses on the success rate per mode and the distribution of processing time to identify stability on entry-level hardware.
 
 Technical Constraints & Solutions
 
@@ -73,42 +83,13 @@ Technical Constraints & Solutions
     stages and using specialized system prompts to prevent the 1.5B model from
     looping or repeating instructions.
 
-Data Analysis System
+**Data Analysis System**
 
-A specialized evaluation pipeline (analysis.py) that transforms benchmark 
-CSV logs into a 12-file diagnostic report stored in versioned 
-results/analysis/analysis_vN/ folders.
+A specialized evaluation pipeline (`analysis.py`) that transforms multi-attempt benchmark logs into a diagnostic report stored in versioned `results/analysis/vN/` folders.
 
-  - 0_text_stats.txt: Detailed log of per-mode performance. Reports 
-    Full/Partial test counts, attempt-level success %, Warning Efficiency 
-    (Correct Warnings / Total Fails), and Interference (Wrong Warnings / 
-    Total Successes).
-  - 1_general_heatmap.png: Categorical grid showing pass levels (100%, >50%, 
-    Partial, Fail) and self-correction markers. Includes a numeric Y-axis 
-    for all test indices, fine-grained grid lines, and a color-coded legend.
-  - 2_percentage_heatmap.png: Continuous gradient (Red-Yellow-Green) mapping 
-    exact success ratios. Uses NaN-masking to keep cells for non-existent 
-    tests black (background color).
-  - 3_bars_by_suite.png: Success ratio comparison (0.0–1.0) grouped by 
-    test suite blocks (e.g., Algorithms, CLI) using a fixed mode order.
-  - 4_bars_by_intent.png: Success ratio comparison segmented by request 
-    complexity: Theory (1), Coding (2), and CLI (3).
-  - 5_latency_by_mode.png: Boxplots showing processing time (time_s) 
-    distribution per mode to identify median speed and VRAM-related outliers.
-  - 6_latency_by_suite.png: Segmented boxplots evaluating how different 
-    thematic blocks (e.g., Logic vs. Shell) impact generation duration.
-  - 7_latency_by_intent.png: Boxplots comparing processing time specifically 
-    across Theory, Coding, and CLI tasks.
-  - 8_conf_matrix_all.png: Warning Confusion Matrix for all tests. Maps 
-    TP (Warn/Fail), TN (NoWarn/Pass), FP (Warn/Pass), and FN (NoWarn/Fail).
-  - 9_conf_matrix_coding.png: Specialized Confusion Matrix identical to #8 
-    but isolated to Intent 2 (Coding) to measure code-specific critique accuracy.
-  - 10_warning_proportions.png: Bi-directional bar chart. Positive Y-axis 
-    (Blue-Green) shows Correct Warning rates; negative Y-axis (Orange-Red) 
-    shows False Positive (Wrong Warning) rates per suite.
-  - 11_response_effectiveness.png: "Model Honesty" chart. Measures the 
-    rate of attempts that were either correct OR correctly flagged as wrong 
-    by the internal critique logic.
+*   **0_text_stats.txt:** Detailed log of per-mode performance. Reports "Full Pass" counts (tests where 100% of repeats succeeded), "Partial Pass" counts (at least one success), and total attempt-level success percentages for Fast and Thinking modes.
+*   **1_percentage_heatmap.png:** Dual percentage heatmaps mapping exact success ratios for every test index across all suites. Uses black-background masking for non-existent test cells to visualize the coverage and reliability of both modes side-by-side.
+*   **2_bars_comparison.png:** Comparative bar charts showing success rates (0.0–1.0) segmented by thematic test blocks (Suites) and task complexity (Intents: Theory, Coding, CLI).
+*   **3_latency_histograms.png:** Processing time (`time_s`) distribution plots for each mode. Includes Kernel Density Estimation (KDE) and median markers to visualize execution speed and the specific "Thinking" overhead.
+*   **4_latency_boxplots.png:** Latency distribution segmented by test suites, identifying specific thematic blocks that trigger higher computational load or highlight VRAM-related performance outliers.
 
-All visualizations strictly follow the hierarchy: 
-Fast -> Planning -> Chain of Draft -> Reflection_refine.

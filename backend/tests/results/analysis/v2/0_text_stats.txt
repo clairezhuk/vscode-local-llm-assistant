@@ -1,0 +1,14 @@
+=== BENCHMARK AGGREGATED STATISTICS ===
+
+MODE: FAST
+  - Total Tests: 42
+  - Full Pass (All repeats ok): 21 (50.0%)
+  - Partial Pass (At least one ok): 29 (69.0%)
+  - Attempt-level Success Rate: 59.5% (125/210)
+---------------------------------------------
+MODE: THINKING
+  - Total Tests: 42
+  - Full Pass (All repeats ok): 12 (28.6%)
+  - Partial Pass (At least one ok): 30 (71.4%)
+  - Attempt-level Success Rate: 51.9% (109/210)
+---------------------------------------------
