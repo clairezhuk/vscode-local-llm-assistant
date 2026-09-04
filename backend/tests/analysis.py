@@ -5,9 +5,11 @@ import numpy as np
 import glob
 import os
 import re
+from matplotlib.ticker import MultipleLocator
 
 # Налаштування стилю
-plt.style.use('dark_background')
+plt.style.use('default')
+sns.set_theme(style="whitegrid")
 RESULTS_DIR = "results"
 SAVE_BASE_PATH = "results/analysis"
 MODES_ORDER = ["fast", "thinking"]
@@ -77,6 +79,82 @@ def export_text_stats(df, path):
             f.write(f"  - Attempt-level Success Rate: {success_rate:.1f}% ({total_successes}/{total_attempts})\n")
             f.write("-" * 45 + "\n")
 
+        intent_map = {1: 'Theory', 2: 'Coding', 3: 'CLI'}
+        df['intent_name'] = df['intent'].map(intent_map)
+
+        f.write("===========================================================\n")
+        f.write("===       EXPANDED BENCHMARK STATISTICAL REPORT         ===\n")
+        f.write("===========================================================\n\n")
+
+        # --- Test-level aggregation (Full/Partial Pass) ---
+        test_summary = df.groupby(['suite', 'id', 'processing_type', 'intent_name']).agg({
+            'success': ['all', 'any', 'count', 'sum']
+        }).reset_index()
+        test_summary.columns = ['suite', 'id', 'mode', 'intent', 'full_pass', 'partial_pass', 'n_attempts', 'sum_success']
+
+        for mode in MODES_ORDER:
+            m_df = test_summary[test_summary['mode'] == mode]
+            raw_m_df = df[df['processing_type'] == mode]
+            if m_df.empty: continue
+
+            f.write(f"@@@ MODE: {mode.upper()} @@@\n\n")
+
+            # 1. Global Success Metrics
+            total_tests = len(m_df)
+            full_passes = m_df['full_pass'].sum()
+            partial_passes = m_df['partial_pass'].sum()
+            total_attempts = raw_m_df.shape[0]
+            total_success_attempts = raw_m_df['success'].sum()
+
+            f.write("--- GLOBAL SUCCESS ---\n")
+            f.write(f"Full Pass Rate:    {full_passes/total_tests*100:6.1f}% ({full_passes}/{total_tests} tests)\n")
+            f.write(f"Partial Pass Rate: {partial_passes/total_tests*100:6.1f}% ({partial_passes}/{total_tests} tests)\n")
+            f.write(f"Attempt SR:        {total_success_attempts/total_attempts*100:6.1f}% ({total_success_attempts}/{total_attempts} attempts)\n\n")
+
+            # 2. Stats by Intent
+            f.write("--- SUCCESS BY INTENT ---\n")
+            intent_stats = m_df.groupby('intent').agg({'full_pass': 'sum', 'id': 'count', 'partial_pass': 'sum'})
+            for intent, row in intent_stats.iterrows():
+                f.write(f"{intent:10}: Full: {row['full_pass']:2}/{row['id']:2} ({row['full_pass']/row['id']*100:5.1f}%) | ")
+                f.write(f"Partial: {row['partial_pass']:2}/{row['id']:2} ({row['partial_pass']/row['id']*100:5.1f}%)\n")
+            f.write("\n")
+
+            # 3. Stats by Suite
+            f.write("--- SUCCESS BY TEST BLOCK (SUITE) ---\n")
+            suite_stats = m_df.groupby('suite').agg({'full_pass': 'sum', 'id': 'count', 'partial_pass': 'sum'})
+            for suite, row in suite_stats.iterrows():
+                f.write(f"{suite:15}: Full: {row['full_pass']:2}/{row['id']:2} ({row['full_pass']/row['id']*100:5.1f}%) | ")
+                f.write(f"Partial: {row['partial_pass']:2}/{row['id']:2} ({row['partial_pass']/row['id']*100:5.1f}%)\n")
+            f.write("\n")
+
+            # 4. Latency Analysis
+            f.write("--- LATENCY ANALYSIS (TIME S) ---\n")
+            f.write(f"{'Block':15} | {'Med':>6} | {'Mean':>6} | {'Std':>5} | {'Min':>5} | {'Max':>6} | {'95% CI':>14}\n")
+            f.write("-" * 80 + "\n")
+
+            def write_time_row(label, data):
+                median = data.median()
+                mean = data.mean()
+                std = data.std()
+                t_min = data.min()
+                t_max = data.max()
+                # 95% Confidence Interval
+                n = len(data)
+                ci_bound = 1.96 * (std / np.sqrt(n)) if n > 1 else 0
+                ci_str = f"[{mean-ci_bound:5.1f}-{mean+ci_bound:5.1f}]"
+                f.write(f"{label:15} | {median:6.1f} | {mean:6.1f} | {std:5.1f} | {t_min:5.1f} | {t_max:6.1f} | {ci_str:>14}\n")
+
+            # Global Time
+            write_time_row("OVERALL", raw_m_df['time_s'])
+            f.write("-" * 80 + "\n")
+            
+            # Time per Suite
+            for suite in sorted(raw_m_df['suite'].unique()):
+                suite_time_data = raw_m_df[raw_m_df['suite'] == suite]['time_s']
+                write_time_row(suite, suite_time_data)
+
+            f.write("\n" + "="*59 + "\n\n")
+
 # --- 1. Percentage Heatmap ---
 def plot_1_heatmaps(df, path):
     suites = sorted(df['suite'].unique())
@@ -97,7 +175,7 @@ def plot_1_heatmaps(df, path):
         sns.heatmap(matrix, ax=axes[i], cmap="RdYlGn", vmin=0, vmax=1, 
                     mask=matrix.isnull(), linewidths=0.5, linecolor='#222', cbar_kws={'label': 'Success Ratio'})
         
-        axes[i].set_facecolor('#111') # Чорний для порожніх клітинок
+        axes[i].set_facecolor('#f0f0f0')
         axes[i].set_title(f"Success %: {mode.upper()}", fontsize=14, pad=15)
         axes[i].set_xlabel("Test Suite")
         axes[i].set_ylabel("Test Index")
@@ -108,16 +186,20 @@ def plot_1_heatmaps(df, path):
 
 # --- 2. Bars by Suite and Intent ---
 def plot_2_bars(df, path):
-    fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(12, 10))
+    fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(12, 11))
     
     # By Suite
     suite_agg = df.groupby(['suite', 'processing_type'])['success'].mean().reset_index()
     sns.barplot(data=suite_agg, x='suite', y='success', hue='processing_type', 
                 palette='viridis', ax=ax1)
-    ax1.set_title("Success Ratio by Suite")
-    ax1.set_ylim(0, 1.1)
+    ax1.set_title("Success Ratio by Suite", fontsize=14, pad=10)
+    ax1.set_ylim(0, 1.15)
     ax1.set_ylabel("Success Rate")
     ax1.tick_params(axis='x', rotation=15)
+    
+    # Dodawanie etykiet nad słupkami (Success Ratio)
+    for container in ax1.containers:
+        ax1.bar_label(container, fmt='%.2f', padding=3, fontsize=10, weight='bold')
 
     # By Intent
     intent_map = {1: '1: Theory', 2: '2: Coding', 3: '3: CLI'}
@@ -125,9 +207,13 @@ def plot_2_bars(df, path):
     intent_agg = df.groupby(['intent_label', 'processing_type'])['success'].mean().reset_index()
     sns.barplot(data=intent_agg, x='intent_label', y='success', hue='processing_type', 
                 palette='viridis', ax=ax2)
-    ax2.set_title("Success Ratio by Intent Type")
-    ax2.set_ylim(0, 1.1)
+    ax2.set_title("Success Ratio by Intent Type", fontsize=14, pad=10)
+    ax2.set_ylim(0, 1.15)
     ax2.set_ylabel("Success Rate")
+
+    # Dodawanie etykiet nad słupkami
+    for container in ax2.containers:
+        ax2.bar_label(container, fmt='%.2f', padding=3, fontsize=10, weight='bold')
 
     plt.tight_layout()
     plt.savefig(os.path.join(path, "2_bars_comparison.png"))
@@ -148,7 +234,7 @@ def plot_3_latency_hist(df, path):
         
         # Додаємо медіану на графік
         median = mode_data['time_s'].median()
-        axes[i].axvline(median, color='white', linestyle='--', label=f'Median: {median:.1f}s')
+        axes[i].axvline(median, color='black', linestyle='--', label=f'Median: {median:.1f}s')
         axes[i].legend()
 
     plt.tight_layout()
@@ -156,13 +242,45 @@ def plot_3_latency_hist(df, path):
 
 # --- 4. Latency Boxplots by Suite ---
 def plot_4_latency_box(df, path):
-    plt.figure(figsize=(14, 8))
-    sns.boxplot(data=df, x='suite', y='time_s', hue='processing_type', palette='Set2')
-    plt.title("Latency Distribution per Test Block", fontsize=15)
-    plt.xticks(rotation=25)
-    plt.ylabel("Time (seconds)")
-    plt.grid(axis='y', alpha=0.2)
+    plt.figure(figsize=(15, 9))
+    ax = sns.boxplot(data=df, x='suite', y='time_s', hue='processing_type', palette='Set2')
     
+    plt.title("Latency Distribution per Test Block (Detailed Grid)", fontsize=15, pad=15)
+    plt.xticks(rotation=25)
+    plt.ylabel("Time (seconds)", fontsize=12)
+    
+    # 1. Konfiguracja skali: Główne co 10, pomocnicze co 5
+    ax.yaxis.set_major_locator(MultipleLocator(10))
+    ax.yaxis.set_minor_locator(MultipleLocator(5))
+    
+    # 2. Konfiguracja siatki
+    ax.grid(which='major', axis='y', color='#CCCCCC', linestyle='-', alpha=0.8)
+    ax.grid(which='minor', axis='y', color='#EEEEEE', linestyle=':', alpha=0.5)
+    
+    # 3. Dodawanie etykiet tekstowych dla median
+    # Pobieramy linie median z obiektu boxplot
+    # Seaborn rysuje boxploty w kolejności: [box1, box2, ..., median1, median2, ...]
+    # Jednak łatwiej obliczyć mediany ręcznie i narysować je w odpowiednich miejscach
+    
+    suites = sorted(df['suite'].unique())
+    modes = MODES_ORDER
+    
+    # Przechodzimy przez każdy słupek (suite i hue)
+    for i, suite in enumerate(suites):
+        for j, mode in enumerate(modes):
+            # Obliczamy medianę dla danej kombinacji
+            median_val = df[(df['suite'] == suite) & (df['processing_type'] == mode)]['time_s'].median()
+            
+            if not np.isnan(median_val):
+                # Pozycja X dla boxplota z uwzględnieniem hue (offset)
+                # j=0 (lewy box) -> i - 0.2, j=1 (prawy box) -> i + 0.2
+                x_pos = i - 0.2 if j == 0 else i + 0.2
+                
+                ax.text(x_pos, median_val + 1, f'{median_val:.1f}', 
+                        ha='center', va='bottom', color='black', 
+                        fontsize=9, weight='bold', 
+                        bbox=dict(facecolor='white', alpha=0.6, edgecolor='none', pad=1))
+
     plt.tight_layout()
     plt.savefig(os.path.join(path, "4_latency_boxplots.png"))
 

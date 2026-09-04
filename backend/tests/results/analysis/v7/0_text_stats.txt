@@ -1,0 +1,147 @@
+===========================================================
+===       DETAILED PERFORMANCE & WARNING REPORT         ===
+===========================================================
+
+--- 1. PASS RATE ANALYSIS ---
+
+>> GLOBAL:
+Chain_of_draft    : SR:  56.6% | Full: 43/109 | Partial: 80/109
+Fast              : SR:  78.9% | Full: 79/109 | Partial: 91/109
+Planning          : SR:  62.1% | Full: 55/109 | Partial: 80/109
+Reflection_refine : SR:  72.2% | Full: 69/109 | Partial: 86/109
+
+>> BY INTENT:
+[CLI] Chain_of_draft    : SR:  66.7% | Full:  7/11 | Partial:  8/11
+[CLI] Fast              : SR:  90.9% | Full: 10/11 | Partial: 10/11
+[CLI] Planning          : SR:  66.7% | Full:  7/11 | Partial:  8/11
+[CLI] Reflection_refine : SR:  66.7% | Full:  7/11 | Partial:  8/11
+[Coding] Chain_of_draft    : SR:  55.8% | Full: 32/89 | Partial: 67/89
+[Coding] Fast              : SR:  75.7% | Full: 61/89 | Partial: 72/89
+[Coding] Planning          : SR:  62.5% | Full: 44/89 | Partial: 66/89
+[Coding] Reflection_refine : SR:  74.9% | Full: 58/89 | Partial: 73/89
+[Theory] Chain_of_draft    : SR:  51.9% | Full:  4/ 9 | Partial:  5/ 9
+[Theory] Fast              : SR:  96.3% | Full:  8/ 9 | Partial:  9/ 9
+[Theory] Planning          : SR:  51.9% | Full:  4/ 9 | Partial:  6/ 9
+[Theory] Reflection_refine : SR:  51.9% | Full:  4/ 9 | Partial:  5/ 9
+
+>> BY BLOCK:
+[L1 Basic Algorithms] Chain_of_draft    : SR:  76.4% | Full: 16/24 | Partial: 22/24
+[L1 Basic Algorithms] Fast              : SR: 100.0% | Full: 24/24 | Partial: 24/24
+[L1 Basic Algorithms] Planning          : SR:  88.9% | Full: 20/24 | Partial: 22/24
+[L1 Basic Algorithms] Reflection_refine : SR:  93.1% | Full: 19/24 | Partial: 24/24
+[L2 Complex Algorithms] Chain_of_draft    : SR:  35.6% | Full:  2/15 | Partial:  8/15
+[L2 Complex Algorithms] Fast              : SR:  42.2% | Full:  5/15 | Partial:  8/15
+[L2 Complex Algorithms] Planning          : SR:  28.9% | Full:  2/15 | Partial:  7/15
+[L2 Complex Algorithms] Reflection_refine : SR:  44.4% | Full:  4/15 | Partial:  9/15
+[L3 Libs] Chain_of_draft    : SR:  51.7% | Full:  5/20 | Partial: 16/20
+[L3 Libs] Fast              : SR:  70.0% | Full: 10/20 | Partial: 16/20
+[L3 Libs] Planning          : SR:  63.3% | Full: 11/20 | Partial: 15/20
+[L3 Libs] Reflection_refine : SR:  80.0% | Full: 15/20 | Partial: 17/20
+[L4 Terminal] Chain_of_draft    : SR:  61.9% | Full:  4/ 7 | Partial:  5/ 7
+[L4 Terminal] Fast              : SR:  85.7% | Full:  6/ 7 | Partial:  6/ 7
+[L4 Terminal] Planning          : SR:  61.9% | Full:  4/ 7 | Partial:  5/ 7
+[L4 Terminal] Reflection_refine : SR:  61.9% | Full:  4/ 7 | Partial:  5/ 7
+[L5 Development] Chain_of_draft    : SR:  44.4% | Full:  1/ 6 | Partial:  4/ 6
+[L5 Development] Fast              : SR:  94.4% | Full:  5/ 6 | Partial:  6/ 6
+[L5 Development] Planning          : SR:  50.0% | Full:  2/ 6 | Partial:  4/ 6
+[L5 Development] Reflection_refine : SR:  66.7% | Full:  4/ 6 | Partial:  4/ 6
+[L6 Work With Files] Chain_of_draft    : SR:  33.3% | Full:  3/14 | Partial:  6/14
+[L6 Work With Files] Fast              : SR:  71.4% | Full:  9/14 | Partial: 11/14
+[L6 Work With Files] Planning          : SR:  38.1% | Full:  4/14 | Partial:  7/14
+[L6 Work With Files] Reflection_refine : SR:  42.9% | Full:  6/14 | Partial:  6/14
+[L7 Refactoring] Chain_of_draft    : SR:  43.3% | Full:  2/10 | Partial:  6/10
+[L7 Refactoring] Fast              : SR:  70.0% | Full:  7/10 | Partial:  7/10
+[L7 Refactoring] Planning          : SR:  63.3% | Full:  4/10 | Partial:  8/10
+[L7 Refactoring] Reflection_refine : SR:  73.3% | Full:  6/10 | Partial:  8/10
+[L8 Noisy Prompts] Chain_of_draft    : SR:  89.7% | Full: 10/13 | Partial: 13/13
+[L8 Noisy Prompts] Fast              : SR: 100.0% | Full: 13/13 | Partial: 13/13
+[L8 Noisy Prompts] Planning          : SR:  79.5% | Full:  8/13 | Partial: 12/13
+[L8 Noisy Prompts] Reflection_refine : SR:  92.3% | Full: 11/13 | Partial: 13/13
+
+
+--- 2. LATENCY ANALYSIS (TIME S) ---
+Mode               | Block           |    Med |   Mean |   Std |         95% CI
+--------------------------------------------------------------------------------
+Fast               | OVERALL         |   34.9 |   36.0 |  18.0 | [32.6-39.4]
+                   | L1 Basic Algorithms |   22.5 |   25.0 |  12.5 | [20.0-30.0]
+                   | L2 Complex Algorithms |   52.0 |   52.0 |  16.1 | [43.9-60.1]
+                   | L3 Libs         |   46.6 |   47.6 |  14.9 | [41.1-54.1]
+                   | L4 Terminal     |   10.3 |   10.4 |   1.8 | [ 9.1-11.7]
+                   | L5 Development  |   37.3 |   41.3 |   9.9 | [33.3-49.2]
+                   | L6 Work With Files |   30.9 |   34.0 |  19.8 | [23.7-44.3]
+                   | L7 Refactoring  |   34.4 |   38.5 |  17.0 | [27.9-49.0]
+                   | L8 Noisy Prompts |   34.7 |   31.7 |   8.7 | [27.0-36.5]
+--------------------------------------------------------------------------------
+Planning           | OVERALL         |  104.9 |  155.4 | 143.8 | [128.4-182.4]
+                   | L1 Basic Algorithms |   78.4 |  107.3 |  93.0 | [70.1-144.5]
+                   | L2 Complex Algorithms |  274.1 |  274.6 | 186.9 | [180.1-369.2]
+                   | L3 Libs         |  129.3 |  198.6 | 164.3 | [126.6-270.6]
+                   | L4 Terminal     |   10.9 |   13.0 |   4.2 | [ 9.8-16.1]
+                   | L5 Development  |  192.9 |  225.2 | 126.5 | [123.9-326.4]
+                   | L6 Work With Files |   83.8 |  109.7 |  98.1 | [58.4-161.1]
+                   | L7 Refactoring  |  133.9 |  197.9 | 152.9 | [103.1-292.6]
+                   | L8 Noisy Prompts |   70.6 |  101.4 |  67.8 | [64.5-138.2]
+--------------------------------------------------------------------------------
+Chain_of_draft     | OVERALL         |  102.5 |  121.1 |  80.3 | [106.0-136.2]
+                   | L1 Basic Algorithms |   72.5 |   79.2 |  30.3 | [67.1-91.3]
+                   | L2 Complex Algorithms |  146.1 |  151.2 |  57.9 | [121.9-180.5]
+                   | L3 Libs         |  134.4 |  158.4 |  71.3 | [127.1-189.6]
+                   | L4 Terminal     |   10.4 |   12.1 |   3.4 | [ 9.6-14.7]
+                   | L5 Development  |  159.7 |  173.5 |  73.3 | [114.8-232.1]
+                   | L6 Work With Files |   73.6 |  106.9 | 101.4 | [53.8-160.0]
+                   | L7 Refactoring  |  109.5 |  171.8 | 104.6 | [107.0-236.6]
+                   | L8 Noisy Prompts |   92.2 |  117.0 |  71.7 | [78.0-156.0]
+--------------------------------------------------------------------------------
+Reflection_refine  | OVERALL         |   46.5 |   52.3 |  32.1 | [46.3-58.4]
+                   | L1 Basic Algorithms |   34.2 |   37.9 |  19.5 | [30.1-45.7]
+                   | L2 Complex Algorithms |   66.0 |   75.3 |  37.2 | [56.5-94.1]
+                   | L3 Libs         |   51.0 |   65.8 |  35.1 | [50.4-81.2]
+                   | L4 Terminal     |   11.2 |   13.0 |   4.3 | [ 9.8-16.2]
+                   | L5 Development  |   54.5 |   61.3 |  18.5 | [46.5-76.2]
+                   | L6 Work With Files |   45.2 |   46.3 |  26.3 | [32.5-60.0]
+                   | L7 Refactoring  |   44.2 |   55.0 |  29.4 | [36.8-73.2]
+                   | L8 Noisy Prompts |   46.7 |   53.3 |  32.6 | [35.5-71.0]
+--------------------------------------------------------------------------------
+
+
+--- 3. WARNINGS & MODEL HONESTY ---
+
+>> GLOBAL:
+('Chain_of_draft',)                : Prev:  24.6% (35/142) | FalseFlag:   8.1% (15/185) | F1: 0.365
+('Fast',)                          : Prev:   0.0% (0/69) | FalseFlag:   0.0% (0/258) | F1: 0.000
+('Planning',)                      : Prev:  30.6% (38/124) | FalseFlag:  10.8% (22/203) | F1: 0.413
+('Reflection_refine',)             : Prev:  27.5% (25/91) | FalseFlag:   9.7% (23/236) | F1: 0.360
+
+>> BY BLOCK:
+('L1 Basic Algorithms', 'Chain_of_draft'): Prev:  11.8% (2/17) | FalseFlag:   0.0% (0/55) | F1: 0.211
+('L1 Basic Algorithms', 'Fast')    : Prev:   0.0% (0/0) | FalseFlag:   0.0% (0/72) | F1: 0.000
+('L1 Basic Algorithms', 'Planning'): Prev:  37.5% (3/8) | FalseFlag:   1.6% (1/64) | F1: 0.500
+('L1 Basic Algorithms', 'Reflection_refine'): Prev:  40.0% (2/5) | FalseFlag:   3.0% (2/67) | F1: 0.444
+('L2 Complex Algorithms', 'Chain_of_draft'): Prev:  24.1% (7/29) | FalseFlag:   6.2% (1/16) | F1: 0.378
+('L2 Complex Algorithms', 'Fast')  : Prev:   0.0% (0/26) | FalseFlag:   0.0% (0/19) | F1: 0.000
+('L2 Complex Algorithms', 'Planning'): Prev:  15.6% (5/32) | FalseFlag:  15.4% (2/13) | F1: 0.256
+('L2 Complex Algorithms', 'Reflection_refine'): Prev:  12.0% (3/25) | FalseFlag:  15.0% (3/20) | F1: 0.194
+('L3 Libs', 'Chain_of_draft')      : Prev:  31.0% (9/29) | FalseFlag:  22.6% (7/31) | F1: 0.400
+('L3 Libs', 'Fast')                : Prev:   0.0% (0/18) | FalseFlag:   0.0% (0/42) | F1: 0.000
+('L3 Libs', 'Planning')            : Prev:  40.9% (9/22) | FalseFlag:  21.1% (8/38) | F1: 0.462
+('L3 Libs', 'Reflection_refine')   : Prev:  58.3% (7/12) | FalseFlag:  18.8% (9/48) | F1: 0.500
+('L4 Terminal', 'Chain_of_draft')  : Prev:   0.0% (0/8) | FalseFlag:   0.0% (0/13) | F1: 0.000
+('L4 Terminal', 'Fast')            : Prev:   0.0% (0/3) | FalseFlag:   0.0% (0/18) | F1: 0.000
+('L4 Terminal', 'Planning')        : Prev:   0.0% (0/8) | FalseFlag:   0.0% (0/13) | F1: 0.000
+('L4 Terminal', 'Reflection_refine'): Prev:   0.0% (0/8) | FalseFlag:   0.0% (0/13) | F1: 0.000
+('L5 Development', 'Chain_of_draft'): Prev:  50.0% (5/10) | FalseFlag:   0.0% (0/8) | F1: 0.667
+('L5 Development', 'Fast')         : Prev:   0.0% (0/1) | FalseFlag:   0.0% (0/17) | F1: 0.000
+('L5 Development', 'Planning')     : Prev:  66.7% (6/9) | FalseFlag:  11.1% (1/9) | F1: 0.750
+('L5 Development', 'Reflection_refine'): Prev:  33.3% (2/6) | FalseFlag:  25.0% (3/12) | F1: 0.364
+('L6 Work With Files', 'Chain_of_draft'): Prev:  14.3% (4/28) | FalseFlag:  14.3% (2/14) | F1: 0.235
+('L6 Work With Files', 'Fast')     : Prev:   0.0% (0/12) | FalseFlag:   0.0% (0/30) | F1: 0.000
+('L6 Work With Files', 'Planning') : Prev:  30.8% (8/26) | FalseFlag:  31.2% (5/16) | F1: 0.410
+('L6 Work With Files', 'Reflection_refine'): Prev:  25.0% (6/24) | FalseFlag:  16.7% (3/18) | F1: 0.364
+('L7 Refactoring', 'Chain_of_draft'): Prev:  41.2% (7/17) | FalseFlag:   7.7% (1/13) | F1: 0.560
+('L7 Refactoring', 'Fast')         : Prev:   0.0% (0/9) | FalseFlag:   0.0% (0/21) | F1: 0.000
+('L7 Refactoring', 'Planning')     : Prev:  36.4% (4/11) | FalseFlag:  15.8% (3/19) | F1: 0.444
+('L7 Refactoring', 'Reflection_refine'): Prev:  37.5% (3/8) | FalseFlag:   0.0% (0/22) | F1: 0.545
+('L8 Noisy Prompts', 'Chain_of_draft'): Prev:  25.0% (1/4) | FalseFlag:  11.4% (4/35) | F1: 0.222
+('L8 Noisy Prompts', 'Fast')       : Prev:   0.0% (0/0) | FalseFlag:   0.0% (0/39) | F1: 0.000
+('L8 Noisy Prompts', 'Planning')   : Prev:  37.5% (3/8) | FalseFlag:   6.5% (2/31) | F1: 0.462
+('L8 Noisy Prompts', 'Reflection_refine'): Prev:  66.7% (2/3) | FalseFlag:   8.3% (3/36) | F1: 0.500

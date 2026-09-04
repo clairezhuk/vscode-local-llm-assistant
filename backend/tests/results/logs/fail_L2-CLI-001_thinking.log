@@ -10,27 +10,27 @@ git --version && git init && git add . && git commit -m "Initial"
 REASON: Format=False, Exec=False
 AI RESPONSE:
 ```bash
-git --version && git init && git add . && git commit -m 'Initial'
+git init && git add . && git commit -m "Initial"
 ```
 ------------------------------
 --- ATTEMPT 3/5 FAILED ---
 REASON: Format=False, Exec=False
 AI RESPONSE:
 ```bash
-git --version && git init && git add . && git commit -m 'Initial'
+git --version && git init && git add . && git commit -m "Initial"
 ```
 ------------------------------
 --- ATTEMPT 4/5 FAILED ---
 REASON: Format=False, Exec=False
 AI RESPONSE:
 ```bash
-git --version && git init && git add . && git commit -m "Initial"
+git --version && git init && git add . && git commit -m 'Initial'
 ```
 ------------------------------
 --- ATTEMPT 5/5 FAILED ---
 REASON: Format=False, Exec=False
 AI RESPONSE:
 ```bash
-git --version && git init && git add . && git commit -m 'Initial'
+git --version && git init && git add . && git commit -m "Initial"
 ```
 ------------------------------

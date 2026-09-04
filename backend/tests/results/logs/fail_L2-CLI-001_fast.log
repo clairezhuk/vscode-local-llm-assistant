@@ -1,16 +1,9 @@
 
---- ATTEMPT 1/5 FAILED ---
-REASON: Format=True, Exec=False
+--- ATTEMPT 2/5 FAILED ---
+REASON: Format=False, Exec=False
 AI RESPONSE:
 ```sh
-git --version || git init && git config user.email "dummy@example.com" && git config user.name "Dummy User" && git add . && git commit -m 'Initial'
-```
-------------------------------
---- ATTEMPT 2/5 FAILED ---
-REASON: Format=True, Exec=False
-AI RESPONSE:
-```bash
-git --version || git init && git config user.email "dummy@example.com" && git config user.name "Dummy User" && git add . && git commit -m 'Initial'
+git --version && git init && git add . && git commit -m "Initial"
 ```
 ------------------------------
 --- ATTEMPT 3/5 FAILED ---
@@ -23,14 +16,14 @@ git --version && git init && git add . && git commit -m "Initial"
 --- ATTEMPT 4/5 FAILED ---
 REASON: Format=False, Exec=False
 AI RESPONSE:
-```sh
+```bash
 git --version && git init && git add . && git commit -m "Initial"
 ```
 ------------------------------
 --- ATTEMPT 5/5 FAILED ---
 REASON: Format=False, Exec=False
 AI RESPONSE:
-```sh
+```bash
 git --version && git init && git add . && git commit -m "Initial"
 ```
 ------------------------------

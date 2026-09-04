@@ -93,3 +93,20 @@ A specialized evaluation pipeline (`analysis.py`) that transforms multi-attempt 
 *   **3_latency_histograms.png:** Processing time (`time_s`) distribution plots for each mode. Includes Kernel Density Estimation (KDE) and median markers to visualize execution speed and the specific "Thinking" overhead.
 *   **4_latency_boxplots.png:** Latency distribution segmented by test suites, identifying specific thematic blocks that trigger higher computational load or highlight VRAM-related performance outliers.
 
+
+**Evolutionary & Experimental Analysis Pipeline**
+
+An advanced diagnostic framework (`analysis_old.py`) designed to evaluate agentic architectures, self-criticism mechanisms, and model honesty across 103 test scenarios.
+
+*   **0_text_stats.txt:** A comprehensive statistical report integrating success and latency metrics. It provides:
+    *   **Success metrics:** Full/Partial pass rates aggregated globally, by intent (Theory, Coding, CLI), and by individual test suite.
+    *   **Latency analysis:** Detailed timing profiles (Median, Mean, Std Dev, and 95% Confidence Intervals) for every mode and block.
+    *   **Warning Diagnostics:** Precision, Recall, and F1-score for the self-criticism mechanism, measuring the model's ability to identify its own failures.
+*   **1_general_heatmap.png:** A "Model Honesty" heatmap using a specialized color-coding system to visualize the relationship between output correctness and system warnings. It distinguishes between pale colors (success/fail without warnings) and bright markers: Yellow (correctly identified errors), Purple (false alarms on correct code), and Magenta (mixed/disputed outcomes).
+*   **2_percentage_heatmap.png:** A granular success ratio heatmap across all 8 test suites (L1–L8), allowing for the identification of "dead zones" (scenarios unsolvable by any mode) and clusters of high-reliability agentic performance.
+*   **3_bars_by_suite.png & 4_bars_by_intent.png:** Success ratio bar charts (0.0–1.0) with exact numeric labels above every column, facilitating precise comparison between the Fast, Planning, Chain of Draft, and Reflection & Refine architectures.
+*   **5_latency_by_mode.png, 6_suite & 7_intent:** High-resolution boxplots depicting processing times. These charts include a 100s/50s grid for precise reading and specialized median labels with background masking to ensure readability against the Interquartile Range (IQR) whiskers.
+*   **8_conf_matrix_all.png & 9_coding:** Warning confusion matrices visualizing True Positives (correctly flagged errors), False Positives (false alarms), and Negatives.
+*   **10_warning_proportions.png:** A dual-directional bar chart showing the ratio of valid warnings (plotted upwards) against the ratio of false alerts (plotted downwards) per suite, identifying domains where self-criticism is most reliable.
+*   **11_response_effectiveness.png:** A "Model Honesty" index chart measuring the total proportion of reliable outputs—defined as either a correct answer or a correctly identified failure.
+*   **12_warning_impact_delta.png:** A delta-effectiveness plot ($\frac{TP - FP}{N}$) showing the net gain or loss in system reliability provided by the warning mechanism. It highlights where the reasoning pipeline adds informational value and where it introduces unnecessary noise.

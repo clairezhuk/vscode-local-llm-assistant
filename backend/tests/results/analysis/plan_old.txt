@@ -1,0 +1,30 @@
+    - 0_text_stats.txt: Detailed log of per-mode performance. Reports 
+    Full/Partial test counts, attempt-level success %, Warning Efficiency 
+    (Correct Warnings / Total Fails), and Interference (Wrong Warnings / 
+    Total Successes).
+  - 1_general_heatmap.png: Categorical grid showing pass levels (100%, >50%, 
+    Partial, Fail) and self-correction markers. Includes a numeric Y-axis 
+    for all test indices, fine-grained grid lines, and a color-coded legend.
+  - 2_percentage_heatmap.png: Continuous gradient (Red-Yellow-Green) mapping 
+    exact success ratios. Uses NaN-masking to keep cells for non-existent 
+    tests black (background color).
+  - 3_bars_by_suite.png: Success ratio comparison (0.0–1.0) grouped by 
+    test suite blocks (e.g., Algorithms, CLI) using a fixed mode order.
+  - 4_bars_by_intent.png: Success ratio comparison segmented by request 
+    complexity: Theory (1), Coding (2), and CLI (3).
+  - 5_latency_by_mode.png: Boxplots showing processing time (time_s) 
+    distribution per mode to identify median speed and VRAM-related outliers.
+  - 6_latency_by_suite.png: Segmented boxplots evaluating how different 
+    thematic blocks (e.g., Logic vs. Shell) impact generation duration.
+  - 7_latency_by_intent.png: Boxplots comparing processing time specifically 
+    across Theory, Coding, and CLI tasks.
+  - 8_conf_matrix_all.png: Warning Confusion Matrix for all tests. Maps 
+    TP (Warn/Fail), TN (NoWarn/Pass), FP (Warn/Pass), and FN (NoWarn/Fail).
+  - 9_conf_matrix_coding.png: Specialized Confusion Matrix identical to #8 
+    but isolated to Intent 2 (Coding) to measure code-specific critique accuracy.
+  - 10_warning_proportions.png: Bi-directional bar chart. Positive Y-axis 
+    (Blue-Green) shows Correct Warning rates; negative Y-axis (Orange-Red) 
+    shows False Positive (Wrong Warning) rates per suite.
+  - 11_response_effectiveness.png: "Model Honesty" chart. Measures the 
+    rate of attempts that were either correct OR correctly flagged as wrong 
+    by the internal critique logic.

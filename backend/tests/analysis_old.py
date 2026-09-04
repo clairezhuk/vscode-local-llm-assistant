@@ -6,9 +6,11 @@ import numpy as np
 import glob
 import os
 import re
+from matplotlib.ticker import MultipleLocator
 
 # Style
-plt.style.use('dark_background')
+plt.style.use('default')
+sns.set_theme(style="whitegrid")
 SAVE_BASE_PATH = "results/analysis"
 CATEGORY_ORDER = ["Fast", "Planning", "Chain_of_draft", "Reflection_refine"]
 
@@ -69,34 +71,99 @@ def apply_old_data():
 # --- Analysis ---
 
 def export_text_stats(df, categories, path):
+    intent_map = {1: 'Theory', 2: 'Coding', 3: 'CLI'}
+    df['intent_name'] = df['intent'].map(intent_map)
+    
+    # Helper for warning metrics
+    def get_metrics(tp, fp, fn, tn):
+        precision = tp / (tp + fp) if (tp + fp) > 0 else 0
+        recall = tp / (tp + fn) if (tp + fn) > 0 else 0
+        f1 = 2 * (precision * recall) / (precision + recall) if (precision + recall) > 0 else 0
+        return precision, recall, f1
+
     with open(os.path.join(path, "0_text_stats.txt"), "w", encoding="utf-8") as f:
-        f.write("=== AGGREGATED STATISTICS ===\n\n")
-        for cat in categories:
-            m_df = df[df['processing_type'] == cat]
-            total_tests = len(m_df)
-            if total_tests == 0: continue
+        f.write("===========================================================\n")
+        f.write("===       DETAILED PERFORMANCE & WARNING REPORT         ===\n")
+        f.write("===========================================================\n\n")
+
+        # --- SECTION 1: PASS RATES (Success/Full/Partial) ---
+        f.write("--- 1. PASS RATE ANALYSIS ---\n")
+        levels = [('GLOBAL', []), ('BY INTENT', ['intent_name']), ('BY BLOCK', ['suite'])]
+        
+        for level_name, group_cols in levels:
+            f.write(f"\n>> {level_name}:\n")
+            cols = group_cols + ['processing_type']
+            agg = df.groupby(cols).agg({
+                'id': 'count',
+                'success_count': 'sum',
+                'repeats': 'sum'
+            }).reset_index()
             
-            pass_100 = (m_df['success_count'] == m_df['repeats']).sum()
-            pass_partial = (m_df['success_count'] > 0).sum()
+            # Additional logic for Full/Partial per scenario
+            scenario_agg = df.groupby(cols + ['id']).apply(lambda x: pd.Series({
+                'is_full': x['success_count'].iloc[0] == x['repeats'].iloc[0],
+                'is_partial': x['success_count'].iloc[0] > 0
+            })).reset_index().groupby(cols).agg({'is_full': 'sum', 'is_partial': 'sum'})
             
-            total_attempts = m_df['repeats'].sum()
-            total_successes = m_df['success_count'].sum()
-            total_fails = total_attempts - total_successes
+            agg = agg.merge(scenario_agg, on=cols)
             
-            success_rate = (total_successes / total_attempts) * 100
-            total_warns = m_df['warning'].sum()
-            total_wrong_warns = m_df['wrong_warnings'].sum()
+            for _, row in agg.iterrows():
+                prefix = f"[{row['intent_name'] if 'intent_name' in row else 'ALL'}] " if 'intent_name' in row else ""
+                prefix += f"[{row['suite'] if 'suite' in row else ''}] " if 'suite' in row else ""
+                f.write(f"{prefix}{row['processing_type']:18}: ")
+                f.write(f"SR: {row['success_count']/row['repeats']*100:5.1f}% | ")
+                f.write(f"Full: {int(row['is_full']):2}/{row['id']:2} | ")
+                f.write(f"Partial: {int(row['is_partial']):2}/{row['id']:2}\n")
+
+        # --- SECTION 2: LATENCY (All modes in one section) ---
+        f.write("\n\n--- 2. LATENCY ANALYSIS (TIME S) ---\n")
+        f.write(f"{'Mode':18} | {'Block':15} | {'Med':>6} | {'Mean':>6} | {'Std':>5} | {'95% CI':>14}\n")
+        f.write("-" * 80 + "\n")
+        
+        for cat in CATEGORY_ORDER:
+            if cat not in categories: continue
+            c_df = df[df['processing_type'] == cat]
             
-            warn_efficiency = (total_warns / total_fails * 100) if total_fails > 0 else 0
-            interference = (total_wrong_warns / total_successes * 100) if total_successes > 0 else 0
+            # Overall for mode
+            def write_latency_row(label, data, mode_name):
+                std = data.std()
+                mean = data.mean()
+                ci = 1.96 * (std / np.sqrt(len(data))) if len(data) > 1 else 0
+                f.write(f"{mode_name:18} | {label:15} | {data.median():6.1f} | {mean:6.1f} | {std:5.1f} | [{mean-ci:4.1f}-{mean+ci:4.1f}]\n")
+
+            write_latency_row("OVERALL", c_df['time_s'], cat)
+            for suite in sorted(c_df['suite'].unique()):
+                write_latency_row(suite, c_df[c_df['suite'] == suite]['time_s'], "")
+            f.write("-" * 80 + "\n")
+
+        # --- SECTION 3: WARNING ANALYSIS ---
+        f.write("\n\n--- 3. WARNINGS & MODEL HONESTY ---\n")
+        for level_name, group_cols in [('GLOBAL', []), ('BY BLOCK', ['suite'])]:
+            f.write(f"\n>> {level_name}:\n")
+            cols = group_cols + ['processing_type']
             
-            f.write(f"MODE: {cat}\n")
-            f.write(f"  - Tests: {pass_100} (100%) / {pass_partial} (Partial) / {total_tests} (Total)\n")
-            f.write(f"  - Success Rate: {success_rate:.1f}% (Total attempts: {total_attempts})\n")
-            f.write(f"  - Warnings: {int(total_warns)} total | Wrong Warnings: {int(total_wrong_warns)}\n")
-            f.write(f"  - Warning Efficiency (detected errors): {warn_efficiency:.1f}%\n")
-            f.write(f"  - Interference (wrongly flagged success): {interference:.1f}%\n")
-            f.write("-" * 40 + "\n")
+            for group_keys, g_df in df.groupby(cols if cols else ['processing_type']):
+                if group_keys == "Fast": continue
+                
+                total_att = g_df['repeats'].sum()
+                rights = g_df['success_count'].sum()
+                wrongs = total_att - rights
+                
+                fp = g_df['wrong_warnings'].sum()
+                tp = g_df['warning'].sum() - fp
+                fn = wrongs - tp
+                tn = rights - fp
+                
+                prec, rec, f1 = get_metrics(tp, fp, fn, tn)
+                
+                # Accuracy in detection
+                prevented_pct = (tp / wrongs * 100) if wrongs > 0 else 0
+                false_flag_pct = (fp / rights * 100) if rights > 0 else 0
+                
+                label = f"{group_keys}"
+                f.write(f"{label:35}: Prev: {prevented_pct:5.1f}% ({int(tp)}/{int(wrongs)}) | ")
+                f.write(f"FalseFlag: {false_flag_pct:5.1f}% ({int(fp)}/{int(rights)}) | ")
+                f.write(f"F1: {f1:.3f}\n")
 
 def plot_1_general_heatmap(df, categories, path):
     suites = sorted(df['suite'].unique())
@@ -104,38 +171,45 @@ def plot_1_general_heatmap(df, categories, path):
     fig, axes = plt.subplots(1, len(categories), figsize=(4*len(categories), 10), sharey=True)
     if len(categories) == 1: axes = [axes]
 
-    colors = ['#1e1e1e', '#1b5e20', "#36a162", "#30cb1e", '#f1c40f', '#e74c3c', '#e67e22']
+    # New Colors Mapping:
+    # 1: Pale Green (Right, No Warn), 2: Pale Red (Fail, No Warn)
+    # 3: Bright Yellow (Correct Warns Only), 4: Bright Purple (Wrong Warns Only)
+    # 5: Bright Magenta (Mixed/Disputed), 0: Empty
+    colors = ['#f0f0f0', '#a5d6a7', '#ef9a9a', '#c0f000', '#d21a36', '#d009d4']
     cmap = plt.matplotlib.colors.ListedColormap(colors)
 
     for i, cat in enumerate(categories):
         matrix = np.zeros((max_tests, len(suites)))
         c_df = df[df['processing_type'] == cat]
         for _, row in c_df.iterrows():
-            val = 5 # Fail
-            if row['success_count'] == row['repeats']: val = 1
-            elif row['success_count'] > row['repeats']/2: val = 2
-            elif row['wrong_warnings'] > 0: val = 6
-            elif row['success_count'] > 0: val = 3
-            elif row['warning'] > 0: val = 4
+            total_w = row['warning']
+            wrong_w = row['wrong_warnings']
+            correct_w = total_w - wrong_w
+            
+            if total_w == 0:
+                val = 1 if row['success_count'] == row['repeats'] else 2
+            else:
+                if wrong_w == 0: val = 3 # Only Correct
+                elif correct_w == 0: val = 4 # Only Wrong
+                else: val = 5 # Disputed / Mixed
+                
             matrix[row['test_idx']-1, suites.index(row['suite'])] = val
         
         ax = axes[i]
-        ax.imshow(matrix, cmap=cmap, aspect='auto', vmin=0, vmax=6)
-        ax.set_title(cat.upper(), color='white', fontweight='bold', pad=15)
+        ax.imshow(matrix, cmap=cmap, aspect='auto', vmin=0, vmax=5)
+        ax.set_title(cat.upper(), fontweight='bold', pad=15)
         ax.set_xticks(np.arange(len(suites)))
         ax.set_xticklabels([s.split(' ')[0] for s in suites], rotation=45, fontsize=8)
-        
         ax.set_yticks(np.arange(max_tests))
         ax.set_yticklabels(np.arange(1, max_tests + 1), fontsize=7)
-        ax.grid(which='both', color='#333333', linestyle='-', linewidth=0.5)
+        ax.grid(which='both', color='white', linestyle='-', linewidth=0.5)
 
     patches = [
-        mpatches.Patch(color='#1b5e20', label='100% Pass'),
-        mpatches.Patch(color='#36a162', label='>50% Pass'),
-        mpatches.Patch(color='#30cb1e', label='Partial Pass'),
-        mpatches.Patch(color='#e74c3c', label='Fail'),
-        mpatches.Patch(color='#f1c40f', label='Fail + Warning'),
-        mpatches.Patch(color='#e67e22', label='Wrong Warning')
+        mpatches.Patch(color='#a5d6a7', label='Right (No Warn)'),
+        mpatches.Patch(color='#ef9a9a', label='Fail (No Warn)'),
+        mpatches.Patch(color="#c0f000", label='Correct Warnings'),
+        mpatches.Patch(color="#d21a36", label='Wrong Warnings'),
+        mpatches.Patch(color="#d009d4", label='Disputed (Mixed)')
     ]
     fig.legend(handles=patches, loc='lower center', bbox_to_anchor=(0.5, 0.02), ncol=3)
     plt.tight_layout(rect=[0, 0.08, 1, 1])
@@ -155,7 +229,7 @@ def plot_2_percentage_heatmap(df, categories, path):
         
         sns.heatmap(matrix, ax=axes[i], cmap="RdYlGn", cbar=(i == len(categories)-1), 
                     vmin=0, vmax=1, mask=np.isnan(matrix), linewidths=0.5, linecolor='#222')
-        axes[i].set_facecolor('black')
+        axes[i].set_facecolor('#f0f0f0')
         axes[i].set_title(f"{cat} Success %")
         axes[i].set_xticklabels([s.split(' ')[0] for s in suites], rotation=45)
         axes[i].set_yticks(np.arange(max_tests) + 0.5)
@@ -166,44 +240,55 @@ def plot_2_percentage_heatmap(df, categories, path):
 
 def plot_3_4_bar_charts(df, categories, path, group_by='suite', filename="3_bars_by_suite.png"):
     plt.figure(figsize=(12, 6))
-    
     agg = df.groupby([group_by, 'processing_type']).apply(
         lambda x: x['success_count'].sum() / x['repeats'].sum()
     ).reset_index(name='ratio')
     
-    sns.barplot(data=agg, x=group_by, y='ratio', hue='processing_type', 
+    ax = sns.barplot(data=agg, x=group_by, y='ratio', hue='processing_type', 
                 hue_order=[c for c in CATEGORY_ORDER if c in categories], palette='viridis')
     
+    for container in ax.containers:
+        ax.bar_label(container, fmt='%.2f', padding=3, fontsize=9, weight='bold')
+
     plt.title(f"Success Ratio by {group_by}")
     plt.xticks(rotation=30)
-    plt.ylim(0, 1.1)
-    plt.ylabel("Success Rate (0.0 - 1.0)")
-    plt.grid(axis='y', alpha=0.2)
-    plt.legend(title="Mode")
+    plt.ylim(0, 1.15)
     plt.tight_layout()
     plt.savefig(os.path.join(path, filename))
 
 def plot_5_6_7_latency_boxes(df, path):
-    # 5. Latency by Mode
-    plt.figure(figsize=(10, 6))
-    sns.boxplot(data=df, x='processing_type', y='time_s', palette='magma')
-    plt.title("Latency Distribution by Mode")
-    plt.savefig(os.path.join(path, "5_latency_by_mode.png"))
+    plots = [
+        ('processing_type', None, "5_latency_by_mode.png"),
+        ('suite', 'processing_type', "6_latency_by_suite.png"),
+        ('intent_name', 'processing_type', "7_latency_by_intent.png")
+    ]
+    
+    for x_col, hue_col, fname in plots:
+        plt.figure(figsize=(13, 7))
+        ax = sns.boxplot(data=df, x=x_col, y='time_s', hue=hue_col, palette='magma')
+        
+        # Grid and Axis config
+        ax.yaxis.set_major_locator(MultipleLocator(100))
+        ax.yaxis.set_minor_locator(MultipleLocator(50))
+        ax.grid(which='major', axis='y', color='#CCCCCC', linestyle='-', alpha=0.7)
+        ax.grid(which='minor', axis='y', color='#EEEEEE', linestyle=':', alpha=0.5)
+        
+        # Median labels
+        # Helper to find median positions in boxplot
+        lines = ax.get_lines()
+        # Median lines are every 6th line in a standard boxplot
+        for i in range(4, len(lines), 6):
+            x_coords = lines[i].get_xdata()
+            y_coords = lines[i].get_ydata()
+            if len(y_coords) > 0:
+                ax.text(np.mean(x_coords), y_coords[0] + 5, f'{y_coords[0]:.0f}', 
+                        ha='center', va='bottom', fontsize=8, weight='bold', color='white',
+                        bbox=dict(facecolor='black', alpha=0.5, edgecolor='none', pad=1))
 
-    # 6. Latency by Suite
-    plt.figure(figsize=(12, 8))
-    sns.boxplot(data=df, x='suite', y='time_s', hue='processing_type')
-    plt.title("Latency by Test Block")
-    plt.xticks(rotation=20)
-    plt.savefig(os.path.join(path, "6_latency_by_suite.png"))
-
-    # 7. Latency by Intent
-    plt.figure(figsize=(12, 6))
-    intent_map = {1: 'Theory', 2: 'Coding', 3: 'CLI'}
-    df['intent_name'] = df['intent'].map(intent_map)
-    sns.boxplot(data=df, x='intent_name', y='time_s', hue='processing_type')
-    plt.title("Latency by Intent Type")
-    plt.savefig(os.path.join(path, "7_latency_by_intent.png"))
+        plt.title(f"Latency Analysis: {fname.replace('.png','')}")
+        plt.xticks(rotation=20 if x_col == 'suite' else 0)
+        plt.tight_layout()
+        plt.savefig(os.path.join(path, fname))
 
 # --- Warnings (8-11) ---
 
@@ -245,89 +330,133 @@ def plot_8_9_warning_confusion_matrices(df, categories, path, coding_only=False)
     plt.savefig(os.path.join(path, f"{'9' if coding_only else '8'}_conf_matrix_{suffix}.png"), dpi=150)
 
 def plot_10_warning_proportions(df, categories, path):
-    """
-    Bar chart by suites: 
-    Up (Blue-Green): Proportion of Correct Warnings (True Positives)
-    Down (Orange-Red): Proportion of False Warnings (False Positives)
-    """
     suites = sorted(df['suite'].unique())
-    # Exclude Fast mode as it usually has 0 warnings by design
     think_cats = [c for c in categories if c != "Fast"]
     if not think_cats: return
-
-    fig, ax = plt.subplots(figsize=(14, 7))
-    
+    fig, ax = plt.subplots(figsize=(15, 8))
     x = np.arange(len(suites))
     width = 0.8 / len(think_cats)
     
-    # Colors for the 3 thinking modes
-    up_colors = ['#1abc9c', '#16a085', '#27ae60']
-    down_colors = ['#e67e22', '#d35400', '#c0392b']
-
     for i, cat in enumerate(think_cats):
         c_df = df[df['processing_type'] == cat]
-        correct_rates = []
-        false_rates = []
+        correct_rates, false_rates = [], []
+        for s in suites:
+            s_df = c_df[c_df['suite'] == s]
+            total = s_df['repeats'].sum() or 1
+            correct_rates.append((s_df['warning'].sum() - s_df['wrong_warnings'].sum()) / total)
+            false_rates.append(-s_df['wrong_warnings'].sum() / total)
+
+        offset = i * width - (len(think_cats)*width)/2 + width/2
+        b1 = ax.bar(x + offset, correct_rates, width, label=f"{cat} (Correct)", color=sns.color_palette("viridis", 3)[i])
+        b2 = ax.bar(x + offset, false_rates, width, label=f"{cat} (False)", color=sns.color_palette("flare", 3)[i], alpha=0.7)
+        
+        ax.bar_label(b1, fmt='%.2f', padding=3, fontsize=8)
+        # For negative bars, show absolute value
+        ax.bar_label(b2, labels=[f'{abs(v):.2f}' if v != 0 else '' for v in false_rates], padding=3, fontsize=8)
+
+    ax.axhline(0, color='black', linewidth=1)
+    ax.set_ylim(min(false_rates)*1.5 if false_rates else -0.5, 1.1)
+    plt.xticks(x, [s.split(' ')[0] for s in suites], rotation=30)
+    plt.legend(ncol=2)
+    plt.tight_layout()
+    plt.savefig(os.path.join(path, "10_warning_proportions.png"))
+
+def plot_11_response_effectiveness(df, categories, path):
+    plt.figure(figsize=(14, 7))
+    def calc_eff(group):
+        total = group['repeats'].sum()
+        fp = group['wrong_warnings'].sum()
+        tp = group['warning'].sum() - fp
+        tn = group['success_count'].sum() - fp
+        return (tn + tp) / total
+
+    agg = df.groupby(['suite', 'processing_type']).apply(calc_eff).reset_index(name='eff')
+    ax = sns.barplot(data=agg, x='suite', y='eff', hue='processing_type', hue_order=categories, palette='mako')
+    
+    for container in ax.containers:
+        ax.bar_label(container, fmt='%.2f', padding=3, fontsize=9, weight='bold')
+
+    plt.title("Model 'Honesty' Effectiveness (Correct + Self-Aware)")
+    plt.ylim(0, 1.15)
+    plt.xticks(rotation=30)
+    plt.tight_layout()
+    plt.savefig(os.path.join(path, "11_response_effectiveness.png"))
+
+def plot_12_warning_impact(df, categories, path):
+    """
+    Wykres 12: Wpływ ostrzeżeń na efektywność (Delta Honesty).
+    Delta = (Efektywność z ostrzeżeniami) - (Efektywność bez ostrzeżeń).
+    Logika: Każde poprawne ostrzeżenie (TP) podnosi efektywność, 
+    każde błędne ostrzeżenie (FP) ją obniża.
+    """
+    suites = sorted(df['suite'].unique())
+    # Interesują nas tylko tryby agentyczne w konkretnej kolejności
+    target_cats = ["Planning", "Chain_of_draft", "Reflection_refine"]
+    active_cats = [c for c in target_cats if c in categories]
+    
+    if not active_cats:
+        return
+
+    fig, ax = plt.subplots(figsize=(15, 8))
+    x = np.arange(len(suites))
+    width = 0.8 / len(active_cats)
+
+    # Paleta kolorów: odcienie niebieskiego/morskiego dla dodatnich, pomarańczu dla ujemnych
+    # Ale dla spójności z legendą użyjemy stałych kolorów dla trybów
+    colors = sns.color_palette("deep", len(active_cats))
+
+    for i, cat in enumerate(active_cats):
+        c_df = df[df['processing_type'] == cat]
+        deltas = []
         
         for s in suites:
             s_df = c_df[c_df['suite'] == s]
             if s_df.empty:
-                correct_rates.append(0); false_rates.append(0)
+                deltas.append(0)
                 continue
             
             total_attempts = s_df['repeats'].sum()
-            # Correct Warning = Total Warnings - Wrong Warnings
-            correct_warns = s_df['warning'].sum() - s_df['wrong_warnings'].sum()
-            false_warns = s_df['wrong_warnings'].sum()
+            fp = s_df['wrong_warnings'].sum()           # Błędne ostrzeżenia (na poprawnej odpowiedzi)
+            tp = s_df['warning'].sum() - fp             # Poprawne ostrzeżenia (na błędnej odpowiedzi)
             
-            correct_rates.append(correct_warns / total_attempts)
-            false_rates.append(-false_warns / total_attempts) # Negative for downward plot
+            # Delta = (TP - FP) / Total
+            # Wyjaśnienie: TP to zysk (wiemy o błędzie), FP to strata (podważamy prawdę)
+            delta = (tp - fp) / total_attempts
+            deltas.append(delta)
 
-        offset = i * width - (len(think_cats)*width)/2 + width/2
-        ax.bar(x + offset, correct_rates, width, label=f"{cat} (Correct)", color=up_colors[i % 3])
-        ax.bar(x + offset, false_rates, width, label=f"{cat} (False)", color=down_colors[i % 3], alpha=0.8)
+        offset = i * width - (len(active_cats)*width)/2 + width/2
+        bars = ax.bar(x + offset, deltas, width, label=cat, color=colors[i], edgecolor='black', alpha=0.8)
+        
+        # Dodawanie etykiet z liczbami (razem ze znakiem)
+        for bar in bars:
+            height = bar.get_height()
+            label = f'{height:+.2f}' if height != 0 else '0.00'
+            ax.text(bar.get_x() + bar.get_width()/2., 
+                    height + (0.01 if height >= 0 else -0.03),
+                    label,
+                    ha='center', va='bottom' if height >= 0 else 'top', 
+                    fontsize=9, weight='bold')
 
-    ax.axhline(0, color='white', linewidth=1)
-    ax.set_title("Warning Validity Proportions (Up: Correct / Down: False)", fontsize=14)
+    ax.axhline(0, color='black', linewidth=1.5)
+    ax.set_title("Wpływ mechanizmu ostrzeżeń na wiarygodność modelu (Delta Effectiveness)\n" + 
+                 "Zysk = TP (wykryte błędy), Strata = FP (fałszywe alarmy)", fontsize=14, pad=20)
+    ax.set_ylabel("Zmiana efektywności (Delta SR)")
     ax.set_xticks(x)
     ax.set_xticklabels([s.split(' ')[0] for s in suites], rotation=30)
-    ax.legend(loc='upper right', fontsize='small', ncol=2)
-    plt.tight_layout()
-    plt.savefig(os.path.join(path, "10_warning_proportions.png"), dpi=150)
+    
+    # Siatka pomocnicza
+    ax.yaxis.set_major_locator(MultipleLocator(0.1))
+    ax.yaxis.set_minor_locator(MultipleLocator(0.05))
+    ax.grid(which='major', axis='y', color='#CCCCCC', linestyle='--', alpha=0.7)
+    
+    ax.legend(title="Tryb agentyczny", loc='best')
+    
+    # Dynamiczne ustawienie limitów osi Y, aby napisy się nie ucinały
+    ymin, ymax = ax.get_ylim()
+    ax.set_ylim(ymin - 0.05, ymax + 0.05)
 
-def plot_11_response_effectiveness(df, categories, path):
-    """
-    Effectiveness = (Wrong AND Warning) OR (Right AND NO Warning).
-    Compares Fast mode vs thinking modes.
-    """
-    suites = sorted(df['suite'].unique())
-    plt.figure(figsize=(14, 6))
-    
-    # Calculate Effective Rate: 
-    # Effective attempts = (Right - WrongWarnings) + (TotalWarnings - WrongWarnings)
-    # This simplifies to: TotalAttempts - Fn (Wrong but No Warn) - Fp (Right but Warn)
-    def calc_effective_rate(group):
-        total = group['repeats'].sum()
-        fp = group['wrong_warnings'].sum()
-        # total_wrongs = total - success_count
-        # tp = warning - fp
-        # fn = total_wrongs - tp
-        fn = (group['repeats'] - group['success_count']).sum() - (group['warning'].sum() - fp)
-        effective_count = total - fp - fn
-        return effective_count / total
-
-    agg = df.groupby(['suite', 'processing_type']).apply(calc_effective_rate).reset_index(name='eff_rate')
-    
-    sns.barplot(data=agg, x='suite', y='eff_rate', hue='processing_type', 
-                hue_order=categories, palette='husl')
-    
-    plt.title("Model 'Honesty' Effectiveness per Suite", fontsize=14)
-    plt.ylabel("Effectiveness Rate (Correct or Self-Aware)")
-    plt.axhline(0.5, color='red', linestyle='--', alpha=0.5)
-    plt.xticks(rotation=30)
-    plt.legend(title="Mode", loc='lower right')
     plt.tight_layout()
-    plt.savefig(os.path.join(path, "11_response_effectiveness.png"), dpi=150)
+    plt.savefig(os.path.join(path, "12_warning_impact_delta.png"), dpi=150)
 
 
 def main():
@@ -365,6 +494,8 @@ def main():
     plot_10_warning_proportions(df, categories, analysis_dir)
     # 11. Effectiveness
     plot_11_response_effectiveness(df, categories, analysis_dir)
+
+    plot_12_warning_impact(df, categories, analysis_dir)
 
     print("✅ Analysis complete.")
 

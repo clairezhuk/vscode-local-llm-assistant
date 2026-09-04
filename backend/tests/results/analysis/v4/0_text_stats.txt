@@ -1,0 +1,30 @@
+=== AGGREGATED STATISTICS ===
+
+MODE: Fast
+  - Tests: 79 (100%) / 91 (Partial) / 109 (Total)
+  - Success Rate: 78.9% (Total attempts: 327)
+  - Warnings: 0 total | Wrong Warnings: 0
+  - Warning Efficiency (detected errors): 0.0%
+  - Interference (wrongly flagged success): 0.0%
+----------------------------------------
+MODE: Planning
+  - Tests: 55 (100%) / 80 (Partial) / 109 (Total)
+  - Success Rate: 62.1% (Total attempts: 327)
+  - Warnings: 60 total | Wrong Warnings: 22
+  - Warning Efficiency (detected errors): 48.4%
+  - Interference (wrongly flagged success): 10.8%
+----------------------------------------
+MODE: Chain_of_draft
+  - Tests: 43 (100%) / 80 (Partial) / 109 (Total)
+  - Success Rate: 56.6% (Total attempts: 327)
+  - Warnings: 50 total | Wrong Warnings: 15
+  - Warning Efficiency (detected errors): 35.2%
+  - Interference (wrongly flagged success): 8.1%
+----------------------------------------
+MODE: Reflection_refine
+  - Tests: 69 (100%) / 86 (Partial) / 109 (Total)
+  - Success Rate: 72.2% (Total attempts: 327)
+  - Warnings: 48 total | Wrong Warnings: 23
+  - Warning Efficiency (detected errors): 52.7%
+  - Interference (wrongly flagged success): 9.7%
+----------------------------------------
