@@ -1,4 +1,4 @@
-# Agentic Coder Assistant
+# Lightweight Coder Assistant
 
 A lightweight, local AI programming assistant built as a VS Code extension. This project was developed as part of a diploma work at the West Pomeranian University of Technology (ZUT). It is specifically optimized for entry-level hardware, enabling high-performance agentic workflows using the Qwen 2.5 Coder 1.5B model on systems with limited resources.
 
