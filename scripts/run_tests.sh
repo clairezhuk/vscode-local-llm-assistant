@@ -24,30 +24,33 @@ echo
 
 # --- Pre-flight checks -------------------------------------------------------
 
-if ! command -v python &> /dev/null; then
-    echo "ERROR: python not found in PATH"
+if ! command -v uv &> /dev/null; then
+    echo "ERROR: uv is not installed or not in PATH"
     exit 1
 fi
 
-if ! python -m pytest --version &> /dev/null; then
-    echo "ERROR: pytest not found. Install with: pip install pytest"
+cd "$BACKEND_DIR"
+
+if ! uv run python -m pytest --version &> /dev/null; then
+    echo "ERROR: pytest not found. Install with: uv add --dev pytest"
     exit 1
 fi
 
-if ! python -c "from fastapi.testclient import TestClient" &> /dev/null; then
+if ! uv run python -c "from fastapi.testclient import TestClient" &> /dev/null; then
     echo "ERROR: fastapi not installed."
-    echo "       Install backend dependencies: pip install -r backend/requirements.txt"
+    echo "       Install backend dependencies: uv add fastapi"
     exit 1
 fi
+
+echo "Environment checks passed."
 
 # --- Run smoke tests ---------------------------------------------------------
 
-cd "$BACKEND_DIR"
 
 echo "Running smoke tests from $BACKEND_DIR..."
 echo "----------------------------------------------"
 
-python -m pytest tests/test_smoke.py -v --tb=short "$@"
+uv run python -m pytest tests/test_smoke.py -v --tb=short "$@"
 
 echo
 echo "=============================================="
