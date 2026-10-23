@@ -10,3 +10,23 @@ server.py
 test_request.py
 test.py
 deploy_plan.md
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Python Backend
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+.ruff_cache/
+.env
+
+# VS Code Extension Frontend
+node_modules/
+out/
+dist/
+*.vsix
