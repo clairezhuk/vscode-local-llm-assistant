@@ -26,3 +26,13 @@ cd backend/tests
 python visualize_results.py
 
 or python .\analysis.py
+
+Functional test (after changes)
+from root:
+sh .\scripts\run_tests.sh
+from backend:
+sh ..\scripts\run_tests.sh
+
+Run backend:
+cd backend
+uv run uvicorn main:app --reload
